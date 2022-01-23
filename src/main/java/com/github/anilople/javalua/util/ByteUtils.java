@@ -121,6 +121,16 @@ public class ByteUtils {
     return new byte[] {highPart, lowPart};
   }
 
+  static void encodeInt(int value, byte[] bytes, int startPosition) {
+    // TODO, performance
+    byte[] byteArray = encodeInt(value);
+    System.arraycopy(byteArray, 0, bytes, startPosition, byteArray.length);
+  }
+
+  public static byte[] encodeInt(int value) {
+    return encodeInt(value, BIG_ENDIAN);
+  }
+
   static byte[] encodeInt(int value, boolean bigEndian) {
     if (bigEndian) {
       return encodeIntBigEndian(value);
@@ -133,7 +143,11 @@ public class ByteUtils {
   static byte[] encodeIntBigEndian(int value) {
     byte[] lowPart = encodeShortBigEndian((short) (value & 0xFFFF));
     byte[] highPart = encodeShortBigEndian((short) (value >> 16));
-    return ArrayUtils.concatByteArray(highPart, lowPart);
+    return ArrayUtils.concat(highPart, lowPart);
+  }
+
+  public static byte[] encodeLong(long value) {
+    return encodeLong(value, BIG_ENDIAN);
   }
 
   static byte[] encodeLong(long value, boolean bigEndian) {
@@ -148,7 +162,7 @@ public class ByteUtils {
   static byte[] encodeLongBigEndian(long value) {
     byte[] lowPart = encodeIntBigEndian((int) (value));
     byte[] highPart = encodeIntBigEndian((int) (value >> 32));
-    return ArrayUtils.concatByteArray(highPart, lowPart);
+    return ArrayUtils.concat(highPart, lowPart);
   }
 
   static byte[] encodeFloat(float value, boolean bigEndian) {
@@ -204,7 +218,7 @@ public class ByteUtils {
       return decodeArray(inputStream, declaredFieldType, arrayLength);
     }
 
-    throw new UnsupportedOperationException("object type " + object.getClass());
+    return decode(inputStream, declaredFieldType);
   }
 
   static Object decodePrimitive(InputStream inputStream, Class<?> fieldType) throws IOException {
@@ -258,6 +272,10 @@ public class ByteUtils {
     return value;
   }
 
+  public static long decodeLong(byte[] bytes) {
+    return decodeLong(bytes, BIG_ENDIAN);
+  }
+
   static long decodeLong(byte[] bytes, boolean bigEndian) {
     long value = decodeLongBigEndian(bytes);
     return bigEndian ? value : Long.reverseBytes(value);
@@ -275,6 +293,10 @@ public class ByteUtils {
   static float decodeFloat(byte[] bytes, boolean bigEndian) {
     int rawIntBits = decodeInt(bytes, bigEndian);
     return Float.intBitsToFloat(rawIntBits);
+  }
+
+  public static double decodeDouble(byte[] bytes) {
+    return decodeDouble(bytes, BIG_ENDIAN);
   }
 
   static double decodeDouble(byte[] bytes, boolean bigEndian) {

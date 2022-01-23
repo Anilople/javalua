@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.anilople.javalua.ResourceReadUtils;
 import com.github.anilople.javalua.chunk.BinaryChunk.Header;
+import com.github.anilople.javalua.chunk.BinaryChunk.Prototype;
 import com.github.anilople.javalua.util.ByteUtils;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -43,7 +45,7 @@ class BinaryChunkTest {
 
   @Test
   void testHeaderDump() {
-    byte[] bytes = Header.INSTANCE.dump();
+    byte[] bytes = Header.INSTANCE.encode();
     assertEquals(31, bytes.length);
   }
 
@@ -53,7 +55,7 @@ class BinaryChunkTest {
 
     Header header = new Header();
     header.luacVersion = new Version(5, 4, 4).encode();
-    byte[] actualHeaderByteArray = header.dump();
+    byte[] actualHeaderByteArray = header.encode();
 
     // LUA_SIGNATURE
     assertArrayEquals(
@@ -112,19 +114,37 @@ class BinaryChunkTest {
 
   @Test
   void testHeaderUndumpSelf() throws IOException {
-    byte[] bytes = Header.INSTANCE.dump();
-    Header actualHeader = ByteUtils.decode(bytes, Header.class);
+    var bytes = Header.INSTANCE.encode();
+    var actualHeader = ByteUtils.decode(bytes, Header.class);
     assertEquals(Header.INSTANCE, actualHeader);
   }
 
   @Test
   void testHelloWorldLuac54OutHeaderDecode() throws IOException {
-    Header expectedHeader = new Header();
+    var expectedHeader = new Header();
     expectedHeader.luacVersion = new Version(5, 4, 4).encode();
 
-    byte[] bytes = Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
-    Header header = ByteUtils.decode(bytes, Header.class);
+    var bytes = Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
+    var header = ByteUtils.decode(bytes, Header.class);
 
     assertEquals(expectedHeader, header);
+  }
+
+  @Test
+  void testBinaryChunkEncodeCase1() {
+    var binaryChunk = new BinaryChunk();
+    binaryChunk.header = Header.INSTANCE;
+    binaryChunk.sizeUpvalues = 2;
+    binaryChunk.mainFunc = new Prototype();
+
+    binaryChunk.encode();
+  }
+
+  @Test
+  void testHelloWorldLuac54OutDecode() throws IOException {
+    var binaryChunk = new BinaryChunk();
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(helloWorldLuac54Out);
+    binaryChunk.decode(byteArrayInputStream);
+
   }
 }
