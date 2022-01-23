@@ -23,6 +23,7 @@ public class BinaryChunk implements Dumpable {
   public static class Header implements Dumpable {
 
     public static final Header INSTANCE = new Header();
+    public static final int SIZE = INSTANCE.dump().length;
 
     byte[] luaSignature = LUA_SIGNATURE;
     byte luacVersion = LUAC_VERSION;
@@ -35,22 +36,61 @@ public class BinaryChunk implements Dumpable {
     double luacNum = LUAC_NUM;
   }
 
+  /**
+   * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/lobject.h#L539">lobject.h#L539 typedef struct Proto</a>
+   */
   @Data
   public static class Prototype {
 
+    /**
+     * 源文件名
+     */
     String source;
-    int LineDefined;
-    int LastLineDefined;
+    /**
+     * 起始行号
+     */
+    int lineDefined;
+    /**
+     * 结束行号
+     */
+    int lastLineDefined;
+    /**
+     * 固定参数个数
+     */
     byte numParams;
     byte isVararg;
+    /**
+     * 寄存器数量
+     */
     byte maxStackSize;
+    /**
+     * 指令表
+     */
     int[] code;
+    /**
+     * 常量表
+     */
     // TODO, constants
+    /**
+     * Upvalue表
+     */
     Upvalue[] upvalues;
+    /**
+     * 子函数原型表
+     */
     Prototype[] protos;
+    /**
+     * 行号表
+     */
     int[] lineInfo;
+    /**
+     * 局部变量表
+     */
     LocVar[] locVars;
-    String[] UpvalueNames;
+    /**
+     * Upvalue名列表
+     */
+    String[] upvalueNames;
 
     public static class BasicInfo {}
 
@@ -58,7 +98,14 @@ public class BinaryChunk implements Dumpable {
 
     public static class Constants {}
 
-    public static class Upvalue {}
+    /**
+     * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/lobject.h#L502">lobject.h#L502 Upvaldesc</a>
+     */
+    @Data
+    public static class Upvalue {
+      byte instack;
+      byte idex;
+    }
 
     public static class DebugInfo {}
 
@@ -67,6 +114,11 @@ public class BinaryChunk implements Dumpable {
       List<Prototype> functions;
     }
 
-    public static class LocVar {}
+    @Data
+    public static class LocVar {
+      String varName;
+      int startPC;
+      int endPC;
+    }
   }
 }

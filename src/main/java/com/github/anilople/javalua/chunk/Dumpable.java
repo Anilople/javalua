@@ -4,9 +4,11 @@ import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
 
 /**
+ * 序列化
+ *
  * @author wxq
  */
-public interface Dumpable {
+interface Dumpable {
 
   default byte[] dump() {
     try {

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.anilople.javalua.ResourceReadUtils;
 import com.github.anilople.javalua.chunk.BinaryChunk.Header;
+import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -17,6 +18,9 @@ import org.junit.jupiter.api.Test;
  */
 class BinaryChunkTest {
 
+  /**
+   * little endian
+   */
   private final byte[] helloWorldLuac54Out =
       ResourceReadUtils.readBytes("ch02/hello_world.luac54.out");
 
@@ -45,11 +49,12 @@ class BinaryChunkTest {
 
   @Test
   void testHelloWorldLuac54OutHeaderEncode() {
+    byte[] expectedHeaderByteArray =
+        Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
+
     Header header = new Header();
     header.luacVersion = new Version(5, 4, 4).encode();
     byte[] actualHeaderByteArray = header.dump();
-    byte[] expectedHeaderByteArray =
-        Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.INSTANCE.dump().length);
 
     // LUA_SIGNATURE
     assertArrayEquals(
@@ -92,5 +97,36 @@ class BinaryChunkTest {
         Arrays.copyOfRange(expectedHeaderByteArray, 14, 15),
         Arrays.copyOfRange(actualHeaderByteArray, 14, 15),
         "SIZE_OF_LUA_NUMBER");
+
+    // until LUAC_INT
+    assertArrayEquals(
+        Arrays.copyOfRange(expectedHeaderByteArray, 15, 23),
+        Arrays.copyOfRange(actualHeaderByteArray, 15, 23),
+        "LUAC_INT");
+
+    // until LUAC_NUM
+    assertArrayEquals(
+        Arrays.copyOfRange(expectedHeaderByteArray, 23, 31),
+        Arrays.copyOfRange(actualHeaderByteArray, 23, 31),
+        "LUAC_NUM");
   }
+
+  @Test
+  void testHeaderUndumpSelf() throws IOException {
+    byte[] bytes = Header.INSTANCE.dump();
+    Header actualHeader = ByteUtils.decode(bytes, Header.class);
+    assertEquals(Header.INSTANCE, actualHeader);
+  }
+
+  @Test
+  void testHelloWorldLuac54OutHeaderDecode() throws IOException {
+    Header expectedHeader = new Header();
+    expectedHeader.luacVersion = new Version(5, 4, 4).encode();
+
+    byte[] bytes = Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
+    Header header = ByteUtils.decode(bytes, Header.class);
+
+    assertEquals(expectedHeader, header);
+  }
+  
 }
