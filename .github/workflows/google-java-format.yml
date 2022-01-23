@@ -1,0 +1,19 @@
+# This workflow will format Java code by Google Java Format
+# For more information see: https://github.com/marketplace/actions/google-java-format
+
+name: Google Java Format
+
+# format whenever push or pull request
+on: [push, pull_request]
+
+jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # v2 minimum required
+      - uses: axel-op/googlejavaformat-action@3.5.0
+        with:
+          # By default, only --replace is used in args
+          args: "--skip-reflowing-long-strings --skip-javadoc-formatting --replace"
+          # Default: Google Java Format
+          commitMessage: "build: Google Java Format"
