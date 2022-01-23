@@ -1,5 +1,7 @@
 package com.github.anilople.javalua.chunk;
 
+import static com.github.anilople.javalua.chunk.BinaryChunkConstants.*;
+
 import java.util.List;
 import lombok.Data;
 
@@ -8,39 +10,29 @@ import lombok.Data;
  * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/lua.h">lua.h</a>
  */
 @Data
-public class BinaryChunk {
+public class BinaryChunk implements Dumpable {
 
   final Header header;
-  final Prototype prototype;
+  final byte sizeUpvalues;
+  final Prototype mainFunc;
 
+  /**
+   * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c#L197">ldump.c#L197</a> for header's dump
+   */
   @Data
-  public static class Header {
+  public static class Header implements Dumpable {
 
     public static final Header INSTANCE = new Header();
 
-    /**
-     * 魔数，类似Java class文件开头的0xCAFEBABE
-     *
-     * lua的魔数也是4个字节，ESC，L，u，a的ASCII码，16进制是0x1B4C7561
-     */
-    byte[] signature = {0X1B, 0x4C, 0x75, 0x61};
-
-    byte version;
-    byte format;
-    byte[] luacData = new byte[6];
-    byte cintSize;
-    byte sizetSize;
-    byte instructionSize;
-    byte luaIntegerSize;
-    byte luaNumberSize;
-    /**
-     * int64，用来检测大小端
-     */
-    long luacInt;
-    /**
-     * float64
-     */
-    double luacNum;
+    byte[] luaSignature = LUA_SIGNATURE;
+    byte luacVersion = LUAC_VERSION;
+    byte luacFormat = LUAC_FORMAT;
+    byte[] luacData = LUAC_DATA;
+    byte sizeOfInstruction = SIZE_OF_INSTRUCTION;
+    byte sizeOfLuaInteger = SIZE_OF_LUA_INTEGER;
+    byte sizeOfLuaNumber = SIZE_OF_LUA_NUMBER;
+    long luacInt = LUAC_INT;
+    double luacNum = LUAC_NUM;
   }
 
   @Data
@@ -60,20 +52,33 @@ public class BinaryChunk {
     LocVar[] locVars;
     String[] UpvalueNames;
 
-    public static class BasicInfo {}
+    public static class BasicInfo {
 
-    public static class Bytecodes {}
+    }
 
-    public static class Constants {}
+    public static class Bytecodes {
 
-    public static class Upvalue {}
+    }
 
-    public static class DebugInfo {}
+    public static class Constants {
+
+    }
+
+    public static class Upvalue {
+
+    }
+
+    public static class DebugInfo {
+
+    }
 
     public static class SubFunctions {
+
       List<Prototype> functions;
     }
 
-    public static class LocVar {}
+    public static class LocVar {
+
+    }
   }
 }
