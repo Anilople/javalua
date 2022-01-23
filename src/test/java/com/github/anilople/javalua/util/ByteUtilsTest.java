@@ -50,6 +50,15 @@ class ByteUtilsTest {
   }
 
   @Test
+  void encodeLongLittleEndian() {
+    assertArrayEquals(
+        new byte[] {
+            0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01,
+        },
+        ByteUtils.encodeLongBigEndian(0x0807060504030201L));
+  }
+
+  @Test
   void decodeLongBigEndian() {
     long value =
         ByteUtils.decodeLongBigEndian(

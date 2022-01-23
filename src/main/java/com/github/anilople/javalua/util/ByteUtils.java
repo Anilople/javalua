@@ -140,7 +140,7 @@ public class ByteUtils {
     if (bigEndian) {
       return encodeLongBigEndian(value);
     } else {
-      var newValue = Long.reverse(value);
+      var newValue = Long.reverseBytes(value);
       return encodeLongBigEndian(newValue);
     }
   }
