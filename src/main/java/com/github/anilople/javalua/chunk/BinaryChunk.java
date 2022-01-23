@@ -58,6 +58,7 @@ public class BinaryChunk implements Dumpable {
      * 固定参数个数
      */
     byte numParams;
+
     byte isVararg;
     /**
      * 寄存器数量

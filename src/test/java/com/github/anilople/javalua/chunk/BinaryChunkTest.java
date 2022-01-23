@@ -49,8 +49,7 @@ class BinaryChunkTest {
 
   @Test
   void testHelloWorldLuac54OutHeaderEncode() {
-    byte[] expectedHeaderByteArray =
-        Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
+    byte[] expectedHeaderByteArray = Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
 
     Header header = new Header();
     header.luacVersion = new Version(5, 4, 4).encode();
@@ -128,5 +127,4 @@ class BinaryChunkTest {
 
     assertEquals(expectedHeader, header);
   }
-  
 }

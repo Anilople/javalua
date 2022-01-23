@@ -1,5 +1,7 @@
 package com.github.anilople.javalua.util;
 
+import static com.github.anilople.javalua.util.ReflectionUtils.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,8 +12,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.github.anilople.javalua.util.ReflectionUtils.*;
 
 /**
  * 用 大端 bigEndian 处理 byte 数组
@@ -118,9 +118,7 @@ public class ByteUtils {
   static byte[] encodeShortBigEndian(short value) {
     byte lowPart = (byte) value;
     byte highPart = (byte) (value >> 8);
-    return new byte[]{
-        highPart, lowPart
-    };
+    return new byte[] {highPart, lowPart};
   }
 
   static byte[] encodeInt(int value, boolean bigEndian) {
@@ -195,7 +193,8 @@ public class ByteUtils {
     return object;
   }
 
-  static Object decodeField(InputStream inputStream, Object object, Field declaredField) throws IOException {
+  static Object decodeField(InputStream inputStream, Object object, Field declaredField)
+      throws IOException {
     Class<?> declaredFieldType = declaredField.getType();
     if (isPrimitive(declaredFieldType)) {
       return decodePrimitive(inputStream, declaredFieldType);
@@ -300,7 +299,6 @@ public class ByteUtils {
       throw new UnsupportedOperationException("array type " + fieldType);
     }
   }
-
 
   static class EncodeRuntimeException extends RuntimeException {
 

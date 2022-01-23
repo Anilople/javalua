@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.util;
 
 import com.github.anilople.javalua.util.ByteUtils.DecodeRuntimeException;
-import com.github.anilople.javalua.util.ByteUtils.EncodeRuntimeException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +33,8 @@ public class ReflectionUtils {
     try {
       value = field.get(object);
     } catch (IllegalAccessException e) {
-      throw new IllegalStateException("cannot get field " + field + "'s value in object " + object, e);
+      throw new IllegalStateException(
+          "cannot get field " + field + "'s value in object " + object, e);
     }
     return value;
   }
@@ -59,7 +59,8 @@ public class ReflectionUtils {
     try {
       field.set(object, fieldValue);
     } catch (IllegalAccessException e) {
-      throw new IllegalStateException("cannot set field value " + fieldValue + " to object " + object, e);
+      throw new IllegalStateException(
+          "cannot set field value " + fieldValue + " to object " + object, e);
     }
   }
 
