@@ -1,7 +1,5 @@
 package com.github.anilople.javalua.chunk;
 
-import com.github.anilople.javalua.util.ArrayUtils;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.Data;
 

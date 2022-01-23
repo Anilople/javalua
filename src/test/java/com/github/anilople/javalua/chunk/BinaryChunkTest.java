@@ -7,7 +7,6 @@ import com.github.anilople.javalua.ResourceReadUtils;
 import com.github.anilople.javalua.chunk.BinaryChunk.Header;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -15,11 +14,10 @@ import org.junit.jupiter.api.Test;
  */
 class BinaryChunkTest {
 
-  private final byte[] helloWorldLuac54Out = ResourceReadUtils.readBytes(
-      "ch02/hello_world.luac54.out");
+  private final byte[] helloWorldLuac54Out =
+      ResourceReadUtils.readBytes("ch02/hello_world.luac54.out");
 
-  BinaryChunkTest() throws IOException {
-  }
+  BinaryChunkTest() throws IOException {}
 
   @Test
   void testHelloWorldLuac54OutSize() {
@@ -31,8 +29,8 @@ class BinaryChunkTest {
     for (int i = 0; i < 4; i++) {
       assertEquals(Header.INSTANCE.signature[i], helloWorldLuac54Out[i]);
     }
-    assertArrayEquals("Lua".getBytes(StandardCharsets.UTF_8),
-        new byte[]{helloWorldLuac54Out[1], helloWorldLuac54Out[2], helloWorldLuac54Out[3]});
+    assertArrayEquals(
+        "Lua".getBytes(StandardCharsets.UTF_8),
+        new byte[] {helloWorldLuac54Out[1], helloWorldLuac54Out[2], helloWorldLuac54Out[3]});
   }
-
 }

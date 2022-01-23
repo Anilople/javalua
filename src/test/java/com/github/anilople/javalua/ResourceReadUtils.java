@@ -9,7 +9,8 @@ import java.io.InputStream;
 public class ResourceReadUtils {
 
   public static byte[] readBytes(String resourcePath) throws IOException {
-    InputStream inputStream = ResourceReadUtils.class.getClassLoader().getResourceAsStream(resourcePath);
+    InputStream inputStream =
+        ResourceReadUtils.class.getClassLoader().getResourceAsStream(resourcePath);
     assert inputStream != null;
     return inputStream.readAllBytes();
   }
