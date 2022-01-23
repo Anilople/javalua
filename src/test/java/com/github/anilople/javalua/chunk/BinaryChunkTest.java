@@ -48,55 +48,49 @@ class BinaryChunkTest {
     Header header = new Header();
     header.luacVersion = new Version(5, 4, 4).encode();
     byte[] actualHeaderByteArray = header.dump();
-    byte[] expectedHeaderByteArray = Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.INSTANCE.dump().length);
+    byte[] expectedHeaderByteArray =
+        Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.INSTANCE.dump().length);
 
     // LUA_SIGNATURE
     assertArrayEquals(
         Arrays.copyOfRange(expectedHeaderByteArray, 0, LUA_SIGNATURE.length),
         Arrays.copyOfRange(actualHeaderByteArray, 0, LUA_SIGNATURE.length),
-        "LUA_SIGNATURE"
-    );
+        "LUA_SIGNATURE");
 
     // LUAC_VERSION
     assertArrayEquals(
         Arrays.copyOfRange(expectedHeaderByteArray, 4, 5),
         Arrays.copyOfRange(actualHeaderByteArray, 4, 5),
-        "LUAC_VERSION"
-    );
+        "LUAC_VERSION");
 
     // until LUAC_FORMAT
     assertArrayEquals(
         Arrays.copyOfRange(expectedHeaderByteArray, 5, 6),
         Arrays.copyOfRange(actualHeaderByteArray, 5, 6),
-        "LUAC_FORMAT"
-    );
+        "LUAC_FORMAT");
 
     // until LUAC_DATA
     assertArrayEquals(
         Arrays.copyOfRange(expectedHeaderByteArray, 6, LUAC_DATA.length),
         Arrays.copyOfRange(actualHeaderByteArray, 6, LUAC_DATA.length),
-        "LUAC_DATA"
-    );
+        "LUAC_DATA");
 
     // until SIZE_OF_INSTRUCTION
     assertArrayEquals(
         Arrays.copyOfRange(expectedHeaderByteArray, 12, 13),
         Arrays.copyOfRange(actualHeaderByteArray, 12, 13),
-        "SIZE_OF_INSTRUCTION"
-    );
+        "SIZE_OF_INSTRUCTION");
 
     // until SIZE_OF_LUA_INTEGER
     assertArrayEquals(
         Arrays.copyOfRange(expectedHeaderByteArray, 13, 14),
         Arrays.copyOfRange(actualHeaderByteArray, 13, 14),
-        "SIZE_OF_LUA_INTEGER"
-    );
+        "SIZE_OF_LUA_INTEGER");
 
     // until SIZE_OF_LUA_NUMBER
     assertArrayEquals(
         Arrays.copyOfRange(expectedHeaderByteArray, 14, 15),
         Arrays.copyOfRange(actualHeaderByteArray, 14, 15),
-        "SIZE_OF_LUA_NUMBER"
-    );
+        "SIZE_OF_LUA_NUMBER");
   }
 }

@@ -52,33 +52,21 @@ public class BinaryChunk implements Dumpable {
     LocVar[] locVars;
     String[] UpvalueNames;
 
-    public static class BasicInfo {
+    public static class BasicInfo {}
 
-    }
+    public static class Bytecodes {}
 
-    public static class Bytecodes {
+    public static class Constants {}
 
-    }
+    public static class Upvalue {}
 
-    public static class Constants {
-
-    }
-
-    public static class Upvalue {
-
-    }
-
-    public static class DebugInfo {
-
-    }
+    public static class DebugInfo {}
 
     public static class SubFunctions {
 
       List<Prototype> functions;
     }
 
-    public static class LocVar {
-
-    }
+    public static class LocVar {}
   }
 }

@@ -15,7 +15,6 @@ class Version {
     this.releaseVersion = releaseVersion;
   }
 
-
   /**
    * Encode major-minor version in one byte, one nibble for each
    *

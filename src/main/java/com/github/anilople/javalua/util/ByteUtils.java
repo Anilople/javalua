@@ -99,7 +99,7 @@ public class ByteUtils {
       return getEmptyByteArrayOf(fieldType);
     }
     if (Byte.TYPE.equals(fieldType)) {
-        return new byte[]{(byte) value};
+      return new byte[] {(byte) value};
     }
     if (Integer.TYPE.equals(fieldType)) {
       return encodeInt((int) value);
@@ -152,7 +152,6 @@ public class ByteUtils {
     }
     throw new UnsupportedOperationException("array type " + fieldType + " value " + value);
   }
-
 
   public static <T> T decode(byte[] bytes, Class<T> clazz) {
     throw new UnsupportedOperationException();

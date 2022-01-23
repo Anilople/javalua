@@ -19,6 +19,7 @@ interface BinaryChunkConstants {
    * lua的魔数也是4个字节，ESC，L，u，a的ASCII码，16进制是0x1B4C7561
    */
   byte[] LUA_SIGNATURE = {ESC, L, u, a};
+
   byte LUAC_VERSION = Version.INSTANCE.encode();
   byte LUAC_FORMAT = 0;
   /**
@@ -26,9 +27,7 @@ interface BinaryChunkConstants {
    *
    * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/lundump.h#L16">lundump.h#L16</a>
    */
-  byte[] LUAC_DATA = new byte[]{
-      0x19, (byte) 0x93, CR, LF, 0x1a, LF
-  };
+  byte[] LUAC_DATA = new byte[] {0x19, (byte) 0x93, CR, LF, 0x1a, LF};
 
   /**
    * c语言 int 占用的字节数
