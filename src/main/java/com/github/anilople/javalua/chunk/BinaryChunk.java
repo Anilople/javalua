@@ -22,7 +22,9 @@ public class BinaryChunk {
      *
      * lua的魔数也是4个字节，ESC，L，u，a的ASCII码，16进制是0x1B4C7561
      */
-    byte[] signature = ArrayUtils.concatByteArray(new byte[]{0X1B}, "Lua".getBytes(StandardCharsets.UTF_8));
+    byte[] signature =
+        ArrayUtils.concatByteArray(new byte[] {0X1B}, "Lua".getBytes(StandardCharsets.UTF_8));
+
     byte version;
     byte format;
     byte[] luacData = new byte[6];
@@ -58,33 +60,20 @@ public class BinaryChunk {
     LocVar[] locVars;
     String[] UpvalueNames;
 
+    public static class BasicInfo {}
 
-    public static class BasicInfo {
+    public static class Bytecodes {}
 
-    }
+    public static class Constants {}
 
-    public static class Bytecodes {
+    public static class Upvalue {}
 
-    }
-
-    public static class Constants {
-
-    }
-
-    public static class Upvalue {
-
-    }
-
-    public static class DebugInfo {
-
-    }
+    public static class DebugInfo {}
 
     public static class SubFunctions {
       List<Prototype> functions;
     }
 
-    public static class LocVar {
-
-    }
+    public static class LocVar {}
   }
 }
