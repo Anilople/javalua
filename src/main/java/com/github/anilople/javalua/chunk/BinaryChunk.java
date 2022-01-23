@@ -17,13 +17,15 @@ public class BinaryChunk {
 
   @Data
   public static class Header {
+
+    public static final Header INSTANCE = new Header();
+
     /**
      * 魔数，类似Java class文件开头的0xCAFEBABE
      *
      * lua的魔数也是4个字节，ESC，L，u，a的ASCII码，16进制是0x1B4C7561
      */
-    byte[] signature =
-        ArrayUtils.concatByteArray(new byte[] {0X1B}, "Lua".getBytes(StandardCharsets.UTF_8));
+    byte[] signature = {0X1B, 0x4C, 0x75, 0x61};
 
     byte version;
     byte format;
