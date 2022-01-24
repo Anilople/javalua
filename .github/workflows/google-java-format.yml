@@ -4,7 +4,7 @@
 name: Google Java Format
 
 # format whenever push or pull request
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   formatting:
