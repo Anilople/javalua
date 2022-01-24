@@ -10,6 +10,7 @@ public interface Encodable {
 
   /**
    * i.e dump
+   *
    * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c">ldump.c</a>
    */
   byte[] encode();

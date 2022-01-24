@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.chunk;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
@@ -15,8 +15,8 @@ class EncodableTest {
   void encodeCase1() {
     var person = new Person();
     person.b = 0x0;
-    person.array = new byte[] {0x1, 0x2};
-    assertArrayEquals(new byte[] {0x0, 0x1, 0x2}, person.encode());
+    person.array = new byte[]{0x1, 0x2};
+    assertArrayEquals(new byte[]{0x0, 0x1, 0x2}, person.encode());
   }
 
   static class Person implements Encodable {

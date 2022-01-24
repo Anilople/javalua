@@ -1,6 +1,12 @@
 package com.github.anilople.javalua.util;
 
-import static com.github.anilople.javalua.util.ReflectionUtils.*;
+import static com.github.anilople.javalua.util.ReflectionUtils.getFieldValue;
+import static com.github.anilople.javalua.util.ReflectionUtils.getFieldValueArrayLength;
+import static com.github.anilople.javalua.util.ReflectionUtils.getNonStaticDeclaredFields;
+import static com.github.anilople.javalua.util.ReflectionUtils.isArray;
+import static com.github.anilople.javalua.util.ReflectionUtils.isPrimitive;
+import static com.github.anilople.javalua.util.ReflectionUtils.newInstance;
+import static com.github.anilople.javalua.util.ReflectionUtils.setFieldValue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,7 +28,7 @@ public class ByteUtils {
 
   /**
    * big endian or little endian.
-   *
+   * <p>
    * 在书里，作者的是 little endian
    */
   private static final boolean BIG_ENDIAN = false;
@@ -89,7 +95,7 @@ public class ByteUtils {
       return getEmptyByteArrayOf(fieldType);
     }
     if (Byte.TYPE.equals(fieldType)) {
-      return new byte[] {(byte) value};
+      return new byte[]{(byte) value};
     }
     if (Integer.TYPE.equals(fieldType)) {
       return encodeInt((int) value, BIG_ENDIAN);
@@ -106,6 +112,10 @@ public class ByteUtils {
     throw new UnsupportedOperationException("primitive type " + fieldType + " value " + value);
   }
 
+  public static byte[] encodeShort(short value) {
+    return encodeShort(value, BIG_ENDIAN);
+  }
+
   static byte[] encodeShort(short value, boolean bigEndian) {
     if (bigEndian) {
       return encodeShortBigEndian(value);
@@ -118,7 +128,7 @@ public class ByteUtils {
   static byte[] encodeShortBigEndian(short value) {
     byte lowPart = (byte) value;
     byte highPart = (byte) (value >> 8);
-    return new byte[] {highPart, lowPart};
+    return new byte[]{highPart, lowPart};
   }
 
   static void encodeInt(int value, byte[] bytes, int startPosition) {
@@ -168,6 +178,10 @@ public class ByteUtils {
   static byte[] encodeFloat(float value, boolean bigEndian) {
     int rawIntBits = Float.floatToRawIntBits(value);
     return encodeInt(rawIntBits, bigEndian);
+  }
+
+  public static byte[] encodeDouble(double value) {
+    return encodeDouble(value, BIG_ENDIAN);
   }
 
   static byte[] encodeDouble(double value, boolean bigEndian) {
@@ -256,6 +270,10 @@ public class ByteUtils {
     value <<= 8;
     value |= lowPart;
     return value;
+  }
+
+  public static int decodeInt(byte[] bytes) {
+    return decodeInt(bytes, BIG_ENDIAN);
   }
 
   static int decodeInt(byte[] bytes, boolean bigEndian) {

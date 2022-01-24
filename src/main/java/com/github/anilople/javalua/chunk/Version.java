@@ -4,6 +4,7 @@ package com.github.anilople.javalua.chunk;
  * @author wxq
  */
 class Version {
+
   static final Version INSTANCE = new Version(5, 4, 0);
   final int majorVersion;
   final int minorVersion;
