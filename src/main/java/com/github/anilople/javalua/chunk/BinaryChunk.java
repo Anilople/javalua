@@ -21,6 +21,9 @@ public class BinaryChunk implements Encodable, Decodable {
   byte sizeUpvalues;
   Prototype mainFunc;
 
+  /**
+   * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c#L213">ldump.c#L213 luaU_dump</a>
+   */
   @Override
   public byte[] encode() {
     byte[] headerBytes = this.header.encode();
@@ -194,7 +197,8 @@ public class BinaryChunk implements Encodable, Decodable {
 
     }
 
-    public static class LuaString implements Encodable, Decodable {
+    @Data
+    static class LuaString implements Encodable, Decodable {
       public static final LuaString NULL = new LuaString();
       private static final byte[] ZERO = new byte[]{0};
       byte first;
@@ -217,13 +221,13 @@ public class BinaryChunk implements Encodable, Decodable {
 
       @Override
       public void decode(InputStream inputStream) throws IOException {
-        byte first = (byte) inputStream.read();
-        if (0 == first) {
+        this.first = (byte) inputStream.read();
+        if (0 == this.first) {
           // do nothing
-        } else if ((~first) != 0) {
+        } else if ((~this.first) != 0) {
           // <= 0xFD
           // if first == 0xFF, ~first => 0x00
-          int length = Byte.toUnsignedInt(first) - 1;
+          int length = Byte.toUnsignedInt(this.first) - 1;
           bytes = inputStream.readNBytes(length);
         } else {
           // >= 0xFE
