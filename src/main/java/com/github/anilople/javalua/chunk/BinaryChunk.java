@@ -170,13 +170,14 @@ public class BinaryChunk implements Encodable, Decodable {
       outputStream.write(this.isVararg);
       outputStream.write(this.maxStackSize);
 
-      // dumpCode https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c#L100
+      // dumpCode
+      // https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c#L100
       /*
-        static void dumpCode (DumpState *D, const Proto *f) {
-          dumpInt(D, f->sizecode);
-          dumpVector(D, f->code, f->sizecode);
-        }
-       */
+       static void dumpCode (DumpState *D, const Proto *f) {
+         dumpInt(D, f->sizecode);
+         dumpVector(D, f->code, f->sizecode);
+       }
+      */
       outputStream.write(this.code.length);
       outputStream.write(ArrayUtils.toByteArray(this.code));
 
@@ -193,14 +194,12 @@ public class BinaryChunk implements Encodable, Decodable {
     }
 
     @Override
-    public void decode(InputStream inputStream) {
-
-    }
+    public void decode(InputStream inputStream) {}
 
     @Data
     static class LuaString implements Encodable, Decodable {
       public static final LuaString NULL = new LuaString();
-      private static final byte[] ZERO = new byte[]{0};
+      private static final byte[] ZERO = new byte[] {0};
       byte first;
       byte[] bytes;
 
@@ -263,9 +262,7 @@ public class BinaryChunk implements Encodable, Decodable {
       byte idex;
 
       @Override
-      public void decode(InputStream inputStream) throws IOException {
-
-      }
+      public void decode(InputStream inputStream) throws IOException {}
 
       @Override
       public byte[] encode() {

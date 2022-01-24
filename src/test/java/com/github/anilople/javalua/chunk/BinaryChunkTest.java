@@ -145,6 +145,5 @@ class BinaryChunkTest {
     var binaryChunk = new BinaryChunk();
     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(helloWorldLuac54Out);
     binaryChunk.decode(byteArrayInputStream);
-
   }
 }

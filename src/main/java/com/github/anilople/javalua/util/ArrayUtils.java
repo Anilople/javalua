@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.util;
 
-import com.github.anilople.javalua.constant.SizeConstants;
 import com.github.anilople.javalua.constant.SizeConstants.Java;
 import java.util.Arrays;
 
@@ -50,5 +49,4 @@ public class ArrayUtils {
     }
     return byteArray;
   }
-
 }
