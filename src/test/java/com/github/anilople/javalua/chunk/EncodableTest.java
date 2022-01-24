@@ -15,8 +15,8 @@ class EncodableTest {
   void encodeCase1() {
     var person = new Person();
     person.b = 0x0;
-    person.array = new byte[]{0x1, 0x2};
-    assertArrayEquals(new byte[]{0x0, 0x1, 0x2}, person.encode());
+    person.array = new byte[] {0x1, 0x2};
+    assertArrayEquals(new byte[] {0x0, 0x1, 0x2}, person.encode());
   }
 
   static class Person implements Encodable {

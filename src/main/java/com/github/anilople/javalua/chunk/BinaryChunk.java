@@ -38,6 +38,4 @@ public class BinaryChunk implements Encodable, Decodable {
 
     assert inputStream.readByte() == -1;
   }
-
-
 }

@@ -16,9 +16,9 @@ class LuaStringTest {
 
   @Test
   void testNull() throws IOException {
-    assertArrayEquals(new byte[]{0}, LuaString.NULL.encode());
+    assertArrayEquals(new byte[] {0}, LuaString.NULL.encode());
     LuaString luaString = new LuaString();
-    luaString.decode(new DecodeInputStream(new byte[]{0}));
+    luaString.decode(new DecodeInputStream(new byte[] {0}));
     assertEquals(0, luaString.first);
 
     assertEquals(LuaString.NULL, luaString);
@@ -38,7 +38,7 @@ class LuaStringTest {
     expected.bytes = "lua".getBytes(StandardCharsets.UTF_8);
 
     LuaString actual = new LuaString();
-    actual.decode(new DecodeInputStream(new byte[]{4, 'l', 'u', 'a'}));
+    actual.decode(new DecodeInputStream(new byte[] {4, 'l', 'u', 'a'}));
     assertEquals(expected, actual);
   }
 
@@ -51,11 +51,7 @@ class LuaStringTest {
     LuaString actual = new LuaString();
     actual.decode(
         new DecodeInputStream(
-            ArrayUtils.concat(
-                (byte) 0xFE, "k".repeat(253).getBytes(StandardCharsets.UTF_8)
-            )
-        )
-    );
+            ArrayUtils.concat((byte) 0xFE, "k".repeat(253).getBytes(StandardCharsets.UTF_8))));
     assertEquals(expected, actual);
   }
 
@@ -71,11 +67,9 @@ class LuaStringTest {
     actual.decode(
         new DecodeInputStream(
             ArrayUtils.concat(
-                (byte) 0xFF, ByteUtils.encodeLong(254 + 1),
-                "k".repeat(254).getBytes(StandardCharsets.UTF_8)
-            )
-        )
-    );
+                (byte) 0xFF,
+                ByteUtils.encodeLong(254 + 1),
+                "k".repeat(254).getBytes(StandardCharsets.UTF_8))));
     assertEquals(expected, actual);
   }
 
@@ -91,11 +85,9 @@ class LuaStringTest {
     actual.decode(
         new DecodeInputStream(
             ArrayUtils.concat(
-                (byte) 0xFF, ByteUtils.encodeLong(255 + 1),
-                "k".repeat(255).getBytes(StandardCharsets.UTF_8)
-            )
-        )
-    );
+                (byte) 0xFF,
+                ByteUtils.encodeLong(255 + 1),
+                "k".repeat(255).getBytes(StandardCharsets.UTF_8))));
     assertEquals(expected, actual);
   }
 }

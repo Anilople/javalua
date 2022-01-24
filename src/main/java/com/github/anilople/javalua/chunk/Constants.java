@@ -21,9 +21,7 @@ public class Constants implements Encodable, Decodable {
   }
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
-
-  }
+  public void decode(DecodeInputStream inputStream) throws IOException {}
 
   interface Tag {
 
@@ -82,8 +80,6 @@ public class Constants implements Encodable, Decodable {
     }
 
     @Override
-    public void decode(DecodeInputStream inputStream) throws IOException {
-
-    }
+    public void decode(DecodeInputStream inputStream) throws IOException {}
   }
 }

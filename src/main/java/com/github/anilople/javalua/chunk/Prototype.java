@@ -3,7 +3,6 @@ package com.github.anilople.javalua.chunk;
 /**
  * @author wxq
  */
-
 import com.github.anilople.javalua.util.ArrayUtils;
 import java.io.IOException;
 import java.util.List;
@@ -96,12 +95,12 @@ public class Prototype implements Encodable, Decodable {
 
     // dumpCode
     // https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c#L100
-      /*
-       static void dumpCode (DumpState *D, const Proto *f) {
-         dumpInt(D, f->sizecode);
-         dumpVector(D, f->code, f->sizecode);
-       }
-      */
+    /*
+     static void dumpCode (DumpState *D, const Proto *f) {
+       dumpInt(D, f->sizecode);
+       dumpVector(D, f->code, f->sizecode);
+     }
+    */
     outputStream.writeInt(this.code.length);
     outputStream.writeBytes(ArrayUtils.toByteArray(this.code));
 
@@ -119,17 +118,11 @@ public class Prototype implements Encodable, Decodable {
   }
 
   @Override
-  public void decode(DecodeInputStream inputStream) {
-  }
+  public void decode(DecodeInputStream inputStream) {}
 
+  public static class BasicInfo {}
 
-  public static class BasicInfo {
-
-  }
-
-  public static class Bytecodes {
-
-  }
+  public static class Bytecodes {}
 
   /**
    * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/lobject.h#L502">lobject.h#L502
@@ -142,8 +135,7 @@ public class Prototype implements Encodable, Decodable {
     byte idex;
 
     @Override
-    public void decode(DecodeInputStream inputStream) throws IOException {
-    }
+    public void decode(DecodeInputStream inputStream) throws IOException {}
 
     @Override
     public byte[] encode() {
@@ -151,9 +143,7 @@ public class Prototype implements Encodable, Decodable {
     }
   }
 
-  public static class DebugInfo {
-
-  }
+  public static class DebugInfo {}
 
   public static class SubFunctions {
 

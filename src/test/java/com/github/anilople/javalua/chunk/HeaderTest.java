@@ -23,9 +23,7 @@ public class HeaderTest {
   private final byte[] helloWorldLuac54Out =
       ResourceReadUtils.readBytes("ch02/hello_world.luac54.out");
 
-  public HeaderTest() throws IOException {
-  }
-
+  public HeaderTest() throws IOException {}
 
   @Test
   void testHelloWorldLuac54OutSignature() {
@@ -34,7 +32,7 @@ public class HeaderTest {
     }
     assertArrayEquals(
         "Lua".getBytes(StandardCharsets.UTF_8),
-        new byte[]{helloWorldLuac54Out[1], helloWorldLuac54Out[2], helloWorldLuac54Out[3]});
+        new byte[] {helloWorldLuac54Out[1], helloWorldLuac54Out[2], helloWorldLuac54Out[3]});
   }
 
   @Test

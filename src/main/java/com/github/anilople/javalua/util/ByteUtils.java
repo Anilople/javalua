@@ -95,7 +95,7 @@ public class ByteUtils {
       return getEmptyByteArrayOf(fieldType);
     }
     if (Byte.TYPE.equals(fieldType)) {
-      return new byte[]{(byte) value};
+      return new byte[] {(byte) value};
     }
     if (Integer.TYPE.equals(fieldType)) {
       return encodeInt((int) value, BIG_ENDIAN);
@@ -128,7 +128,7 @@ public class ByteUtils {
   static byte[] encodeShortBigEndian(short value) {
     byte lowPart = (byte) value;
     byte highPart = (byte) (value >> 8);
-    return new byte[]{highPart, lowPart};
+    return new byte[] {highPart, lowPart};
   }
 
   static void encodeInt(int value, byte[] bytes, int startPosition) {

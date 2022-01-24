@@ -3,7 +3,6 @@ package com.github.anilople.javalua.chunk;
 /**
  * @author wxq
  */
-
 import static com.github.anilople.javalua.chunk.BinaryChunkConstants.LUAC_DATA;
 import static com.github.anilople.javalua.chunk.BinaryChunkConstants.LUAC_FORMAT;
 import static com.github.anilople.javalua.chunk.BinaryChunkConstants.LUAC_INT;
