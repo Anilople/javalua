@@ -4,6 +4,12 @@ Use Java to write lua interpreter
 
 学习 [自己动手实现Lua](https://book.douban.com/subject/30348061/)
 
+环境：
+* Java 11
+* maven 3.6.3
+
+为了简化代码，用了 lombok，如果运行测试失败，需要maven clean一下再跑
+
 ## ch02
 
 如果luac指定了`-s`，那么行号表，局部变量表和Upvalue表，不会生成在chunk中，它们都是调试信息
