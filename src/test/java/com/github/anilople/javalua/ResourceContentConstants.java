@@ -1,6 +1,5 @@
 package com.github.anilople.javalua;
 
-
 /**
  * little endian 小端
  *

@@ -6,8 +6,9 @@ import java.io.IOException;
  * @author wxq
  */
 class LuaStringNull extends LuaString {
-  private static final byte[] ZERO = new byte[]{0};
+  private static final byte[] ZERO = new byte[] {0};
   static final LuaStringNull NULL = new LuaStringNull();
+
   private LuaStringNull() {}
 
   @Override

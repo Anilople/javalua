@@ -11,18 +11,17 @@ class ArrayUtilsTest {
 
   @Test
   void toByteArray() {
-    byte[] byteArray = ArrayUtils.toByteArray(new int[]{1, 2});
+    byte[] byteArray = ArrayUtils.toByteArray(new int[] {1, 2});
     assertArrayEquals(
-        new byte[]{
+        new byte[] {
           1, 0, 0, 0, 2, 0, 0, 0,
         },
-        byteArray
-    );
+        byteArray);
   }
 
   @Test
   void toArray() {
-    byte[] byteArray = ArrayUtils.toByteArray(new int[]{1, 2, 3});
+    byte[] byteArray = ArrayUtils.toByteArray(new int[] {1, 2, 3});
     int[] intArray = ArrayUtils.toIntArray(byteArray);
 
     assertArrayEquals(byteArray, ArrayUtils.toByteArray(intArray));

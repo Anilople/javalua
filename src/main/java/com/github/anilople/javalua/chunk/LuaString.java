@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.chunk;
 
-import com.github.anilople.javalua.constant.DataTypeSizeConstants;
 import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
 import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.ByteUtils;

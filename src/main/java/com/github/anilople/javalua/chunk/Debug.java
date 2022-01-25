@@ -23,9 +23,7 @@ public class Debug implements Encodable, Decodable {
   String[] upvalueNames = new String[0];
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
-
-  }
+  public void decode(DecodeInputStream inputStream) throws IOException {}
 
   @Override
   public byte[] encode() {

@@ -3,7 +3,6 @@ package com.github.anilople.javalua.chunk;
 import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 /**
  * @author wxq
@@ -48,7 +47,8 @@ public class DecodeInputStream {
     for (int i = 0; i < length; i++) {
       int value = inputStream.read();
       if (value < 0) {
-        throw new IllegalStateException("cannot read " + length + " bytes i = " + i + " input stream = " + inputStream);
+        throw new IllegalStateException(
+            "cannot read " + length + " bytes i = " + i + " input stream = " + inputStream);
       }
       bytes[i] = (byte) value;
     }

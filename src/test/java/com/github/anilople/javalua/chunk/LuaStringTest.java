@@ -94,12 +94,9 @@ class LuaStringTest {
   @Test
   void testDecodeCase1() throws IOException {
     LuaString luaString = new LuaString();
-    luaString.decode(new DecodeInputStream(
-        ArrayUtils.concat(
-            (byte) 0x11,
-            "@hello_world.lua".getBytes(StandardCharsets.UTF_8)
-        )
-    ));
+    luaString.decode(
+        new DecodeInputStream(
+            ArrayUtils.concat((byte) 0x11, "@hello_world.lua".getBytes(StandardCharsets.UTF_8))));
 
     assertEquals((byte) 0x11, luaString.first);
     assertEquals(16, luaString.bytes.length);
