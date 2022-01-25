@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.chunk;
 
 import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
+import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.ByteArrayInputStream;
 
@@ -20,7 +21,11 @@ public class DecodeInputStream {
   }
 
   byte readByte() {
-    return (byte) inputStream.read();
+    int value = inputStream.read();
+    if (value < 0) {
+      throw new IllegalStateException("have been exhaust");
+    }
+    return (byte) value;
   }
 
   int readInt() {
@@ -40,6 +45,11 @@ public class DecodeInputStream {
 
   byte[] readNBytes(int length) {
     return readNBytesWithException(length);
+  }
+
+  int[] readNIntegers(int length) {
+    byte[] bytes = readNBytes(length * Java.INT);
+    return ArrayUtils.toIntArray(bytes);
   }
 
   private byte[] readNBytesWithException(int length) {

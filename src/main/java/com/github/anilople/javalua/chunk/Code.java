@@ -1,5 +1,7 @@
 package com.github.anilople.javalua.chunk;
 
+import com.github.anilople.javalua.constant.DataTypeSizeConstants;
+import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
 import com.github.anilople.javalua.util.ArrayUtils;
 import java.io.IOException;
 import lombok.Data;
@@ -14,8 +16,8 @@ public class Code implements Encodable, Decodable {
   @Override
   public void decode(DecodeInputStream inputStream) throws IOException {
     int length = inputStream.readInt();
-    byte[] bytes = inputStream.readNBytes(length);
-    this.code = ArrayUtils.toIntArray(bytes);
+    // 注意 code 是以 int 为单位的
+    this.code = inputStream.readNIntegers(length);
   }
 
   @Override

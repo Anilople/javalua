@@ -29,7 +29,5 @@ public class BinaryChunk implements Encodable, Decodable {
 
     this.sizeUpvalues = inputStream.readByte();
     this.mainFunc.decode(inputStream);
-
-    assert inputStream.readByte() == -1;
   }
 }
