@@ -24,22 +24,34 @@ public class DecodeInputStream {
     return (byte) inputStream.read();
   }
 
-  int readInt() throws IOException {
-    byte[] bytes = inputStream.readNBytes(Java.INT);
+  int readInt() {
+    byte[] bytes = readNBytesWithException(Java.INT);
     return ByteUtils.decodeInt(bytes);
   }
 
-  long readLong() throws IOException {
-    byte[] bytes = inputStream.readNBytes(Java.LONG);
+  long readLong() {
+    byte[] bytes = readNBytesWithException(Java.LONG);
     return ByteUtils.decodeLong(bytes);
   }
 
-  double readDouble() throws IOException {
-    byte[] bytes = inputStream.readNBytes(Java.LONG);
+  double readDouble() {
+    byte[] bytes = readNBytesWithException(Java.LONG);
     return ByteUtils.decodeDouble(bytes);
   }
 
-  byte[] readNBytes(int length) throws IOException {
-    return inputStream.readNBytes(length);
+  byte[] readNBytes(int length) {
+    return readNBytesWithException(length);
+  }
+
+  private byte[] readNBytesWithException(int length) {
+    byte[] bytes = new byte[length];
+    for (int i = 0; i < length; i++) {
+      int value = inputStream.read();
+      if (value < 0) {
+        throw new IllegalStateException("cannot read " + length + " bytes i = " + i + " input stream = " + inputStream);
+      }
+      bytes[i] = (byte) value;
+    }
+    return bytes;
   }
 }

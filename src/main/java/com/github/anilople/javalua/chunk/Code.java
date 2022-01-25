@@ -2,10 +2,12 @@ package com.github.anilople.javalua.chunk;
 
 import com.github.anilople.javalua.util.ArrayUtils;
 import java.io.IOException;
+import lombok.Data;
 
 /**
  * @author wxq
  */
+@Data
 public class Code implements Encodable, Decodable {
   private int[] code = new int[0];
 
@@ -13,6 +15,7 @@ public class Code implements Encodable, Decodable {
   public void decode(DecodeInputStream inputStream) throws IOException {
     int length = inputStream.readInt();
     byte[] bytes = inputStream.readNBytes(length);
+    this.code = ArrayUtils.toIntArray(bytes);
   }
 
   @Override

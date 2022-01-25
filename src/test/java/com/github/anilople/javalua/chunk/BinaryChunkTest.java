@@ -34,7 +34,18 @@ class BinaryChunkTest {
   }
 
   @Test
-  void testhelloWorldLuac53OutDecode() throws IOException {
+  void decodeSelfEquals() throws IOException {
+    BinaryChunk binaryChunk = new BinaryChunk();
+    BinaryChunk binaryChunkNew = new BinaryChunk();
+    binaryChunkNew.decode(new DecodeInputStream(binaryChunk.encode()));
+
+    assertEquals(binaryChunk.header, binaryChunkNew.header);
+    assertEquals(binaryChunk.sizeUpvalues, binaryChunkNew.sizeUpvalues);
+    assertEquals(binaryChunk.mainFunc, binaryChunkNew.mainFunc);
+  }
+
+  @Test
+  void helloWorldLuac53OutDecode() throws IOException {
     var binaryChunk = new BinaryChunk();
     DecodeInputStream inputStream =
         new DecodeInputStream(ResourceContentConstants.ch02.helloWorldLuac53Out);

@@ -11,9 +11,9 @@ import lombok.Data;
 @Data
 public class BinaryChunk implements Encodable, Decodable {
 
-  Header header;
+  Header header = new Header();
   byte sizeUpvalues;
-  Prototype mainFunc;
+  Prototype mainFunc = new Prototype();
 
   @Override
   public byte[] encode() {
@@ -24,15 +24,10 @@ public class BinaryChunk implements Encodable, Decodable {
 
   @Override
   public void decode(DecodeInputStream inputStream) throws IOException {
-    this.header = new Header();
     this.header.decode(inputStream);
-    if (!this.header.isValid()) {
-      throw new IllegalArgumentException("header is invalid " + this.header);
-    }
+    this.header.check();
 
     this.sizeUpvalues = inputStream.readByte();
-
-    this.mainFunc = new Prototype();
     this.mainFunc.decode(inputStream);
 
     assert inputStream.readByte() == -1;

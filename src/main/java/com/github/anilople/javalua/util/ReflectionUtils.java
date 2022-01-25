@@ -75,7 +75,7 @@ public class ReflectionUtils {
   /**
    * 用默认构造方法new java对象
    */
-  static <T> T newInstance(Class<T> clazz) {
+  public static <T> T newInstance(Class<T> clazz) {
     final Constructor<T> constructor;
     try {
       constructor = clazz.getConstructor();

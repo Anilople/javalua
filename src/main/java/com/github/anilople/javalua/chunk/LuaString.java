@@ -1,8 +1,11 @@
 package com.github.anilople.javalua.chunk;
 
+import com.github.anilople.javalua.constant.DataTypeSizeConstants;
+import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
 import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.Data;
 
 /**
@@ -10,10 +13,10 @@ import lombok.Data;
  */
 @Data
 public class LuaString implements Encodable, Decodable {
-  public static final LuaString NULL = new LuaString();
+  public static final LuaString NULL = LuaStringNull.NULL;
   private static final byte[] ZERO = new byte[] {0};
   byte first;
-  byte[] bytes;
+  byte[] bytes = new byte[0];
 
   @Override
   public byte[] encode() {
@@ -42,8 +45,20 @@ public class LuaString implements Encodable, Decodable {
       bytes = inputStream.readNBytes(length);
     } else {
       // >= 0xFE
-      long length = ByteUtils.decodeLong(inputStream.readNBytes(8)) - 1;
+      long length = ByteUtils.decodeLong(inputStream.readNBytes(Java.LONG)) - 1;
       bytes = inputStream.readNBytes((int) length);
     }
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(this.getClass());
+    stringBuilder.append("[");
+    stringBuilder.append("first byte = ").append(this.first);
+    stringBuilder.append(" length = ").append(this.bytes.length);
+    stringBuilder.append(" content = ").append(new String(this.bytes, StandardCharsets.UTF_8));
+    stringBuilder.append("]");
+    return stringBuilder.toString();
   }
 }

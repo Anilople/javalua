@@ -1,10 +1,12 @@
 package com.github.anilople.javalua.chunk;
 
 import java.io.IOException;
+import lombok.Data;
 
 /**
  * @author wxq
  */
+@Data
 public class Constants implements Encodable, Decodable {
 
   Constant[] constants = new Constant[0];
@@ -13,15 +15,17 @@ public class Constants implements Encodable, Decodable {
   public byte[] encode() {
     EncodeOutputStream outputStream = new EncodeOutputStream();
     outputStream.writeInt(this.constants.length);
-    for (Constant constant : this.constants) {
-      byte[] bytes = constant.encode();
-      outputStream.writeBytes(bytes);
-    }
+    byte[] bytes = Encodable.encode(this.constants);
+    outputStream.writeBytes(bytes);
     return outputStream.toByteArray();
   }
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {}
+  public void decode(DecodeInputStream inputStream) throws IOException {
+    int length = inputStream.readInt();
+    this.constants = new Constant[length];
+    Decodable.decode(Constant.class, this.constants, inputStream);
+  }
 
   interface Tag {
 
@@ -80,6 +84,24 @@ public class Constants implements Encodable, Decodable {
     }
 
     @Override
-    public void decode(DecodeInputStream inputStream) throws IOException {}
+    public void decode(DecodeInputStream inputStream) throws IOException {
+      switch (tag) {
+        case Tag.BOOLEAN:
+          this.luaBoolean.decode(inputStream);
+          break;
+        case Tag.NUMBER:
+          this.luaNumber.decode(inputStream);
+          break;
+        case Tag.INTEGER:
+          this.luaInteger.decode(inputStream);
+          break;
+        case Tag.SHORT_STRING:
+        case Tag.LONG_STRING:
+          this.luaString.decode(inputStream);
+          break;
+        default:
+          assert tag == Tag.NIL;
+      }
+    }
   }
 }

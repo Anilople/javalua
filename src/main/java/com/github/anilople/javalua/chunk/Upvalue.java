@@ -11,17 +11,18 @@ import lombok.Data;
 public class Upvalue implements Encodable, Decodable {
   byte instack;
   byte idx;
-  byte kind;
+
+  // lua 5.4.3 有 kind 字段，5.3 没有
+  // byte kind;
 
   @Override
   public void decode(DecodeInputStream inputStream) throws IOException {
     this.instack = inputStream.readByte();
     this.idx = inputStream.readByte();
-    this.kind = inputStream.readByte();
   }
 
   @Override
   public byte[] encode() {
-    return new byte[] {this.instack, this.idx, this.kind};
+    return new byte[] {this.instack, this.idx};
   }
 }

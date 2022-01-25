@@ -71,8 +71,10 @@ public class Header implements Encodable, Decodable {
   long luacInt = LUAC_INT;
   double luacNum = LUAC_NUM;
 
-  boolean isValid() {
-    return this.equals(INSTANCE);
+  void check() {
+    if (!this.equals(INSTANCE)) {
+      throw new IllegalStateException("header is invalid " + this);
+    }
   }
 
   @Override
@@ -90,7 +92,7 @@ public class Header implements Encodable, Decodable {
     this.luacVersion = inputStream.readByte();
     this.luacFormat = inputStream.readByte();
     this.luacData = inputStream.readNBytes(LUAC_DATA.length);
-    this.luacInt = inputStream.readByte();
+    this.sizeOfCInt = inputStream.readByte();
     this.sizeOfCSizeT = inputStream.readByte();
     this.sizeOfInstruction = inputStream.readByte();
     this.sizeOfLuaInteger = inputStream.readByte();

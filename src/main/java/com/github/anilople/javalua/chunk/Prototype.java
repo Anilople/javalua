@@ -4,7 +4,6 @@ package com.github.anilople.javalua.chunk;
  * @author wxq
  */
 import java.io.IOException;
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -53,18 +52,7 @@ public class Prototype implements Encodable, Decodable {
    */
   Prototype[] protos = new Prototype[0];
 
-  /**
-   * 行号表
-   */
-  int[] lineInfo = new int[0];
-  /**
-   * 局部变量表
-   */
-  LocVar[] locVars = new LocVar[0];
-  /**
-   * Upvalue名列表
-   */
-  String[] upvalueNames = new String[0];
+  Debug debug = new Debug();
 
   @Override
   public byte[] encode() {
@@ -99,6 +87,7 @@ public class Prototype implements Encodable, Decodable {
     outputStream.writeBytes(Encodable.encode(this.protos));
 
     // dump debug
+    outputStream.writeBytes(this.debug.encode());
     return outputStream.toByteArray();
   }
 
@@ -112,7 +101,6 @@ public class Prototype implements Encodable, Decodable {
     this.isVararg = inputStream.readByte();
     this.maxStackSize = inputStream.readByte();
 
-    this.code = new Code();
     this.code.decode(inputStream);
 
     this.constants = new Constants();
@@ -121,24 +109,15 @@ public class Prototype implements Encodable, Decodable {
     {
       int length = inputStream.readInt();
       this.upvalues = new Upvalue[length];
-      Decodable.decode(this.upvalues, inputStream);
+      Decodable.decode(Upvalue.class, this.upvalues, inputStream);
     }
 
     {
       int length = inputStream.readInt();
       this.protos = new Prototype[length];
-      Decodable.decode(this.protos, inputStream);
+      Decodable.decode(Prototype.class, this.protos, inputStream);
     }
-  }
 
-  public static class BasicInfo {}
-
-  public static class Bytecodes {}
-
-  public static class DebugInfo {}
-
-  public static class SubFunctions {
-
-    List<Prototype> functions;
+    this.debug.decode(inputStream);
   }
 }
