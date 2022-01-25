@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
  */
 class BinaryChunkTest {
 
-
-
   BinaryChunkTest() throws IOException {}
 
   @Test
@@ -35,10 +33,11 @@ class BinaryChunkTest {
     binaryChunk.encode();
   }
 
-    @Test
-    void testhelloWorldLuac53OutDecode() throws IOException {
-      var binaryChunk = new BinaryChunk();
-      DecodeInputStream inputStream = new DecodeInputStream(ResourceContentConstants.ch02.helloWorldLuac53Out);
-      binaryChunk.decode(inputStream);
-    }
+  @Test
+  void testhelloWorldLuac53OutDecode() throws IOException {
+    var binaryChunk = new BinaryChunk();
+    DecodeInputStream inputStream =
+        new DecodeInputStream(ResourceContentConstants.ch02.helloWorldLuac53Out);
+    binaryChunk.decode(inputStream);
+  }
 }

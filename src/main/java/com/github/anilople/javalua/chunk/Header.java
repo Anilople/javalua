@@ -3,7 +3,6 @@ package com.github.anilople.javalua.chunk;
 /**
  * @author wxq
  */
-
 import static com.github.anilople.javalua.constant.ASCIIConstants.CR;
 import static com.github.anilople.javalua.constant.ASCIIConstants.ESC;
 import static com.github.anilople.javalua.constant.ASCIIConstants.L;

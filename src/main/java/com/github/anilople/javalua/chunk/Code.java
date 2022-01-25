@@ -13,7 +13,6 @@ public class Code implements Encodable, Decodable {
   public void decode(DecodeInputStream inputStream) throws IOException {
     int length = inputStream.readInt();
     byte[] bytes = inputStream.readNBytes(length);
-
   }
 
   @Override

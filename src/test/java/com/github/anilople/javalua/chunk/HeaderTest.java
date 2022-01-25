@@ -1,11 +1,10 @@
 package com.github.anilople.javalua.chunk;
 
+import static com.github.anilople.javalua.chunk.Header.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static com.github.anilople.javalua.chunk.Header.*;
 
 import com.github.anilople.javalua.ResourceContentConstants;
-import com.github.anilople.javalua.constant.DataTypeSizeConstants.C;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -20,14 +19,16 @@ class HeaderTest {
   @Test
   void helloWorldLuac53OutSignature() {
     for (int i = 0; i < 4; i++) {
-      assertEquals(Header.INSTANCE.luaSignature[i],
-          ResourceContentConstants.ch02.helloWorldLuac53Out[i]);
+      assertEquals(
+          Header.INSTANCE.luaSignature[i], ResourceContentConstants.ch02.helloWorldLuac53Out[i]);
     }
     assertArrayEquals(
         "Lua".getBytes(StandardCharsets.UTF_8),
-        new byte[]{ResourceContentConstants.ch02.helloWorldLuac53Out[1],
-            ResourceContentConstants.ch02.helloWorldLuac53Out[2],
-            ResourceContentConstants.ch02.helloWorldLuac53Out[3]});
+        new byte[] {
+          ResourceContentConstants.ch02.helloWorldLuac53Out[1],
+          ResourceContentConstants.ch02.helloWorldLuac53Out[2],
+          ResourceContentConstants.ch02.helloWorldLuac53Out[3]
+        });
   }
 
   @Test
@@ -38,8 +39,8 @@ class HeaderTest {
 
   @Test
   void helloWorldLuac53OutHeaderEncode() {
-    byte[] expectedHeaderByteArray = Arrays.copyOfRange(
-        ResourceContentConstants.ch02.helloWorldLuac53Out, 0, Header.SIZE);
+    byte[] expectedHeaderByteArray =
+        Arrays.copyOfRange(ResourceContentConstants.ch02.helloWorldLuac53Out, 0, Header.SIZE);
 
     byte[] actualHeaderByteArray = new Header().encode();
 
@@ -134,8 +135,8 @@ class HeaderTest {
   @Test
   void helloWorldLuac53OutHeaderDecode() throws IOException {
     var expectedHeader = new Header();
-    var bytes = Arrays.copyOfRange(ResourceContentConstants.ch02.helloWorldLuac53Out, 0,
-        Header.SIZE);
+    var bytes =
+        Arrays.copyOfRange(ResourceContentConstants.ch02.helloWorldLuac53Out, 0, Header.SIZE);
     var header = ByteUtils.decode(bytes, Header.class);
 
     assertArrayEquals(expectedHeader.encode(), header.encode());

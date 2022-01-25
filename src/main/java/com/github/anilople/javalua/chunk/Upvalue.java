@@ -22,8 +22,6 @@ public class Upvalue implements Encodable, Decodable {
 
   @Override
   public byte[] encode() {
-    return new byte[]{
-        this.instack, this.idx, this.kind
-    };
+    return new byte[] {this.instack, this.idx, this.kind};
   }
 }

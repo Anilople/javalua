@@ -3,7 +3,6 @@ package com.github.anilople.javalua.chunk;
 /**
  * @author wxq
  */
-
 import java.io.IOException;
 import java.util.List;
 import lombok.Data;

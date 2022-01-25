@@ -1,6 +1,5 @@
 package com.github.anilople.javalua;
 
-import java.io.IOException;
 
 /**
  * little endian 小端
@@ -13,5 +12,4 @@ public interface ResourceContentConstants {
     byte[] helloWorldLuac53Out = ResourceReadUtils.readBytes("ch02/hello_world.luac53.out");
     byte[] helloWorldLuac54Out = ResourceReadUtils.readBytes("ch02/hello_world.luac54.out");
   }
-
 }
