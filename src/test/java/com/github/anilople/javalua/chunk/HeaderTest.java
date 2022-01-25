@@ -1,11 +1,11 @@
 package com.github.anilople.javalua.chunk;
 
-import static com.github.anilople.javalua.chunk.BinaryChunkConstants.LUAC_DATA;
-import static com.github.anilople.javalua.chunk.BinaryChunkConstants.LUA_SIGNATURE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.github.anilople.javalua.chunk.Header.*;
 
-import com.github.anilople.javalua.ResourceReadUtils;
+import com.github.anilople.javalua.ResourceContentConstants;
+import com.github.anilople.javalua.constant.DataTypeSizeConstants.C;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,110 +15,129 @@ import org.junit.jupiter.api.Test;
 /**
  * @author wxq
  */
-public class HeaderTest {
-
-  /**
-   * little endian
-   */
-  private final byte[] helloWorldLuac54Out =
-      ResourceReadUtils.readBytes("ch02/hello_world.luac54.out");
-
-  public HeaderTest() throws IOException {}
+class HeaderTest {
 
   @Test
-  void testHelloWorldLuac54OutSignature() {
+  void helloWorldLuac53OutSignature() {
     for (int i = 0; i < 4; i++) {
-      assertEquals(Header.INSTANCE.luaSignature[i], helloWorldLuac54Out[i]);
+      assertEquals(Header.INSTANCE.luaSignature[i],
+          ResourceContentConstants.ch02.helloWorldLuac53Out[i]);
     }
     assertArrayEquals(
         "Lua".getBytes(StandardCharsets.UTF_8),
-        new byte[] {helloWorldLuac54Out[1], helloWorldLuac54Out[2], helloWorldLuac54Out[3]});
+        new byte[]{ResourceContentConstants.ch02.helloWorldLuac53Out[1],
+            ResourceContentConstants.ch02.helloWorldLuac53Out[2],
+            ResourceContentConstants.ch02.helloWorldLuac53Out[3]});
   }
 
   @Test
   void testHeaderDump() {
     byte[] bytes = Header.INSTANCE.encode();
-    assertEquals(31, bytes.length);
+    assertEquals(33, bytes.length);
   }
 
   @Test
-  void testHelloWorldLuac54OutHeaderEncode() {
-    byte[] expectedHeaderByteArray = Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
+  void helloWorldLuac53OutHeaderEncode() {
+    byte[] expectedHeaderByteArray = Arrays.copyOfRange(
+        ResourceContentConstants.ch02.helloWorldLuac53Out, 0, Header.SIZE);
 
-    Header header = new Header();
-    header.luacVersion = new Version(5, 4, 4).encode();
-    byte[] actualHeaderByteArray = header.encode();
+    byte[] actualHeaderByteArray = new Header().encode();
 
+    int pos = 0;
     // LUA_SIGNATURE
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 0, LUA_SIGNATURE.length),
-        Arrays.copyOfRange(actualHeaderByteArray, 0, LUA_SIGNATURE.length),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, LUA_SIGNATURE.length),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, LUA_SIGNATURE.length),
         "LUA_SIGNATURE");
+    pos += LUA_SIGNATURE.length;
 
     // LUAC_VERSION
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 4, 5),
-        Arrays.copyOfRange(actualHeaderByteArray, 4, 5),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 1),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 1),
         "LUAC_VERSION");
+    pos++;
 
     // until LUAC_FORMAT
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 5, 6),
-        Arrays.copyOfRange(actualHeaderByteArray, 5, 6),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 1),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 1),
         "LUAC_FORMAT");
+    pos++;
 
     // until LUAC_DATA
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 6, LUAC_DATA.length),
-        Arrays.copyOfRange(actualHeaderByteArray, 6, LUAC_DATA.length),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, LUAC_DATA.length),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, LUAC_DATA.length),
         "LUAC_DATA");
+    pos += LUAC_DATA.length;
+
+    // until sizeof(int)
+    assertArrayEquals(
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 1),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 1),
+        "sizeof(int)");
+    pos++;
+
+    // until sizeof(size_t)
+    assertArrayEquals(
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 1),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 1),
+        "sizeof(size_t)");
+    pos++;
 
     // until SIZE_OF_INSTRUCTION
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 12, 13),
-        Arrays.copyOfRange(actualHeaderByteArray, 12, 13),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 1),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 1),
         "SIZE_OF_INSTRUCTION");
+    pos++;
 
     // until SIZE_OF_LUA_INTEGER
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 13, 14),
-        Arrays.copyOfRange(actualHeaderByteArray, 13, 14),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 1),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 1),
         "SIZE_OF_LUA_INTEGER");
+    pos++;
 
     // until SIZE_OF_LUA_NUMBER
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 14, 15),
-        Arrays.copyOfRange(actualHeaderByteArray, 14, 15),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 1),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 1),
         "SIZE_OF_LUA_NUMBER");
+    pos++;
 
     // until LUAC_INT
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 15, 23),
-        Arrays.copyOfRange(actualHeaderByteArray, 15, 23),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 8),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 8),
         "LUAC_INT");
+    pos += 8;
 
     // until LUAC_NUM
     assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, 23, 31),
-        Arrays.copyOfRange(actualHeaderByteArray, 23, 31),
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, pos + 8),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, pos + 8),
         "LUAC_NUM");
+    pos += 8;
+
+    assertEquals(Header.SIZE, pos);
   }
 
   @Test
   void testHeaderUndumpSelf() throws IOException {
     var bytes = Header.INSTANCE.encode();
     var actualHeader = ByteUtils.decode(bytes, Header.class);
-    assertEquals(Header.INSTANCE, actualHeader);
+    assertArrayEquals(bytes, actualHeader.encode());
   }
 
   @Test
-  void testHelloWorldLuac54OutHeaderDecode() throws IOException {
+  void helloWorldLuac53OutHeaderDecode() throws IOException {
     var expectedHeader = new Header();
-    expectedHeader.luacVersion = new Version(5, 4, 4).encode();
-
-    var bytes = Arrays.copyOfRange(helloWorldLuac54Out, 0, Header.SIZE);
+    var bytes = Arrays.copyOfRange(ResourceContentConstants.ch02.helloWorldLuac53Out, 0,
+        Header.SIZE);
     var header = ByteUtils.decode(bytes, Header.class);
 
-    assertEquals(expectedHeader, header);
+    assertArrayEquals(expectedHeader.encode(), header.encode());
   }
 }

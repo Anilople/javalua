@@ -8,10 +8,17 @@ import java.io.InputStream;
  */
 public class ResourceReadUtils {
 
-  public static byte[] readBytes(String resourcePath) throws IOException {
+  /**
+   * 读取 src/test/resources 下的文件
+   */
+  public static byte[] readBytes(String resourcePath) {
     InputStream inputStream =
         ResourceReadUtils.class.getClassLoader().getResourceAsStream(resourcePath);
     assert inputStream != null;
-    return inputStream.readAllBytes();
+    try {
+      return inputStream.readAllBytes();
+    } catch (IOException e) {
+      throw new IllegalStateException("cannot read resources " + resourcePath, e);
+    }
   }
 }

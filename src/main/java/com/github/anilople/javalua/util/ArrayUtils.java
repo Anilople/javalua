@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.util;
 
-import com.github.anilople.javalua.constant.SizeConstants.Java;
+import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
 import java.util.Arrays;
 
 /**
@@ -48,5 +48,19 @@ public class ArrayUtils {
       startPosition += Java.INT;
     }
     return byteArray;
+  }
+
+  public static int[] toIntArray(byte[] bytes) {
+    int intArrayLength = bytes.length / Java.INT;
+    if (Java.INT * intArrayLength != bytes.length) {
+      throw new IllegalArgumentException("length of byte array " + bytes.length);
+    }
+    int[] intArray = new int[intArrayLength];
+    for (int i = 0; i < intArrayLength; i++) {
+      byte[] intBytes = Arrays.copyOfRange(bytes, i * Java.INT, (i + 1) * Java.INT);
+      int value = ByteUtils.decodeInt(intBytes);
+      intArray[i] = value;
+    }
+    return intArray;
   }
 }

@@ -3,7 +3,7 @@ package com.github.anilople.javalua.constant;
 /**
  * @author wxq
  */
-public interface SizeConstants {
+public interface DataTypeSizeConstants {
 
   interface Java {
 

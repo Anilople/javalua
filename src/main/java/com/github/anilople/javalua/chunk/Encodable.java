@@ -4,7 +4,7 @@ package com.github.anilople.javalua.chunk;
  * 编码，和 dump 对应
  *
  * @author wxq
- * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c">ldump.c</a>
+ * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/ldump.c">ldump.c</a>
  */
 public interface Encodable {
 

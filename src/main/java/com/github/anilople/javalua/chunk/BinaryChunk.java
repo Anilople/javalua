@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author wxq
- * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/lua.h">lua.h</a>
+ * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/lua.h">lua.h</a>
  */
 @Data
 public class BinaryChunk implements Encodable, Decodable {
@@ -15,10 +15,6 @@ public class BinaryChunk implements Encodable, Decodable {
   byte sizeUpvalues;
   Prototype mainFunc;
 
-  /**
-   * @see <a href="https://github.com/lua/lua/blob/5d708c3f9cae12820e415d4f89c9eacbe2ab964b/ldump.c#L213">ldump.c#L213
-   * luaU_dump</a>
-   */
   @Override
   public byte[] encode() {
     byte[] headerBytes = this.header.encode();
@@ -30,6 +26,9 @@ public class BinaryChunk implements Encodable, Decodable {
   public void decode(DecodeInputStream inputStream) throws IOException {
     this.header = new Header();
     this.header.decode(inputStream);
+    if (!this.header.isValid()) {
+      throw new IllegalArgumentException("header is invalid " + this.header);
+    }
 
     this.sizeUpvalues = inputStream.readByte();
 

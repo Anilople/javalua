@@ -10,7 +10,6 @@ import lombok.Data;
  */
 @Data
 public class LuaString implements Encodable, Decodable {
-
   public static final LuaString NULL = new LuaString();
   private static final byte[] ZERO = new byte[] {0};
   byte first;

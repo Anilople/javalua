@@ -2,7 +2,7 @@ package com.github.anilople.javalua.chunk;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.anilople.javalua.ResourceReadUtils;
+import com.github.anilople.javalua.ResourceContentConstants;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Test;
  */
 class BinaryChunkTest {
 
-  /**
-   * little endian
-   */
-  private final byte[] helloWorldLuac54Out =
-      ResourceReadUtils.readBytes("ch02/hello_world.luac54.out");
+
 
   BinaryChunkTest() throws IOException {}
 
   @Test
+  void testHelloWorldLuac53OutSize() {
+    assertEquals(151, ResourceContentConstants.ch02.helloWorldLuac53Out.length);
+  }
+
+  @Test
   void testHelloWorldLuac54OutSize() {
-    assertEquals(117, helloWorldLuac54Out.length);
+    assertEquals(117, ResourceContentConstants.ch02.helloWorldLuac54Out.length);
   }
 
   @Test
@@ -34,11 +35,10 @@ class BinaryChunkTest {
     binaryChunk.encode();
   }
 
-  //  @Test
-  //  void testHelloWorldLuac54OutDecode() throws IOException {
-  //    var binaryChunk = new BinaryChunk();
-  //    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(helloWorldLuac54Out);
-  //    DecodeInputStream decodeInputStream = new DecodeInputStream(byteArrayInputStream);
-  //    binaryChunk.decode(decodeInputStream);
-  //  }
+    @Test
+    void testhelloWorldLuac53OutDecode() throws IOException {
+      var binaryChunk = new BinaryChunk();
+      DecodeInputStream inputStream = new DecodeInputStream(ResourceContentConstants.ch02.helloWorldLuac53Out);
+      binaryChunk.decode(inputStream);
+    }
 }

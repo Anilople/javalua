@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -338,6 +339,22 @@ public class ByteUtils {
     } else {
       throw new UnsupportedOperationException("array type " + fieldType);
     }
+  }
+
+  static String toHexString(byte b) {
+    return String.format("%02x", b).toUpperCase();
+  }
+
+  /**
+   * @return hexadecimal string of bytes
+   */
+  public static String toHexString(byte[] bytes) {
+    List<String> hexStrings = new ArrayList<>();
+    for (byte b : bytes) {
+      String hexString = toHexString(b);
+      hexStrings.add(hexString);
+    }
+    return String.join(" ", hexStrings);
   }
 
   static class EncodeRuntimeException extends RuntimeException {
