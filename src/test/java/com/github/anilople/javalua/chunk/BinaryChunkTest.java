@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.chunk;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.anilople.javalua.ResourceContentConstants;
 import java.io.IOException;
@@ -50,5 +51,8 @@ class BinaryChunkTest {
     DecodeInputStream inputStream =
         new DecodeInputStream(ResourceContentConstants.ch02.helloWorldLuac53Out);
     binaryChunk.decode(inputStream);
+
+    // 检测是否读取完成
+    assertThrows(IllegalStateException.class, inputStream::readByte);
   }
 }

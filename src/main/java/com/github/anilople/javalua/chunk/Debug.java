@@ -20,13 +20,42 @@ public class Debug implements Encodable, Decodable {
   /**
    * Upvalue名列表
    */
-  String[] upvalueNames = new String[0];
+  LuaString[] upvalueNames = new LuaString[0];
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {}
+  public void decode(DecodeInputStream inputStream) throws IOException {
+    {
+      int length = inputStream.readInt();
+      this.lineInfo = new int[length];
+      inputStream.readNIntegers(length);
+    }
+
+    {
+      int length = inputStream.readInt();
+      this.locVars = new LocVar[length];
+      Decodable.decode(LocVar.class, this.locVars, inputStream);
+    }
+
+    {
+      int length = inputStream.readInt();
+      this.upvalueNames = new LuaString[length];
+      Decodable.decode(LuaString.class, this.upvalueNames, inputStream);
+    }
+  }
 
   @Override
   public byte[] encode() {
-    return new byte[0];
+    EncodeOutputStream outputStream = new EncodeOutputStream();
+
+    outputStream.writeInt(this.lineInfo.length);
+    outputStream.writeIntegers(this.lineInfo);
+
+    outputStream.writeInt(this.locVars.length);
+    outputStream.writeBytes(Encodable.encode(this.locVars));
+
+    outputStream.writeInt(this.upvalueNames.length);
+    outputStream.writeBytes(Encodable.encode(this.upvalueNames));
+
+    return outputStream.toByteArray();
   }
 }
