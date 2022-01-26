@@ -2,7 +2,6 @@ package com.github.anilople.javalua.io;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
