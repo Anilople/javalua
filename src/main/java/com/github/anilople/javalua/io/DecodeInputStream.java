@@ -47,7 +47,7 @@ public class DecodeInputStream {
     return readNBytesWithException(length);
   }
 
-  int[] readNIntegers(int length) {
+  public int[] readNIntegers(int length) {
     byte[] bytes = readNBytes(length * Java.INT);
     return ArrayUtils.toIntArray(bytes);
   }
