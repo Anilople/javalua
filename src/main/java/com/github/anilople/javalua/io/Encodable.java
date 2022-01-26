@@ -1,4 +1,4 @@
-package com.github.anilople.javalua.chunk;
+package com.github.anilople.javalua.io;
 
 /**
  * 编码，和 dump 对应

@@ -29,4 +29,47 @@ lua的官方实现中，文件如下
 
 最终的效果是，可以读取官方编译器编译出来的chunk文件
 
+## ch03
+
+基于栈（Stack Based）的虚拟机：Java虚拟机、.NET CLR、Python虚拟机、Ruby YARV虚拟机
+
+基于寄存器（Register Based）的虚拟机：安卓早期的Dalvik虚拟机，Lua虚拟机
+
+Lua 5.0 之前是基于栈的虚拟机，5.0 开始改成了基于寄存器的虚拟机
+
+指令集（Instruction Set）
+
+* 定长（Fixed-width）指令集
+* 变长（Variable-width）指令集
+
+Lua用定长（Fixed-width）指令集，每条指令占4个字节，低6比特放操作码（Opcode），其余26比特放操作数（Operand）
+
+Lua 5.3 有47条指令，6大类
+
+* 常量加载
+* 运算符
+* 循环和跳转
+* 函数调用
+* 表操作
+* Upvalue操作
+
+4种编码模式（Mode）
+
+* iABC：B+C+A
+* iABx：Bx+A
+* iAsBx：sBx+A
+* iAx：Ax
+
+| 操作数 | 占用的比特 | 介绍                             |
+| ------ | ---------- | -------------------------------- |
+| A      | 8          |                                  |
+| B      | 9          |                                  |
+| C      | 9          |                                  |
+| Bx     | 18         |                                  |
+| sBx    | 18         | 只有这个操作数被解释成有符号整数 |
+| Ax     | 26         |                                  |
+
+操作码（Opcode）只有6位，最多产生64条指令
+
+Lua 5.3 有 47 条，从0到46
 

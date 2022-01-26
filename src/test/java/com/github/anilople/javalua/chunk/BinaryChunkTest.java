@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.anilople.javalua.ResourceContentConstants;
+import com.github.anilople.javalua.io.DecodeInputStream;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 

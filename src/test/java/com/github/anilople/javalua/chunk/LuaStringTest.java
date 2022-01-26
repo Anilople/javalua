@@ -3,6 +3,7 @@ package com.github.anilople.javalua.chunk;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;

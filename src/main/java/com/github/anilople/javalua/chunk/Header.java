@@ -11,6 +11,9 @@ import static com.github.anilople.javalua.constant.ASCIIConstants.a;
 import static com.github.anilople.javalua.constant.ASCIIConstants.u;
 
 import com.github.anilople.javalua.constant.DataTypeSizeConstants.C;
+import com.github.anilople.javalua.io.Decodable;
+import com.github.anilople.javalua.io.DecodeInputStream;
+import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.github.anilople.javalua.chunk;
+package com.github.anilople.javalua.io;
 
 import com.github.anilople.javalua.util.ReflectionUtils;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author wxq
  * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/lundump.c">lundump.c</a>
  */
-interface Decodable {
+public interface Decodable {
 
   void decode(DecodeInputStream inputStream) throws IOException;
 
