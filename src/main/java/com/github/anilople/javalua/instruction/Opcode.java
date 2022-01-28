@@ -67,57 +67,14 @@ public final class Opcode {
   public static final Opcode VARARG = new Opcode(0, 1, OpArgU, OpArgN, iABC, "VARARG");
   public static final Opcode EXTRAARG = new Opcode(0, 0, OpArgU, OpArgU, iAx, "EXTRAARG");
 
-  static final List<Opcode> OPCODES = Collections.unmodifiableList(
-      Arrays.asList(
-          MOVE,
-          LOADK,
-          LOADKX,
-          LOADBOOL,
-          LOADNIL,
-          GETUPVAL,
-          GETTABUP,
-          GETTABLE,
-          SETTABUP,
-          SETUPVAL,
-          SETTABLE,
-          NEWTABLE,
-          SELF,
-          ADD,
-          SUB,
-          MUL,
-          MOD,
-          POW,
-          DIV,
-          IDIV,
-          BAND,
-          BOR,
-          BXOR,
-          SHL,
-          SHR,
-          UNM,
-          BNOT,
-          NOT,
-          LEN,
-          CONCAT,
-          JMP,
-          EQ,
-          LT,
-          LE,
-          TEST,
-          TESTSET,
-          CALL,
-          TAILCALL,
-          RETURN,
-          FORLOOP,
-          FORPREP,
-          TFORCALL,
-          TFORLOOP,
-          SETLIST,
-          CLOSURE,
-          VARARG,
-          EXTRAARG
-      )
-  );
+  static final List<Opcode> OPCODES =
+      Collections.unmodifiableList(
+          Arrays.asList(
+              MOVE, LOADK, LOADKX, LOADBOOL, LOADNIL, GETUPVAL, GETTABUP, GETTABLE, SETTABUP,
+              SETUPVAL, SETTABLE, NEWTABLE, SELF, ADD, SUB, MUL, MOD, POW, DIV, IDIV, BAND, BOR,
+              BXOR, SHL, SHR, UNM, BNOT, NOT, LEN, CONCAT, JMP, EQ, LT, LE, TEST, TESTSET, CALL,
+              TAILCALL, RETURN, FORLOOP, FORPREP, TFORCALL, TFORLOOP, SETLIST, CLOSURE, VARARG,
+              EXTRAARG));
 
   private final OpMode opMode;
   private final OpArgMask c;
@@ -167,5 +124,4 @@ public final class Opcode {
     }
     return OPCODES.get(index);
   }
-
 }

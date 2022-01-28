@@ -25,51 +25,37 @@ class ByteUtilsTest {
    */
   @Test
   void decodeIntBigEndianCase0() {
-    assertEquals(0x26008000, ByteUtils.decodeIntBigEndian(new byte[]{
-        38, 0, -128, 0
-    }));
+    assertEquals(0x26008000, ByteUtils.decodeIntBigEndian(new byte[] {38, 0, -128, 0}));
   }
 
   @Test
   void decodeIntBigEndianCase1() {
-    assertEquals(Integer.MIN_VALUE, ByteUtils.decodeIntBigEndian(new byte[]{
-        -128, 0, 0, 0
-    }));
+    assertEquals(Integer.MIN_VALUE, ByteUtils.decodeIntBigEndian(new byte[] {-128, 0, 0, 0}));
   }
 
   @Test
   void decodeIntBigEndianCase3() {
-    assertEquals(-1, ByteUtils.decodeIntBigEndian(new byte[]{
-        -1, -1, -1, -1
-    }));
+    assertEquals(-1, ByteUtils.decodeIntBigEndian(new byte[] {-1, -1, -1, -1}));
   }
 
   @Test
   void decodeIntBigEndianCase4() {
-    assertEquals(1 << 24, ByteUtils.decodeIntBigEndian(new byte[]{
-        1, 0, 0, 0
-    }));
+    assertEquals(1 << 24, ByteUtils.decodeIntBigEndian(new byte[] {1, 0, 0, 0}));
   }
 
   @Test
   void decodeIntBigEndianCase6() {
-    assertEquals(1, ByteUtils.decodeIntBigEndian(new byte[]{
-        0, 0, 0, 1
-    }));
+    assertEquals(1, ByteUtils.decodeIntBigEndian(new byte[] {0, 0, 0, 1}));
   }
 
   @Test
   void decodeIntBigEndianCase7() {
-    assertEquals(38 << 24, ByteUtils.decodeIntBigEndian(new byte[]{
-        38, 0, 0, 0
-    }));
+    assertEquals(38 << 24, ByteUtils.decodeIntBigEndian(new byte[] {38, 0, 0, 0}));
   }
 
   @Test
   void decodeIntBigEndianCase8() {
-    assertEquals((38 << 24) + 1, ByteUtils.decodeIntBigEndian(new byte[]{
-        38, 0, 0, 1
-    }));
+    assertEquals((38 << 24) + 1, ByteUtils.decodeIntBigEndian(new byte[] {38, 0, 0, 1}));
   }
 
   @Test

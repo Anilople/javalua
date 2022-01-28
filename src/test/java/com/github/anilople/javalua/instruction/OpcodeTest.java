@@ -14,5 +14,4 @@ class OpcodeTest {
     // 47条指令
     assertEquals(47, Opcode.OPCODES.size());
   }
-
 }

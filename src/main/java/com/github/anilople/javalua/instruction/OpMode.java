@@ -9,6 +9,5 @@ enum OpMode {
   iABC,
   iABx,
   iAsBx,
-  iAx
-  ;
+  iAx;
 }

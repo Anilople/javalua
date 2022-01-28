@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.io;
 
 import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
-import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.ByteArrayInputStream;
 
