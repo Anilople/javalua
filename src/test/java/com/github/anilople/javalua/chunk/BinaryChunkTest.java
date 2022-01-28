@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.anilople.javalua.ResourceContentConstants;
+import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -55,5 +57,14 @@ class BinaryChunkTest {
 
     // 检测是否读取完成
     assertThrows(IllegalStateException.class, inputStream::readByte);
+
+    List<Instruction> instructions = binaryChunk.mainFunc.code.getInstructions();
+    for (Instruction instruction : instructions) {
+      System.out.println(instruction.getOpcode());
+    }
+    assertEquals("GETTABUP", instructions.get(0).getOpcode().getName());
+    assertEquals("LOADK", instructions.get(1).getOpcode().getName());
+    assertEquals("CALL", instructions.get(2).getOpcode().getName());
+    assertEquals("RETURN", instructions.get(3).getOpcode().getName());
   }
 }

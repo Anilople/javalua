@@ -48,8 +48,12 @@ public class DecodeInputStream {
   }
 
   public int[] readNIntegers(int length) {
-    byte[] bytes = readNBytes(length * Java.INT);
-    return ArrayUtils.toIntArray(bytes);
+    int[] intArray = new int[length];
+    for (int i = 0; i < length; i++) {
+      int value = readInt();
+      intArray[i] = value;
+    }
+    return intArray;
   }
 
   private byte[] readNBytesWithException(int length) {
