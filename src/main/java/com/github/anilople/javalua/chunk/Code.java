@@ -1,7 +1,15 @@
 package com.github.anilople.javalua.chunk;
 
+import com.github.anilople.javalua.instruction.Instruction;
+import com.github.anilople.javalua.io.Decodable;
+import com.github.anilople.javalua.io.DecodeInputStream;
+import com.github.anilople.javalua.io.Encodable;
+import com.github.anilople.javalua.io.EncodeOutputStream;
 import com.github.anilople.javalua.util.ArrayUtils;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -31,5 +39,14 @@ public class Code implements Encodable, Decodable {
     outputStream.writeInt(this.code.length);
     outputStream.writeBytes(ArrayUtils.toByteArray(this.code));
     return outputStream.toByteArray();
+  }
+
+  List<Instruction> getInstructions() {
+    List<Instruction> instructions = new ArrayList<>();
+    for (int codeValue : this.code) {
+      Instruction instruction = Instruction.of(codeValue);
+      instructions.add(instruction);
+    }
+    return Collections.unmodifiableList(instructions);
   }
 }

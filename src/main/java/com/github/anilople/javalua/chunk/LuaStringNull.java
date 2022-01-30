@@ -1,5 +1,6 @@
 package com.github.anilople.javalua.chunk;
 
+import com.github.anilople.javalua.io.DecodeInputStream;
 import java.io.IOException;
 
 /**

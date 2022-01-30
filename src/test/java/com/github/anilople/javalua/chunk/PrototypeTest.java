@@ -2,6 +2,7 @@ package com.github.anilople.javalua.chunk;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.github.anilople.javalua.io.DecodeInputStream;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 

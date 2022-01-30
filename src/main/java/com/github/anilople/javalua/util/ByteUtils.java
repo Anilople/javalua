@@ -259,20 +259,6 @@ public class ByteUtils {
     throw new UnsupportedOperationException("primitive type " + fieldType);
   }
 
-  static short decodeShort(byte[] bytes, boolean bigEndian) {
-    short value = decodeShortBigEndian(bytes);
-    return bigEndian ? value : Short.reverseBytes(value);
-  }
-
-  static short decodeShortBigEndian(byte[] bytes) {
-    byte highPart = bytes[0];
-    byte lowPart = bytes[1];
-    short value = highPart;
-    value <<= 8;
-    value |= lowPart;
-    return value;
-  }
-
   public static int decodeInt(byte[] bytes) {
     return decodeInt(bytes, BIG_ENDIAN);
   }
@@ -283,11 +269,17 @@ public class ByteUtils {
   }
 
   static int decodeIntBigEndian(byte[] bytes) {
-    short highPart = decodeShortBigEndian(Arrays.copyOfRange(bytes, 0, 2));
-    short lowPart = decodeShortBigEndian(Arrays.copyOfRange(bytes, 2, 4));
-    int value = highPart;
-    value <<= 16;
-    value |= lowPart;
+    int value = 0;
+    value |= Byte.toUnsignedInt(bytes[0]);
+
+    value <<= 8;
+    value |= Byte.toUnsignedInt(bytes[1]);
+
+    value <<= 8;
+    value |= Byte.toUnsignedInt(bytes[2]);
+
+    value <<= 8;
+    value |= Byte.toUnsignedInt(bytes[3]);
     return value;
   }
 
@@ -355,6 +347,40 @@ public class ByteUtils {
       hexStrings.add(hexString);
     }
     return String.join(" ", hexStrings);
+  }
+
+  public static int low6BitsOf(int value) {
+    return value & 0B11_1111;
+  }
+
+  static int getBits(int value, int howManyBits) {
+    return getBits(value, 0, howManyBits);
+  }
+
+  /**
+   * 参考文件 lopcodes.h
+   * <p/>
+   * creates a mask with 'n' 1 bits at position 'p'
+   * <p/>
+   * #define MASK1(n,p)	((~((~(Instruction)0)<<(n)))<<(p))
+   */
+  static int mask1(int startPosition, int howManyBits) {
+    // 低 howManyBits 位变成 0
+    int value = (~0) << howManyBits;
+    // 低 length 位变成 1
+    value = ~value;
+    // 左移到正确的位置
+    value <<= startPosition;
+    return value;
+  }
+
+  public static int getBits(int value, int startPosition, int howManyBits) {
+    if (howManyBits > 30) {
+      throw new UnsupportedOperationException("howManyBits " + howManyBits);
+    }
+    value >>= startPosition;
+    int mask = mask1(0, howManyBits);
+    return value & mask;
   }
 
   static class EncodeRuntimeException extends RuntimeException {

@@ -1,4 +1,4 @@
-package com.github.anilople.javalua.chunk;
+package com.github.anilople.javalua.io;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
