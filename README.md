@@ -1,5 +1,9 @@
 # javalua
 
+## 第一部分 准备
+
+### 第1章 准备工作
+
 Use Java to write lua interpreter
 
 学习 [自己动手实现Lua](https://book.douban.com/subject/30348061/)
@@ -10,7 +14,9 @@ Use Java to write lua interpreter
 
 为了简化代码，用了 lombok，如果运行测试失败，需要maven clean一下再跑
 
-## ch02
+## 第二部分 Lua虚拟机和Lua API
+
+### 第2章 二进制chunk
 
 如果luac指定了`-s`，那么行号表，局部变量表和Upvalue表，不会生成在chunk中，它们都是调试信息
 
@@ -29,7 +35,7 @@ lua的官方实现中，文件如下
 
 最终的效果是，可以读取官方编译器编译出来的chunk文件
 
-## ch03
+### 第3章 指令集
 
 基于栈（Stack Based）的虚拟机：Java虚拟机、.NET CLR、Python虚拟机、Ruby YARV虚拟机
 
@@ -95,4 +101,40 @@ intValue也是-128，但是底层的bits 从
 0000 0000 0000 0000 0000 0000 1000 000 不一样，
 
 不应该强转，应该用 Byte.toUnsignedInt 方法来转换
+
+### 第4章 Lua API
+
+Lua API主要指一系列以 "lua_" 开头的C语言函数
+
+Lua 3.1 引入 lua_State 结构体，来满足宿主环境需要同时使用多个Lua解释器实例的场景
+
+Lua栈是宿主语言（对官方来说是C语言，对书里的示例来说是Go语言，对本工程来说是Java语言）和Lua语言进行沟通的桥梁
+
+Lua栈里存放的是Lua值
+
+Lua是动态类型语言，Lua代码里，变量不携带类型信息，变量的值才携带类型信息
+
+Lua的8种数据类型：
+
+* nil
+* 布尔（boolean）
+* 数字（number）
+* 字符串（string）
+* 表（table）
+* 函数（function）
+* 线程（thread）
+* 用户数据（userdata）
+
+使用type函数可以获取变量的类型
+
+基础的类型是：nil，布尔，数字和字符串。在Java层面，可以用[Primitive Data Types](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)来表示，但是这个工程为了可读性，统一用reference type来表示，也就是每个类型都可以找到对应的class
+
+当提供给Lua API一个无效索引时，那么这个无效索引对应的值的类型就是LUA_TNONE
+
+
+
+```mermaid
+graph LR
+	luaState --> luaStack
+```
 
