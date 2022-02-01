@@ -9,6 +9,7 @@ package com.github.anilople.javalua.util;
 public class Return2<R0, R1> {
   public final R0 r0;
   public final R1 r1;
+
   public Return2(R0 r0, R1 r1) {
     this.r0 = r0;
     this.r1 = r1;

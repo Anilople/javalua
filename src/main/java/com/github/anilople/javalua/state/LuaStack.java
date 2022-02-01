@@ -1,7 +1,5 @@
 package com.github.anilople.javalua.state;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 栈索引从1开始
@@ -66,7 +64,8 @@ public class LuaStack {
       throw new IllegalArgumentException("invalid absIndex " + absIndex + " <= 0, index " + index);
     }
     if (absIndex > this.top) {
-      throw new IllegalArgumentException("invalid absIndex " + absIndex + " > top " + this.top + ", index " + index);
+      throw new IllegalArgumentException(
+          "invalid absIndex " + absIndex + " > top " + this.top + ", index " + index);
     }
   }
 

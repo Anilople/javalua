@@ -42,35 +42,57 @@ public interface LuaState {
 
   /* basic stack manipulation */
   int getTop();
+
   int absIndex(int index);
+
   boolean checkStack(int n);
+
   void pop(int n);
+
   void copy(int from, int to);
+
   void pushValue(int index);
+
   void replace(int index);
+
   void insert(int index);
+
   void remove(int index);
+
   void rotate(int index, int n);
+
   void setTop(int index);
 
   /* access functions (stack -> Java) */
   String luaTypeName(LuaType type);
+
   LuaType luaType(int index);
+
   boolean isLuaNone(int index);
+
   boolean isLuaNil(int index);
+
   boolean isLuaNoneOrLuaNil(int index);
+
   boolean isLuaBoolean(int index);
+
   boolean isLuaInteger(int index);
+
   boolean isLuaNumber(int index);
+
   boolean isLuaString(int index);
+
   LuaBoolean toLuaBoolean(int index);
+
   LuaInteger toLuaInteger(int index);
+
   Return2<LuaInteger, Boolean> toLuaIntegerX(int index);
 
   /**
    * @return 返回 0 如果索引对应的值不是 number 类型
    */
   LuaNumber toLuaNumber(int index);
+
   Return2<LuaNumber, Boolean> toLuaNumberX(int index);
 
   /**
@@ -86,8 +108,12 @@ public interface LuaState {
 
   /* push functions (Java -> stack) */
   void pushLuaNil();
+
   void pushLuaBoolean(LuaBoolean b);
+
   void pushLuaInteger(LuaInteger value);
+
   void pushLuaNumber(LuaNumber value);
+
   void pushLuaString(LuaString value);
 }

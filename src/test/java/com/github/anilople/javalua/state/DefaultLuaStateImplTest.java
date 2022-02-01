@@ -28,24 +28,33 @@ class DefaultLuaStateImplTest {
   @Test
   void testBookCase() {
     DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
-    luaState.pushLuaBoolean(LuaBoolean.TRUE); LuaState.printStack(luaState);
-    luaState.pushLuaInteger(LuaValue.of(10)); LuaState.printStack(luaState);
-    luaState.pushLuaNil(); LuaState.printStack(luaState);
-    luaState.pushLuaString(LuaValue.of("hello")); LuaState.printStack(luaState);
-    luaState.pushValue(-4); LuaState.printStack(luaState);
+    luaState.pushLuaBoolean(LuaBoolean.TRUE);
+    LuaState.printStack(luaState);
+    luaState.pushLuaInteger(LuaValue.of(10));
+    LuaState.printStack(luaState);
+    luaState.pushLuaNil();
+    LuaState.printStack(luaState);
+    luaState.pushLuaString(LuaValue.of("hello"));
+    LuaState.printStack(luaState);
+    luaState.pushValue(-4);
+    LuaState.printStack(luaState);
 
     // now it is [true][10.0][nil]["hello"][true]
     assertEquals(5, luaState.getTop());
     assertEquals(LuaBoolean.TRUE, luaState.toLuaBoolean(-1));
 
-    luaState.replace(3); LuaState.printStack(luaState);
+    luaState.replace(3);
+    LuaState.printStack(luaState);
     assertEquals(4, luaState.getTop());
 
-    luaState.setTop(6); LuaState.printStack(luaState);
+    luaState.setTop(6);
+    LuaState.printStack(luaState);
     assertEquals(6, luaState.getTop());
 
-    luaState.remove(-3); LuaState.printStack(luaState);
-    luaState.setTop(-5); LuaState.printStack(luaState);
+    luaState.remove(-3);
+    LuaState.printStack(luaState);
+    luaState.setTop(-5);
+    LuaState.printStack(luaState);
   }
 
   /**
