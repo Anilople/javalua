@@ -1,7 +1,5 @@
 package com.github.anilople.javalua.instruction;
 
-import lombok.Getter;
-
 /**
  * 指令
  *
@@ -9,7 +7,6 @@ import lombok.Getter;
  *
  * @author wxq
  */
-@Getter
 public class Instruction {
 
   public static Instruction of(int code) {
@@ -24,5 +21,13 @@ public class Instruction {
   private Instruction(Opcode opcode, Operand operand) {
     this.opcode = opcode;
     this.operand = operand;
+  }
+
+  public Opcode getOpcode() {
+    return opcode;
+  }
+
+  public Operand getOperand() {
+    return operand;
   }
 }

@@ -82,6 +82,7 @@ public class ReflectionUtils {
     } catch (NoSuchMethodException e) {
       throw new DecodeRuntimeException("no arg constructor doesn't exist in class " + clazz, e);
     }
+    constructor.setAccessible(true);
 
     final T object;
     try {
