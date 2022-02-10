@@ -6,7 +6,6 @@ import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.util.ArrayUtils;
 import java.io.IOException;
 import java.util.Objects;
-import lombok.Data;
 
 /**
  * @author wxq
@@ -43,7 +42,8 @@ public class BinaryChunk implements Encodable, Decodable {
       return false;
     }
     BinaryChunk that = (BinaryChunk) o;
-    return sizeUpvalues == that.sizeUpvalues && Objects.equals(header, that.header)
+    return sizeUpvalues == that.sizeUpvalues
+        && Objects.equals(header, that.header)
         && Objects.equals(mainFunc, that.mainFunc);
   }
 

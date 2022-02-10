@@ -56,9 +56,12 @@ class LuaString implements Encodable, Decodable {
   public String toString() {
     return this.getClass()
         + "["
-        + "first byte = " + this.first
-        + " length = " + this.bytes.length
-        + " content = " + new String(this.bytes, StandardCharsets.UTF_8)
+        + "first byte = "
+        + this.first
+        + " length = "
+        + this.bytes.length
+        + " content = "
+        + new String(this.bytes, StandardCharsets.UTF_8)
         + "]";
   }
 }
