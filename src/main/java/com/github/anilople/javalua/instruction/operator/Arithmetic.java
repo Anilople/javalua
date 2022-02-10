@@ -154,11 +154,9 @@ public class Arithmetic {
   }
 
   public static LuaValue floorDivision(LuaValue a, LuaValue b) {
-    var rOfLuaIntegers = ToLuaIntegerConverter.convert(a, b);
-    if (rOfLuaIntegers.r0) {
-      return floorDivisionLuaInteger(rOfLuaIntegers.r1, rOfLuaIntegers.r2);
+    if (a instanceof LuaInteger && b instanceof LuaInteger) {
+      return floorDivisionLuaInteger((LuaInteger) a, (LuaInteger) b);
     }
-
     var rOfLuaNumbers = ToLuaNumberConverter.convert(a, b);
     if (rOfLuaNumbers.r0) {
       return floorDivisionLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
