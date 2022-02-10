@@ -7,11 +7,15 @@ import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import org.junit.jupiter.api.Test;
 
-class DefaultLuaStateImplTest {
+/**
+ * @author wxq
+ */
+class LuaStateTest {
+
 
   @Test
   void testSetTopCase1() {
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     assertEquals(0, luaState.getTop());
 
     luaState.setTop(1);
@@ -30,7 +34,7 @@ class DefaultLuaStateImplTest {
    */
   @Test
   void testBookCase() {
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     luaState.pushLuaBoolean(LuaBoolean.TRUE);
     LuaState.printStack(luaState);
     luaState.pushLuaInteger(LuaValue.of(10));
@@ -67,7 +71,7 @@ class DefaultLuaStateImplTest {
    */
   @Test
   void rotateBookCase1() {
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     luaState.pushLuaString(LuaValue.of("a"));
     luaState.pushLuaString(LuaValue.of("b"));
     luaState.pushLuaString(LuaValue.of("c"));
@@ -92,7 +96,7 @@ class DefaultLuaStateImplTest {
   @Test
   void rotateBookCase2() {
 
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     luaState.pushLuaString(LuaValue.of("a"));
     luaState.pushLuaString(LuaValue.of("b"));
     luaState.pushLuaString(LuaValue.of("c"));
@@ -114,7 +118,7 @@ class DefaultLuaStateImplTest {
    */
   @Test
   void operatorBookCase() {
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     luaState.pushLuaInteger(LuaValue.of(1));
     luaState.pushLuaString(LuaValue.of("2.0"));
     luaState.pushLuaString(LuaValue.of("3.0"));
@@ -148,4 +152,5 @@ class DefaultLuaStateImplTest {
     LuaState.printStack(luaState);
     assertEquals(LuaBoolean.FALSE, luaState.toLuaBoolean(3));
   }
+
 }
