@@ -2,7 +2,6 @@ package com.github.anilople.javalua.instruction.operator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaValue;
 import org.junit.jupiter.api.Test;
 
@@ -35,10 +34,8 @@ class BitwiseTest {
 
     assertEquals(LuaValue.of(0), Bitwise.shiftRight(LuaValue.of(Long.MIN_VALUE), LuaValue.of(-1)));
     assertEquals(
-        LuaValue.of(-(Long.MIN_VALUE / 2))
-        ,
-        Bitwise.shiftRight(LuaValue.of(Long.MIN_VALUE), LuaValue.of(1))
-    );
+        LuaValue.of(-(Long.MIN_VALUE / 2)),
+        Bitwise.shiftRight(LuaValue.of(Long.MIN_VALUE), LuaValue.of(1)));
 
     assertEquals(LuaValue.of(1), Bitwise.shiftRight(LuaValue.of(-1L), LuaValue.of(63)));
   }
@@ -48,13 +45,14 @@ class BitwiseTest {
     assertEquals(LuaValue.of(2), Bitwise.shiftLeft(LuaValue.of(1), LuaValue.of(1)));
     assertEquals(LuaValue.of(6), Bitwise.shiftLeft(LuaValue.of(3), LuaValue.of(1)));
 
-    assertEquals(LuaValue.of(-(Long.MIN_VALUE / 2)), Bitwise.shiftLeft(LuaValue.of(Long.MIN_VALUE), LuaValue.of(-1)));
+    assertEquals(
+        LuaValue.of(-(Long.MIN_VALUE / 2)),
+        Bitwise.shiftLeft(LuaValue.of(Long.MIN_VALUE), LuaValue.of(-1)));
     assertEquals(LuaValue.of(0), Bitwise.shiftLeft(LuaValue.of(Long.MIN_VALUE), LuaValue.of(1)));
 
     assertEquals(LuaValue.of(-2), Bitwise.shiftLeft(LuaValue.of(Long.MAX_VALUE), LuaValue.of(1)));
 
     assertEquals(LuaValue.of(1), Bitwise.shiftLeft(LuaValue.of(2), LuaValue.of(-1)));
     assertEquals(LuaValue.of(2), Bitwise.shiftLeft(LuaValue.of("1"), LuaValue.of(1.0D)));
-
   }
 }

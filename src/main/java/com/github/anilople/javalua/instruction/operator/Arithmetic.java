@@ -23,7 +23,7 @@ public class Arithmetic {
     var value = a.getValue() + b.getValue();
     return new LuaInteger(value);
   }
-  
+
   static LuaNumber addLuaNumber(LuaNumber a, LuaNumber b) {
     var value = a.getValue() + b.getValue();
     return new LuaNumber(value);
@@ -31,7 +31,7 @@ public class Arithmetic {
 
   public static LuaValue add(LuaValue a, LuaValue b) {
     if (a instanceof LuaInteger && b instanceof LuaInteger) {
-      return addLuaInteger((LuaInteger)a, (LuaInteger)b);
+      return addLuaInteger((LuaInteger) a, (LuaInteger) b);
     } else {
       var luaNumbers = ToLuaNumberConverter.convert(a, b);
       return addLuaNumber(luaNumbers.r0, luaNumbers.r1);
@@ -42,7 +42,7 @@ public class Arithmetic {
     var value = a.getValue() - b.getValue();
     return new LuaInteger(value);
   }
-  
+
   static LuaNumber subLuaNumber(LuaNumber a, LuaNumber b) {
     var value = a.getValue() + b.getValue();
     return new LuaNumber(value);
@@ -61,9 +61,9 @@ public class Arithmetic {
     var value = -a.getValue();
     return new LuaInteger(value);
   }
-  
+
   public static LuaNumber subLuaNumber(LuaNumber a) {
-    var value = - a.getValue();
+    var value = -a.getValue();
     return new LuaNumber(value);
   }
 
@@ -71,8 +71,7 @@ public class Arithmetic {
     var value = a.getValue() * b.getValue();
     return new LuaInteger(value);
   }
-  
-  
+
   static LuaNumber multiplyLuaNumber(LuaNumber a, LuaNumber b) {
     var value = a.getValue() * b.getValue();
     return new LuaNumber(value);

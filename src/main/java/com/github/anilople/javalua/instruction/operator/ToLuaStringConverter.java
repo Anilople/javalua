@@ -13,5 +13,4 @@ class ToLuaStringConverter {
     }
     return r.r0;
   }
-
 }

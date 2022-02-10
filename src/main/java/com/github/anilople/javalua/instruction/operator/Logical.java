@@ -10,7 +10,7 @@ import com.github.anilople.javalua.state.LuaValue;
  */
 public class Logical {
 
-  public static LuaValue and(LuaValue ... luaValues) {
+  public static LuaValue and(LuaValue... luaValues) {
     for (LuaValue luaValue : luaValues) {
       LuaBoolean luaBoolean = LuaBoolean.from(luaValue);
       if (LuaValue.FALSE.equals(luaBoolean)) {
@@ -20,7 +20,7 @@ public class Logical {
     return LuaValue.TRUE;
   }
 
-  public static LuaBoolean or(LuaValue ... luaValues) {
+  public static LuaBoolean or(LuaValue... luaValues) {
     for (LuaValue luaValue : luaValues) {
       LuaBoolean luaBoolean = LuaBoolean.from(luaValue);
       if (LuaValue.TRUE.equals(luaBoolean)) {

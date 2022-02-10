@@ -11,23 +11,12 @@ class StringConcatTest {
   void concatCase1() {
     assertEquals(
         LuaValue.of("abc"),
-        StringConcat.concat(
-            LuaValue.of("a"),
-            LuaValue.of("b"),
-            LuaValue.of("c")
-        )
-    );
+        StringConcat.concat(LuaValue.of("a"), LuaValue.of("b"), LuaValue.of("c")));
   }
 
   @Test
   void concatCase2() {
     assertEquals(
-        LuaValue.of("123"),
-        StringConcat.concat(
-            LuaValue.of(1),
-            LuaValue.of(2),
-            LuaValue.of(3)
-        )
-    );
+        LuaValue.of("123"), StringConcat.concat(LuaValue.of(1), LuaValue.of(2), LuaValue.of(3)));
   }
 }

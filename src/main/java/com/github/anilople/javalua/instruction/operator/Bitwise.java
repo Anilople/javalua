@@ -39,7 +39,7 @@ public class Bitwise {
   }
 
   static LuaInteger negateLuaInteger(LuaInteger a) {
-    var value = ~ a.getValue();
+    var value = ~a.getValue();
     return new LuaInteger(value);
   }
 

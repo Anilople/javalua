@@ -25,9 +25,7 @@ class ArithmeticTest {
   void add() {}
 
   @Test
-  void subLuaInteger() {
-
-  }
+  void subLuaInteger() {}
 
   @Test
   void subLuaNumber() {}
@@ -66,14 +64,19 @@ class ArithmeticTest {
 
   @Test
   void floorDivisionLuaInteger() {
-    assertEquals(LuaValue.of(1), Arithmetic.floorDivisionLuaInteger(LuaValue.of(5), LuaValue.of(3)));
-    assertEquals(LuaValue.of(-2), Arithmetic.floorDivisionLuaInteger(LuaValue.of(-5), LuaValue.of(3)));
+    assertEquals(
+        LuaValue.of(1), Arithmetic.floorDivisionLuaInteger(LuaValue.of(5), LuaValue.of(3)));
+    assertEquals(
+        LuaValue.of(-2), Arithmetic.floorDivisionLuaInteger(LuaValue.of(-5), LuaValue.of(3)));
   }
 
   @Test
   void floorDivisionLuaNumber() {
-    assertEquals(LuaValue.of(-2.0D), Arithmetic.floorDivisionLuaNumber(LuaValue.of(5D), LuaValue.of(-3D)));
-    assertEquals(LuaValue.of(1.0D), Arithmetic.floorDivisionLuaNumber(LuaValue.of(-5.0D), LuaValue.of(-3.0D)));
+    assertEquals(
+        LuaValue.of(-2.0D), Arithmetic.floorDivisionLuaNumber(LuaValue.of(5D), LuaValue.of(-3D)));
+    assertEquals(
+        LuaValue.of(1.0D),
+        Arithmetic.floorDivisionLuaNumber(LuaValue.of(-5.0D), LuaValue.of(-3.0D)));
   }
 
   @Test
@@ -94,7 +97,8 @@ class ArithmeticTest {
 
     // TODO
     System.out.println(-3 % 2);
-//    assertEquals(LuaValue.of(-1), Arithmetic.moduloLuaInteger(LuaValue.of(-3), LuaValue.of(2)));
+    //    assertEquals(LuaValue.of(-1), Arithmetic.moduloLuaInteger(LuaValue.of(-3),
+    // LuaValue.of(2)));
 
   }
 

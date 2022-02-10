@@ -8,7 +8,7 @@ import com.github.anilople.javalua.state.LuaValue;
  */
 public class StringConcat {
 
-  static LuaString concatLuaString(LuaString ... luaStrings) {
+  static LuaString concatLuaString(LuaString... luaStrings) {
     var sb = new StringBuilder();
     for (LuaString luaString : luaStrings) {
       sb.append(luaString.getValue());
@@ -17,7 +17,7 @@ public class StringConcat {
     return new LuaString(value);
   }
 
-  public static LuaString concat(LuaValue ... luaValues) {
+  public static LuaString concat(LuaValue... luaValues) {
     LuaString[] luaStrings = new LuaString[luaValues.length];
     for (int i = 0; i < luaValues.length; i++) {
       LuaValue luaValue = luaValues[i];
