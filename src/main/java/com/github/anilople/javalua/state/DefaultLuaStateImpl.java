@@ -1,6 +1,11 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
+import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
+import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
+import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
+import com.github.anilople.javalua.instruction.operator.Length;
+import com.github.anilople.javalua.instruction.operator.StringConcat;
 import com.github.anilople.javalua.util.Return2;
 
 class DefaultLuaStateImpl implements LuaState {
@@ -167,7 +172,8 @@ class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public Return2<LuaInteger, Boolean> toLuaIntegerX(int index) {
-    return null;
+    var luaValue = luaStack.get(index);
+    return LuaInteger.from(luaValue);
   }
 
   @Override
@@ -222,5 +228,61 @@ class DefaultLuaStateImpl implements LuaState {
   @Override
   public void pushLuaString(LuaString value) {
     luaStack.push(value);
+  }
+
+  @Override
+  public void arithmetic(ArithmeticOperator operator) {
+    var a = luaStack.pop();
+    final LuaValue result;
+    if (ArithmeticOperator.LUA_OPUNM.equals(operator)) {
+      result = operator.getOperator().apply(a, null);
+    } else {
+      var b = luaStack.pop();
+      result = operator.getOperator().apply(a, b);
+    }
+    assert result != null;
+    luaStack.push(result);
+  }
+
+  @Override
+  public void bitwise(BitwiseOperator operator) {
+    var a = luaStack.pop();
+    final LuaValue result;
+    if (BitwiseOperator.LUA_OPBNOT.equals(operator)) {
+      result = operator.getOperator().apply(a, null);
+    } else {
+      var b = luaStack.pop();
+      result = operator.getOperator().apply(a, b);
+    }
+    assert result != null;
+    luaStack.push(result);
+  }
+
+  @Override
+  public LuaBoolean compare(int index1, int index2, ComparisonOperator operator) {
+    var a = luaStack.get(index1);
+    var b = luaStack.get(index2);
+    return operator.getOperator().apply(a, b);
+  }
+
+  @Override
+  public void len(int index) {
+    var a = luaStack.get(index);
+    var len = Length.length(a);
+    luaStack.push(len);
+  }
+
+  @Override
+  public void concat(int n) {
+    if (0 == n) {
+      luaStack.push(LuaValue.of(""));
+    } else {
+      for (; n >= 2; n--) {
+        var b = luaStack.pop();
+        var a = luaStack.pop();
+        var result = StringConcat.concat(a, b);
+        luaStack.push(result);
+      }
+    }
   }
 }

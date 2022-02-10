@@ -5,14 +5,13 @@ import com.github.anilople.javalua.util.Return2;
 import lombok.Data;
 
 @Data
-class LuaNumber implements LuaValue {
+public class LuaNumber implements LuaValue {
 
   static final LuaNumber ZERO = new LuaNumber(0D);
 
-  private static final Return2<LuaNumber, Boolean> ERROR_RETURN =
-      new Return2<>(LuaNumber.ZERO, true);
+  private static final Return2<LuaNumber, Boolean> ERROR_RETURN = new Return2<>(null, false);
 
-  static Return2<LuaNumber, Boolean> from(LuaValue luaValue) {
+  public static Return2<LuaNumber, Boolean> from(LuaValue luaValue) {
     if (null == luaValue) {
       throw new IllegalArgumentException("cannot be null");
     }
@@ -21,8 +20,14 @@ class LuaNumber implements LuaValue {
     }
     if (luaValue instanceof LuaInteger) {
       LuaInteger luaInteger = (LuaInteger) luaValue;
-      double doubleValue = (double) luaInteger.value;
-      LuaNumber luaNumber = new LuaNumber(doubleValue);
+      double value = (double) luaInteger.value;
+      LuaNumber luaNumber = new LuaNumber(value);
+      return new Return2<>(luaNumber, true);
+    }
+    if (luaValue instanceof LuaString) {
+      LuaString luaString = (LuaString) luaValue;
+      double value = Double.parseDouble(luaString.getValue());
+      LuaNumber luaNumber = new LuaNumber(value);
       return new Return2<>(luaNumber, true);
     }
     return ERROR_RETURN;
@@ -30,7 +35,7 @@ class LuaNumber implements LuaValue {
 
   final double value;
 
-  LuaNumber(double value) {
+  public LuaNumber(double value) {
     this.value = value;
   }
 

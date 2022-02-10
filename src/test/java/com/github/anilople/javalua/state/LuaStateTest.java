@@ -2,13 +2,19 @@ package com.github.anilople.javalua.state;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
+import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
+import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import org.junit.jupiter.api.Test;
 
-class DefaultLuaStateImplTest {
+/**
+ * @author wxq
+ */
+class LuaStateTest {
 
   @Test
   void testSetTopCase1() {
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     assertEquals(0, luaState.getTop());
 
     luaState.setTop(1);
@@ -27,7 +33,7 @@ class DefaultLuaStateImplTest {
    */
   @Test
   void testBookCase() {
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     luaState.pushLuaBoolean(LuaBoolean.TRUE);
     LuaState.printStack(luaState);
     luaState.pushLuaInteger(LuaValue.of(10));
@@ -64,7 +70,7 @@ class DefaultLuaStateImplTest {
    */
   @Test
   void rotateBookCase1() {
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     luaState.pushLuaString(LuaValue.of("a"));
     luaState.pushLuaString(LuaValue.of("b"));
     luaState.pushLuaString(LuaValue.of("c"));
@@ -89,7 +95,7 @@ class DefaultLuaStateImplTest {
   @Test
   void rotateBookCase2() {
 
-    DefaultLuaStateImpl luaState = new DefaultLuaStateImpl();
+    LuaState luaState = LuaState.create();
     luaState.pushLuaString(LuaValue.of("a"));
     luaState.pushLuaString(LuaValue.of("b"));
     luaState.pushLuaString(LuaValue.of("c"));
@@ -104,5 +110,45 @@ class DefaultLuaStateImplTest {
     assertEquals(LuaValue.of("d"), luaState.toLuaString(3));
     assertEquals(LuaValue.of("e"), luaState.toLuaString(4));
     assertEquals(LuaValue.of("b"), luaState.toLuaString(5));
+  }
+
+  /**
+   * page 87
+   */
+  @Test
+  void operatorBookCase() {
+    LuaState luaState = LuaState.create();
+    luaState.pushLuaInteger(LuaValue.of(1));
+    luaState.pushLuaString(LuaValue.of("2.0"));
+    luaState.pushLuaString(LuaValue.of("3.0"));
+    luaState.pushLuaNumber(LuaValue.of(4.0));
+    // [1.0]["2.0"]["3.0"][4]
+    LuaState.printStack(luaState);
+
+    luaState.arithmetic(ArithmeticOperator.LUA_OPADD);
+    // [1.0]["2.0"][7]
+    LuaState.printStack(luaState);
+    assertTrue(luaState.isLuaInteger(3));
+
+    luaState.bitwise(BitwiseOperator.LUA_OPBNOT);
+    // [1]["2.0"][-8]
+    LuaState.printStack(luaState);
+    assertEquals(LuaValue.of(-8), luaState.toLuaInteger(3));
+
+    luaState.len(2);
+    // [1]["2.0"][-8][3]
+    LuaState.printStack(luaState);
+    assertEquals(LuaValue.of(3), luaState.toLuaInteger(4));
+
+    luaState.concat(3);
+    // [1]["2.0-83"]
+    LuaState.printStack(luaState);
+    assertEquals(LuaValue.of("2.0-83"), luaState.toLuaString(2));
+
+    var luaBoolean = luaState.compare(1, 2, ComparisonOperator.LUA_OPEQ);
+    luaState.pushLuaBoolean(luaBoolean);
+    // [1]["2.0-83"][false]
+    LuaState.printStack(luaState);
+    assertEquals(LuaBoolean.FALSE, luaState.toLuaBoolean(3));
   }
 }

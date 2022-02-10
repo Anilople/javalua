@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * @author wxq
  */
-public class LuaInteger implements Encodable, Decodable {
+class LuaInteger implements Encodable, Decodable {
 
   private long value;
 

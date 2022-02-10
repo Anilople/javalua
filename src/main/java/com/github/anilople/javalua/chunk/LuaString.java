@@ -14,7 +14,7 @@ import lombok.Data;
  * @author wxq
  */
 @Data
-public class LuaString implements Encodable, Decodable {
+class LuaString implements Encodable, Decodable {
   public static final LuaString NULL = LuaStringNull.NULL;
   private static final byte[] ZERO = new byte[] {0};
   byte first;
@@ -54,13 +54,14 @@ public class LuaString implements Encodable, Decodable {
 
   @Override
   public String toString() {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(this.getClass());
-    stringBuilder.append("[");
-    stringBuilder.append("first byte = ").append(this.first);
-    stringBuilder.append(" length = ").append(this.bytes.length);
-    stringBuilder.append(" content = ").append(new String(this.bytes, StandardCharsets.UTF_8));
-    stringBuilder.append("]");
-    return stringBuilder.toString();
+    return this.getClass()
+        + "["
+        + "first byte = "
+        + this.first
+        + " length = "
+        + this.bytes.length
+        + " content = "
+        + new String(this.bytes, StandardCharsets.UTF_8)
+        + "]";
   }
 }

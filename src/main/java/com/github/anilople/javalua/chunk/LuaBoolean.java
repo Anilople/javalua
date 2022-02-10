@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * @author wxq
  */
-public class LuaBoolean implements Encodable, Decodable {
+class LuaBoolean implements Encodable, Decodable {
 
   private static final byte[] TRUE = new byte[] {1};
   private static final byte[] FALSE = new byte[] {0};
