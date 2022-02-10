@@ -19,8 +19,7 @@ public class LuaInteger implements LuaValue {
     boolean success = (double) value == luaNumber.getValue();
     if (success) {
       return new Return2<>(new LuaInteger(value), success);
-    }
-    else {
+    } else {
       return ERROR_RETURN;
     }
   }

@@ -6,7 +6,8 @@ import com.github.anilople.javalua.util.Return3;
 
 class ToLuaNumberConverter {
 
-  private static final Return3<Boolean, LuaNumber, LuaNumber> ERROR_RETURN = new Return3<>(false, null, null);
+  private static final Return3<Boolean, LuaNumber, LuaNumber> ERROR_RETURN =
+      new Return3<>(false, null, null);
 
   static Return3<Boolean, LuaNumber, LuaNumber> convert(LuaValue a, LuaValue b) {
     var aR = LuaNumber.from(a);

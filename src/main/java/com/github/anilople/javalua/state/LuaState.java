@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
-import com.github.anilople.javalua.instruction.operator.Arithmetic;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;

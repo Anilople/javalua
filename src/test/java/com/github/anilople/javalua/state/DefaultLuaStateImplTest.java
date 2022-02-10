@@ -148,5 +148,4 @@ class DefaultLuaStateImplTest {
     LuaState.printStack(luaState);
     assertEquals(LuaBoolean.FALSE, luaState.toLuaBoolean(3));
   }
-
 }

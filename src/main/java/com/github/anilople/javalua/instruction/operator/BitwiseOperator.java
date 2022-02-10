@@ -12,10 +12,12 @@ public final class BitwiseOperator extends AbstractOperator<LuaValue, LuaValue, 
   public static final BitwiseOperator LUA_OPBOR = new BitwiseOperator(8, "|", Bitwise::or);
   public static final BitwiseOperator LUA_OPBXOR = new BitwiseOperator(9, "~", Bitwise::xor);
   public static final BitwiseOperator LUA_OPSHL = new BitwiseOperator(10, "<<", Bitwise::shiftLeft);
-  public static final BitwiseOperator LUA_OPSHR = new BitwiseOperator(11, ">>", Bitwise::shiftRight);
+  public static final BitwiseOperator LUA_OPSHR =
+      new BitwiseOperator(11, ">>", Bitwise::shiftRight);
   public static final BitwiseOperator LUA_OPBNOT = new BitwiseOperator(13, "~", Bitwise::negate);
-  private BitwiseOperator(int enumCount, String content,
-      BiFunction<LuaValue, LuaValue, LuaInteger> function) {
+
+  private BitwiseOperator(
+      int enumCount, String content, BiFunction<LuaValue, LuaValue, LuaInteger> function) {
     super(enumCount, content, function);
   }
 }
