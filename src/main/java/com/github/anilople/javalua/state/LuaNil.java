@@ -2,7 +2,7 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 
-class LuaNil implements LuaValue {
+public class LuaNil implements LuaValue {
 
   static final LuaNil INSTANCE = new LuaNil();
 

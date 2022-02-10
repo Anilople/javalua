@@ -5,9 +5,9 @@ import com.github.anilople.javalua.util.Return2;
 import lombok.Data;
 
 @Data
-class LuaString implements LuaValue {
+public class LuaString implements LuaValue {
 
-  static Return2<LuaString, Boolean> from(LuaValue luaValue) {
+  public static Return2<LuaString, Boolean> from(LuaValue luaValue) {
     if (null == luaValue) {
       throw new IllegalArgumentException("cannot be null");
     }
