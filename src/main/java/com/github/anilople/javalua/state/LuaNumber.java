@@ -10,7 +10,7 @@ public class LuaNumber implements LuaValue {
   static final LuaNumber ZERO = new LuaNumber(0D);
 
   private static final Return2<LuaNumber, Boolean> ERROR_RETURN =
-      new Return2<>(LuaNumber.ZERO, false);
+      new Return2<>(null, false);
 
   public static Return2<LuaNumber, Boolean> from(LuaValue luaValue) {
     if (null == luaValue) {

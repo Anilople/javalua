@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class LuaInteger implements LuaValue {
 
-  private static final LuaInteger ZERO = new LuaInteger(0);
+  public static final LuaInteger ZERO = new LuaInteger(0);
 
-  private static final Return2<LuaInteger, Boolean> ERROR_RETURN = new Return2<>(ZERO, false);
+  private static final Return2<LuaInteger, Boolean> ERROR_RETURN = new Return2<>(null, false);
 
   /**
    * 浮点数转为整数，如果小数部分为0，并且整数部分没有超出Lua整数能够表示的范围，则转换成功
@@ -17,7 +17,12 @@ public class LuaInteger implements LuaValue {
   static Return2<LuaInteger, Boolean> fromLuaNumber(LuaNumber luaNumber) {
     long value = (long) luaNumber.getValue();
     boolean success = (double) value == luaNumber.getValue();
-    return new Return2<>(new LuaInteger(value), success);
+    if (success) {
+      return new Return2<>(new LuaInteger(value), success);
+    }
+    else {
+      return ERROR_RETURN;
+    }
   }
 
   public static Return2<LuaInteger, Boolean> from(LuaValue luaValue) {
@@ -31,9 +36,10 @@ public class LuaInteger implements LuaValue {
       return fromLuaNumber((LuaNumber) luaValue);
     }
     if (luaValue instanceof LuaString) {
-      LuaString luaString = (LuaString) luaValue;
-      var value = Long.parseLong(luaString.getValue());
-      return new Return2<>(new LuaInteger(value), true);
+      var r = LuaNumber.from(luaValue);
+      if (r.r1) {
+        return fromLuaNumber(r.r0);
+      }
     }
     return ERROR_RETURN;
   }

@@ -30,12 +30,17 @@ public class Arithmetic {
   }
 
   public static LuaValue add(LuaValue a, LuaValue b) {
-    if (a instanceof LuaInteger && b instanceof LuaInteger) {
-      return addLuaInteger((LuaInteger) a, (LuaInteger) b);
-    } else {
-      var luaNumbers = ToLuaNumberConverter.convert(a, b);
-      return addLuaNumber(luaNumbers.r0, luaNumbers.r1);
+    var rOfLuaIntegers = ToLuaIntegerConverter.convert(a, b);
+    if (rOfLuaIntegers.r0) {
+      return addLuaInteger(rOfLuaIntegers.r1, rOfLuaIntegers.r2);
     }
+
+    var rOfLuaNumbers = ToLuaNumberConverter.convert(a, b);
+    if (rOfLuaNumbers.r0) {
+      return addLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
+    }
+
+    throw new UnsupportedOperationException(a + " add " + b);
   }
 
   static LuaInteger subLuaInteger(LuaInteger a, LuaInteger b) {
@@ -49,22 +54,40 @@ public class Arithmetic {
   }
 
   public static LuaValue sub(LuaValue a, LuaValue b) {
-    if (a instanceof LuaInteger && b instanceof LuaInteger) {
-      return subLuaInteger((LuaInteger) a, (LuaInteger) b);
-    } else {
-      var luaNumbers = ToLuaNumberConverter.convert(a, b);
-      return subLuaNumber(luaNumbers.r0, luaNumbers.r1);
+    var rOfLuaIntegers = ToLuaIntegerConverter.convert(a, b);
+    if (rOfLuaIntegers.r0) {
+      return subLuaInteger(rOfLuaIntegers.r1, rOfLuaIntegers.r2);
     }
+
+    var rOfLuaNumbers = ToLuaNumberConverter.convert(a, b);
+    if (rOfLuaNumbers.r0) {
+      return subLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
+    }
+
+    throw new UnsupportedOperationException(a + " sub " + b);
   }
 
-  public static LuaInteger subLuaInteger(LuaInteger a) {
+  static LuaInteger subLuaInteger(LuaInteger a) {
     var value = -a.getValue();
     return new LuaInteger(value);
   }
 
-  public static LuaNumber subLuaNumber(LuaNumber a) {
+  static LuaNumber subLuaNumber(LuaNumber a) {
     var value = -a.getValue();
     return new LuaNumber(value);
+  }
+
+  /**
+   * @param ignore 被忽略的参数
+   */
+  public static LuaValue unaryMinus(LuaValue a, LuaValue ignore) {
+    if (a instanceof LuaInteger) {
+      return subLuaInteger((LuaInteger) a);
+    }
+    if (a instanceof LuaNumber) {
+      return subLuaNumber((LuaNumber) a);
+    }
+    throw new IllegalArgumentException("unary minus of lua value " + a);
   }
 
   static LuaInteger multiplyLuaInteger(LuaInteger a, LuaInteger b) {
@@ -78,12 +101,17 @@ public class Arithmetic {
   }
 
   public static LuaValue multiply(LuaValue a, LuaValue b) {
-    if (a instanceof LuaInteger && b instanceof LuaInteger) {
-      return multiplyLuaInteger((LuaInteger) a, (LuaInteger) b);
-    } else {
-      var luaNumbers = ToLuaNumberConverter.convert(a, b);
-      return multiplyLuaNumber(luaNumbers.r0, luaNumbers.r1);
+    var rOfLuaIntegers = ToLuaIntegerConverter.convert(a, b);
+    if (rOfLuaIntegers.r0) {
+      return multiplyLuaInteger(rOfLuaIntegers.r1, rOfLuaIntegers.r2);
     }
+
+    var rOfLuaNumbers = ToLuaNumberConverter.convert(a, b);
+    if (rOfLuaNumbers.r0) {
+      return multiplyLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
+    }
+
+    throw new UnsupportedOperationException(a + " multiply " + b);
   }
 
   static LuaNumber divisionLuaNumber(LuaNumber a, LuaNumber b) {
@@ -96,8 +124,11 @@ public class Arithmetic {
    * @see #power(LuaValue, LuaValue)
    */
   public static LuaValue division(LuaValue a, LuaValue b) {
-    var luaNumbers = ToLuaNumberConverter.convert(a, b);
-    return divisionLuaNumber(luaNumbers.r0, luaNumbers.r1);
+    var rOfLuaNumbers = ToLuaNumberConverter.convert(a, b);
+    if (rOfLuaNumbers.r0) {
+      return divisionLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
+    }
+    throw new UnsupportedOperationException(a + " division " + b);
   }
 
   /**
@@ -123,12 +154,17 @@ public class Arithmetic {
   }
 
   public static LuaValue floorDivision(LuaValue a, LuaValue b) {
-    if (a instanceof LuaInteger && b instanceof LuaInteger) {
-      return floorDivisionLuaInteger((LuaInteger) a, (LuaInteger) b);
-    } else {
-      var luaNumbers = ToLuaNumberConverter.convert(a, b);
-      return floorDivisionLuaNumber(luaNumbers.r0, luaNumbers.r1);
+    var rOfLuaIntegers = ToLuaIntegerConverter.convert(a, b);
+    if (rOfLuaIntegers.r0) {
+      return floorDivisionLuaInteger(rOfLuaIntegers.r1, rOfLuaIntegers.r2);
     }
+
+    var rOfLuaNumbers = ToLuaNumberConverter.convert(a, b);
+    if (rOfLuaNumbers.r0) {
+      return floorDivisionLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
+    }
+
+    throw new UnsupportedOperationException(a + " floorDivision " + b);
   }
 
   /**
@@ -148,12 +184,18 @@ public class Arithmetic {
     return subLuaNumber(a, rightPart);
   }
 
-  static LuaInteger powerLuaInteger(LuaInteger a, LuaInteger b) {
-    LuaInteger value = new LuaInteger(1);
-    for (int i = 0; i < b.getValue(); i++) {
-      value = multiplyLuaInteger(value, a);
+  static LuaValue module(LuaValue a, LuaValue b) {
+    var rOfLuaIntegers = ToLuaIntegerConverter.convert(a, b);
+    if (rOfLuaIntegers.r0) {
+      return moduloLuaInteger(rOfLuaIntegers.r1, rOfLuaIntegers.r2);
     }
-    return value;
+
+    var rOfLuaNumbers = ToLuaNumberConverter.convert(a, b);
+    if (rOfLuaNumbers.r0) {
+      return moduleLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
+    }
+
+    throw new UnsupportedOperationException(a + " module " + b);
   }
 
   public static LuaNumber powerLuaNumber(LuaNumber base, LuaNumber exponent) {
@@ -165,7 +207,10 @@ public class Arithmetic {
    * 乘方
    */
   public static LuaNumber power(LuaValue base, LuaValue exponent) {
-    var luaNumbers = ToLuaNumberConverter.convert(base, exponent);
-    return powerLuaNumber(luaNumbers.r0, luaNumbers.r1);
+    var rOfLuaNumbers = ToLuaNumberConverter.convert(base, exponent);
+    if (rOfLuaNumbers.r0) {
+      return powerLuaNumber(rOfLuaNumbers.r1, rOfLuaNumbers.r2);
+    }
+    throw new UnsupportedOperationException(base + " power " + exponent);
   }
 }

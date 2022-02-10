@@ -1,6 +1,10 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
+import com.github.anilople.javalua.instruction.operator.Arithmetic;
+import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
+import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
+import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import com.github.anilople.javalua.util.Return2;
 import java.io.PrintStream;
 
@@ -24,8 +28,16 @@ public interface LuaState {
           printStream.print(luaBoolean.toString());
           break;
         case LUA_TNUMBER:
-          LuaNumber luaNumber = luaState.toLuaNumber(i);
-          printStream.print(luaNumber.toString());
+          if (luaState.isLuaInteger(i)) {
+            LuaInteger luaInteger = luaState.toLuaInteger(i);
+            printStream.print(luaInteger.toString());
+          } else if (luaState.isLuaNumber(i)) {
+            LuaNumber luaNumber = luaState.toLuaNumber(i);
+            printStream.print(luaNumber.toString());
+          } else {
+            throw new IllegalStateException("index " + i + " is not a number");
+          }
+
           break;
         case LUA_TSTRING:
           LuaString luaString = luaState.toLuaString(i);
@@ -116,4 +128,20 @@ public interface LuaState {
   void pushLuaNumber(LuaNumber value);
 
   void pushLuaString(LuaString value);
+
+  void arithmetic(ArithmeticOperator operator);
+
+  void bitwise(BitwiseOperator operator);
+
+  /**
+   * 不改变栈的状态
+   */
+  LuaBoolean compare(int index1, int index2, ComparisonOperator operator);
+
+  void len(int index);
+
+  /**
+   * 如果 n = 0，push 空字符；
+   */
+  void concat(int n);
 }

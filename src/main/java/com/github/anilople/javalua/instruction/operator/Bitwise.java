@@ -14,8 +14,12 @@ public class Bitwise {
   }
 
   public static LuaInteger and(LuaValue a, LuaValue b) {
-    var luaIntegers = ToLuaIntegerConverter.convert(a, b);
-    return andLuaInteger(luaIntegers.r0, luaIntegers.r1);
+    var r = ToLuaIntegerConverter.convert(a, b);
+    if (r.r0) {
+      return andLuaInteger(r.r1, r.r2);
+    } else {
+      throw new UnsupportedOperationException(a + " and " + b);
+    }
   }
 
   static LuaInteger orLuaInteger(LuaInteger a, LuaInteger b) {
@@ -24,8 +28,12 @@ public class Bitwise {
   }
 
   public static LuaInteger or(LuaValue a, LuaValue b) {
-    var luaIntegers = ToLuaIntegerConverter.convert(a, b);
-    return orLuaInteger(luaIntegers.r0, luaIntegers.r1);
+    var r = ToLuaIntegerConverter.convert(a, b);
+    if (r.r0) {
+      return orLuaInteger(r.r1, r.r2);
+    } else {
+      throw new UnsupportedOperationException(a + " or " + b);
+    }
   }
 
   static LuaInteger xorLuaInteger(LuaInteger a, LuaInteger b) {
@@ -34,8 +42,12 @@ public class Bitwise {
   }
 
   public static LuaInteger xor(LuaValue a, LuaValue b) {
-    var luaIntegers = ToLuaIntegerConverter.convert(a, b);
-    return xorLuaInteger(luaIntegers.r0, luaIntegers.r1);
+    var r = ToLuaIntegerConverter.convert(a, b);
+    if (r.r0) {
+      return xorLuaInteger(r.r1, r.r2);
+    } else {
+      throw new UnsupportedOperationException(a + " xor " + b);
+    }
   }
 
   static LuaInteger negateLuaInteger(LuaInteger a) {
@@ -46,6 +58,13 @@ public class Bitwise {
   public static LuaInteger negate(LuaValue a) {
     var r = ToLuaIntegerConverter.convert(a);
     return negateLuaInteger(r);
+  }
+
+  /**
+   * @param ignore 被忽略的参数
+   */
+  public static LuaInteger negate(LuaValue a, LuaValue ignore) {
+    return negate(a);
   }
 
   /**
@@ -66,7 +85,11 @@ public class Bitwise {
    */
   public static LuaInteger shiftRight(LuaValue a, LuaValue n) {
     var r = ToLuaIntegerConverter.convert(a, n);
-    return shiftRightLuaInteger(r.r0, r.r1);
+    if (r.r0) {
+      return shiftRightLuaInteger(r.r1, r.r2);
+    } else {
+      throw new UnsupportedOperationException(a + " shiftRight " + n);
+    }
   }
 
   public static LuaInteger shiftLeftLuaInteger(LuaInteger a, LuaInteger n) {
@@ -81,6 +104,10 @@ public class Bitwise {
 
   public static LuaInteger shiftLeft(LuaValue a, LuaValue n) {
     var r = ToLuaIntegerConverter.convert(a, n);
-    return shiftLeftLuaInteger(r.r0, r.r1);
+    if (r.r0) {
+      return shiftLeftLuaInteger(r.r1, r.r2);
+    } else {
+      throw new UnsupportedOperationException(a + " shiftLeft " + n);
+    }
   }
 }
