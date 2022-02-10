@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
  */
 class LuaStateTest {
 
-
   @Test
   void testSetTopCase1() {
     LuaState luaState = LuaState.create();
@@ -152,5 +151,4 @@ class LuaStateTest {
     LuaState.printStack(luaState);
     assertEquals(LuaBoolean.FALSE, luaState.toLuaBoolean(3));
   }
-
 }
