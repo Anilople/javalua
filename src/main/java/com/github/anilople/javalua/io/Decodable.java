@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.io;
 
 import com.github.anilople.javalua.util.ReflectionUtils;
-import java.io.IOException;
 
 /**
  * 解码，和undump对应

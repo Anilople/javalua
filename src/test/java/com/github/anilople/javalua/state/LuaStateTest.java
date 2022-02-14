@@ -166,8 +166,8 @@ class LuaStateTest {
     luaState.replace(1);
     // 注意这里可能有点争议，当元素只剩1个时，replace的行为应该是什么？
     assertEquals(0, luaState.getTop());
-//    assertTrue(luaState.isLuaString(1));
-//    assertEquals(LuaValue.of("value"), luaState.toLuaString(1));
+    //    assertTrue(luaState.isLuaString(1));
+    //    assertEquals(LuaValue.of("value"), luaState.toLuaString(1));
   }
 
   @Test

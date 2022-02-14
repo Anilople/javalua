@@ -7,7 +7,6 @@ import com.github.anilople.javalua.ResourceContentConstants;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import java.io.IOException;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**

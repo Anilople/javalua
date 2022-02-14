@@ -14,12 +14,7 @@ class ConstantTest {
   @Test
   void decodeLuaBooleanTrue() {
     Constant constant = new Constant();
-    DecodeInputStream decodeInputStream = new DecodeInputStream(
-        new byte[]{
-            Tag.BOOLEAN,
-            1
-        }
-    );
+    DecodeInputStream decodeInputStream = new DecodeInputStream(new byte[] {Tag.BOOLEAN, 1});
     constant.decode(decodeInputStream);
     assertThrows(IllegalStateException.class, decodeInputStream::readByte);
 

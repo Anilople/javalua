@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.state;
 
-import com.github.anilople.javalua.api.LuaVM;
 
 /**
  * 栈索引从1开始
@@ -104,8 +103,7 @@ public class LuaStack {
       this.luaValues[absIndex - 1] = luaValue;
     } else {
       throw new IllegalArgumentException(
-          "索引不是 有效索引 index " + index + " absIndex " + absIndex + " top " + this.getTop()
-      );
+          "索引不是 有效索引 index " + index + " absIndex " + absIndex + " top " + this.getTop());
     }
   }
 

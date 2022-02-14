@@ -8,6 +8,6 @@ import com.github.anilople.javalua.api.LuaVM;
 public class Instructions {
   public static void move(Instruction instruction, LuaVM luaVM) {
     instruction.getOperand().A();
-//    luaVM.copy();
+    //    luaVM.copy();
   }
 }

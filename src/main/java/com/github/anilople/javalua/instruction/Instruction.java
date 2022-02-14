@@ -1,13 +1,11 @@
 package com.github.anilople.javalua.instruction;
 
-import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode.*;
 import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMask.*;
+import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode.*;
 
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMask;
 import com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode;
-import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
-import com.github.anilople.javalua.instruction.operator.Operator;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.util.Arrays;
 import java.util.Collections;
@@ -208,7 +206,13 @@ public interface Instruction {
      * <p/>
      * #define opmode(t,a,b,c,m) (((t)<<7) | ((a)<<6) | ((b)<<4) | ((c)<<2) | (m))
      */
-    Opcode(int t, int a, OpArgMask b, OpArgMask c, OpMode opMode, Class<? extends AbstractInstruction> instructionClass) {
+    Opcode(
+        int t,
+        int a,
+        OpArgMask b,
+        OpArgMask c,
+        OpMode opMode,
+        Class<? extends AbstractInstruction> instructionClass) {
       this.t = t > 0;
       this.a = a > 0;
       this.b = b;
@@ -288,7 +292,6 @@ public interface Instruction {
       ;
     }
   }
-
 
   /**
    * 操作数
@@ -380,5 +383,4 @@ public interface Instruction {
       return new Operand(code);
     }
   }
-
 }

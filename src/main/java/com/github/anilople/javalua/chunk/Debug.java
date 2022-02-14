@@ -4,7 +4,6 @@ import com.github.anilople.javalua.io.Decodable;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.io.EncodeOutputStream;
-import java.io.IOException;
 import lombok.Data;
 
 /**

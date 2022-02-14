@@ -6,8 +6,6 @@ import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.ByteUtils;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 import lombok.Data;
@@ -79,9 +77,6 @@ class LuaString implements Encodable, Decodable {
 
   @Override
   public String toString() {
-    return "LuaString{" +
-        "first=" + first +
-        ", bytes=" + Arrays.toString(bytes) +
-        '}';
+    return "LuaString{" + "first=" + first + ", bytes=" + Arrays.toString(bytes) + '}';
   }
 }

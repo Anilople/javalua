@@ -4,7 +4,6 @@ import com.github.anilople.javalua.io.Decodable;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.io.EncodeOutputStream;
-import java.io.IOException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -40,5 +39,4 @@ public class Constants implements Encodable, Decodable {
   public int size() {
     return this.constants.length;
   }
-
 }

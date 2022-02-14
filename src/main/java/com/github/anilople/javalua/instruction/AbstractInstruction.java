@@ -57,8 +57,8 @@ abstract class AbstractInstruction implements Instruction {
       case iAx:
         operandPart.append("Ax ").append(operand.Ax());
         break;
-        default:
-          throw new IllegalStateException("unknown op mode " + this.opcode.getOpMode());
+      default:
+        throw new IllegalStateException("unknown op mode " + this.opcode.getOpMode());
     }
     return opcodePart + "[" + operandPart + "]";
   }

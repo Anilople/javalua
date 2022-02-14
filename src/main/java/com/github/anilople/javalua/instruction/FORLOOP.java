@@ -3,7 +3,6 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
-import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaValue;
 
 class FORLOOP extends AbstractInstruction {

@@ -123,8 +123,7 @@ class LuaVMTest {
 
     for (Instruction instruction = luaVM.fetch();
         !instruction.getOpcode().equals(Opcode.RETURN);
-        instruction = luaVM.fetch()
-    ) {
+        instruction = luaVM.fetch()) {
       printLuaVM(luaVM);
       applyPrint(instruction, luaVM);
     }
