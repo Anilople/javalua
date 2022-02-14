@@ -17,7 +17,7 @@ public class LocVar implements Encodable, Decodable {
   int endPC;
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     this.varName = new LuaString();
     this.varName.decode(inputStream);
     this.startPC = inputStream.readInt();

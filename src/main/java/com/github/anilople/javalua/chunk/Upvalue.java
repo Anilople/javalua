@@ -19,7 +19,7 @@ public class Upvalue implements Encodable, Decodable {
   // byte kind;
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     this.instack = inputStream.readByte();
     this.idx = inputStream.readByte();
   }

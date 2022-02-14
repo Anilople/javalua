@@ -27,7 +27,7 @@ public class Debug implements Encodable, Decodable {
   LuaString[] upvalueNames = new LuaString[0];
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     {
       int length = inputStream.readInt();
       this.lineInfo = new int[length];

@@ -14,6 +14,10 @@ Use Java to write lua interpreter
 
 为了简化代码，用了 lombok，如果运行测试失败，需要maven clean一下再跑
 
+工具：
+
+* 反编译 https://youtu.be/2LPaqYFPrfY https://github.com/viruscamp/luadec
+
 ## 第二部分 Lua虚拟机和Lua API
 
 ### 第2章 二进制chunk
@@ -75,9 +79,28 @@ Lua 5.3 有47条指令，6大类
 | sBx    | 18         | 只有这个操作数被解释成有符号整数 |
 | Ax     | 26         |                                  |
 
+sBx可以理解成signed Bx，即有符号的Bx
+
 操作码（Opcode）只有6位，最多产生64条指令
 
 Lua 5.3 有 47 条，从0到46
+
+```mermaid
+graph LR
+	subgraph 指令集
+		subgraph 6 bits操作码opcode
+			
+		end
+		subgraph 26 bits操作数operand
+			iABC
+			iABx
+			iAsBx
+			iAx
+		end
+	end
+```
+
+
 
 坑记录：
 
@@ -155,3 +178,25 @@ graph LR
 注意浮点数可以转为整数且不会丢失精度的情况下，优先转为整数
 
 字符串 -> 整数（如果不行，才使用浮点数）
+
+### 第6章 虚拟机雏形
+
+程序计数器（Program Counter，简称PC），用来记录正在执行的指令
+
+Lua虚拟机指令操作数里携带的寄存器索引是从0开始的，而Lua API里的栈索引是从1开始的
+
+Lua编译器把函数的局部变量限制在了200个以内
+
+stack size可以调得比较大，top也可以提前setTop(xxx)配置得和寄存器数量一样
+
+| 符号           | 含义                                                    |
+| -------------- | ------------------------------------------------------- |
+| R(A)           | 寄存器A                                                 |
+| Kst(Bx)        | 常量表中的第N个常量                                     |
+| Kst(extra arg) | LOADKX指令和EXTRAAGR指令搭配使用，指定第extra arg个常量 |
+| RK(C)          | 寄存器或者常量值（R或者K），大于0xFF时表示常量表索引    |
+
+#### FAQ
+
+如果replace执行时，stack内仅有一个元素，如何处理？
+

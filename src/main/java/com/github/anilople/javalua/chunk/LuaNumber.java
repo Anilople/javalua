@@ -6,16 +6,18 @@ import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.io.IOException;
+import lombok.Data;
 
 /**
  * @author wxq
  */
+@Data
 class LuaNumber implements Encodable, Decodable {
 
-  private double value;
+  double value;
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     byte[] bytes = inputStream.readNBytes(Lua.NUMBER);
     this.value = ByteUtils.decodeDouble(bytes);
   }

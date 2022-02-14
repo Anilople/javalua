@@ -11,10 +11,10 @@ import java.io.IOException;
  */
 public interface Decodable {
 
-  void decode(DecodeInputStream inputStream) throws IOException;
+  void decode(DecodeInputStream inputStream);
 
   static <T extends Decodable> void decode(
-      Class<T> clazz, T[] decodables, DecodeInputStream inputStream) throws IOException {
+      Class<T> clazz, T[] decodables, DecodeInputStream inputStream) {
     int length = decodables.length;
     for (int i = 0; i < length; i++) {
       T t = ReflectionUtils.newInstance(clazz);

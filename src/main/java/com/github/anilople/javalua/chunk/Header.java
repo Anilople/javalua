@@ -90,7 +90,7 @@ public class Header implements Encodable, Decodable {
   }
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     this.luaSignature = inputStream.readNBytes(LUA_SIGNATURE.length);
     this.luacVersion = inputStream.readByte();
     this.luacFormat = inputStream.readByte();
