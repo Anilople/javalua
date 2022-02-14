@@ -4,14 +4,22 @@ import com.github.anilople.javalua.io.Decodable;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.util.ArrayUtils;
-import java.io.IOException;
 import java.util.Objects;
+import lombok.Getter;
 
 /**
  * @author wxq
  * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/lua.h">lua.h</a>
  */
+@Getter
 public class BinaryChunk implements Encodable, Decodable {
+
+  public static BinaryChunk of(byte[] bytes) {
+    BinaryChunk binaryChunk = new BinaryChunk();
+    DecodeInputStream inputStream = new DecodeInputStream(bytes);
+    binaryChunk.decode(inputStream);
+    return binaryChunk;
+  }
 
   Header header = new Header();
   byte sizeUpvalues;
@@ -25,7 +33,7 @@ public class BinaryChunk implements Encodable, Decodable {
   }
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     this.header.decode(inputStream);
     this.header.check();
 

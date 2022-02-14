@@ -4,7 +4,6 @@ import com.github.anilople.javalua.io.Decodable;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.io.EncodeOutputStream;
-import java.io.IOException;
 import lombok.Data;
 
 /**
@@ -17,7 +16,7 @@ public class LocVar implements Encodable, Decodable {
   int endPC;
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     this.varName = new LuaString();
     this.varName.decode(inputStream);
     this.startPC = inputStream.readInt();

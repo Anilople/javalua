@@ -21,7 +21,7 @@ class LuaStringTest {
     LuaString luaString = new LuaString();
     luaString.decode(new DecodeInputStream(new byte[] {0}));
     assertEquals(0, luaString.first);
-
+    System.out.println(LuaString.NULL);
     assertEquals(LuaString.NULL, luaString);
   }
 

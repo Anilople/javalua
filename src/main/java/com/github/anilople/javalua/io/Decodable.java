@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.io;
 
 import com.github.anilople.javalua.util.ReflectionUtils;
-import java.io.IOException;
 
 /**
  * 解码，和undump对应
@@ -11,10 +10,10 @@ import java.io.IOException;
  */
 public interface Decodable {
 
-  void decode(DecodeInputStream inputStream) throws IOException;
+  void decode(DecodeInputStream inputStream);
 
   static <T extends Decodable> void decode(
-      Class<T> clazz, T[] decodables, DecodeInputStream inputStream) throws IOException {
+      Class<T> clazz, T[] decodables, DecodeInputStream inputStream) {
     int length = decodables.length;
     for (int i = 0; i < length; i++) {
       T t = ReflectionUtils.newInstance(clazz);

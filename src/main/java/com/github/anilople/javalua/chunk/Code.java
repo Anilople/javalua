@@ -6,21 +6,19 @@ import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.io.EncodeOutputStream;
 import com.github.anilople.javalua.util.ArrayUtils;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author wxq
  */
-@Data
+@ToString
+@EqualsAndHashCode
 public class Code implements Encodable, Decodable {
   private int[] code = new int[0];
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     int length = inputStream.readInt();
     // 注意 code 是以 int 为单位的
     this.code = inputStream.readNIntegers(length);
@@ -41,12 +39,14 @@ public class Code implements Encodable, Decodable {
     return outputStream.toByteArray();
   }
 
-  List<Instruction> getInstructions() {
-    List<Instruction> instructions = new ArrayList<>();
-    for (int codeValue : this.code) {
+  public Instruction[] getInstructions() {
+    final int length = this.code.length;
+    Instruction[] instructions = new Instruction[this.code.length];
+    for (int i = 0; i < length; i++) {
+      int codeValue = this.code[i];
       Instruction instruction = Instruction.of(codeValue);
-      instructions.add(instruction);
+      instructions[i] = instruction;
     }
-    return Collections.unmodifiableList(instructions);
+    return instructions;
   }
 }

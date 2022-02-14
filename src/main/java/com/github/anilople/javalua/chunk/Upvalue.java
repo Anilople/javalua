@@ -3,7 +3,6 @@ package com.github.anilople.javalua.chunk;
 import com.github.anilople.javalua.io.Decodable;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
-import java.io.IOException;
 import lombok.Data;
 
 /**
@@ -19,7 +18,7 @@ public class Upvalue implements Encodable, Decodable {
   // byte kind;
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     this.instack = inputStream.readByte();
     this.idx = inputStream.readByte();
   }

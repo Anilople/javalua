@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
+import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
@@ -8,12 +9,18 @@ import com.github.anilople.javalua.instruction.operator.Length;
 import com.github.anilople.javalua.instruction.operator.StringConcat;
 import com.github.anilople.javalua.util.Return2;
 
-class DefaultLuaStateImpl implements LuaState {
+public class DefaultLuaStateImpl implements LuaState {
 
-  private final LuaStack luaStack;
+  protected final LuaStack luaStack;
 
-  DefaultLuaStateImpl() {
-    this.luaStack = new LuaStack(20);
+  protected final Prototype prototype;
+
+  protected int pc;
+
+  protected DefaultLuaStateImpl(int stackSize, Prototype prototype) {
+    this.luaStack = new LuaStack(stackSize);
+    this.prototype = prototype;
+    this.pc = 0;
   }
 
   @Override
@@ -53,8 +60,10 @@ class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void replace(int index) {
-    var value = luaStack.pop();
-    luaStack.set(index, value);
+    // #define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))
+    this.copy(-1, index);
+    // index 对应的地方可能就是栈顶
+    this.pop(1);
   }
 
   @Override
@@ -232,12 +241,13 @@ class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void arithmetic(ArithmeticOperator operator) {
-    var a = luaStack.pop();
+    // 先pop b，再pop a
+    var b = luaStack.pop();
     final LuaValue result;
     if (ArithmeticOperator.LUA_OPUNM.equals(operator)) {
-      result = operator.getOperator().apply(a, null);
+      result = operator.getOperator().apply(b, null);
     } else {
-      var b = luaStack.pop();
+      var a = luaStack.pop();
       result = operator.getOperator().apply(a, b);
     }
     assert result != null;

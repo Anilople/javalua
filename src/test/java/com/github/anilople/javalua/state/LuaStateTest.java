@@ -151,4 +151,32 @@ class LuaStateTest {
     LuaState.printStack(luaState);
     assertEquals(LuaBoolean.FALSE, luaState.toLuaBoolean(3));
   }
+
+  @Test
+  void replaceEmpty() {
+    LuaState luaState = LuaState.create();
+    assertThrows(IllegalArgumentException.class, () -> luaState.replace(0));
+    assertThrows(IllegalArgumentException.class, () -> luaState.replace(1));
+  }
+
+  @Test
+  void replaceStackSize1() {
+    LuaState luaState = LuaState.create();
+    luaState.pushLuaString(LuaValue.of("value"));
+    luaState.replace(1);
+    // 注意这里可能有点争议，当元素只剩1个时，replace的行为应该是什么？
+    assertEquals(0, luaState.getTop());
+    //    assertTrue(luaState.isLuaString(1));
+    //    assertEquals(LuaValue.of("value"), luaState.toLuaString(1));
+  }
+
+  @Test
+  void replaceStackSize2() {
+    LuaState luaState = LuaState.create();
+    luaState.pushLuaString(LuaValue.of("value"));
+    luaState.pushLuaNil();
+    luaState.replace(1);
+    assertEquals(1, luaState.getTop());
+    assertTrue(luaState.isLuaNil(1));
+  }
 }

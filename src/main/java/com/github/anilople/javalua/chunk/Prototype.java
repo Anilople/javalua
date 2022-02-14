@@ -19,7 +19,7 @@ public class Prototype implements Encodable, Decodable {
   /**
    * 源文件名
    */
-  LuaString source = LuaString.NULL;
+  LuaString source = new LuaString();
   /**
    * 起始行号
    */
@@ -96,7 +96,7 @@ public class Prototype implements Encodable, Decodable {
   }
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     this.source = new LuaString();
     this.source.decode(inputStream);
     this.lineDefined = inputStream.readInt();

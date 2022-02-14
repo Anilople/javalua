@@ -5,17 +5,18 @@ import com.github.anilople.javalua.io.Decodable;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
 import com.github.anilople.javalua.util.ByteUtils;
-import java.io.IOException;
+import lombok.Data;
 
 /**
  * @author wxq
  */
+@Data
 class LuaInteger implements Encodable, Decodable {
 
-  private long value;
+  long value;
 
   @Override
-  public void decode(DecodeInputStream inputStream) throws IOException {
+  public void decode(DecodeInputStream inputStream) {
     byte[] bytes = inputStream.readNBytes(Lua.INTEGER);
     this.value = ByteUtils.decodeLong(bytes);
   }

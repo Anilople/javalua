@@ -39,6 +39,10 @@ public class LuaNumber implements LuaValue {
     this.value = value;
   }
 
+  public boolean isPositive() {
+    return value > 0;
+  }
+
   @Override
   public LuaType type() {
     return LuaType.LUA_TNUMBER;

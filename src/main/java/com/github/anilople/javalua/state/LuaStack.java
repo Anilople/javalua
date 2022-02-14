@@ -1,7 +1,12 @@
 package com.github.anilople.javalua.state;
 
+
 /**
  * 栈索引从1开始
+ *
+ * 在 [1, top] 内的是有效索引
+ *
+ * 在 [1, size] 内的是可接受索引
  *
  * @author wxq
  */
@@ -12,6 +17,10 @@ public class LuaStack {
   public LuaStack(int size) {
     this.luaValues = new LuaValue[size];
     this.top = 0;
+  }
+
+  int size() {
+    return this.luaValues.length;
   }
 
   /**
@@ -57,40 +66,45 @@ public class LuaStack {
     return index + this.top + 1;
   }
 
-  void ensureValid(int index) {
+  /**
+   * @throws IllegalArgumentException 如果不是 可接受索引
+   */
+  void ensureAcceptable(int index) {
     var absIndex = this.absIndex(index);
     if (absIndex <= 0) {
-      throw new IllegalArgumentException("invalid absIndex " + absIndex + " <= 0, index " + index);
+      throw new IllegalArgumentException("不是 可接受索引 absIndex " + absIndex + " <= 0, index " + index);
     }
-    if (absIndex > this.top) {
+    if (absIndex > this.size()) {
       throw new IllegalArgumentException(
-          "invalid absIndex " + absIndex + " > top " + this.top + ", index " + index);
+          "不是 可接受索引 absIndex " + absIndex + " > size " + this.size() + ", index " + index);
     }
-  }
-
-  public boolean isValid(int index) {
-    var absIndex = this.absIndex(index);
-    return absIndex > 0 && absIndex <= this.top;
   }
 
   /**
-   * @return null 如果索引无效
+   * page 56
+   *
+   * @return {@link LuaValue#NIL} 如果索引无效
    */
   public LuaValue get(int index) {
-    if (!this.isValid(index)) {
-      return null;
-    }
     var absIndex = this.absIndex(index);
-    return this.luaValues[absIndex - 1];
+    if (absIndex > 0 && absIndex <= this.top) {
+      return this.luaValues[absIndex - 1];
+    }
+    return LuaValue.NIL;
   }
 
   /**
+   * page 56
    * @throws IllegalArgumentException 如果索引无效
    */
   public void set(int index, LuaValue luaValue) {
-    this.ensureValid(index);
     var absIndex = this.absIndex(index);
-    this.luaValues[absIndex - 1] = luaValue;
+    if (absIndex > 0 && absIndex <= this.getTop()) {
+      this.luaValues[absIndex - 1] = luaValue;
+    } else {
+      throw new IllegalArgumentException(
+          "索引不是 有效索引 index " + index + " absIndex " + absIndex + " top " + this.getTop());
+    }
   }
 
   public int getTop() {

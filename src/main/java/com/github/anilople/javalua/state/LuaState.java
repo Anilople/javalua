@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
+import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
@@ -10,7 +11,11 @@ import java.io.PrintStream;
 public interface LuaState {
 
   static LuaState create() {
-    return new DefaultLuaStateImpl();
+    return new DefaultLuaStateImpl(20, null);
+  }
+
+  static LuaState create(int stackSize, Prototype prototype) {
+    return new DefaultLuaStateImpl(stackSize, prototype);
   }
 
   static void printStack(LuaState luaState) {
@@ -60,10 +65,18 @@ public interface LuaState {
 
   void pop(int n);
 
+  /**
+   * page 60
+   */
   void copy(int from, int to);
 
   void pushValue(int index);
 
+  /**
+   * {@code #define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))}
+   *
+   * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/lua.h#L373">lua.h#L373 lua_replace</a>
+   */
   void replace(int index);
 
   void insert(int index);
