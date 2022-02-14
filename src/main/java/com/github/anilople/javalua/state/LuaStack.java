@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.state;
 
-
 /**
  * 栈索引从1开始
  *
