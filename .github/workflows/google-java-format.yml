@@ -3,8 +3,8 @@
 
 name: Google Java Format
 
-# format whenever push or pull request
-on: [ push, pull_request ]
+# format when xxx
+on: [ push ]
 
 jobs:
   formatting:
