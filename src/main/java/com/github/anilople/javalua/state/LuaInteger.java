@@ -56,6 +56,6 @@ public class LuaInteger implements LuaValue {
 
   @Override
   public String toString() {
-    return "[" + this.value + "]";
+    return "" + this.value + "";
   }
 }

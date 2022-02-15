@@ -41,6 +41,6 @@ public class LuaString implements LuaValue {
 
   @Override
   public String toString() {
-    return "[\"" + this.value + "\"]";
+    return "\"" + this.value + "\"";
   }
 }

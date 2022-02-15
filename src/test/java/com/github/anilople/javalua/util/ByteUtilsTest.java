@@ -127,4 +127,21 @@ class ByteUtilsTest {
     assertEquals(0xFFFF, ByteUtils.getBits(0xFFFFFFFF, 1, 16));
     assertEquals(0xFFFF, ByteUtils.getBits(0xFFFFFFFF, 16, 16));
   }
+
+  @Test
+  void getHighest1Position() {
+    assertEquals(31, ByteUtils.getHighest1Position(Integer.MIN_VALUE));
+    assertEquals(31, ByteUtils.getHighest1Position(-1));
+    assertEquals(31, ByteUtils.getHighest1Position(-3));
+    assertEquals(31, ByteUtils.getHighest1Position(-12345));
+
+    assertEquals(-1, ByteUtils.getHighest1Position(0));
+    assertEquals(0, ByteUtils.getHighest1Position(1));
+    assertEquals(1, ByteUtils.getHighest1Position(2));
+    assertEquals(1, ByteUtils.getHighest1Position(3));
+    assertEquals(2, ByteUtils.getHighest1Position(4));
+    assertEquals(3, ByteUtils.getHighest1Position(8));
+
+    assertEquals(30, ByteUtils.getHighest1Position(Integer.MAX_VALUE));
+  }
 }

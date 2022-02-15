@@ -43,6 +43,10 @@ public class LuaNumber implements LuaValue {
     return value > 0;
   }
 
+  public boolean isNaN() {
+    return Double.isNaN(this.value);
+  }
+
   @Override
   public LuaType type() {
     return LuaType.LUA_TNUMBER;
@@ -50,6 +54,6 @@ public class LuaNumber implements LuaValue {
 
   @Override
   public String toString() {
-    return "[" + this.value + "]";
+    return "" + this.value + "";
   }
 }

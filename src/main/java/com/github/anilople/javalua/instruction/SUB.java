@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 
-class SUB extends AbstractInstruction {
+class SUB extends ArithmeticInstruction {
   SUB(int originCodeValue) {
     super(originCodeValue);
   }
