@@ -2,6 +2,7 @@ package com.github.anilople.javalua.instruction.operator;
 
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaString;
+import com.github.anilople.javalua.state.LuaTable;
 import com.github.anilople.javalua.state.LuaValue;
 
 /**
@@ -17,6 +18,10 @@ public class Length {
       LuaString luaString = (LuaString) luaValue;
       var len = luaString.getValue().length();
       return new LuaInteger(len);
+    }
+    if (luaValue instanceof LuaTable) {
+      LuaTable luaTable = (LuaTable) luaValue;
+      return luaTable.length();
     }
     throw new IllegalStateException("" + luaValue);
   }

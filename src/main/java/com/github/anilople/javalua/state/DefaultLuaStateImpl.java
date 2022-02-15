@@ -168,6 +168,11 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   @Override
+  public LuaValue toLuaValue(int index) {
+    return luaStack.get(index);
+  }
+
+  @Override
   public LuaBoolean toLuaBoolean(int index) {
     var value = luaStack.get(index);
     return LuaBoolean.from(value);
@@ -294,5 +299,76 @@ public class DefaultLuaStateImpl implements LuaState {
         luaStack.push(result);
       }
     }
+  }
+
+  @Override
+  public void newTable() {
+    this.createTable(0, 0);
+  }
+
+  @Override
+  public void createTable(int arraySize, int mapSize) {
+    LuaTable luaTable = LuaTable.of(arraySize, mapSize);
+    luaStack.push(luaTable);
+  }
+
+  LuaType getTable(LuaValue table, LuaValue key) {
+    if (!(table instanceof LuaTable)) {
+      throw new IllegalStateException("not a table! It is " + table);
+    }
+    LuaTable luaTable = (LuaTable) table;
+    var value = luaTable.get(key);
+    this.luaStack.push(value);
+    return value.type();
+  }
+
+  @Override
+  public LuaType getTable(int index) {
+    var table = this.luaStack.get(index);
+    var key = this.luaStack.pop();
+    return this.getTable(table, key);
+  }
+
+  @Override
+  public LuaType getField(int index, LuaString key) {
+    var table = this.luaStack.get(index);
+    return this.getTable(table, key);
+  }
+
+  @Override
+  public LuaType getI(int index, LuaInteger key) {
+    var table = this.luaStack.get(index);
+    return this.getTable(table, key);
+  }
+
+  void setTable(LuaValue table, LuaValue key, LuaValue value) {
+    if (!(table instanceof LuaTable)) {
+      // TODO, page 130 第11章 再 完善
+      throw new IllegalStateException("not a table! It is " + table);
+    }
+    LuaTable luaTable = (LuaTable) table;
+    luaTable.put(key, value);
+  }
+
+  @Override
+  public void setTable(int index) {
+    var table = luaStack.get(index);
+    var value = luaStack.pop();
+    var key = luaStack.pop();
+    this.setTable(table, key, value);
+  }
+
+  @Override
+  public void setField(int index, LuaString key) {
+    var table = luaStack.get(index);
+    var value = luaStack.pop();
+    this.setTable(table, key, value);
+  }
+
+  @Override
+  public void setI(int index, LuaInteger key) {
+    var table = luaStack.get(index);
+    var value = luaStack.pop();
+    this.setTable(table, key, value);
   }
 }

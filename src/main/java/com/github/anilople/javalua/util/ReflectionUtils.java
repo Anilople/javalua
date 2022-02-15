@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.util;
 
-import com.github.anilople.javalua.util.ByteUtils.DecodeRuntimeException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -80,7 +79,7 @@ public class ReflectionUtils {
     try {
       constructor = clazz.getConstructor();
     } catch (NoSuchMethodException e) {
-      throw new DecodeRuntimeException("no arg constructor doesn't exist in class " + clazz, e);
+      throw new IllegalArgumentException("no arg constructor doesn't exist in class " + clazz, e);
     }
     constructor.setAccessible(true);
 
@@ -88,7 +87,7 @@ public class ReflectionUtils {
     try {
       object = constructor.newInstance();
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-      throw new DecodeRuntimeException("cannot new instance of class " + clazz, e);
+      throw new IllegalArgumentException("cannot new instance of class " + clazz, e);
     }
     return object;
   }

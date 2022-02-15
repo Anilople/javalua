@@ -25,33 +25,8 @@ public interface LuaState {
   static void printStack(LuaState luaState, PrintStream printStream) {
     final var top = luaState.getTop();
     for (int i = 1; i <= top; i++) {
-      final var luaType = luaState.luaType(i);
-      switch (luaType) {
-        case LUA_TBOOLEAN:
-          LuaBoolean luaBoolean = luaState.toLuaBoolean(i);
-          printStream.print(luaBoolean.toString());
-          break;
-        case LUA_TNUMBER:
-          if (luaState.isLuaInteger(i)) {
-            LuaInteger luaInteger = luaState.toLuaInteger(i);
-            printStream.print(luaInteger.toString());
-          } else if (luaState.isLuaNumber(i)) {
-            LuaNumber luaNumber = luaState.toLuaNumber(i);
-            printStream.print(luaNumber.toString());
-          } else {
-            throw new IllegalStateException("index " + i + " is not a number");
-          }
-
-          break;
-        case LUA_TSTRING:
-          LuaString luaString = luaState.toLuaString(i);
-          printStream.print(luaString.toString());
-          break;
-        default:
-          String typeName = luaState.luaTypeName(luaType);
-          printStream.print("[" + typeName + "]");
-          break;
-      }
+      LuaValue luaValue = luaState.toLuaValue(i);
+      printStream.print("[" + luaValue.toString() + "]");
     }
     printStream.println();
   }
@@ -106,6 +81,8 @@ public interface LuaState {
 
   boolean isLuaString(int index);
 
+  LuaValue toLuaValue(int index);
+
   LuaBoolean toLuaBoolean(int index);
 
   LuaInteger toLuaInteger(int index);
@@ -156,4 +133,28 @@ public interface LuaState {
    * 如果 n = 0，push 空字符；
    */
   void concat(int n);
+
+  void newTable();
+  void createTable(int arraySize, int mapSize);
+
+  /**
+   * index对应的值作为table，栈顶的值作为key
+   */
+  LuaType getTable(int index);
+  LuaType getField(int index, LuaString key);
+  /**
+   * 根据索引获取数组元素
+   */
+  LuaType getI(int index, LuaInteger key);
+
+  /**
+   * 把栈顶的key和value放入index对应的table中
+   */
+  void setTable(int index);
+  void setField(int index, LuaString key);
+
+  /**
+   * index对应的值作为table，栈顶的值作为value
+   */
+  void setI(int index, LuaInteger key);
 }

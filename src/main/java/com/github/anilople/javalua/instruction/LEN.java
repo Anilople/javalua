@@ -2,6 +2,11 @@ package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.api.LuaVM;
 
+/**
+ * page 103
+ *
+ * R(A) := length of R(B)
+ */
 class LEN extends AbstractInstruction {
   LEN(int originCodeValue) {
     super(originCodeValue);
@@ -9,9 +14,16 @@ class LEN extends AbstractInstruction {
 
   @Override
   public void applyTo(LuaVM luaVM) {
-    var a = operand.A();
-    var b = operand.B();
-    luaVM.len(b + 1);
-    luaVM.replace(a + 1);
+    var aIndex = operand.A() + 1;
+    var bIndex = operand.B() + 1;
+    luaVM.len(bIndex);
+    luaVM.replace(aIndex);
+  }
+
+  @Override
+  public String toString() {
+    var aIndex = operand.A() + 1;
+    var bIndex = operand.B() + 1;
+    return this.getClass().getSimpleName() + String.format(" R(%d) := length of R(%d) ", aIndex, bIndex);
   }
 }

@@ -15,6 +15,6 @@ public class LuaNil implements LuaValue {
 
   @Override
   public String toString() {
-    return "[nil]";
+    return "nil";
   }
 }

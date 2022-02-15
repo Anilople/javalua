@@ -383,17 +383,48 @@ public class ByteUtils {
     return value & mask;
   }
 
-  static class EncodeRuntimeException extends RuntimeException {
-
-    public EncodeRuntimeException(String message, Throwable e) {
-      super(message, e);
+  /**
+   * @return 最高位的1所在的位置。-1 如果value是0
+   */
+  public static int getHighest1Position(int value) {
+    if (value == 0) {
+      return -1;
     }
-  }
-
-  static class DecodeRuntimeException extends RuntimeException {
-
-    public DecodeRuntimeException(String message, Throwable e) {
-      super(message, e);
+    if (value < 0) {
+      return Integer.SIZE - 1;
     }
+    int position = -1;
+
+//    // for 循环实现
+//    for (; value > 0; value >>= 1) {
+//      position++;
+//    }
+//    return position;
+
+    // 二分实现
+    if ((value >> 16) > 0) {
+      position += 16;
+      value >>= 16;
+    }
+    if ((value >> 8) > 0) {
+      position += 8;
+      value >>= 8;
+    }
+    if ((value >> 4) > 0) {
+      position += 4;
+      value >>= 4;
+    }
+    if ((value >> 2) > 0) {
+      position += 2;
+      value >>= 2;
+    }
+    if ((value >> 1) > 0) {
+      position += 1;
+      value >>= 1;
+    }
+    if (value > 0) {
+      position += 1;
+    }
+    return position;
   }
 }

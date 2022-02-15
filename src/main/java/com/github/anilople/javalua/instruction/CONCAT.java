@@ -14,7 +14,7 @@ class CONCAT extends AbstractInstruction {
 
     var n = end - start + 1;
     luaVM.checkStack(n);
-    for (int i = start; i < end; i++) {
+    for (int i = start; i <= end; i++) {
       luaVM.pushValue(i);
     }
 

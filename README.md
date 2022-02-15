@@ -17,6 +17,7 @@ Use Java to write lua interpreter
 工具：
 
 * 反编译 https://youtu.be/2LPaqYFPrfY https://github.com/viruscamp/luadec
+* `luac53 -l -`，然后输入lua代码，按`Ctrl + Z`结束输入，可以得到反编译后的结果
 
 ## 第二部分 Lua虚拟机和Lua API
 
@@ -200,3 +201,40 @@ stack size可以调得比较大，top也可以提前setTop(xxx)配置得和寄�
 
 如果replace执行时，stack内仅有一个元素，如何处理？
 
+### 第7章 表
+
+Lua没有数组，列表，哈希表等数据结构
+
+只有表（Table），可以直接当成数组和列表使用，也可以用来实现其它各种数据结构
+
+本质上是关联数组（Associative Array，也叫作Dictionary或者Map）
+
+表构造器语法和JSON语法相似
+
+```lua
+local t = {} -- 空表
+local p = {x = 100, y = 200} -- 记录
+```
+
+如果表的key全部是字符串，称这个表为记录（Record）
+
+使用表时，key不能是nil或者浮点数NaN，value可以是任意值
+
+```lua
+t[false] = nil;
+t["pi"] = 3.14;
+t[t] = "table";
+t[10] = assert;
+```
+
+如果某个表的键全部是正整数，就称这个表为列表（List），或者数组
+
+注意索引从1开始
+
+数组中的nil值为洞（Hole），如果一个数组中没有洞，那么称这个数组为序列（Sequence）
+
+由于数组使用频繁，Lua 5.0开始引入数组和哈希表来实现表
+
+为了解决9个比特无法表示超过512的数字，造成NEWTABLE的size无法足够大，Lua使用一种叫浮点字节（Floating Point Byte）的编码方式，仅用1个字节来表示浮点数，例如，对于 eeeeexxx，当 eeeee == 0时，表示整数xxx，否则表示 (1xxx) * 2^(eeeee - 1)
+
+LEN指令对于table取的是数组的长度，参考 page 124
