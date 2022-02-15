@@ -30,6 +30,7 @@ class SETTABLE extends TableInstruction {
     var aIndex = operand.A() + 1;
     var b = operand.B();
     var c = operand.C();
-    return this.getClass().getSimpleName() + String.format(" R(%d)[RK(%d)] = RK(%d) ", aIndex, b, c);
+    return this.getClass().getSimpleName()
+        + String.format(" R(%d)[RK(%d)] = RK(%d) ", aIndex, b, c);
   }
 }

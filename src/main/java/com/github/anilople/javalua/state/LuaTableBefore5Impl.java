@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.state;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
     this.ensureKeyValid(key);
     this.map.put(key, value);
     if (this.map.size() > this.mapSize) {
-//      throw new IllegalStateException("table's size overload, maximum is " + this.mapSize);
+      //      throw new IllegalStateException("table's size overload, maximum is " + this.mapSize);
     }
   }
 

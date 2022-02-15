@@ -395,11 +395,11 @@ public class ByteUtils {
     }
     int position = -1;
 
-//    // for 循环实现
-//    for (; value > 0; value >>= 1) {
-//      position++;
-//    }
-//    return position;
+    //    // for 循环实现
+    //    for (; value > 0; value >>= 1) {
+    //      position++;
+    //    }
+    //    return position;
 
     // 二分实现
     if ((value >> 16) > 0) {

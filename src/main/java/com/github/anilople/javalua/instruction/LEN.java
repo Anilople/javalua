@@ -24,6 +24,7 @@ class LEN extends AbstractInstruction {
   public String toString() {
     var aIndex = operand.A() + 1;
     var bIndex = operand.B() + 1;
-    return this.getClass().getSimpleName() + String.format(" R(%d) := length of R(%d) ", aIndex, bIndex);
+    return this.getClass().getSimpleName()
+        + String.format(" R(%d) := length of R(%d) ", aIndex, bIndex);
   }
 }

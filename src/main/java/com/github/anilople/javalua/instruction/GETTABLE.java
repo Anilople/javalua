@@ -29,6 +29,7 @@ class GETTABLE extends TableInstruction {
     var aIndex = operand.A() + 1;
     var bIndex = operand.B() + 1;
     var c = operand.C();
-    return this.getClass().getSimpleName() + String.format(" R(%d) = R(%d)[RK(%d)] ", aIndex, bIndex, c);
+    return this.getClass().getSimpleName()
+        + String.format(" R(%d) = R(%d)[RK(%d)] ", aIndex, bIndex, c);
   }
 }

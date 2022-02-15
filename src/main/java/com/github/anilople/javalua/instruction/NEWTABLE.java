@@ -34,6 +34,7 @@ class NEWTABLE extends TableInstruction {
     var aIndex = operand.A() + 1;
     var b = operand.B();
     var c = operand.C();
-    return this.getClass().getSimpleName() + String.format(" R(%d) := {} (size = array(%d),map(%d)) ", aIndex, b, c);
+    return this.getClass().getSimpleName()
+        + String.format(" R(%d) := {} (size = array(%d),map(%d)) ", aIndex, b, c);
   }
 }

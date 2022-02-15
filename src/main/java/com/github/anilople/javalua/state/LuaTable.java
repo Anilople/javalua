@@ -14,6 +14,7 @@ public interface LuaTable extends LuaValue {
    * @return {@link LuaValue#NIL}如果key不存在
    */
   LuaValue get(LuaValue key);
+
   void put(LuaValue key, LuaValue value);
 
   /**
@@ -21,6 +22,7 @@ public interface LuaTable extends LuaValue {
    * @return 数组的长度
    */
   LuaInteger length();
+
   @Override
   default LuaType type() {
     return LuaType.LUA_TTABLE;

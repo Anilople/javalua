@@ -28,6 +28,7 @@ class LuaTable5Impl extends AbstractLuaTable {
    * lua 5.0 开始引入array来提高table的性能
    */
   LuaValue[] array;
+
   Map<LuaValue, LuaValue> map;
 
   @Override
@@ -65,16 +66,14 @@ class LuaTable5Impl extends AbstractLuaTable {
       return this.array[index - 1];
     } else {
       var value = this.map.get(key);
-      return value != null? value : LuaValue.NIL;
+      return value != null ? value : LuaValue.NIL;
     }
   }
 
   /**
    * 把{@link #array}尾部的洞全部删除
    */
-  void shrinkArray() {
-
-  }
+  void shrinkArray() {}
 
   public void put(LuaValue key, LuaValue value) {
     // check

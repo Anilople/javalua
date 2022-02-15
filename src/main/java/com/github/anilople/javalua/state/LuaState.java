@@ -135,12 +135,14 @@ public interface LuaState {
   void concat(int n);
 
   void newTable();
+
   void createTable(int arraySize, int mapSize);
 
   /**
    * index对应的值作为table，栈顶的值作为key
    */
   LuaType getTable(int index);
+
   LuaType getField(int index, LuaString key);
   /**
    * 根据索引获取数组元素
@@ -151,6 +153,7 @@ public interface LuaState {
    * 把栈顶的key和value放入index对应的table中
    */
   void setTable(int index);
+
   void setField(int index, LuaString key);
 
   /**
