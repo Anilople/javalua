@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 
-class BNOT extends AbstractInstruction {
+class BNOT extends BitwiseInstruction {
   BNOT(int originCodeValue) {
     super(originCodeValue);
   }

@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 
-class LT extends AbstractInstruction {
+class LT extends ComparisonInstruction {
   LT(int originCodeValue) {
     super(originCodeValue);
   }

@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 
-class BAND extends AbstractInstruction {
+class BAND extends BitwiseInstruction {
   BAND(int originCodeValue) {
     super(originCodeValue);
   }

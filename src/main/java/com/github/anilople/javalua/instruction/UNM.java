@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 
-class UNM extends AbstractInstruction {
+class UNM extends ArithmeticInstruction {
   UNM(int originCodeValue) {
     super(originCodeValue);
   }

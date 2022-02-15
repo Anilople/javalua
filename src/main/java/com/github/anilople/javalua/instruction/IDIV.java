@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 
-class IDIV extends AbstractInstruction {
+class IDIV extends ArithmeticInstruction {
   IDIV(int originCodeValue) {
     super(originCodeValue);
   }

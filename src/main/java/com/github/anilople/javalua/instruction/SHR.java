@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 
-class SHR extends AbstractInstruction {
+class SHR extends BitwiseInstruction {
   SHR(int originCodeValue) {
     super(originCodeValue);
   }

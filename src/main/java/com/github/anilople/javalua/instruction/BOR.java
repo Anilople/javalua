@@ -3,7 +3,7 @@ package com.github.anilople.javalua.instruction;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 
-class BOR extends AbstractInstruction {
+class BOR extends BitwiseInstruction {
   BOR(int originCodeValue) {
     super(originCodeValue);
   }
