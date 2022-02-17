@@ -21,6 +21,15 @@ public class BinaryChunk implements Encodable, Decodable {
     return binaryChunk;
   }
 
+  /**
+   *
+   * @param bytes 整个二进制文件的内容
+   */
+  public static Prototype getPrototype(byte[] bytes) {
+    var binaryChunk = of(bytes);
+    return binaryChunk.getMainFunc();
+  }
+
   Header header = new Header();
   byte sizeUpvalues;
   Prototype mainFunc = new Prototype();

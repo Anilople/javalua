@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.state.LuaState;
 
 class GETTABUP extends AbstractInstruction {
   GETTABUP(int originCodeValue) {
@@ -8,7 +8,7 @@ class GETTABUP extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
+  public void applyTo(LuaState luaState) {
     throw new UnsupportedOperationException();
   }
 }

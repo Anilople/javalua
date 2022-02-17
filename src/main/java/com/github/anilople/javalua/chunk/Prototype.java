@@ -32,7 +32,11 @@ public class Prototype implements Encodable, Decodable {
    * 固定参数个数
    */
   byte numParams;
-
+  /**
+   * 是否是vararg函数（参数个数可以是多个）
+   *
+   * page 150
+   */
   byte isVararg;
   /**
    * 寄存器数量

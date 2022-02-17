@@ -2,6 +2,7 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
@@ -11,7 +12,7 @@ import java.io.PrintStream;
 public interface LuaState {
 
   static LuaState create() {
-    return new DefaultLuaStateImpl(20, null);
+    return new DefaultLuaStateImpl(20, new Prototype());
   }
 
   static LuaState create(int stackSize, Prototype prototype) {
@@ -160,4 +161,69 @@ public interface LuaState {
    * index对应的值作为table，栈顶的值作为value
    */
   void setI(int index, LuaInteger key);
+
+  /**
+   * pop函数调用帧
+   */
+  void popCallFrame();
+
+  /**
+   * 返回当前pc，不是必须的方法，仅测试使用
+   */
+  int pc();
+
+  /**
+   * 修改PC（用来实现跳转指令）
+   */
+  void addPC(int n);
+
+  /**
+   * 取出当前指令，将PC指向下一条指令
+   * <p>
+   * 虚拟机循环会使用，LOADKX等少数几个指令也会用到
+   */
+  Instruction fetch();
+
+  /**
+   * 将指定常量推入栈顶
+   * <p>
+   * LOADK和LOADKX会使用
+   */
+  void getConst(int index);
+
+  /**
+   * page 94
+   * <p>
+   * 将指定常量或栈值推入栈顶
+   * <p>
+   * 不是必须的方法，放这里是为了方便指令的实现，例如算术运算指令
+   * <p>
+   * 传递的参数实际上是 {@link com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode#iABC} 模式指令里的
+   * {@link com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMask#OpArgK} 类型，总共 9 bits
+   * <p>
+   * 如果最高位是1，那么参数里存放的是常量表索引，把最高位去掉就可以得到索引值。 如果最高位是0，参数里存放的就是寄存器索引值
+   */
+  void getRK(int rk);
+
+  /**
+   * page 148
+   *
+   * 把主函数原型实例化为闭包并推入栈顶
+   *
+   * 如果加载失败，需要在栈顶留下一条错误信息
+   *
+   * @param binaryChunk chunk数据
+   * @param chunkName chunk的名字，供加载错误或者调试的时候使用
+   * @param mode 加载模式 b t 或者 bt
+   * @return 0 如果加载成功，非0如果加载失败
+   */
+  int load(byte[] binaryChunk, String chunkName, String mode);
+
+  /**
+   * 对lua函数进行调用
+   *
+   * @param nArgs 函数的参数个数
+   * @param nResults 需要的返回值数量，如果是-1，被调函数的返回值会全部留在栈顶
+   */
+  void call(int nArgs, int nResults);
 }

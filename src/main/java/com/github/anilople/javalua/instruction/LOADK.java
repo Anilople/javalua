@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.state.LuaState;
 
 /**
  * 常量加载到指定寄存器
@@ -11,7 +11,7 @@ class LOADK extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
+  public void applyTo(LuaState luaState) {
     var a = operand.A();
     var Bx = operand.Bx();
 
@@ -21,7 +21,7 @@ class LOADK extends AbstractInstruction {
     var constantIndex = Bx;
 
     // 寄存器索引 可能就是栈顶
-    luaVM.getConst(constantIndex);
-    luaVM.replace(registerIndex);
+    luaState.getConst(constantIndex);
+    luaState.replace(registerIndex);
   }
 }

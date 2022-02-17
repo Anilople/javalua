@@ -238,3 +238,52 @@ t[10] = assert;
 为了解决9个比特无法表示超过512的数字，造成NEWTABLE的size无法足够大，Lua使用一种叫浮点字节（Floating Point Byte）的编码方式，仅用1个字节来表示浮点数，例如，对于 eeeeexxx，当 eeeee == 0时，表示整数xxx，否则表示 (1xxx) * 2^(eeeee - 1)
 
 LEN指令对于table取的是数组的长度，参考 page 124
+
+### 第8章 函数调用
+
+```lua
+-- 固定参数声明，调用时可以只传一部分
+function f(a, b, b)
+    print(a, b, c)
+end
+f()
+f(1, 2)
+f(1, 2, 3, 4, 5)
+
+-- 变长参数 VARARG
+function f(a, ...)
+    local b, c = ...
+    local t = {a, ...}
+    print(a, b, c, #t, ...)
+end
+
+-- 返回任意数量个返回值
+function f()
+    return 1, 2, 3
+end
+a, b = f();
+a, b, c = f();
+a, b, c, d = f();
+```
+
+函数调用栈（Call Stack）和Lua栈不同，里面的element是调用帧（Call Frame）
+
+当前函数：当前正在执行的函数
+
+当前帧：当前函数使用的调用帧
+
+```mermaid
+graph TD
+	subgraph a
+		主调函数
+		主调帧
+	end
+	subgraph b
+		被调函数
+		被调帧
+	end
+	主调函数 --> |调用|被调函数
+	主调函数 --> |使用|主调帧
+	被调函数 --> |使用|被调帧
+```
+

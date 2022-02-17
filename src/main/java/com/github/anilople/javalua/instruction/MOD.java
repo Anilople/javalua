@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
+import com.github.anilople.javalua.state.LuaState;
 
 class MOD extends ArithmeticInstruction {
   MOD(int originCodeValue) {
@@ -9,7 +9,7 @@ class MOD extends ArithmeticInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
-    binaryArithmeticOperator(luaVM, ArithmeticOperator.LUA_OPMOD);
+  public void applyTo(LuaState luaState) {
+    binaryArithmeticOperator(luaState, ArithmeticOperator.LUA_OPMOD);
   }
 }

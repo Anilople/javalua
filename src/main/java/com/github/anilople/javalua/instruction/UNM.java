@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
+import com.github.anilople.javalua.state.LuaState;
 
 class UNM extends ArithmeticInstruction {
   UNM(int originCodeValue) {
@@ -9,11 +9,11 @@ class UNM extends ArithmeticInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
+  public void applyTo(LuaState luaState) {
     var a = operand.A();
     var b = operand.B();
-    luaVM.pushValue(b + 1);
-    luaVM.arithmetic(ArithmeticOperator.LUA_OPUNM);
-    luaVM.replace(a + 1);
+    luaState.pushValue(b + 1);
+    luaState.arithmetic(ArithmeticOperator.LUA_OPUNM);
+    luaState.replace(a + 1);
   }
 }

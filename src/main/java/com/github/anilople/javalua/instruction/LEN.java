@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.state.LuaState;
 
 /**
  * page 103
@@ -13,11 +13,11 @@ class LEN extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
+  public void applyTo(LuaState luaState) {
     var aIndex = operand.A() + 1;
     var bIndex = operand.B() + 1;
-    luaVM.len(bIndex);
-    luaVM.replace(aIndex);
+    luaState.len(bIndex);
+    luaState.replace(aIndex);
   }
 
   @Override

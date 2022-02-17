@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
+import com.github.anilople.javalua.state.LuaState;
 
 class MUL extends ArithmeticInstruction {
   MUL(int originCodeValue) {
@@ -9,7 +9,7 @@ class MUL extends ArithmeticInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
-    binaryArithmeticOperator(luaVM, ArithmeticOperator.LUA_OPMUL);
+  public void applyTo(LuaState luaState) {
+    binaryArithmeticOperator(luaState, ArithmeticOperator.LUA_OPMUL);
   }
 }

@@ -9,117 +9,44 @@ package com.github.anilople.javalua.state;
  *
  * @author wxq
  */
-public class LuaStack {
-  private LuaValue[] luaValues;
-  private int top;
+interface LuaStack {
 
-  public LuaStack(int size) {
-    this.luaValues = new LuaValue[size];
-    this.top = 0;
+  static LuaStack of(int size) {
+    return new LuaStackImpl(size);
   }
 
-  int size() {
-    return this.luaValues.length;
-  }
+  int size();
 
   /**
    * 检查栈的空闲空间是否还可以容纳至少n个值，
    *
    * 如果不满足，则扩容
    */
-  public void check(int n) {
-    int free = this.luaValues.length - this.top;
-    if (free <= 0) {
-      // 扩容
-      LuaValue[] newLuaValues = new LuaValue[(this.luaValues.length + free) * 2];
-      System.arraycopy(this.luaValues, 0, newLuaValues, 0, this.luaValues.length);
-      this.luaValues = newLuaValues;
-    }
-  }
+  void check(int n);
 
-  public void push(LuaValue luaValue) {
-    if (this.luaValues.length == this.top) {
-      throw new IllegalStateException("stack overflow in lua stack");
-    }
-    this.luaValues[this.top] = luaValue;
-    this.top++;
-  }
+  void push(LuaValue luaValue);
 
-  public LuaValue pop() {
-    if (this.top < 1) {
-      throw new IllegalStateException("stack overflow when pop");
-    }
-    this.top--;
-    LuaValue luaValue = this.luaValues[this.top];
-    this.luaValues[this.top] = LuaValue.NIL;
-    return luaValue;
-  }
+  LuaValue pop();
 
   /**
    * 转为绝对值索引，并不考虑索引是否有效
    */
-  public int absIndex(int index) {
-    if (index >= 0) {
-      return index;
-    }
-    return index + this.top + 1;
-  }
-
-  /**
-   * @throws IllegalArgumentException 如果不是 可接受索引
-   */
-  void ensureAcceptable(int index) {
-    var absIndex = this.absIndex(index);
-    if (absIndex <= 0) {
-      throw new IllegalArgumentException("不是 可接受索引 absIndex " + absIndex + " <= 0, index " + index);
-    }
-    if (absIndex > this.size()) {
-      throw new IllegalArgumentException(
-          "不是 可接受索引 absIndex " + absIndex + " > size " + this.size() + ", index " + index);
-    }
-  }
+  int absIndex(int index);
 
   /**
    * page 56
    *
    * @return {@link LuaValue#NIL} 如果索引无效
    */
-  public LuaValue get(int index) {
-    var absIndex = this.absIndex(index);
-    if (absIndex > 0 && absIndex <= this.top) {
-      return this.luaValues[absIndex - 1];
-    }
-    return LuaValue.NIL;
-  }
+  LuaValue get(int index);
 
   /**
    * page 56
    * @throws IllegalArgumentException 如果索引无效
    */
-  public void set(int index, LuaValue luaValue) {
-    var absIndex = this.absIndex(index);
-    if (absIndex > 0 && absIndex <= this.getTop()) {
-      this.luaValues[absIndex - 1] = luaValue;
-    } else {
-      throw new IllegalArgumentException(
-          "索引不是 有效索引 index " + index + " absIndex " + absIndex + " top " + this.getTop());
-    }
-  }
+  void set(int index, LuaValue luaValue);
 
-  public int getTop() {
-    return this.top;
-  }
+  int getTop();
 
-  public void reverse(int from, int to) {
-    from = absIndex(from);
-    to = absIndex(to);
-    while (from < to) {
-      var fromValue = this.get(from);
-      var toValue = this.get(to);
-      this.set(from, toValue);
-      this.set(to, fromValue);
-      from++;
-      to--;
-    }
-  }
+  void reverse(int from, int to);
 }

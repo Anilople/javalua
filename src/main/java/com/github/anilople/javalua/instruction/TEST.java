@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaValue;
 
 class TEST extends AbstractInstruction {
@@ -9,12 +9,12 @@ class TEST extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
+  public void applyTo(LuaState luaState) {
     final var aIndex = operand.A() + 1;
-    var aBooleanValue = luaVM.toLuaBoolean(aIndex);
+    var aBooleanValue = luaState.toLuaBoolean(aIndex);
     var expect = LuaValue.of(operand.C() != 0);
     if (aBooleanValue.equals(expect)) {
-      luaVM.addPC(1);
+      luaState.addPC(1);
     }
   }
 }

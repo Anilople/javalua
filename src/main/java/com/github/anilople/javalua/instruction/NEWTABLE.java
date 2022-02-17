@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.util.FloatingPointByte;
 
 /**
@@ -18,15 +18,15 @@ class NEWTABLE extends TableInstruction {
   }
 
   @Override
-  public void applyTo(LuaVM luaVM) {
+  public void applyTo(LuaState luaState) {
     var aIndex = operand.A() + 1;
     var b = operand.B();
     var c = operand.C();
 
     var arraySize = FloatingPointByte.decode(b);
     var mapSize = FloatingPointByte.decode(c);
-    luaVM.createTable(arraySize, mapSize);
-    luaVM.replace(aIndex);
+    luaState.createTable(arraySize, mapSize);
+    luaState.replace(aIndex);
   }
 
   @Override
