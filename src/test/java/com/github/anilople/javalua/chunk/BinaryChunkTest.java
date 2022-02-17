@@ -3,9 +3,9 @@ package com.github.anilople.javalua.chunk;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import constant.ResourceContentConstants;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.io.DecodeInputStream;
+import constant.ResourceContentConstants;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 

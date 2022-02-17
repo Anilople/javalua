@@ -40,11 +40,7 @@ public interface LuaVM extends LuaState {
   }
 
   static void eval(LuaVM luaVM) {
-    for (
-        var instruction = luaVM.fetch();
-        ;
-        instruction = luaVM.fetch()
-    ) {
+    for (var instruction = luaVM.fetch(); ; instruction = luaVM.fetch()) {
       if (Opcode.RETURN.equals(instruction.getOpcode())) {
         break;
       }

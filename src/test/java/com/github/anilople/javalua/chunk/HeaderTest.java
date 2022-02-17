@@ -4,8 +4,8 @@ import static com.github.anilople.javalua.chunk.Header.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import constant.ResourceContentConstants;
 import com.github.anilople.javalua.util.ByteUtils;
+import constant.ResourceContentConstants;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
