@@ -1,7 +1,11 @@
-package com.github.anilople.javalua;
+package constant;
+
+import util.ResourceReadUtils;
 
 /**
  * little endian 小端
+ *
+ * 汇总 src/test/resources 下的资源
  *
  * @author wxq
  */
@@ -19,5 +23,9 @@ public interface ResourceContentConstants {
   interface ch07 {
     byte[] newTableLuac53Out = ResourceReadUtils.readBytes("ch07/new_table.luac53.out");
     byte[] testLuac53Out = ResourceReadUtils.readBytes("ch07/test.luac53.out");
+  }
+
+  interface ch08 {
+    byte[] closure = ResourceReadUtils.readBytes("ch08/closure.luac53.out");
   }
 }
