@@ -2,7 +2,7 @@ package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.state.LuaState;
 
-class VARARG extends AbstractInstruction {
+class VARARG extends FunctionInstruction {
   VARARG(int originCodeValue) {
     super(originCodeValue);
   }

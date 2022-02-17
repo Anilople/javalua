@@ -2,7 +2,12 @@ package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.state.LuaState;
 
-class CLOSURE extends AbstractInstruction {
+/**
+ * 把当前Lua函数的子函数原型实例化为闭包，放入由操作数A指定的寄存器中
+ *
+ * R(A) := closure(KPROTO[Bx])
+ */
+class CLOSURE extends FunctionInstruction {
   CLOSURE(int originCodeValue) {
     super(originCodeValue);
   }

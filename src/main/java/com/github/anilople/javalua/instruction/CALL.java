@@ -2,7 +2,7 @@ package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.state.LuaState;
 
-class CALL extends AbstractInstruction {
+class CALL extends FunctionInstruction {
   CALL(int originCodeValue) {
     super(originCodeValue);
   }
