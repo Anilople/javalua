@@ -376,9 +376,7 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   @Override
-  public void popCallFrame() {
-
-  }
+  public void popCallFrame() {}
 
   @Override
   public int pc() {
@@ -431,11 +429,11 @@ public class DefaultLuaStateImpl implements LuaState {
     var args = this.callStack.topCallFrame().popN(nArgs);
     // pop function
     this.callStack.topCallFrame().pop();
-    
+
     this.callStack.pushCallFrame(luaClosure, nArgs, args);
     this.runLuaClosure();
     var functionCallFrame = this.callStack.popCallFrame();
-    
+
     if (0 != nResults) {
       // 把被调函数的所有返回值 放入 当前的 调用帧
       var results = functionCallFrame.popResults();
@@ -443,13 +441,9 @@ public class DefaultLuaStateImpl implements LuaState {
       this.callStack.topCallFrame().pushN(results);
     }
   }
-  
+
   void runLuaClosure() {
-    for (
-        var instruction = this.fetch();
-        ;
-        instruction = this.fetch()
-    ) {
+    for (var instruction = this.fetch(); ; instruction = this.fetch()) {
       if (Opcode.RETURN.equals(instruction.getOpcode())) {
         // TODO, fix me
         break;

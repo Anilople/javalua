@@ -11,5 +11,4 @@ public interface LuaVM extends LuaState {
   static LuaVM create(int stackSize, Prototype prototype) {
     return new DefaultLuaVMImpl(stackSize, prototype);
   }
-
 }

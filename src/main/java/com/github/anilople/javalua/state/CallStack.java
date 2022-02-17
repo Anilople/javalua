@@ -28,6 +28,7 @@ class CallStack {
     this.callFrame = prev;
     return popped;
   }
+
   void pushCallFrame(LuaClosure luaClosure, int nArgs, LuaValue[] args) {
     var nRegs = luaClosure.prototype.getMaxStackSize();
     var nParams = luaClosure.prototype.getNumParams();
