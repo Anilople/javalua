@@ -24,6 +24,5 @@ class VARARG extends FunctionInstruction {
     } else {
       throw new UnsupportedOperationException();
     }
-
   }
 }

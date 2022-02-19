@@ -18,7 +18,6 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
     super(stackSize, prototype);
   }
 
-
   @Override
   public int pc() {
     return this.callStack.topCallFrame().getPc();

@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.state;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**

@@ -28,7 +28,6 @@ abstract class FunctionInstruction extends AbstractInstruction {
     }
   }
 
-
   static void popResults(int aIndex, int resultsAmount, LuaVM luaVM) {
     if (resultsAmount == 0) {
       // 没有返回值
@@ -43,7 +42,7 @@ abstract class FunctionInstruction extends AbstractInstruction {
       luaVM.pushLuaInteger(LuaValue.of(aIndex));
     }
   }
-  
+
   static void fixStack(int aIndex, LuaVM luaVM) {
     // 把函数的函数前半部分的返回值推入栈顶
     luaVM.toLuaInteger(-1);

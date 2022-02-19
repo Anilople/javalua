@@ -23,5 +23,4 @@ public class Page154Test {
     LuaVM luaVM = LuaVM.of(ch08.callOperandZero);
     LuaVM.eval(luaVM);
   }
-
 }

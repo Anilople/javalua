@@ -48,7 +48,6 @@ public interface LuaVM extends LuaState {
     }
   }
 
-
   /**
    * 返回当前pc，不是必须的方法，仅测试使用
    */
