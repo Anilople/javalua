@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
-import com.github.anilople.javalua.state.LuaState;
 
 class LE extends ComparisonInstruction {
   LE(int originCodeValue) {
@@ -9,7 +9,7 @@ class LE extends ComparisonInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
-    compare(luaState, ComparisonOperator.LUA_OPLE);
+  public void applyTo(LuaVM luaVM) {
+    compare(luaVM, ComparisonOperator.LUA_OPLE);
   }
 }

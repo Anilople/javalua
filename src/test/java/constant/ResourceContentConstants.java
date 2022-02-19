@@ -27,5 +27,8 @@ public interface ResourceContentConstants {
 
   interface ch08 {
     byte[] closure = ResourceReadUtils.readBytes("ch08/closure.luac53.out");
+    byte[] call = ResourceReadUtils.readBytes("ch08/call.luac53.out");
+    byte[] callOperandZero = ResourceReadUtils.readBytes("ch08/call_operand_zero.luac53.out");
+    byte[] RETURN = ResourceReadUtils.readBytes("ch08/return.luac53.out");
   }
 }

@@ -7,7 +7,7 @@ import com.github.anilople.javalua.util.ArrayUtils;
  *
  * @author wxq
  */
-class CallStack {
+public class CallStack {
 
   static CallStack of(int stackSize) {
     CallStack callStack = new CallStack();
@@ -51,7 +51,7 @@ class CallStack {
     this.callFrame = newCallFrame;
   }
 
-  CallFrame topCallFrame() {
+  public CallFrame topCallFrame() {
     return this.callFrame;
   }
 }

@@ -1,9 +1,9 @@
 package com.github.anilople.javalua.instruction;
 
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
-import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaValue;
 
 /**
@@ -32,7 +32,7 @@ abstract class AbstractInstruction implements Instruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     throw new UnsupportedOperationException();
   }
 
@@ -70,41 +70,41 @@ abstract class AbstractInstruction implements Instruction {
   /**
    * 二元运算
    */
-  void binaryArithmeticOperator(LuaState luaState, ArithmeticOperator operator) {
+  void binaryArithmeticOperator(LuaVM luaVM, ArithmeticOperator operator) {
     var a = operand.A();
     var b = operand.B();
     var c = operand.C();
-    luaState.getRK(b);
-    luaState.getRK(c);
-    luaState.arithmetic(operator);
-    luaState.replace(a + 1);
+    luaVM.getRK(b);
+    luaVM.getRK(c);
+    luaVM.arithmetic(operator);
+    luaVM.replace(a + 1);
   }
 
-  void binaryBitwiseOperator(LuaState luaState, BitwiseOperator operator) {
+  void binaryBitwiseOperator(LuaVM luaVM, BitwiseOperator operator) {
     var a = operand.A();
     var b = operand.B();
     var c = operand.C();
-    luaState.getRK(b);
-    luaState.getRK(c);
-    luaState.bitwise(operator);
-    luaState.replace(a + 1);
+    luaVM.getRK(b);
+    luaVM.getRK(c);
+    luaVM.bitwise(operator);
+    luaVM.replace(a + 1);
   }
 
   /**
    * 如果比较结果和操作数A（转换为布尔值）匹配，则跳过下一条指令。
    * <p/>不改变寄存器状态
    */
-  void compare(LuaState luaState, ComparisonOperator operator) {
-    luaState.getRK(operand.B());
-    luaState.getRK(operand.C());
+  void compare(LuaVM luaVM, ComparisonOperator operator) {
+    luaVM.getRK(operand.B());
+    luaVM.getRK(operand.C());
 
-    var compareResult = luaState.compare(-2, -1, operator);
+    var compareResult = luaVM.compare(-2, -1, operator);
     var expect = LuaValue.of(operand.A() == 0);
 
     if (compareResult.equals(expect)) {
-      luaState.addPC(1);
+      luaVM.addPC(1);
     }
 
-    luaState.pop(2);
+    luaVM.pop(2);
   }
 }

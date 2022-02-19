@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.state.LuaState;
+import com.github.anilople.javalua.api.LuaVM;
 
 class LOADNIL extends AbstractInstruction {
   LOADNIL(int originCodeValue) {
@@ -8,18 +8,18 @@ class LOADNIL extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     var a = operand.A();
     var b = operand.B();
     var start = a + 1;
     var length = b;
 
-    luaState.pushLuaNil();
+    luaVM.pushLuaNil();
 
     for (int i = 0; i < length; i++) {
-      luaState.copy(-1, start + i);
+      luaVM.copy(-1, start + i);
     }
 
-    luaState.pop(1);
+    luaVM.pop(1);
   }
 }

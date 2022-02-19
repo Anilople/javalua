@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
-import com.github.anilople.javalua.state.LuaState;
 
 class FORPREP extends AbstractInstruction {
   FORPREP(int originCodeValue) {
@@ -9,17 +9,17 @@ class FORPREP extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     final var aIndex = operand.A() + 1;
     final var sBx = operand.sBx();
 
     // R(A) -= R(A+2)
-    luaState.pushValue(aIndex);
-    luaState.pushValue(aIndex + 2);
-    luaState.arithmetic(ArithmeticOperator.LUA_OPSUB);
-    luaState.replace(aIndex);
+    luaVM.pushValue(aIndex);
+    luaVM.pushValue(aIndex + 2);
+    luaVM.arithmetic(ArithmeticOperator.LUA_OPSUB);
+    luaVM.replace(aIndex);
 
     // pc += sBx
-    luaState.addPC(sBx);
+    luaVM.addPC(sBx);
   }
 }

@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.state.LuaState;
+import com.github.anilople.javalua.api.LuaVM;
 
 class CONCAT extends AbstractInstruction {
   CONCAT(int originCodeValue) {
@@ -8,17 +8,17 @@ class CONCAT extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     var start = operand.B() + 1;
     var end = operand.C() + 1;
 
     var n = end - start + 1;
-    luaState.checkStack(n);
+    luaVM.checkStack(n);
     for (int i = start; i <= end; i++) {
-      luaState.pushValue(i);
+      luaVM.pushValue(i);
     }
 
-    luaState.concat(n);
-    luaState.replace(operand.A() + 1);
+    luaVM.concat(n);
+    luaVM.replace(operand.A() + 1);
   }
 }

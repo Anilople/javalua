@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.state.LuaState;
+import com.github.anilople.javalua.api.LuaVM;
 
 class LOADKX extends AbstractInstruction {
   LOADKX(int originCodeValue) {
@@ -8,13 +8,13 @@ class LOADKX extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     var a = operand.A();
 
-    var instruction = luaState.fetch();
+    var instruction = luaVM.fetch();
     var Ax = instruction.getOperand().Ax();
-    luaState.getConst(Ax);
+    luaVM.getConst(Ax);
 
-    luaState.replace(a + 1);
+    luaVM.replace(a + 1);
   }
 }

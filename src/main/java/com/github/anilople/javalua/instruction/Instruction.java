@@ -3,8 +3,8 @@ package com.github.anilople.javalua.instruction;
 import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMask.*;
 import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode.*;
 
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode;
-import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.util.Arrays;
 import java.util.Collections;
@@ -125,7 +125,7 @@ public interface Instruction {
 
   Operand getOperand();
 
-  void applyTo(LuaState luaState);
+  void applyTo(LuaVM luaVM);
 
   /**
    * 操作码

@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.state.LuaState;
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.LuaValue;
 
 class LOADBOOL extends AbstractInstruction {
@@ -9,17 +9,17 @@ class LOADBOOL extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     var a = operand.A();
     var b = operand.B();
     var c = operand.C();
-    luaState.pushLuaBoolean(LuaValue.of(b != 0));
+    luaVM.pushLuaBoolean(LuaValue.of(b != 0));
 
     var index = a + 1;
-    luaState.replace(index);
+    luaVM.replace(index);
 
     if (c != 0) {
-      luaState.addPC(1);
+      luaVM.addPC(1);
     }
   }
 }

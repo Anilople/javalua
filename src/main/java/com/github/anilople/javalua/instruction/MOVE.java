@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.state.LuaState;
+import com.github.anilople.javalua.api.LuaVM;
 
 class MOVE extends AbstractInstruction {
   MOVE(int originCodeValue) {
@@ -8,9 +8,9 @@ class MOVE extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     var a = operand.A();
     var b = operand.B();
-    luaState.copy(b + 1, a + 1);
+    luaVM.copy(b + 1, a + 1);
   }
 }

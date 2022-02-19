@@ -46,15 +46,23 @@ public interface LuaState {
    */
   void copy(int from, int to);
 
+  /**
+   * 把指定索引处的值推入栈顶
+   */
   void pushValue(int index);
 
   /**
+   * {@link #pushValue(int)}的反操作，将栈顶值pop，然后写入指定位置
+   *
    * {@code #define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))}
    *
    * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/lua.h#L373">lua.h#L373 lua_replace</a>
    */
   void replace(int index);
 
+  /**
+   * 将栈顶值pop，插入指定位置，原index的数据会向后移动1格
+   */
   void insert(int index);
 
   void remove(int index);
@@ -166,44 +174,6 @@ public interface LuaState {
    * pop函数调用帧
    */
   void popCallFrame();
-
-  /**
-   * 返回当前pc，不是必须的方法，仅测试使用
-   */
-  int pc();
-
-  /**
-   * 修改PC（用来实现跳转指令）
-   */
-  void addPC(int n);
-
-  /**
-   * 取出当前指令，将PC指向下一条指令
-   * <p>
-   * 虚拟机循环会使用，LOADKX等少数几个指令也会用到
-   */
-  Instruction fetch();
-
-  /**
-   * 将指定常量推入栈顶
-   * <p>
-   * LOADK和LOADKX会使用
-   */
-  void getConst(int index);
-
-  /**
-   * page 94
-   * <p>
-   * 将指定常量或栈值推入栈顶
-   * <p>
-   * 不是必须的方法，放这里是为了方便指令的实现，例如算术运算指令
-   * <p>
-   * 传递的参数实际上是 {@link com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode#iABC} 模式指令里的
-   * {@link com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMask#OpArgK} 类型，总共 9 bits
-   * <p>
-   * 如果最高位是1，那么参数里存放的是常量表索引，把最高位去掉就可以得到索引值。 如果最高位是0，参数里存放的就是寄存器索引值
-   */
-  void getRK(int rk);
 
   /**
    * page 148

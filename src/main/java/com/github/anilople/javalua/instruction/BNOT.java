@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
-import com.github.anilople.javalua.state.LuaState;
 
 class BNOT extends BitwiseInstruction {
   BNOT(int originCodeValue) {
@@ -9,11 +9,11 @@ class BNOT extends BitwiseInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     var a = operand.A();
     var b = operand.B();
-    luaState.pushValue(b + 1);
-    luaState.bitwise(BitwiseOperator.LUA_OPBNOT);
-    luaState.replace(a + 1);
+    luaVM.pushValue(b + 1);
+    luaVM.bitwise(BitwiseOperator.LUA_OPBNOT);
+    luaVM.replace(a + 1);
   }
 }

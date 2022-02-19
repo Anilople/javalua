@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
-import com.github.anilople.javalua.state.LuaState;
 
 class SHL extends BitwiseInstruction {
   SHL(int originCodeValue) {
@@ -9,7 +9,7 @@ class SHL extends BitwiseInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
-    binaryBitwiseOperator(luaState, BitwiseOperator.LUA_OPSHL);
+  public void applyTo(LuaVM luaVM) {
+    binaryBitwiseOperator(luaVM, BitwiseOperator.LUA_OPSHL);
   }
 }

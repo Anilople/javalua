@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.state.LuaState;
+import com.github.anilople.javalua.api.LuaVM;
 
 class NOT extends AbstractInstruction {
   NOT(int originCodeValue) {
@@ -8,9 +8,9 @@ class NOT extends AbstractInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
-    var value = luaState.toLuaBoolean(operand.B() + 1);
-    luaState.pushLuaBoolean(value);
-    luaState.replace(operand.A() + 1);
+  public void applyTo(LuaVM luaVM) {
+    var value = luaVM.toLuaBoolean(operand.B() + 1);
+    luaVM.pushLuaBoolean(value);
+    luaVM.replace(operand.A() + 1);
   }
 }

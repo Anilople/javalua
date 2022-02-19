@@ -1,0 +1,11 @@
+-- page 154
+local a,b,c = f(1, 2, 3, 4)
+-- main <call.lua:0,0> (7 instructions at 0000000000b08a00)
+-- 0+ params, 5 slots, 1 upvalue, 3 locals, 5 constants, 0 functions
+-- 1       [2]     GETTABUP        0 0 -1  ; _ENV "f"
+-- 2       [2]     LOADK           1 -2    ; 1
+-- 3       [2]     LOADK           2 -3    ; 2
+-- 4       [2]     LOADK           3 -4    ; 3
+-- 5       [2]     LOADK           4 -5    ; 4
+-- 6       [2]     CALL            0 5 4
+-- 7       [2]     RETURN          0 1

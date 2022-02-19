@@ -1,6 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.state.LuaState;
+import com.github.anilople.javalua.api.LuaVM;
 
 /**
  * page 135
@@ -15,14 +15,14 @@ class SETTABLE extends TableInstruction {
   }
 
   @Override
-  public void applyTo(LuaState luaState) {
+  public void applyTo(LuaVM luaVM) {
     var aIndex = operand.A() + 1;
     var b = operand.B();
     var c = operand.C();
 
-    luaState.getRK(b);
-    luaState.getRK(c);
-    luaState.setTable(aIndex);
+    luaVM.getRK(b);
+    luaVM.getRK(c);
+    luaVM.setTable(aIndex);
   }
 
   @Override

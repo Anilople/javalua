@@ -1,11 +1,15 @@
 package com.github.anilople.javalua.state;
 
+import lombok.Data;
+import lombok.Getter;
+
 /**
  * 调用帧
  *
  * @author wxq
  */
-class CallFrame extends LuaStackImpl implements LuaStack {
+@Getter
+public class CallFrame extends LuaStackImpl implements LuaStack {
   CallFrame prev;
   LuaClosure luaClosure;
   LuaValue[] varargs;
@@ -13,6 +17,10 @@ class CallFrame extends LuaStackImpl implements LuaStack {
 
   public CallFrame(int size) {
     super(size);
+  }
+
+  public void addPc(int delta) {
+    this.pc += delta;
   }
 
   public LuaValue[] popN(int n) {
