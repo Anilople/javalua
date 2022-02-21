@@ -24,7 +24,8 @@ class CALL extends FunctionInstruction {
   public void applyTo(LuaVM luaVM) {
     final var aIndex = operand.A() + 1;
     final var argsAmount = operand.B();
-    int resultsAmount = operand.C();
+    // 返回值的数量
+    int resultsAmount = operand.C() - 1;
     final var nArgs = pushFuncAndArgs(aIndex, argsAmount, luaVM);
     luaVM.call(nArgs, resultsAmount);
     popResults(aIndex, resultsAmount, luaVM);

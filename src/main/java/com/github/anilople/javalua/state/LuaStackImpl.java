@@ -1,8 +1,13 @@
 package com.github.anilople.javalua.state;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @author wxq
  */
+@Data
+@NoArgsConstructor
 class LuaStackImpl implements LuaStack {
   private LuaValue[] luaValues;
   /**
@@ -10,9 +15,13 @@ class LuaStackImpl implements LuaStack {
    */
   private int top;
 
-  public LuaStackImpl(int size) {
+  LuaStackImpl(int size, int registerCount) {
     this.luaValues = new LuaValue[size];
-    this.top = 0;
+    this.top = registerCount;
+    // 初始化成 nil
+    for (int i = 0; i < registerCount; i++) {
+      this.luaValues[i] = LuaValue.NIL;
+    }
   }
 
   public int size() {

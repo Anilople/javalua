@@ -10,7 +10,6 @@ class Page152Test {
 
   //  @Test
   void testClosure() {
-    LuaVM luaVM = LuaVM.of(ch08.closure);
-    LuaVM.eval(luaVM);
+    LuaVM.evalAndPrint(ch08.closure);
   }
 }

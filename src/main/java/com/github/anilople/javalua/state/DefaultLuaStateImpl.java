@@ -3,7 +3,6 @@ package com.github.anilople.javalua.state;
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
@@ -15,14 +14,8 @@ public class DefaultLuaStateImpl implements LuaState {
 
   protected final CallStack callStack;
 
-  protected final Prototype prototype;
-
-  protected final Instruction[] instructions;
-
   protected DefaultLuaStateImpl(int stackSize, Prototype prototype) {
-    this.callStack = CallStack.of(stackSize);
-    this.prototype = prototype;
-    this.instructions = this.prototype.getCode().getInstructions();
+    this.callStack = CallStack.of(stackSize, prototype);
   }
 
   @Override
@@ -388,21 +381,25 @@ public class DefaultLuaStateImpl implements LuaState {
     return 0;
   }
 
-  void callLuaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
-    var args = this.callStack.topCallFrame().popN(nArgs);
+  CallFrame callLuaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
+    var allArgs = this.callStack.topCallFrame().popN(nArgs);
     // pop function
     this.callStack.topCallFrame().pop();
 
-    this.callStack.pushCallFrame(luaClosure, nArgs, args);
+    this.callStack.pushCallFrame(luaClosure, allArgs);
     this.runLuaClosure();
     var functionCallFrame = this.callStack.popCallFrame();
 
     if (0 != nResults) {
       // 把被调函数的所有返回值 放入 当前的 调用帧
       var results = functionCallFrame.popResults();
-      this.callStack.topCallFrame().check(results.length);
-      this.callStack.topCallFrame().pushN(results);
+      this.callStack.topCallFrame().check(nResults);
+      for (int i = 0; i < nResults; i++) {
+        var luaValue = results[i];
+        this.callStack.topCallFrame().push(luaValue);
+      }
     }
+    return functionCallFrame;
   }
 
   protected void runLuaClosure() {
@@ -410,16 +407,17 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   @Override
-  public void call(int nArgs, int nResults) {
+  public CallFrame call(int nArgs, int nResults) {
     final LuaClosure luaClosure;
     {
-      LuaValue luaValue = this.callStack.topCallFrame().get(-(nArgs + 1));
+      int indexOfLuaClosure = -(nArgs + 1);
+      LuaValue luaValue = this.callStack.topCallFrame().get(indexOfLuaClosure);
       if (luaValue instanceof LuaClosure) {
         luaClosure = (LuaClosure) luaValue;
       } else {
         throw new IllegalStateException(luaValue + "'s type isn't " + LuaClosure.class);
       }
     }
-    this.callLuaClosure(luaClosure, nArgs, nResults);
+    return this.callLuaClosure(luaClosure, nArgs, nResults);
   }
 }

@@ -13,4 +13,12 @@ class MOVE extends AbstractInstruction {
     var b = operand.B();
     luaVM.copy(b + 1, a + 1);
   }
+
+  @Override
+  public String toString() {
+    int aIndex = operand.A() + 1;
+    int bIndex = operand.B() + 1;
+    String mid = "copy " + bIndex + " to " + aIndex;
+    return this.toStringHelper(mid);
+  }
 }

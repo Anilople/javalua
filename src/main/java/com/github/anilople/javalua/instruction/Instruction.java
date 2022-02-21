@@ -193,6 +193,16 @@ public interface Instruction {
                 TAILCALL, RETURN, FORLOOP, FORPREP, TFORCALL, TFORLOOP, SETLIST, CLOSURE, VARARG,
                 EXTRAARG));
 
+    static int getOpcodeValueOf(Opcode opcode) {
+      int size = OPCODES.size();
+      for (int i = 0; i < size; i++) {
+        if (OPCODES.get(i).equals(opcode)) {
+          return i;
+        }
+      }
+      throw new IllegalStateException("unknown " + opcode);
+    }
+
     private final OpMode opMode;
     private final OpArgMask c;
     private final OpArgMask b;

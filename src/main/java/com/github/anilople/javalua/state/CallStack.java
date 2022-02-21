@@ -1,6 +1,8 @@
 package com.github.anilople.javalua.state;
 
+import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.util.ArrayUtils;
+import com.github.anilople.javalua.util.Return2;
 
 /**
  * 函数调用栈
@@ -9,9 +11,9 @@ import com.github.anilople.javalua.util.ArrayUtils;
  */
 public class CallStack {
 
-  static CallStack of(int stackSize) {
+  static CallStack of(int stackSize, Prototype prototype) {
     CallStack callStack = new CallStack();
-    callStack.callFrame = new CallFrame(stackSize);
+    callStack.callFrame = new CallFrame(stackSize, prototype);
     return callStack;
   }
 
@@ -23,32 +25,48 @@ public class CallStack {
     if (null == callFrame) {
       throw new IllegalStateException("there is no call frame");
     }
-    CallFrame popped = callFrame;
-    CallFrame prev = popped.prev;
-    this.callFrame = prev;
+    CallFrame popped = this.callFrame;
+    this.callFrame = this.callFrame.prev;
     return popped;
   }
-
-  void pushCallFrame(LuaClosure luaClosure, int nArgs, LuaValue[] args) {
-    var nRegs = luaClosure.prototype.getMaxStackSize();
-    var nParams = luaClosure.prototype.getNumParams();
-    var isVararg = 1 == luaClosure.prototype.getIsVararg();
-
-    CallFrame newCallFrame = new CallFrame(nRegs + 20);
-
-    newCallFrame.luaClosure = luaClosure;
+  /**
+   * 计算需要传递给函数的 固定参数 和 vararg
+   *
+   * @param allArgs 所有参数
+   * @param isVararg 函数的参数中是否存在vararg
+   * @param nParams 函数的固定参数个数
+   */
+  static Return2<LuaValue[], LuaValue[]> resolveArgsAndVarargs(LuaValue[] allArgs, boolean isVararg, int nParams) {
     if (isVararg) {
+      int nArgs = allArgs.length;
       if (nArgs > nParams) {
         // 传过来的参数个数大于 固定参数个数，那么多出来的参数，就放到 varargs 中
-        newCallFrame.varargs = ArrayUtils.slice(args, nParams);
+        // 前 nParams 个是固定参数，后面的是 vararg
+        var args = ArrayUtils.slice(allArgs, 0, nParams);
+        var varargs = ArrayUtils.slice(allArgs, nParams);
+        return new Return2<>(args, varargs);
       }
     }
-    this.pushCallFrame(newCallFrame);
+
+    // 都是固定参数
+    if (allArgs.length != nParams) {
+      throw new IllegalArgumentException("所有参数的个数是" + allArgs.length + " 和函数所需的固定参数个数" + nParams + "不同");
+    }
+    return new Return2<>(allArgs, new LuaValue[0]);
   }
 
-  void pushCallFrame(CallFrame newCallFrame) {
-    newCallFrame.prev = this.callFrame;
-    this.callFrame = newCallFrame;
+  /**
+   * @param luaClosure 闭包
+   * @param allArgs 传递给闭包的所有参数，闭包不一定能全部用上
+   */
+  void pushCallFrame(LuaClosure luaClosure, LuaValue[] allArgs) {
+    var nParams = luaClosure.prototype.getNumParams();
+    var isVararg = 1 == luaClosure.prototype.getIsVararg();
+    var argsAndVarargs = resolveArgsAndVarargs(allArgs, isVararg, nParams);
+    final LuaValue[] args = argsAndVarargs.r0;
+    final LuaValue[] varargs = argsAndVarargs.r1;
+
+    this.callFrame = new CallFrame(this.callFrame, luaClosure, args, varargs);
   }
 
   public CallFrame topCallFrame() {

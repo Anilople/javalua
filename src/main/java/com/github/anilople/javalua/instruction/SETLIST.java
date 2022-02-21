@@ -17,8 +17,10 @@ class SETLIST extends AbstractInstruction {
 
   @Override
   public void applyTo(LuaVM luaVM) {
-    var startIndex = operand.A() + 1;
+    // 数组所在的位置
+    final int indexOfArray = operand.A() + 1;
     var length = operand.B();
+    // 数组起始索引
     var c = operand.C();
 
     if (c > 0) {
@@ -28,11 +30,32 @@ class SETLIST extends AbstractInstruction {
       c = extraarg.getOperand().Ax();
     }
 
-    var index = c * LFIELDS_PER_FLUSH;
+    final int beginIndexInArray = c * LFIELDS_PER_FLUSH;
+    if (length == 0) {
+      // 使用 CALL 指令留在栈顶的全部返回值
+      int newLength = (int) luaVM.toLuaInteger(-1).getValue() - indexOfArray - 1;
+      luaVM.pop(1);
+      setI(luaVM, indexOfArray, beginIndexInArray, newLength);
+      for (int j = luaVM.getRegisterCount() + 1; j <= luaVM.getTop(); j++) {
+        luaVM.pushValue(j);
+        var indexInArray = LuaValue.of(beginIndexInArray + j);
+        luaVM.setI(indexOfArray, indexInArray);
+      }
+      // clear stack
+      luaVM.setTop(luaVM.getRegisterCount());
+    } else if (length > 0) {
+      setI(luaVM, indexOfArray, beginIndexInArray, length);
+    } else {
+      throw new IllegalStateException("length = " + length);
+    }
+  }
+
+  static void setI(LuaVM luaVM, final int indexOfArray, final int beginIndexInArray, final int length) {
+    luaVM.checkStack(1);
     for (int j = 1; j <= length; j++) {
-      luaVM.pushValue(startIndex + j);
-      LuaInteger indexKey = LuaValue.of(index + j);
-      luaVM.setI(startIndex, indexKey);
+      luaVM.pushValue(indexOfArray + j);
+      LuaInteger indexKey = LuaValue.of(beginIndexInArray + j);
+      luaVM.setI(indexOfArray, indexKey);
     }
   }
 }

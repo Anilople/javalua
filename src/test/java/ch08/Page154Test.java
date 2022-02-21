@@ -11,8 +11,7 @@ public class Page154Test {
 
   @Test
   void call() {
-    LuaVM luaVM = LuaVM.of(ch08.call);
-    LuaVM.eval(luaVM);
+    LuaVM.evalAndPrint(ch08.call);
   }
 
   /**
@@ -20,7 +19,6 @@ public class Page154Test {
    */
   @Test
   void callOperandZero() {
-    LuaVM luaVM = LuaVM.of(ch08.callOperandZero);
-    LuaVM.eval(luaVM);
+    LuaVM.evalAndPrint(ch08.callOperandZero);
   }
 }

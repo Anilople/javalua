@@ -95,8 +95,10 @@ abstract class AbstractInstruction implements Instruction {
    * <p/>不改变寄存器状态
    */
   void compare(LuaVM luaVM, ComparisonOperator operator) {
-    luaVM.getRK(operand.B());
-    luaVM.getRK(operand.C());
+    final int b = operand.B();
+    final int c = operand.C();
+    luaVM.getRK(b);
+    luaVM.getRK(c);
 
     var compareResult = luaVM.compare(-2, -1, operator);
     var expect = LuaValue.of(operand.A() == 0);

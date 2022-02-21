@@ -12,7 +12,11 @@ package com.github.anilople.javalua.state;
 interface LuaStack {
 
   static LuaStack of(int size) {
-    return new LuaStackImpl(size);
+    return of(size, 0);
+  }
+
+  static LuaStack of(int size, int registerCount) {
+    return new LuaStackImpl(size, registerCount);
   }
 
   int size();

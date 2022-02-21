@@ -4,6 +4,7 @@ import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.Instruction.Opcode;
+import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaState;
 
 /**
@@ -39,13 +40,14 @@ public interface LuaVM extends LuaState {
     applyPrint(instruction, luaVM);
   }
 
-  static void eval(LuaVM luaVM) {
-    for (var instruction = luaVM.fetch(); ; instruction = luaVM.fetch()) {
-      if (Opcode.RETURN.equals(instruction.getOpcode())) {
-        break;
-      }
-      instruction.applyTo(luaVM);
-    }
+  static CallFrame evalAndPrint(byte[] binaryChunk, int nResults) {
+    LuaVM luaVM = LuaVM.create(1, new Prototype());
+    luaVM.load(binaryChunk, "unknown", "b");
+    return luaVM.call(0, nResults);
+  }
+
+  static CallFrame evalAndPrint(byte[] binaryChunk) {
+    return evalAndPrint(binaryChunk, 0);
   }
 
   /**
@@ -62,6 +64,7 @@ public interface LuaVM extends LuaState {
    * 取出当前指令，将PC指向下一条指令
    * <p>
    * 虚拟机循环会使用，LOADKX等少数几个指令也会用到
+   * @return null 如果已经没有指令了
    */
   Instruction fetch();
 
@@ -69,6 +72,8 @@ public interface LuaVM extends LuaState {
    * 将指定常量推入栈顶
    * <p>
    * LOADK和LOADKX会使用
+   * <p/>
+   * 注意这里的常量在主调函数中，而不是在被调函数中（第8章 函数调用）
    */
   void getConst(int index);
 
@@ -94,7 +99,7 @@ public interface LuaVM extends LuaState {
   /**
    * 把 vararg 参数推入栈顶
    */
-  void loadVararg(int numberOfVararg);
+  void loadVararg(int howManyNeedToCopy);
 
   void loadPrototype(int index);
 }

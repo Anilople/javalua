@@ -11,7 +11,7 @@ import java.io.PrintStream;
 public interface LuaState {
 
   static LuaState create() {
-    return new DefaultLuaStateImpl(20, new Prototype());
+    return create(20, new Prototype());
   }
 
   static LuaState create(int stackSize, Prototype prototype) {
@@ -26,7 +26,11 @@ public interface LuaState {
     final var top = luaState.getTop();
     for (int i = 1; i <= top; i++) {
       LuaValue luaValue = luaState.toLuaValue(i);
-      printStream.print("[" + luaValue.toString() + "]");
+      if (luaValue instanceof LuaClosure) {
+        printStream.print("[" + luaValue.getClass().getSimpleName() + "]");
+      } else {
+        printStream.print("[" + luaValue + "]");
+      }
     }
     printStream.println();
   }
@@ -147,7 +151,7 @@ public interface LuaState {
   void createTable(int arraySize, int mapSize);
 
   /**
-   * index对应的值作为table，栈顶的值作为key
+   * index对应的值作为table，栈顶的值作为key，得到value，把value放入栈顶
    */
   LuaType getTable(int index);
 
@@ -193,6 +197,7 @@ public interface LuaState {
    *
    * @param nArgs 函数的参数个数
    * @param nResults 需要的返回值数量，如果是-1，被调函数的返回值会全部留在栈顶
+   * @return 调用函数的栈帧（已经被pop）
    */
-  void call(int nArgs, int nResults);
+  CallFrame call(int nArgs, int nResults);
 }
