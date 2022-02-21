@@ -28,7 +28,6 @@ abstract class FunctionInstruction extends AbstractInstruction {
     }
   }
 
-
   static void popResults(int aIndex, int resultsAmount, LuaVM luaVM) {
     if (resultsAmount == 0) {
       // 没有返回值

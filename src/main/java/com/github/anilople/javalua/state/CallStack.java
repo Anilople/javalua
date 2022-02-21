@@ -36,7 +36,8 @@ public class CallStack {
    * @param isVararg 函数的参数中是否存在vararg
    * @param nParams 函数的固定参数个数
    */
-  static Return2<LuaValue[], LuaValue[]> resolveArgsAndVarargs(LuaValue[] allArgs, boolean isVararg, int nParams) {
+  static Return2<LuaValue[], LuaValue[]> resolveArgsAndVarargs(
+      LuaValue[] allArgs, boolean isVararg, int nParams) {
     if (isVararg) {
       int nArgs = allArgs.length;
       if (nArgs > nParams) {
@@ -50,7 +51,8 @@ public class CallStack {
 
     // 都是固定参数
     if (allArgs.length != nParams) {
-      throw new IllegalArgumentException("所有参数的个数是" + allArgs.length + " 和函数所需的固定参数个数" + nParams + "不同");
+      throw new IllegalArgumentException(
+          "所有参数的个数是" + allArgs.length + " 和函数所需的固定参数个数" + nParams + "不同");
     }
     return new Return2<>(allArgs, new LuaValue[0]);
   }

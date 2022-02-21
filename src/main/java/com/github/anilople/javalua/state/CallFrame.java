@@ -2,10 +2,8 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.instruction.Instruction;
-import java.util.Arrays;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * 调用帧
@@ -21,9 +19,10 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   int pc;
   private final Instruction[] instructions;
 
-  public CallFrame(CallFrame prev,
-      LuaClosure luaClosure, LuaValue[] args, LuaValue[] varargs) {
-    super(luaClosure.getPrototype().getRegisterCount() * 2 + 20, luaClosure.getPrototype().getRegisterCount());
+  public CallFrame(CallFrame prev, LuaClosure luaClosure, LuaValue[] args, LuaValue[] varargs) {
+    super(
+        luaClosure.getPrototype().getRegisterCount() * 2 + 20,
+        luaClosure.getPrototype().getRegisterCount());
     this.prev = prev;
     this.luaClosure = luaClosure;
     this.varargs = varargs;
@@ -75,10 +74,17 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
 
   @Override
   public String toString() {
-    return this.getClass().getSimpleName() + "[\n"
-        + "pc:" + this.pc + "\n"
-        + "current instruction:" + this.currentInstruction() + "\n"
-        + "stack:" + toString(this.getLuaValues(), this.getTop()) + "\n"
+    return this.getClass().getSimpleName()
+        + "[\n"
+        + "pc:"
+        + this.pc
+        + "\n"
+        + "current instruction:"
+        + this.currentInstruction()
+        + "\n"
+        + "stack:"
+        + toString(this.getLuaValues(), this.getTop())
+        + "\n"
         + "]";
   }
 

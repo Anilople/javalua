@@ -50,7 +50,8 @@ class SETLIST extends AbstractInstruction {
     }
   }
 
-  static void setI(LuaVM luaVM, final int indexOfArray, final int beginIndexInArray, final int length) {
+  static void setI(
+      LuaVM luaVM, final int indexOfArray, final int beginIndexInArray, final int length) {
     luaVM.checkStack(1);
     for (int j = 1; j <= length; j++) {
       luaVM.pushValue(indexOfArray + j);

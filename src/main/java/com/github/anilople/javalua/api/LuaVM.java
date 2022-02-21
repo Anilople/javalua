@@ -3,7 +3,6 @@ package com.github.anilople.javalua.api;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.instruction.Instruction;
-import com.github.anilople.javalua.instruction.Instruction.Opcode;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaState;
 

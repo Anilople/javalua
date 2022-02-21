@@ -1,10 +1,11 @@
 package ch08;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaValue;
 import constant.ResourceContentConstants.ch08;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /**

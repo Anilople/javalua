@@ -3,7 +3,6 @@ package com.github.anilople.javalua.api;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.config.Config;
 import com.github.anilople.javalua.instruction.Instruction;
-import com.github.anilople.javalua.instruction.Instruction.Opcode;
 import com.github.anilople.javalua.state.DefaultLuaStateImpl;
 import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaValue;
@@ -60,8 +59,7 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
 
     var topCallFrame = this.callStack.topCallFrame();
     System.out.println("call frame:" + topCallFrame.length());
-    for (
-        var nextCallFrame = topCallFrame;
+    for (var nextCallFrame = topCallFrame;
         nextCallFrame != null;
         nextCallFrame = nextCallFrame.getPrev()) {
       System.out.println(nextCallFrame);
@@ -72,10 +70,7 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
 
   @Override
   protected void runLuaClosure() {
-    for (
-        var instruction = this.fetch();
-        null != instruction;
-        instruction = this.fetch()) {
+    for (var instruction = this.fetch(); null != instruction; instruction = this.fetch()) {
       instruction.applyTo(this);
       if (Config.getInstance().needPrint()) {
         this.print(instruction);
