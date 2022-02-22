@@ -58,6 +58,4 @@ class Page165Test {
     var callFrame = LuaVM.evalAndPrint(ch08.test);
     System.out.println(callFrame);
   }
-
-
 }

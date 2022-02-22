@@ -33,9 +33,12 @@ public interface ResourceContentConstants {
     byte[] vararg = ResourceReadUtils.readBytes("ch08/vararg.luac53.out");
     byte[] maxCase1 = ResourceReadUtils.readBytes("ch08/max_case1.luac53.out");
     byte[] maxCase2 = ResourceReadUtils.readBytes("ch08/max_case2.luac53.out");
-    byte[] maxWithVarargCase1 = ResourceReadUtils.readBytes("ch08/max_with_vararg_case1.luac53.out");
-    byte[] maxWithVarargCase2 = ResourceReadUtils.readBytes("ch08/max_with_vararg_case2.luac53.out");
-    byte[] maxWithVarargCase3 = ResourceReadUtils.readBytes("ch08/max_with_vararg_case3.luac53.out");
+    byte[] maxWithVarargCase1 =
+        ResourceReadUtils.readBytes("ch08/max_with_vararg_case1.luac53.out");
+    byte[] maxWithVarargCase2 =
+        ResourceReadUtils.readBytes("ch08/max_with_vararg_case2.luac53.out");
+    byte[] maxWithVarargCase3 =
+        ResourceReadUtils.readBytes("ch08/max_with_vararg_case3.luac53.out");
     byte[] test = ResourceReadUtils.readBytes("ch08/test.luac53.out");
   }
 }
