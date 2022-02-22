@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class Page165Test {
 
   @Test
-  void ch08MaxCase1() {
+  void maxCase1() {
     var callFrame = LuaVM.evalAndPrint(ch08.maxCase1);
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
@@ -22,7 +22,7 @@ class Page165Test {
   }
 
   @Test
-  void ch08MaxCase2() {
+  void maxCase2() {
     var callFrame = LuaVM.evalAndPrint(ch08.maxCase2);
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
@@ -30,7 +30,34 @@ class Page165Test {
   }
 
   @Test
-  void ch08Test() {
-    var callFrame = LuaVM.evalAndPrint(ch08.test);
+  void maxWithVarargCase1() {
+    var callFrame = LuaVM.evalAndPrint(ch08.maxWithVarargCase1);
+    LuaValue returnedLuaValue = callFrame.pop();
+    assertTrue(returnedLuaValue instanceof LuaInteger);
+    assertEquals(LuaValue.of(99), returnedLuaValue);
   }
+
+  @Test
+  void maxWithVarargCase2() {
+    var callFrame = LuaVM.evalAndPrint(ch08.maxWithVarargCase2);
+    LuaValue returnedLuaValue = callFrame.pop();
+    assertTrue(returnedLuaValue instanceof LuaInteger);
+    assertEquals(LuaValue.of(199), returnedLuaValue);
+  }
+
+  @Test
+  void maxWithVarargCase3() {
+    var callFrame = LuaVM.evalAndPrint(ch08.maxWithVarargCase3);
+    LuaValue returnedLuaValue = callFrame.pop();
+    assertTrue(returnedLuaValue instanceof LuaInteger);
+    assertEquals(LuaValue.of(128), returnedLuaValue);
+  }
+
+  @Test
+  void test() {
+    var callFrame = LuaVM.evalAndPrint(ch08.test);
+    System.out.println(callFrame);
+  }
+
+
 }
