@@ -23,6 +23,8 @@ abstract class FunctionInstruction extends AbstractInstruction {
       }
       return argsAmount - 1;
     } else {
+      // 函数的后半部分参数已经在栈顶了
+      // 把函数和函数前半部分的返回值推入栈顶
       fixStack(aIndex, luaVM);
       return luaVM.getTop() - luaVM.getRegisterCount() - 1;
     }
@@ -43,9 +45,17 @@ abstract class FunctionInstruction extends AbstractInstruction {
     }
   }
 
+  /**
+   * page 156
+   */
   static void fixStack(int aIndex, LuaVM luaVM) {
-    // 把函数的函数前半部分的返回值推入栈顶
-    luaVM.toLuaInteger(-1);
-    throw new UnsupportedOperationException();
+    final int length = (int) luaVM.toLuaInteger(-1).getValue() - aIndex;
+    luaVM.pop(1);
+    luaVM.checkStack(length);
+    for (int offset = 0; offset < length; offset++) {
+      int index = aIndex + offset;
+      luaVM.pushValue(index);
+    }
+    luaVM.rotate(luaVM.getRegisterCount() + 1, length);
   }
 }

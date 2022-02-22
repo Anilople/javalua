@@ -68,8 +68,16 @@ public interface LuaState {
    */
   void insert(int index);
 
+  /**
+   * page 62. 删除指定索引处的值
+   */
   void remove(int index);
 
+  /**
+   * 将 [index, top] 索引区间内的值，朝栈顶方向旋转n个位置，
+   *
+   * 如果n<0，那么实际效果就是朝栈底方向旋转
+   */
   void rotate(int index, int n);
 
   void setTop(int index);

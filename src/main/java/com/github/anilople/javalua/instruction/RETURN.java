@@ -25,7 +25,6 @@ class RETURN extends FunctionInstruction {
         luaVM.pushValue(index);
       }
     } else {
-      // 一部分返回值已经在栈顶了
       fixStack(aIndex, luaVM);
     }
   }
