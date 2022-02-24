@@ -393,11 +393,8 @@ public class DefaultLuaStateImpl implements LuaState {
     if (0 != nResults) {
       // 把被调函数的所有返回值 放入 当前的 调用帧
       var results = functionCallFrame.popResults();
-      this.callStack.topCallFrame().check(nResults);
-      for (int i = 0; i < nResults; i++) {
-        var luaValue = results[i];
-        this.callStack.topCallFrame().push(luaValue);
-      }
+      this.callStack.topCallFrame().check(results.length);
+      this.callStack.topCallFrame().pushN(results, nResults);
     }
     return functionCallFrame;
   }

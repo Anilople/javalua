@@ -85,16 +85,16 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
   }
 
   @Override
-  public void loadVararg(int howManyNeedToCopy) {
+  public void loadVararg(int requiredResults) {
     var callFrame = this.callStack.topCallFrame();
     LuaValue[] varargs = callFrame.getVarargs();
-    if (howManyNeedToCopy < 0) {
+    if (requiredResults < 0) {
       // all
       for (LuaValue luaValue : varargs) {
         this.callStack.topCallFrame().push(luaValue);
       }
     } else {
-      for (int offset = 0; offset < howManyNeedToCopy; offset++) {
+      for (int offset = 0; offset < requiredResults; offset++) {
         LuaValue luaValue = varargs[offset];
         this.callStack.topCallFrame().push(luaValue);
       }

@@ -98,7 +98,7 @@ public interface LuaVM extends LuaState {
   /**
    * 把 vararg 参数推入栈顶
    */
-  void loadVararg(int howManyNeedToCopy);
+  void loadVararg(int requiredResults);
 
   void loadPrototype(int index);
 }

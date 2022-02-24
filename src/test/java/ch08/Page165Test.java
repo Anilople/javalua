@@ -46,16 +46,7 @@ class Page165Test {
   }
 
   @Test
-  void maxWithVarargCase3() {
-    var callFrame = LuaVM.evalAndPrint(ch08.maxWithVarargCase3);
-    LuaValue returnedLuaValue = callFrame.pop();
-    assertTrue(returnedLuaValue instanceof LuaInteger);
-    assertEquals(LuaValue.of(128), returnedLuaValue);
-  }
-
-  @Test
   void test() {
-    var callFrame = LuaVM.evalAndPrint(ch08.test);
-    System.out.println(callFrame);
+    LuaVM.evalAndPrint(ch08.test);
   }
 }

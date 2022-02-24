@@ -19,7 +19,7 @@ class SETLIST extends AbstractInstruction {
   public void applyTo(LuaVM luaVM) {
     // 数组所在的位置
     final int indexOfArray = operand.A() + 1;
-    var length = operand.B();
+    final int length = operand.B();
     // 数组起始索引
     var c = operand.C();
 
@@ -32,13 +32,19 @@ class SETLIST extends AbstractInstruction {
 
     final int beginIndexInArray = c * LFIELDS_PER_FLUSH;
     if (length == 0) {
-      // 使用 CALL 指令留在栈顶的全部返回值
+      // 使用留在栈顶的全部返回值
       int newLength = (int) luaVM.toLuaInteger(-1).getValue() - indexOfArray - 1;
       luaVM.pop(1);
       setI(luaVM, indexOfArray, beginIndexInArray, newLength);
-      for (int j = luaVM.getRegisterCount() + 1; j <= luaVM.getTop(); j++) {
-        luaVM.pushValue(j);
-        var indexInArray = LuaValue.of(beginIndexInArray + j);
+      final int argsAmount = luaVM.getTop() - luaVM.getRegisterCount();
+      for (
+          int offset = 0;
+          offset < argsAmount;
+          offset++
+      ) {
+        final int valueIndex = luaVM.getRegisterCount() + 1 + offset;
+        luaVM.pushValue(valueIndex);
+        var indexInArray = LuaValue.of(beginIndexInArray + offset);
         luaVM.setI(indexOfArray, indexInArray);
       }
       // clear stack
