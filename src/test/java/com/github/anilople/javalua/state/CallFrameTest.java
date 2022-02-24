@@ -19,11 +19,10 @@ class CallFrameTest {
   @Test
   void testPushNCase1() {
     CallFrame callFrame = new CallFrame(6, new Prototype());
-    LuaValue[] luaValues = new LuaValue[]{
-        LuaValue.NIL,
-        LuaValue.of(3L),
-        LuaValue.of("abc"),
-    };
+    LuaValue[] luaValues =
+        new LuaValue[] {
+          LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"),
+        };
     callFrame.pushN(luaValues);
     assertEquals(LuaValue.of("abc"), callFrame.pop());
     assertEquals(LuaValue.of(3L), callFrame.pop());
@@ -33,12 +32,10 @@ class CallFrameTest {
   @Test
   void testPushNCase2() {
     CallFrame callFrame = new CallFrame(6, new Prototype());
-    LuaValue[] luaValues = new LuaValue[]{
-        LuaValue.NIL,
-        LuaValue.of(3L),
-        LuaValue.of("abc"),
-        LuaValue.of("3fx"),
-    };
+    LuaValue[] luaValues =
+        new LuaValue[] {
+          LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
+        };
     callFrame.pushN(luaValues, 2);
     assertEquals(LuaValue.of(3L), callFrame.pop());
     assertEquals(LuaValue.NIL, callFrame.pop());
@@ -48,12 +45,10 @@ class CallFrameTest {
   void testPopNCase1() {
     CallFrame callFrame = new CallFrame(6, new Prototype());
     {
-      LuaValue[] luaValues = new LuaValue[]{
-          LuaValue.NIL,
-          LuaValue.of(3L),
-          LuaValue.of("abc"),
-          LuaValue.of("3fx"),
-      };
+      LuaValue[] luaValues =
+          new LuaValue[] {
+            LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
+          };
       callFrame.pushN(luaValues);
     }
     assertEquals(0, callFrame.popN(0).length);
@@ -66,12 +61,10 @@ class CallFrameTest {
   @Test
   void testPushPopEquals() {
     CallFrame callFrame = new CallFrame(6, new Prototype());
-    LuaValue[] luaValuesForPush = new LuaValue[]{
-        LuaValue.NIL,
-        LuaValue.of(3L),
-        LuaValue.of("abc"),
-        LuaValue.of("3fx"),
-    };
+    LuaValue[] luaValuesForPush =
+        new LuaValue[] {
+          LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
+        };
     callFrame.pushN(luaValuesForPush);
     LuaValue[] luaValuesPopped = callFrame.popN(luaValuesForPush.length);
     assertEquals(luaValuesForPush.length, luaValuesPopped.length);
