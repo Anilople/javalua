@@ -1,4 +1,4 @@
-package com.github.anilople.javalua;
+package util;
 
 import java.io.IOException;
 import java.io.InputStream;

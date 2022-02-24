@@ -1,20 +1,20 @@
-package com.github.anilople.javalua.api;
+package ch06;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.anilople.javalua.api.LuaVM.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.anilople.javalua.ResourceContentConstants.ch06;
-import com.github.anilople.javalua.ResourceContentConstants.ch07;
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.Instruction.Opcode;
-import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaValue;
+import constant.ResourceContentConstants;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author wxq
  */
-class LuaVMTest {
+class Page116Test {
 
   /**
    * 检测指令是否正确
@@ -23,7 +23,7 @@ class LuaVMTest {
    */
   @Test
   void ch06SumLuac53OutInstructions() {
-    BinaryChunk binaryChunk = BinaryChunk.of(ch06.sumLuac53Out);
+    BinaryChunk binaryChunk = BinaryChunk.of(ResourceContentConstants.ch06.sumLuac53Out);
     assertEquals(1, binaryChunk.getSizeUpvalues());
 
     var mainFunc = binaryChunk.getMainFunc();
@@ -75,28 +75,9 @@ class LuaVMTest {
     assertEquals(Opcode.RETURN, luaVM.fetch().getOpcode());
   }
 
-  static void printLuaVM(LuaVM luaVM) {
-    System.out.print("pc:" + luaVM.pc());
-    System.out.print("\tstack:");
-    LuaState.printStack(luaVM);
-  }
-
-  static void applyPrint(Instruction instruction, LuaVM luaVM) {
-    instruction.applyTo(luaVM);
-    System.out.println("after run " + instruction + " change to");
-    printLuaVM(luaVM);
-    System.out.println();
-  }
-
-  static void fetchApplyPrint(LuaVM luaVM) {
-    printLuaVM(luaVM);
-    var instruction = luaVM.fetch();
-    applyPrint(instruction, luaVM);
-  }
-
   @Test
   void ch06SumLuac53OutEval() {
-    BinaryChunk binaryChunk = BinaryChunk.of(ch06.sumLuac53Out);
+    BinaryChunk binaryChunk = BinaryChunk.of(ResourceContentConstants.ch06.sumLuac53Out);
     var mainFunc = binaryChunk.getMainFunc();
     // stack的size大一些
     LuaVM luaVM = LuaVM.create(mainFunc.getMaxStackSize() * 2 + 8, mainFunc);
@@ -137,31 +118,5 @@ class LuaVMTest {
     assertEquals(LuaValue.of(0), luaVM.toLuaInteger(6));
 
     assertEquals(6, luaVM.getTop());
-  }
-
-  @Test
-  void ch07TestLuac53OutEval() {
-    BinaryChunk binaryChunk = BinaryChunk.of(ch07.testLuac53Out);
-    var mainFunc = binaryChunk.getMainFunc();
-    // stack的size大一些
-    LuaVM luaVM = LuaVM.create(mainFunc.getMaxStackSize() * 2 + 8, mainFunc);
-    // 提前配置好top
-    var nRegisters = mainFunc.getMaxStackSize();
-    luaVM.setTop(nRegisters);
-
-    // 指令数量
-    assertEquals(14, mainFunc.getCode().getInstructions().length);
-    for (Instruction instruction = luaVM.fetch();
-        !instruction.getOpcode().equals(Opcode.RETURN);
-        instruction = luaVM.fetch()) {
-      printLuaVM(luaVM);
-      applyPrint(instruction, luaVM);
-    }
-    // pc:13	stack:[Table:3 {"foo" = "Bar",1 = "a",2 = "B",3 = "c"}]["cBaBar3"]["B"]["a"]["Bar"][3]
-    assertEquals(LuaValue.of("cBaBar3"), luaVM.toLuaString(2));
-    assertEquals(LuaValue.of("B"), luaVM.toLuaString(3));
-    assertEquals(LuaValue.of("a"), luaVM.toLuaString(4));
-    assertEquals(LuaValue.of("Bar"), luaVM.toLuaString(5));
-    assertEquals(LuaValue.of(3), luaVM.toLuaInteger(6));
   }
 }

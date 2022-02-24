@@ -1,0 +1,13 @@
+-- page 156
+f(1, 2, g())
+-- g的操作数C=0
+-- f的操作数B=0
+-- main <call_operand_zero.lua:0,0> (7 instructions at 00000000006c8a40)
+-- 0+ params, 4 slots, 1 upvalue, 0 locals, 4 constants, 0 functions
+-- 1       [2]     GETTABUP        0 0 -1  ; _ENV "f"
+-- 2       [2]     LOADK           1 -2    ; 1
+-- 3       [2]     LOADK           2 -3    ; 2
+-- 4       [2]     GETTABUP        3 0 -4  ; _ENV "g"
+-- 5       [2]     CALL            3 1 0
+-- 6       [2]     CALL            0 0 1
+-- 7       [2]     RETURN          0 1

@@ -4,7 +4,6 @@ import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMa
 import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode.*;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMask;
 import com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.util.Arrays;
@@ -193,6 +192,16 @@ public interface Instruction {
                 BXOR, SHL, SHR, UNM, BNOT, NOT, LEN, CONCAT, JMP, EQ, LT, LE, TEST, TESTSET, CALL,
                 TAILCALL, RETURN, FORLOOP, FORPREP, TFORCALL, TFORLOOP, SETLIST, CLOSURE, VARARG,
                 EXTRAARG));
+
+    static int getOpcodeValueOf(Opcode opcode) {
+      int size = OPCODES.size();
+      for (int i = 0; i < size; i++) {
+        if (OPCODES.get(i).equals(opcode)) {
+          return i;
+        }
+      }
+      throw new IllegalStateException("unknown " + opcode);
+    }
 
     private final OpMode opMode;
     private final OpArgMask c;

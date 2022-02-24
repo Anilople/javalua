@@ -8,7 +8,7 @@ class LuaStackTest {
 
   @Test
   void pushNil() {
-    LuaStack luaStack = new LuaStack(1);
+    LuaStack luaStack = LuaStack.of(1);
     luaStack.push(LuaValue.NIL);
     assertThrows(IllegalStateException.class, () -> luaStack.push(LuaValue.NIL));
     assertEquals(LuaValue.NIL, luaStack.get(1));
@@ -16,7 +16,7 @@ class LuaStackTest {
 
   @Test
   void pushChaos() {
-    LuaStack luaStack = new LuaStack(10);
+    LuaStack luaStack = LuaStack.of(10);
     luaStack.push(LuaValue.NIL);
     luaStack.push(LuaValue.TRUE);
     luaStack.push(LuaValue.FALSE);
@@ -27,7 +27,7 @@ class LuaStackTest {
 
   @Test
   void popChaos() {
-    LuaStack luaStack = new LuaStack(10);
+    LuaStack luaStack = LuaStack.of(10);
     luaStack.push(LuaValue.NIL);
     luaStack.push(LuaValue.TRUE);
     luaStack.push(LuaValue.FALSE);
@@ -46,14 +46,14 @@ class LuaStackTest {
 
   @Test
   void reverseCase0() {
-    LuaStack luaStack = new LuaStack(10);
+    LuaStack luaStack = LuaStack.of(10);
     luaStack.reverse(1, 1);
     assertThrows(RuntimeException.class, () -> luaStack.reverse(1, 2));
   }
 
   @Test
   void reverseCase1() {
-    LuaStack luaStack = new LuaStack(3);
+    LuaStack luaStack = LuaStack.of(3);
     luaStack.push(LuaValue.NIL);
     luaStack.push(LuaValue.TRUE);
     luaStack.push(LuaValue.FALSE);
@@ -65,7 +65,7 @@ class LuaStackTest {
 
   @Test
   void reverseCase2() {
-    LuaStack luaStack = new LuaStack(10);
+    LuaStack luaStack = LuaStack.of(10);
     for (long value = 1; value <= 10; value++) {
       luaStack.push(LuaValue.of(value));
     }

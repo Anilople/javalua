@@ -1,8 +1,5 @@
 package com.github.anilople.javalua.chunk;
 
-/**
- * @author wxq
- */
 import com.github.anilople.javalua.io.Decodable;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import com.github.anilople.javalua.io.Encodable;
@@ -11,6 +8,7 @@ import java.io.IOException;
 import lombok.Data;
 
 /**
+ * @author wxq
  * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/lobject.h">lobject typedef struct Proto</a>
  */
 @Data
@@ -32,7 +30,11 @@ public class Prototype implements Encodable, Decodable {
    * 固定参数个数
    */
   byte numParams;
-
+  /**
+   * 是否是vararg函数（参数个数可以是多个）
+   *
+   * page 150
+   */
   byte isVararg;
   /**
    * 寄存器数量
@@ -123,5 +125,12 @@ public class Prototype implements Encodable, Decodable {
     }
 
     this.debug.decode(inputStream);
+  }
+
+  /**
+   * @return 当前函数需要的寄存器数量
+   */
+  public int getRegisterCount() {
+    return this.maxStackSize;
   }
 }

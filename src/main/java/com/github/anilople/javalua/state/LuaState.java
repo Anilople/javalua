@@ -11,7 +11,7 @@ import java.io.PrintStream;
 public interface LuaState {
 
   static LuaState create() {
-    return new DefaultLuaStateImpl(20, null);
+    return create(20, new Prototype());
   }
 
   static LuaState create(int stackSize, Prototype prototype) {
@@ -26,7 +26,11 @@ public interface LuaState {
     final var top = luaState.getTop();
     for (int i = 1; i <= top; i++) {
       LuaValue luaValue = luaState.toLuaValue(i);
-      printStream.print("[" + luaValue.toString() + "]");
+      if (luaValue instanceof LuaClosure) {
+        printStream.print("[" + luaValue.getClass().getSimpleName() + "]");
+      } else {
+        printStream.print("[" + luaValue + "]");
+      }
     }
     printStream.println();
   }
@@ -45,19 +49,35 @@ public interface LuaState {
    */
   void copy(int from, int to);
 
+  /**
+   * 把指定索引处的值推入栈顶
+   */
   void pushValue(int index);
 
   /**
+   * {@link #pushValue(int)}的反操作，将栈顶值pop，然后写入指定位置
+   *
    * {@code #define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))}
    *
    * @see <a href="https://github.com/lua/lua/blob/e354c6355e7f48e087678ec49e340ca0696725b1/lua.h#L373">lua.h#L373 lua_replace</a>
    */
   void replace(int index);
 
+  /**
+   * 将栈顶值pop，插入指定位置，原index的数据会向后移动1格
+   */
   void insert(int index);
 
+  /**
+   * page 62. 删除指定索引处的值
+   */
   void remove(int index);
 
+  /**
+   * 将 [index, top] 索引区间内的值，朝栈顶方向旋转n个位置，
+   *
+   * 如果n<0，那么实际效果就是朝栈底方向旋转
+   */
   void rotate(int index, int n);
 
   void setTop(int index);
@@ -139,7 +159,7 @@ public interface LuaState {
   void createTable(int arraySize, int mapSize);
 
   /**
-   * index对应的值作为table，栈顶的值作为key
+   * index对应的值作为table，栈顶的值作为key，得到value，把value放入栈顶
    */
   LuaType getTable(int index);
 
@@ -160,4 +180,32 @@ public interface LuaState {
    * index对应的值作为table，栈顶的值作为value
    */
   void setI(int index, LuaInteger key);
+
+  /**
+   * pop函数调用帧
+   */
+  void popCallFrame();
+
+  /**
+   * page 148
+   *
+   * 把主函数原型实例化为闭包并推入栈顶
+   *
+   * 如果加载失败，需要在栈顶留下一条错误信息
+   *
+   * @param binaryChunk chunk数据
+   * @param chunkName chunk的名字，供加载错误或者调试的时候使用
+   * @param mode 加载模式 b t 或者 bt
+   * @return 0 如果加载成功，非0如果加载失败
+   */
+  int load(byte[] binaryChunk, String chunkName, String mode);
+
+  /**
+   * 对lua函数进行调用
+   *
+   * @param nArgs 函数的参数个数
+   * @param nResults 需要的返回值数量，如果是-1，被调函数的返回值会全部留在栈顶
+   * @return 调用函数的栈帧（已经被pop）
+   */
+  CallFrame call(int nArgs, int nResults);
 }

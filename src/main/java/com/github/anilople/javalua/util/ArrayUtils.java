@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.util;
 
 import com.github.anilople.javalua.constant.DataTypeSizeConstants.Java;
+import com.github.anilople.javalua.state.LuaValue;
 import java.util.Arrays;
 
 /**
@@ -62,5 +63,29 @@ public class ArrayUtils {
       intArray[i] = value;
     }
     return intArray;
+  }
+
+  public static LuaValue[] slice(LuaValue[] sourceLuaValues, int begin) {
+    final int size = sourceLuaValues.length - begin;
+    LuaValue[] targetLuaValues = new LuaValue[size];
+    for (int i = 0; i < size; i++) {
+      int sourceIndex = begin + i;
+      int targetIndex = i;
+      targetLuaValues[targetIndex] = sourceLuaValues[sourceIndex];
+    }
+    return targetLuaValues;
+  }
+
+  public static LuaValue[] slice(LuaValue[] sourceLuaValues, int begin, int length) {
+    if (begin + length > sourceLuaValues.length) {
+      throw new IllegalArgumentException();
+    }
+    LuaValue[] targetLuaValues = new LuaValue[length];
+    for (int i = 0; i < length; i++) {
+      int sourceIndex = begin + i;
+      int targetIndex = i;
+      targetLuaValues[targetIndex] = sourceLuaValues[sourceIndex];
+    }
+    return targetLuaValues;
   }
 }
