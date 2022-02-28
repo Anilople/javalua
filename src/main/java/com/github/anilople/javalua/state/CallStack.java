@@ -73,9 +73,14 @@ public class CallStack {
     final LuaValue[] args = argsAndVarargs.r0;
     final LuaValue[] varargs = argsAndVarargs.r1;
 
-    this.callFrame = new CallFrame(
-        this.callFrame, prototype.getRegisterCount() * 2 + LuaConstants.LUA_MIN_STACK, prototype.getRegisterCount(),
-        luaClosure, args, varargs);
+    this.callFrame =
+        new CallFrame(
+            this.callFrame,
+            prototype.getRegisterCount() * 2 + LuaConstants.LUA_MIN_STACK,
+            prototype.getRegisterCount(),
+            luaClosure,
+            args,
+            varargs);
   }
 
   /**
@@ -83,8 +88,14 @@ public class CallStack {
    */
   void pushCallFrameForJavaFunction(LuaClosure luaClosure, LuaValue[] allArgs) {
     int nArgs = allArgs.length;
-    this.callFrame = new CallFrame(this.callFrame, nArgs + LuaConstants.LUA_MIN_STACK, nArgs,
-        luaClosure, allArgs, new LuaValue[0]);
+    this.callFrame =
+        new CallFrame(
+            this.callFrame,
+            nArgs + LuaConstants.LUA_MIN_STACK,
+            nArgs,
+            luaClosure,
+            allArgs,
+            new LuaValue[0]);
   }
 
   public CallFrame topCallFrame() {

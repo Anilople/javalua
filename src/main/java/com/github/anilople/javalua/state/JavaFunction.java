@@ -9,6 +9,4 @@ import java.util.function.Function;
  *
  * @author wxq
  */
-public interface JavaFunction extends Function<LuaState, Integer> {
-
-}
+public interface JavaFunction extends Function<LuaState, Integer> {}

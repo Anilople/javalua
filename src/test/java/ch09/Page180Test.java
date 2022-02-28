@@ -1,5 +1,7 @@
 package ch09;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaString;
@@ -9,8 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author wxq
@@ -61,6 +61,4 @@ public class Page180Test {
       return 0;
     }
   }
-
-
 }

@@ -20,8 +20,12 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   private final Instruction[] instructions;
 
   public CallFrame(
-      CallFrame prev, int stackSize, int registerCount,
-      LuaClosure luaClosure, LuaValue[] args, LuaValue[] varargs) {
+      CallFrame prev,
+      int stackSize,
+      int registerCount,
+      LuaClosure luaClosure,
+      LuaValue[] args,
+      LuaValue[] varargs) {
     super(stackSize, registerCount);
     this.prev = prev;
     this.luaClosure = luaClosure;
