@@ -9,6 +9,14 @@ class GETTABUP extends AbstractInstruction {
 
   @Override
   public void applyTo(LuaVM luaVM) {
-    throw new UnsupportedOperationException();
+    int aIndex = operand.A() + 1;
+    int c = operand.C();
+
+    luaVM.pushGlobalTable();
+    luaVM.getRK(c);
+    luaVM.getTable(-2);
+    luaVM.replace(aIndex);
+    // pop global table
+    luaVM.pop(1);
   }
 }

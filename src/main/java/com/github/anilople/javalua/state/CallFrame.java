@@ -19,14 +19,18 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   int pc;
   private final Instruction[] instructions;
 
-  public CallFrame(CallFrame prev, LuaClosure luaClosure, LuaValue[] args, LuaValue[] varargs) {
-    super(
-        luaClosure.getPrototype().getRegisterCount() * 2 + 20,
-        luaClosure.getPrototype().getRegisterCount());
+  public CallFrame(
+      CallFrame prev, int stackSize, int registerCount,
+      LuaClosure luaClosure, LuaValue[] args, LuaValue[] varargs) {
+    super(stackSize, registerCount);
     this.prev = prev;
     this.luaClosure = luaClosure;
     this.varargs = varargs;
-    this.instructions = luaClosure.getPrototype().getCode().getInstructions();
+    if (luaClosure.getPrototype() != null) {
+      this.instructions = luaClosure.getPrototype().getCode().getInstructions();
+    } else {
+      this.instructions = null;
+    }
     // 闭包要用的参数
     for (int i = 0; i < args.length; i++) {
       this.set(i + 1, args[i]);

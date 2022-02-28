@@ -15,8 +15,8 @@ class LuaStackImpl implements LuaStack {
    */
   private int top;
 
-  LuaStackImpl(int size, int registerCount) {
-    this.luaValues = new LuaValue[size];
+  LuaStackImpl(int stackSize, int registerCount) {
+    this.luaValues = new LuaValue[stackSize];
     this.top = registerCount;
     // 初始化成 nil
     for (int i = 0; i < registerCount; i++) {

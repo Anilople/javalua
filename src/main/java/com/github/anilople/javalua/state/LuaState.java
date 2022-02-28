@@ -2,6 +2,7 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
@@ -11,7 +12,7 @@ import java.io.PrintStream;
 public interface LuaState {
 
   static LuaState create() {
-    return create(20, new Prototype());
+    return create(LuaConstants.LUA_MIN_STACK, new Prototype());
   }
 
   static LuaState create(int stackSize, Prototype prototype) {
@@ -208,4 +209,41 @@ public interface LuaState {
    * @return 调用函数的栈帧（已经被pop）
    */
   CallFrame call(int nArgs, int nResults);
+
+  void pushJavaFunction(JavaFunction javaFunction);
+
+  boolean isJavaFunction(int index);
+
+  /**
+   *
+   * @return null 如果索引位置的 值不是 {@link JavaFunction}
+   */
+  JavaFunction toJavaFunction(int index);
+
+  /* 用来操作全局环境的4个api */
+
+  /**
+   * 把全局环境推入栈顶，以备后续操作使用
+   */
+  void pushGlobalTable();
+
+  /**
+   * 把全局环境中，某个字段对应的value推入栈顶
+   * @param name 字段的名字
+   * @return value的类型
+   */
+  LuaType getGlobal(LuaString name);
+
+  /**
+   * 往全局环境中写一个值，值的字段名（key）由参数指定，value从栈顶pop
+   * @param name 值的字段名（key）
+   */
+  void setGlobal(LuaString name);
+
+  /**
+   * 给全局环境注册Java函数值，仅操作全局环境
+   * @param name 函数名
+   * @param javaFunction 函数
+   */
+  void register(LuaString name, JavaFunction javaFunction);
 }

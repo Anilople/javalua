@@ -2,6 +2,7 @@ package com.github.anilople.javalua.api;
 
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaState;
@@ -17,7 +18,9 @@ public interface LuaVM extends LuaState {
 
   static LuaVM of(byte[] binaryChunk) {
     var prototype = BinaryChunk.getPrototype(binaryChunk);
-    return create(prototype.getMaxStackSize(), prototype);
+    LuaVM luaVM = create(prototype.getMaxStackSize() + LuaConstants.LUA_MIN_STACK, prototype);
+    luaVM.setTop(prototype.getMaxStackSize());
+    return luaVM;
   }
 
   static void printLuaVM(LuaVM luaVM) {
