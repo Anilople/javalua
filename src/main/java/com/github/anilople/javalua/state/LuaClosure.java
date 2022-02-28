@@ -11,9 +11,16 @@ import lombok.Data;
 public class LuaClosure implements LuaValue {
 
   final Prototype prototype;
+  final JavaFunction javaFunction;
 
   public LuaClosure(Prototype prototype) {
     this.prototype = prototype;
+    this.javaFunction = null;
+  }
+
+  public LuaClosure(JavaFunction javaFunction) {
+    this.prototype = null;
+    this.javaFunction = javaFunction;
   }
 
   @Override

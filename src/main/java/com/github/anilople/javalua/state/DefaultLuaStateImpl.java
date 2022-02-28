@@ -3,6 +3,7 @@ package com.github.anilople.javalua.state;
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
@@ -14,8 +15,18 @@ public class DefaultLuaStateImpl implements LuaState {
 
   protected final CallStack callStack;
 
+  /**
+   * page 172.
+   *
+   * Lua注册表
+   */
+  protected final LuaTable registry;
+
   protected DefaultLuaStateImpl(int stackSize, Prototype prototype) {
     this.callStack = CallStack.of(stackSize, prototype);
+    this.registry = LuaTable.of(0, 0);
+    // page 172
+    this.registry.put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
   }
 
   @Override
@@ -25,6 +36,9 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public int absIndex(int index) {
+    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
+      return LuaConstants.LUA_REGISTRY_INDEX;
+    }
     return this.callStack.topCallFrame().absIndex(index);
   }
 
@@ -50,7 +64,7 @@ public class DefaultLuaStateImpl implements LuaState {
   @Override
   public void pushValue(int index) {
     var value = this.callStack.topCallFrame().get(index);
-    this.callStack.topCallFrame().push(value);
+    this.pushLuaValue(value);
   }
 
   @Override
@@ -111,6 +125,9 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public LuaType luaType(int index) {
+    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
+      return LuaType.LUA_TTABLE;
+    }
     var value = this.callStack.topCallFrame().get(index);
     return value.type();
   }
@@ -162,14 +179,29 @@ public class DefaultLuaStateImpl implements LuaState {
     return LuaType.LUA_TSTRING.equals(luaType);
   }
 
+  LuaValue getLuaValue(int index) {
+    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
+      return this.registry;
+    }
+    return this.callStack.topCallFrame().get(index);
+  }
+
+  void pushLuaValue(LuaValue luaValue) {
+    this.callStack.topCallFrame().push(luaValue);
+  }
+
+  LuaValue popLuaValue() {
+    return this.callStack.topCallFrame().pop();
+  }
+
   @Override
   public LuaValue toLuaValue(int index) {
-    return this.callStack.topCallFrame().get(index);
+    return this.getLuaValue(index);
   }
 
   @Override
   public LuaBoolean toLuaBoolean(int index) {
-    var value = this.callStack.topCallFrame().get(index);
+    var value = this.getLuaValue(index);
     return LuaBoolean.from(value);
   }
 
@@ -181,7 +213,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public Return2<LuaInteger, Boolean> toLuaIntegerX(int index) {
-    var luaValue = this.callStack.topCallFrame().get(index);
+    var luaValue = this.getLuaValue(index);
     return LuaInteger.from(luaValue);
   }
 
@@ -193,7 +225,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public Return2<LuaNumber, Boolean> toLuaNumberX(int index) {
-    var luaValue = this.callStack.topCallFrame().get(index);
+    var luaValue = this.getLuaValue(index);
     return LuaNumber.from(luaValue);
   }
 
@@ -205,7 +237,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public Return2<LuaString, Boolean> toLuaStringX(int index) {
-    final var luaValue = this.callStack.topCallFrame().get(index);
+    final var luaValue = this.getLuaValue(index);
     var r = LuaString.from(luaValue);
     if (isLuaNumber(index)) {
       // 改变 栈
@@ -216,56 +248,56 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void pushLuaNil() {
-    this.callStack.topCallFrame().push(LuaValue.NIL);
+    this.pushLuaValue(LuaValue.NIL);
   }
 
   @Override
   public void pushLuaBoolean(LuaBoolean b) {
-    this.callStack.topCallFrame().push(b);
+    this.pushLuaValue(b);
   }
 
   @Override
   public void pushLuaInteger(LuaInteger value) {
-    this.callStack.topCallFrame().push(value);
+    this.pushLuaValue(value);
   }
 
   @Override
   public void pushLuaNumber(LuaNumber value) {
-    this.callStack.topCallFrame().push(value);
+    this.pushLuaValue(value);
   }
 
   @Override
   public void pushLuaString(LuaString value) {
-    this.callStack.topCallFrame().push(value);
+    this.pushLuaValue(value);
   }
 
   @Override
   public void arithmetic(ArithmeticOperator operator) {
     // 先pop b，再pop a
-    var b = this.callStack.topCallFrame().pop();
+    var b = this.popLuaValue();
     final LuaValue result;
     if (ArithmeticOperator.LUA_OPUNM.equals(operator)) {
       result = operator.getOperator().apply(b, null);
     } else {
-      var a = this.callStack.topCallFrame().pop();
+      var a = this.popLuaValue();
       result = operator.getOperator().apply(a, b);
     }
     assert result != null;
-    this.callStack.topCallFrame().push(result);
+    this.pushLuaValue(result);
   }
 
   @Override
   public void bitwise(BitwiseOperator operator) {
-    var a = this.callStack.topCallFrame().pop();
+    var a = this.popLuaValue();
     final LuaValue result;
     if (BitwiseOperator.LUA_OPBNOT.equals(operator)) {
       result = operator.getOperator().apply(a, null);
     } else {
-      var b = this.callStack.topCallFrame().pop();
+      var b = this.popLuaValue();
       result = operator.getOperator().apply(a, b);
     }
     assert result != null;
-    this.callStack.topCallFrame().push(result);
+    this.pushLuaValue(result);
   }
 
   @Override
@@ -277,21 +309,21 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void len(int index) {
-    var a = this.callStack.topCallFrame().get(index);
+    var a = this.getLuaValue(index);
     var len = Length.length(a);
-    this.callStack.topCallFrame().push(len);
+    this.pushLuaValue(len);
   }
 
   @Override
   public void concat(int n) {
     if (0 == n) {
-      this.callStack.topCallFrame().push(LuaValue.of(""));
+      this.pushLuaValue(LuaValue.of(""));
     } else {
       for (; n >= 2; n--) {
-        var b = this.callStack.topCallFrame().pop();
-        var a = this.callStack.topCallFrame().pop();
+        var b = this.popLuaValue();
+        var a = this.popLuaValue();
         var result = StringConcat.concat(a, b);
-        this.callStack.topCallFrame().push(result);
+        this.pushLuaValue(result);
       }
     }
   }
@@ -304,7 +336,7 @@ public class DefaultLuaStateImpl implements LuaState {
   @Override
   public void createTable(int arraySize, int mapSize) {
     LuaTable luaTable = LuaTable.of(arraySize, mapSize);
-    this.callStack.topCallFrame().push(luaTable);
+    this.pushLuaValue(luaTable);
   }
 
   LuaType getTable(LuaValue table, LuaValue key) {
@@ -313,26 +345,26 @@ public class DefaultLuaStateImpl implements LuaState {
     }
     LuaTable luaTable = (LuaTable) table;
     var value = luaTable.get(key);
-    this.callStack.topCallFrame().push(value);
+    this.pushLuaValue(value);
     return value.type();
   }
 
   @Override
   public LuaType getTable(int index) {
-    var table = this.callStack.topCallFrame().get(index);
-    var key = this.callStack.topCallFrame().pop();
+    var table = this.getLuaValue(index);
+    var key = this.popLuaValue();
     return this.getTable(table, key);
   }
 
   @Override
   public LuaType getField(int index, LuaString key) {
-    var table = this.callStack.topCallFrame().get(index);
+    var table = this.getLuaValue(index);
     return this.getTable(table, key);
   }
 
   @Override
   public LuaType getI(int index, LuaInteger key) {
-    var table = this.callStack.topCallFrame().get(index);
+    var table = this.getLuaValue(index);
     return this.getTable(table, key);
   }
 
@@ -347,23 +379,23 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void setTable(int index) {
-    var table = this.callStack.topCallFrame().get(index);
-    var value = this.callStack.topCallFrame().pop();
-    var key = this.callStack.topCallFrame().pop();
+    var table = this.getLuaValue(index);
+    var value = this.popLuaValue();
+    var key = this.popLuaValue();
     this.setTable(table, key, value);
   }
 
   @Override
   public void setField(int index, LuaString key) {
-    var table = this.callStack.topCallFrame().get(index);
-    var value = this.callStack.topCallFrame().pop();
+    var table = this.getLuaValue(index);
+    var value = this.popLuaValue();
     this.setTable(table, key, value);
   }
 
   @Override
   public void setI(int index, LuaInteger key) {
-    var table = this.callStack.topCallFrame().get(index);
-    var value = this.callStack.topCallFrame().pop();
+    var table = this.getLuaValue(index);
+    var value = this.popLuaValue();
     this.setTable(table, key, value);
   }
 
@@ -377,16 +409,16 @@ public class DefaultLuaStateImpl implements LuaState {
     }
     var prototype = BinaryChunk.getPrototype(binaryChunk);
     LuaClosure luaClosure = new LuaClosure(prototype);
-    this.callStack.topCallFrame().push(luaClosure);
+    this.pushLuaValue(luaClosure);
     return 0;
   }
 
   CallFrame callLuaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
     var allArgs = this.callStack.topCallFrame().popN(nArgs);
     // pop function
-    this.callStack.topCallFrame().pop();
+    this.popLuaValue();
 
-    this.callStack.pushCallFrame(luaClosure, allArgs);
+    this.callStack.pushCallFrameForPrototype(luaClosure, allArgs);
     this.runLuaClosure();
     var functionCallFrame = this.callStack.popCallFrame();
 
@@ -403,6 +435,25 @@ public class DefaultLuaStateImpl implements LuaState {
     throw new UnsupportedOperationException("please implement it in subclass");
   }
 
+  CallFrame callJavaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
+    var allArgs = this.callStack.topCallFrame().popN(nArgs);
+    // pop function
+    this.popLuaValue();
+
+    // push Java函数用的栈帧
+    this.callStack.pushCallFrameForJavaFunction(luaClosure, allArgs);
+    // 调用Java函数
+    int numberOfElementsFunctionReturned = luaClosure.javaFunction.apply(this);
+    // pop Java函数用的栈帧
+    var functionCallFrame = this.callStack.popCallFrame();
+    if (nResults != 0) {
+      var results = functionCallFrame.popN(numberOfElementsFunctionReturned);
+      this.checkStack(results.length);
+      this.callStack.topCallFrame().pushN(results, nResults);
+    }
+    return functionCallFrame;
+  }
+
   @Override
   public CallFrame call(int nArgs, int nResults) {
     final LuaClosure luaClosure;
@@ -415,6 +466,65 @@ public class DefaultLuaStateImpl implements LuaState {
         throw new IllegalStateException(luaValue + "'s type isn't " + LuaClosure.class);
       }
     }
-    return this.callLuaClosure(luaClosure, nArgs, nResults);
+    if (luaClosure.prototype != null) {
+      return this.callLuaClosure(luaClosure, nArgs, nResults);
+    } else {
+      return this.callJavaClosure(luaClosure, nArgs, nResults);
+    }
+  }
+
+  @Override
+  public void pushJavaFunction(JavaFunction javaFunction) {
+    LuaClosure luaClosure = new LuaClosure(javaFunction);
+    this.pushLuaValue(luaClosure);
+  }
+
+  @Override
+  public boolean isJavaFunction(int index) {
+    LuaValue luaValue = this.toLuaValue(index);
+    if (!(luaValue instanceof LuaClosure)) {
+      return false;
+    }
+    LuaClosure luaClosure = (LuaClosure) luaValue;
+    return null != luaClosure.javaFunction;
+  }
+
+  @Override
+  public JavaFunction toJavaFunction(int index) {
+    LuaValue luaValue = this.toLuaValue(index);
+    if (!(luaValue instanceof LuaClosure)) {
+      return null;
+    }
+    LuaClosure luaClosure = (LuaClosure) luaValue;
+    return luaClosure.javaFunction;
+  }
+
+  LuaValue getGlobalTable() {
+    return this.registry.get(LuaConstants.LUA_RIDX_GLOBALS);
+  }
+
+  @Override
+  public void pushGlobalTable() {
+    var globalTable = this.getGlobalTable();
+    this.pushLuaValue(globalTable);
+  }
+
+  @Override
+  public LuaType getGlobal(LuaString name) {
+    var globalTable = this.getGlobalTable();
+    return this.getTable(globalTable, name);
+  }
+
+  @Override
+  public void setGlobal(LuaString name) {
+    var globalTable = this.getGlobalTable();
+    var value = this.popLuaValue();
+    this.setTable(globalTable, name, value);
+  }
+
+  @Override
+  public void register(LuaString name, JavaFunction javaFunction) {
+    this.pushJavaFunction(javaFunction);
+    this.setGlobal(name);
   }
 }

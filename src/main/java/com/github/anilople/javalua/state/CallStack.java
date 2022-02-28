@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.Return2;
 
@@ -61,14 +62,40 @@ public class CallStack {
    * @param luaClosure 闭包
    * @param allArgs 传递给闭包的所有参数，闭包不一定能全部用上
    */
-  void pushCallFrame(LuaClosure luaClosure, LuaValue[] allArgs) {
-    var nParams = luaClosure.prototype.getNumParams();
-    var isVararg = 1 == luaClosure.prototype.getIsVararg();
+  void pushCallFrameForPrototype(LuaClosure luaClosure, LuaValue[] allArgs) {
+    final Prototype prototype = luaClosure.prototype;
+    if (prototype == null) {
+      throw new IllegalArgumentException("prototype cannot be null");
+    }
+    var nParams = prototype.getNumParams();
+    var isVararg = 1 == prototype.getIsVararg();
     var argsAndVarargs = resolveArgsAndVarargs(allArgs, isVararg, nParams);
     final LuaValue[] args = argsAndVarargs.r0;
     final LuaValue[] varargs = argsAndVarargs.r1;
 
-    this.callFrame = new CallFrame(this.callFrame, luaClosure, args, varargs);
+    this.callFrame =
+        new CallFrame(
+            this.callFrame,
+            prototype.getRegisterCount() * 2 + LuaConstants.LUA_MIN_STACK,
+            prototype.getRegisterCount(),
+            luaClosure,
+            args,
+            varargs);
+  }
+
+  /**
+   * TODO, 更多参数
+   */
+  void pushCallFrameForJavaFunction(LuaClosure luaClosure, LuaValue[] allArgs) {
+    int nArgs = allArgs.length;
+    this.callFrame =
+        new CallFrame(
+            this.callFrame,
+            nArgs + LuaConstants.LUA_MIN_STACK,
+            nArgs,
+            luaClosure,
+            allArgs,
+            new LuaValue[0]);
   }
 
   public CallFrame topCallFrame() {
