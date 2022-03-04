@@ -305,3 +305,83 @@ Lua全局变量存在全局环境里，全局环境是存在注册表里的一�
 
 全局环境被当成记录来使用，里面都是字符串
 
+### 第10章 闭包和Upvalue
+
+如果在一门编程语言里，函数属于一等公民（First-class Citizen），我们就说这门语言里的函数是一等函数（First-class Function）
+
+如果可以在函数内部定义其它函数，我们称内部定义的函数为嵌套函数（Nested Function），外部的函数为外围函数（Enclosing Function）
+
+以下2行Lua代码等价
+
+```lua
+function add(x, y) return x + y end
+add = function(x, y) return x + y end
+```
+
+变量作用域：动态作用域（Dynamic Scoping），静态作用域（Static Scoping）
+
+动态作用域的语言里，函数的非局部变量名具体绑定的是哪个变量，只有等到函数运行时才能确定。不容易理解
+
+Bash和PowerShell都是动态作用域
+
+```bash
+x=1
+function g() { echo $x ; x=2 ; }
+function f() { local x=3 ; g ; }
+f # 输出3
+echo $x # 输出1
+```
+
+x在函数g调用时，值是3，不是1
+
+Lua语言是静态作用域，在编译时，就可以确定非局部变量名绑定的变量，因此静态作用域也叫词法作用域（Lexcial Scoping）
+
+```lua
+x = 1
+function g() print(x); x = 2 end
+function f() local x = 3; g() end
+f() -- 1
+print(x) -- 2
+```
+
+闭包（Closure）就是按词法作用域捕获了非局部变量的嵌套函数，Lua函数本质上全都是闭包
+
+主函数也不例外，它从外部捕获了_ENV变量
+
+Upvalue就是闭包内部捕获的非局部**变量**，简化一下，Upvalue就是变量
+
+```lua
+local u,v,w
+local function f() u = v end
+```
+
+编译后，变成
+
+```lua
+function main(...)
+    local u,v,w
+    local function f() u = v end
+end
+```
+
+函数f捕获了主函数里的2个局部变量，我们说f有2个Upvalue，分别是u和v
+
+Lua编译器会把Upvalue相关信息编译进函数原型，存放在Upvalue表里
+
+Upvalue表的row包含4 column
+
+| 序号        | 名字   | 捕获的是否是直接外围函数的局部变量 | 局部变量在外围函数调用帧里的索引 |
+| ----------- | ------ | ---------------------------------- | -------------------------------- |
+| 从0开始递增 | 变量名 | 1表示是，0表示否                   | 局部变量在外围函数调用帧里的索引 |
+
+全局变量
+
+```lua
+local function f()
+    local function g()
+        x = y
+    end
+end
+```
+
+2个函数里都没有
