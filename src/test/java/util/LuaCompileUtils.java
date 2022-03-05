@@ -1,5 +1,6 @@
 package util;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,13 +24,19 @@ public class LuaCompileUtils {
         .filter(path -> !Files.isDirectory(path))
         .filter(path -> path.getFileName().toString().endsWith(".lua"))
         .collect(Collectors.toList());
+    final String luacOutSuffix = "." + luac + ".out";
     for (Path luaFile : luaFiles) {
-      String outFileName = luaFile.getFileName().toString().replace(".lua", ".luac53.out");
-      Path outFile = luaFile.getParent().resolve(outFileName);
+      String luaFileName = luaFile.getFileName().toString();
+      String outFileName = luaFileName.replace(".lua", luacOutSuffix);
       ProcessBuilder processBuilder = new ProcessBuilder(
-          luac, "-o", outFile.toAbsolutePath().toAbsolutePath().toString(), luaFile.toAbsolutePath().toString()
+          luac, "-o", outFileName, luaFileName
       );
+      // change working directory
+      File workingDirectory = luaFile.getParent().toFile();
+      processBuilder.directory(workingDirectory);
+      System.out.println("working directory " + workingDirectory.getAbsolutePath());
       System.out.println(String.join(" ", processBuilder.command()));
+      System.out.println();
       Process process = processBuilder.start();
       int exitCode = process.waitFor();
       assert exitCode == 0;
