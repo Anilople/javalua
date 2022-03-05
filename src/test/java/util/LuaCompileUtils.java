@@ -20,17 +20,16 @@ public class LuaCompileUtils {
    * @param directory 文件夹
    */
   static void compile(String luac, Path directory) throws IOException, InterruptedException {
-    List<Path> luaFiles = Files.walk(directory)
-        .filter(path -> !Files.isDirectory(path))
-        .filter(path -> path.getFileName().toString().endsWith(".lua"))
-        .collect(Collectors.toList());
+    List<Path> luaFiles =
+        Files.walk(directory)
+            .filter(path -> !Files.isDirectory(path))
+            .filter(path -> path.getFileName().toString().endsWith(".lua"))
+            .collect(Collectors.toList());
     final String luacOutSuffix = "." + luac + ".out";
     for (Path luaFile : luaFiles) {
       String luaFileName = luaFile.getFileName().toString();
       String outFileName = luaFileName.replace(".lua", luacOutSuffix);
-      ProcessBuilder processBuilder = new ProcessBuilder(
-          luac, "-o", outFileName, luaFileName
-      );
+      ProcessBuilder processBuilder = new ProcessBuilder(luac, "-o", outFileName, luaFileName);
       // change working directory
       File workingDirectory = luaFile.getParent().toFile();
       processBuilder.directory(workingDirectory);
