@@ -16,11 +16,11 @@ class VarargTest {
 
   @Test
   void varargCase1() {
-    LuaVM.evalAndPrint(ch08.varargCase1);
+    LuaVM.evalAndPrint(ch08.vararg_case1.getLuacOut());
   }
 
   @Test
   void varargCase2() {
-    assertThrows(RuntimeException.class, () -> LuaVM.evalAndPrint(ch08.varargCase2));
+    assertThrows(RuntimeException.class, () -> LuaVM.evalAndPrint(ch08.vararg_case2.getLuacOut()));
   }
 }

@@ -1,3 +1,7 @@
+# lua
+# output must not be luac.out
+luac.out
+
 ### STS ###
 .apt_generated
 .classpath

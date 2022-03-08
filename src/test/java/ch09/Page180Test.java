@@ -22,9 +22,9 @@ public class Page180Test {
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     JavaFunctionExample javaFunctionExample = new JavaFunctionExample(byteArrayOutputStream);
 
-    LuaVM luaVM = LuaVM.of(ch02.helloWorldLuac53Out);
+    LuaVM luaVM = LuaVM.of(ch02.hello_world.getLuacOut());
     luaVM.register(LuaValue.of("print"), javaFunctionExample::print);
-    luaVM.load(ch02.helloWorldLuac53Out, "hello_world.lua", "b");
+    luaVM.load(ch02.hello_world.getLuacOut(), "hello_world.lua", "b");
     luaVM.call(0, 0);
 
     // 检查是否真的输出了 "Hello, World!"
