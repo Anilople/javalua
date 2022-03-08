@@ -22,7 +22,8 @@ public interface ResourceContentConstants {
 
     public LuaResource(String luaFilePath) {
       this.luaFilePath = luaFilePath;
-      this.luacOut = ResourceReadUtils.readBytes(LuaResourceUtils.resolveOutFilename(this.luaFilePath));
+      this.luacOut =
+          ResourceReadUtils.readBytes(LuaResourceUtils.resolveOutFilename(this.luaFilePath));
     }
   }
 

@@ -20,8 +20,7 @@ class HeaderTest {
   @Test
   void helloWorldLuac53OutSignature() {
     for (int i = 0; i < 4; i++) {
-      assertEquals(
-          Header.INSTANCE.luaSignature[i], ch02.hello_world.getLuacOut()[i]);
+      assertEquals(Header.INSTANCE.luaSignature[i], ch02.hello_world.getLuacOut()[i]);
     }
     assertArrayEquals(
         "Lua".getBytes(StandardCharsets.UTF_8),

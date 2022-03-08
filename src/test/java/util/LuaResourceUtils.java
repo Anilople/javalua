@@ -97,11 +97,13 @@ public class LuaResourceUtils {
 
   static void generateJavaCode(Path directory, String chapter) throws IOException {
     List<String> luaFileNames = new ArrayList<>();
-    forEachLuaFile(directory, (workingDirectory, luaFileName) -> {
-      if (workingDirectory.getAbsolutePath().contains(chapter)) {
-        luaFileNames.add(luaFileName);
-      }
-    });
+    forEachLuaFile(
+        directory,
+        (workingDirectory, luaFileName) -> {
+          if (workingDirectory.getAbsolutePath().contains(chapter)) {
+            luaFileNames.add(luaFileName);
+          }
+        });
 
     if (luaFileNames.isEmpty()) {
       return;
@@ -122,8 +124,7 @@ public class LuaResourceUtils {
           .append("new LuaResource(\"")
           .append(resourcePath)
           .append("\");")
-          .append(System.lineSeparator())
-      ;
+          .append(System.lineSeparator());
     }
     // }
     stringBuilder.append("}");
@@ -133,10 +134,12 @@ public class LuaResourceUtils {
   public static void main(String[] args) throws IOException, InterruptedException {
     Path directory = Paths.get("src", "test", "resources");
     System.out.println("directory " + directory.toAbsolutePath());
-    forEachLuaFile(directory, (workingDirectory, luaFileName) -> {
-      compileLua(workingDirectory, luaFileName);
-      decompileToBytecode(workingDirectory, luaFileName);
-    });
+    forEachLuaFile(
+        directory,
+        (workingDirectory, luaFileName) -> {
+          compileLua(workingDirectory, luaFileName);
+          decompileToBytecode(workingDirectory, luaFileName);
+        });
 
     for (int i = 0; i < 10; i++) {
       String chapter = "ch0" + i;
