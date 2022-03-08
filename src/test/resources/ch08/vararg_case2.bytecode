@@ -1,7 +1,7 @@
 
-main <vararg_case2.lua:0,0> (12 instructions at 0000000000bc8ac0)
+main <vararg_case2.lua:0,0> (12 instructions at 0000000000b58ac0)
 0+ params, 6 slots, 1 upvalue, 2 locals, 5 constants, 1 function
-	1	[4]	CLOSURE  	0 0	; 0000000000bc8c70
+	1	[4]	CLOSURE  	0 0	; 0000000000b58c70
 	2	[7]	MOVE     	1 0
 	3	[7]	LOADK    	2 -1	; 5555
 	4	[7]	LOADK    	3 -2	; 666666
@@ -13,19 +13,19 @@ main <vararg_case2.lua:0,0> (12 instructions at 0000000000bc8ac0)
 	10	[10]	GETTABUP 	2 0 -5	; _ENV "fail"
 	11	[10]	CALL     	2 1 1
 	12	[11]	RETURN   	0 1
-constants (5) for 0000000000bc8ac0:
+constants (5) for 0000000000b58ac0:
 	1	5555
 	2	666666
 	3	7777777
 	4	333
 	5	"fail"
-locals (2) for 0000000000bc8ac0:
+locals (2) for 0000000000b58ac0:
 	0	second	2	13
 	1	value	8	13
-upvalues (1) for 0000000000bc8ac0:
+upvalues (1) for 0000000000b58ac0:
 	0	_ENV	1	0
 
-function <vararg_case2.lua:1,4> (6 instructions at 0000000000bc8c70)
+function <vararg_case2.lua:1,4> (6 instructions at 0000000000b58c70)
 0+ params, 2 slots, 0 upvalues, 1 local, 1 constant, 0 functions
 	1	[2]	NEWTABLE 	0 0 0
 	2	[2]	VARARG   	1 0
@@ -33,8 +33,8 @@ function <vararg_case2.lua:1,4> (6 instructions at 0000000000bc8c70)
 	4	[3]	GETTABLE 	1 0 -1	; 2
 	5	[3]	RETURN   	1 2
 	6	[4]	RETURN   	0 1
-constants (1) for 0000000000bc8c70:
+constants (1) for 0000000000b58c70:
 	1	2
-locals (1) for 0000000000bc8c70:
+locals (1) for 0000000000b58c70:
 	0	args	4	7
-upvalues (0) for 0000000000bc8c70:
+upvalues (0) for 0000000000b58c70:

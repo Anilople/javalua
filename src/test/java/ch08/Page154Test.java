@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author wxq
  */
-public class Page154Test {
+class Page154Test {
 
   @Test
   @Disabled("GETTABUP 未实现")

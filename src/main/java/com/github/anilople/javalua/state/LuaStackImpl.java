@@ -1,5 +1,6 @@
 package com.github.anilople.javalua.state;
 
+import com.github.anilople.javalua.constant.LuaConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -65,6 +66,9 @@ class LuaStackImpl implements LuaStack {
    * 转为绝对值索引，并不考虑索引是否有效
    */
   public int absIndex(int index) {
+    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
+      return LuaConstants.LUA_REGISTRY_INDEX;
+    }
     if (index >= 0) {
       return index;
     }

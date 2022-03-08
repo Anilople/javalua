@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author wxq
  */
-public class Page180Test {
+class Page180Test {
 
   @Test
   void testJavaFunctionPrint() {

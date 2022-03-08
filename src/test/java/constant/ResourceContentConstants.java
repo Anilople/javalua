@@ -17,6 +17,7 @@ public interface ResourceContentConstants {
 
   @Getter
   class LuaResource {
+
     private final String luaFilePath;
     private final byte[] luacOut;
 
@@ -55,5 +56,17 @@ public interface ResourceContentConstants {
     LuaResource test = new LuaResource("ch08/test.lua");
     LuaResource vararg_case1 = new LuaResource("ch08/vararg_case1.lua");
     LuaResource vararg_case2 = new LuaResource("ch08/vararg_case2.lua");
+  }
+
+  interface ch10 {
+    LuaResource page_185_upvalue = new LuaResource("ch10/page_185_upvalue.lua");
+    LuaResource page_186_upvalue_nested = new LuaResource("ch10/page_186_upvalue_nested.lua");
+    LuaResource page_188_global_variable = new LuaResource("ch10/page_188_global_variable.lua");
+    LuaResource page_195_GETUPVAL = new LuaResource("ch10/page_195_GETUPVAL.lua");
+    LuaResource page_197_SETUPVAL = new LuaResource("ch10/page_197_SETUPVAL.lua");
+    LuaResource page_198_GETTABUP = new LuaResource("ch10/page_198_GETTABUP.lua");
+    LuaResource page_199_SETTABUP = new LuaResource("ch10/page_199_SETTABUP.lua");
+    LuaResource page_200_JMP = new LuaResource("ch10/page_200_JMP.lua");
+    LuaResource page_202_test = new LuaResource("ch10/page_202_test.lua");
   }
 }

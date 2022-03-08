@@ -246,4 +246,11 @@ public interface LuaState {
    * @param javaFunction 函数
    */
   void register(LuaString name, JavaFunction javaFunction);
+
+  /**
+   * page 193 添加对upvalue的支持
+   *
+   * 和{@link #pushJavaFunction(JavaFunction)}的区别在于，这个方法会先从栈顶弹出n个Lua值，这些值会成为Java闭包的Upvalue
+   */
+  void pushJavaClosure(JavaFunction javaFunction, int n);
 }

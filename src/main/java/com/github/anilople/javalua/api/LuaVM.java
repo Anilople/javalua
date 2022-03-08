@@ -103,5 +103,10 @@ public interface LuaVM extends LuaState {
    */
   void loadVararg(int requiredResults);
 
+  /**
+   * 载入子{@link Prototype}
+   */
   void loadPrototype(int index);
+
+  void closeUpvalues(int a);
 }

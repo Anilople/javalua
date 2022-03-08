@@ -2,7 +2,12 @@ package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.api.LuaVM;
 
-class GETTABUP extends AbstractInstruction {
+/**
+ * page 197
+ *
+ * R(A) := UpValue[B][RK(C)]
+ */
+class GETTABUP extends UpvalueInstruction {
   GETTABUP(int originCodeValue) {
     super(originCodeValue);
   }
@@ -10,13 +15,15 @@ class GETTABUP extends AbstractInstruction {
   @Override
   public void applyTo(LuaVM luaVM) {
     int aIndex = operand.A() + 1;
+    int bIndex = operand.B() + 1;
+
     int c = operand.C();
 
-    luaVM.pushGlobalTable();
     luaVM.getRK(c);
-    luaVM.getTable(-2);
+
+    int index = luaUpvalueIndex(bIndex);
+    luaVM.getTable(index);
+
     luaVM.replace(aIndex);
-    // pop global table
-    luaVM.pop(1);
   }
 }

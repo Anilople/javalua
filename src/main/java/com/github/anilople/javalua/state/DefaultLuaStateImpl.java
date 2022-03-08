@@ -29,6 +29,13 @@ public class DefaultLuaStateImpl implements LuaState {
     this.registry.put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
   }
 
+  /**
+   * @return 全局环境 _ENV
+   */
+  LuaTable getEnv() {
+    return (LuaTable) this.registry.get(LuaConstants.LUA_RIDX_GLOBALS);
+  }
+
   @Override
   public int getTop() {
     return this.callStack.topCallFrame().getTop();
@@ -36,9 +43,6 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public int absIndex(int index) {
-    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
-      return LuaConstants.LUA_REGISTRY_INDEX;
-    }
     return this.callStack.topCallFrame().absIndex(index);
   }
 
@@ -400,7 +404,9 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   @Override
-  public void popCallFrame() {}
+  public void popCallFrame() {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
   public int load(byte[] binaryChunk, String chunkName, String mode) {
@@ -408,7 +414,16 @@ public class DefaultLuaStateImpl implements LuaState {
       throw new IllegalArgumentException("not support mode '" + mode + "' yet");
     }
     var prototype = BinaryChunk.getPrototype(binaryChunk);
-    LuaClosure luaClosure = new LuaClosure(prototype);
+    final LuaClosure luaClosure;
+    if (prototype.getUpvalues().length > 0) {
+      // 设置 _ENV page 191
+      var env = this.getEnv();
+      luaClosure = new LuaClosure(prototype);
+      luaClosure.setLuaUpvalue(0, new LuaUpvalue(env));
+    } else {
+      // 不需要管 Upvalue
+      luaClosure = new LuaClosure(prototype);
+    }
     this.pushLuaValue(luaClosure);
     return 0;
   }
@@ -526,5 +541,16 @@ public class DefaultLuaStateImpl implements LuaState {
   public void register(LuaString name, JavaFunction javaFunction) {
     this.pushJavaFunction(javaFunction);
     this.setGlobal(name);
+  }
+
+  @Override
+  public void pushJavaClosure(JavaFunction javaFunction, int n) {
+    LuaClosure luaClosure = LuaClosure.newJavaClosure(javaFunction, n);
+    for (int i = n - 1; i >= 0; i--) {
+      LuaValue luaValue = this.popLuaValue();
+      LuaUpvalue luaUpvalue = new LuaUpvalue(luaValue);
+      luaClosure.setLuaUpvalue(i, luaUpvalue);
+    }
+    this.pushLuaValue(luaClosure);
   }
 }
