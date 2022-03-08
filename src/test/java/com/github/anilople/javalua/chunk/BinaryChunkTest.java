@@ -18,7 +18,7 @@ class BinaryChunkTest {
 
   @Test
   void testHelloWorldLuac53OutSize() {
-    assertEquals(151, ResourceContentConstants.ch02.helloWorldLuac53Out.length);
+    assertEquals(151, ResourceContentConstants.ch02.hello_world.getLuacOut().length);
   }
 
   @Test
@@ -51,7 +51,7 @@ class BinaryChunkTest {
   void helloWorldLuac53OutDecode() throws IOException {
     var binaryChunk = new BinaryChunk();
     DecodeInputStream inputStream =
-        new DecodeInputStream(ResourceContentConstants.ch02.helloWorldLuac53Out);
+        new DecodeInputStream(ResourceContentConstants.ch02.hello_world.getLuacOut());
     binaryChunk.decode(inputStream);
 
     // 检测是否读取完成

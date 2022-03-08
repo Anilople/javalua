@@ -15,7 +15,7 @@ class Page165Test {
 
   @Test
   void maxCase1() {
-    var callFrame = LuaVM.evalAndPrint(ch08.maxCase1);
+    var callFrame = LuaVM.evalAndPrint(ch08.max_case1.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
     assertEquals(LuaValue.of(64), returnedLuaValue);
@@ -23,7 +23,7 @@ class Page165Test {
 
   @Test
   void maxCase2() {
-    var callFrame = LuaVM.evalAndPrint(ch08.maxCase2);
+    var callFrame = LuaVM.evalAndPrint(ch08.max_case2.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
     assertEquals(LuaValue.of(3), returnedLuaValue);
@@ -31,7 +31,7 @@ class Page165Test {
 
   @Test
   void maxWithVarargCase1() {
-    var callFrame = LuaVM.evalAndPrint(ch08.maxWithVarargCase1);
+    var callFrame = LuaVM.evalAndPrint(ch08.max_with_vararg_case1.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
     assertEquals(LuaValue.of(99), returnedLuaValue);
@@ -39,11 +39,11 @@ class Page165Test {
 
   @Test
   void maxWithVarargCase2() {
-    LuaVM.evalAndPrint(ch08.maxWithVarargCase2);
+    LuaVM.evalAndPrint(ch08.max_with_vararg_case1.getLuacOut());
   }
 
   @Test
   void test() {
-    LuaVM.evalAndPrint(ch08.test);
+    LuaVM.evalAndPrint(ch08.test.getLuacOut());
   }
 }
