@@ -1,0 +1,13 @@
+
+main <hello_world.lua:0,0> (4 instructions at 00000000007a8ac0)
+0+ params, 2 slots, 1 upvalue, 0 locals, 2 constants, 0 functions
+	1	[1]	GETTABUP 	0 0 -1	; _ENV "print"
+	2	[1]	LOADK    	1 -2	; "Hello, World!"
+	3	[1]	CALL     	0 2 1
+	4	[1]	RETURN   	0 1
+constants (2) for 00000000007a8ac0:
+	1	"print"
+	2	"Hello, World!"
+locals (0) for 00000000007a8ac0:
+upvalues (1) for 00000000007a8ac0:
+	0	_ENV	1	0

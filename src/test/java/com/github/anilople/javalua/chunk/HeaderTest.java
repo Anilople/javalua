@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.anilople.javalua.util.ByteUtils;
 import constant.ResourceContentConstants;
+import constant.ResourceContentConstants.ch02;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -20,14 +21,14 @@ class HeaderTest {
   void helloWorldLuac53OutSignature() {
     for (int i = 0; i < 4; i++) {
       assertEquals(
-          Header.INSTANCE.luaSignature[i], ResourceContentConstants.ch02.helloWorldLuac53Out[i]);
+          Header.INSTANCE.luaSignature[i], ch02.hello_world.getLuacOut()[i]);
     }
     assertArrayEquals(
         "Lua".getBytes(StandardCharsets.UTF_8),
         new byte[] {
-          ResourceContentConstants.ch02.helloWorldLuac53Out[1],
-          ResourceContentConstants.ch02.helloWorldLuac53Out[2],
-          ResourceContentConstants.ch02.helloWorldLuac53Out[3]
+          ResourceContentConstants.ch02.hello_world.getLuacOut()[1],
+          ResourceContentConstants.ch02.hello_world.getLuacOut()[2],
+          ResourceContentConstants.ch02.hello_world.getLuacOut()[3]
         });
   }
 
@@ -40,7 +41,7 @@ class HeaderTest {
   @Test
   void helloWorldLuac53OutHeaderEncode() {
     byte[] expectedHeaderByteArray =
-        Arrays.copyOfRange(ResourceContentConstants.ch02.helloWorldLuac53Out, 0, Header.SIZE);
+        Arrays.copyOfRange(ResourceContentConstants.ch02.hello_world.getLuacOut(), 0, Header.SIZE);
 
     byte[] actualHeaderByteArray = new Header().encode();
 
@@ -136,7 +137,7 @@ class HeaderTest {
   void helloWorldLuac53OutHeaderDecode() throws IOException {
     var expectedHeader = new Header();
     var bytes =
-        Arrays.copyOfRange(ResourceContentConstants.ch02.helloWorldLuac53Out, 0, Header.SIZE);
+        Arrays.copyOfRange(ResourceContentConstants.ch02.hello_world.getLuacOut(), 0, Header.SIZE);
     var header = ByteUtils.decode(bytes, Header.class);
 
     assertArrayEquals(expectedHeader.encode(), header.encode());

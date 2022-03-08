@@ -1,5 +1,7 @@
 package constant;
 
+import lombok.Getter;
+import util.LuaResourceUtils;
 import util.ResourceReadUtils;
 
 /**
@@ -7,39 +9,50 @@ import util.ResourceReadUtils;
  *
  * 汇总 src/test/resources 下的资源
  *
+ * 如果没有特殊表示，都是luac53的编译输出
+ *
  * @author wxq
  */
 public interface ResourceContentConstants {
 
+  @Getter
+  class LuaResource {
+    private final String luaFilePath;
+    private final byte[] luacOut;
+
+    public LuaResource(String luaFilePath) {
+      this.luaFilePath = luaFilePath;
+      this.luacOut = ResourceReadUtils.readBytes(LuaResourceUtils.resolveOutFilename(this.luaFilePath));
+    }
+  }
+
   interface ch02 {
-    byte[] helloWorldLuac53Out = ResourceReadUtils.readBytes("ch02/hello_world.luac53.out");
+    LuaResource hello_world = new LuaResource("ch02/hello_world.lua");
     byte[] helloWorldLuac54Out = ResourceReadUtils.readBytes("ch02/hello_world.luac54.out");
   }
 
   interface ch06 {
-    byte[] sumLuac53Out = ResourceReadUtils.readBytes("ch06/sum.luac53.out");
+    LuaResource sum = new LuaResource("ch06/sum.lua");
   }
 
   interface ch07 {
-    byte[] newTableLuac53Out = ResourceReadUtils.readBytes("ch07/new_table.luac53.out");
-    byte[] testLuac53Out = ResourceReadUtils.readBytes("ch07/test.luac53.out");
+    LuaResource get_table = new LuaResource("ch07/get_table.lua");
+    LuaResource new_table = new LuaResource("ch07/new_table.lua");
+    LuaResource set_list = new LuaResource("ch07/set_list.lua");
+    LuaResource test = new LuaResource("ch07/test.lua");
   }
 
   interface ch08 {
-    byte[] closure = ResourceReadUtils.readBytes("ch08/closure.luac53.out");
-    byte[] call = ResourceReadUtils.readBytes("ch08/call.luac53.out");
-    byte[] callOperandZero = ResourceReadUtils.readBytes("ch08/call_operand_zero.luac53.out");
-    byte[] RETURN = ResourceReadUtils.readBytes("ch08/return.luac53.out");
-
-    byte[] varargCase1 = ResourceReadUtils.readBytes("ch08/vararg_case1.luac53.out");
-    byte[] varargCase2 = ResourceReadUtils.readBytes("ch08/vararg_case2.luac53.out");
-
-    byte[] maxCase1 = ResourceReadUtils.readBytes("ch08/max_case1.luac53.out");
-    byte[] maxCase2 = ResourceReadUtils.readBytes("ch08/max_case2.luac53.out");
-    byte[] maxWithVarargCase1 =
-        ResourceReadUtils.readBytes("ch08/max_with_vararg_case1.luac53.out");
-    byte[] maxWithVarargCase2 =
-        ResourceReadUtils.readBytes("ch08/max_with_vararg_case2.luac53.out");
-    byte[] test = ResourceReadUtils.readBytes("ch08/test.luac53.out");
+    LuaResource call = new LuaResource("ch08/call.lua");
+    LuaResource call_operand_zero = new LuaResource("ch08/call_operand_zero.lua");
+    LuaResource closure = new LuaResource("ch08/closure.lua");
+    LuaResource max_case1 = new LuaResource("ch08/max_case1.lua");
+    LuaResource max_case2 = new LuaResource("ch08/max_case2.lua");
+    LuaResource max_with_vararg_case1 = new LuaResource("ch08/max_with_vararg_case1.lua");
+    LuaResource max_with_vararg_case2 = new LuaResource("ch08/max_with_vararg_case2.lua");
+    LuaResource _return = new LuaResource("ch08/return.lua");
+    LuaResource test = new LuaResource("ch08/test.lua");
+    LuaResource vararg_case1 = new LuaResource("ch08/vararg_case1.lua");
+    LuaResource vararg_case2 = new LuaResource("ch08/vararg_case2.lua");
   }
 }

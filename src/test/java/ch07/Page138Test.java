@@ -9,6 +9,7 @@ import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.Instruction.Opcode;
 import com.github.anilople.javalua.state.LuaValue;
 import constant.ResourceContentConstants;
+import constant.ResourceContentConstants.ch07;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -18,7 +19,7 @@ class Page138Test {
 
   @Test
   void ch07TestLuac53OutEval() {
-    BinaryChunk binaryChunk = BinaryChunk.of(ResourceContentConstants.ch07.testLuac53Out);
+    BinaryChunk binaryChunk = BinaryChunk.of(ch07.test.getLuacOut());
     var mainFunc = binaryChunk.getMainFunc();
     // stack的size大一些
     LuaVM luaVM = LuaVM.create(mainFunc.getMaxStackSize() * 2 + 8, mainFunc);

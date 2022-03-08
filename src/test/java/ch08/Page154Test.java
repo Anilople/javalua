@@ -13,7 +13,7 @@ public class Page154Test {
   @Test
   @Disabled("GETTABUP 未实现")
   void call() {
-    LuaVM.evalAndPrint(ch08.call);
+    LuaVM.evalAndPrint(ch08.call.getLuacOut());
   }
 
   /**
@@ -22,6 +22,6 @@ public class Page154Test {
   @Test
   @Disabled("GETTABUP 未实现")
   void callOperandZero() {
-    LuaVM.evalAndPrint(ch08.callOperandZero);
+    LuaVM.evalAndPrint(ch08.call_operand_zero.getLuacOut());
   }
 }

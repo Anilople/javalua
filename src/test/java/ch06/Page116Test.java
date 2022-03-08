@@ -9,6 +9,7 @@ import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.Instruction.Opcode;
 import com.github.anilople.javalua.state.LuaValue;
 import constant.ResourceContentConstants;
+import constant.ResourceContentConstants.ch06;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -23,7 +24,7 @@ class Page116Test {
    */
   @Test
   void ch06SumLuac53OutInstructions() {
-    BinaryChunk binaryChunk = BinaryChunk.of(ResourceContentConstants.ch06.sumLuac53Out);
+    BinaryChunk binaryChunk = BinaryChunk.of(ch06.sum.getLuacOut());
     assertEquals(1, binaryChunk.getSizeUpvalues());
 
     var mainFunc = binaryChunk.getMainFunc();
@@ -77,7 +78,7 @@ class Page116Test {
 
   @Test
   void ch06SumLuac53OutEval() {
-    BinaryChunk binaryChunk = BinaryChunk.of(ResourceContentConstants.ch06.sumLuac53Out);
+    BinaryChunk binaryChunk = BinaryChunk.of(ch06.sum.getLuacOut());
     var mainFunc = binaryChunk.getMainFunc();
     // stack的size大一些
     LuaVM luaVM = LuaVM.create(mainFunc.getMaxStackSize() * 2 + 8, mainFunc);
