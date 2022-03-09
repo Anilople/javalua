@@ -2,6 +2,7 @@ package ch10;
 
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaValue;
@@ -31,6 +32,19 @@ class Page202Test {
     // 返回 stdout
     return byteArrayOutputStream.toString(StandardCharsets.UTF_8);
   }
+
+  @Test
+  void upvalue_add_case1() {
+    String stdout = run(ch10.upvalue_add_case1);
+    assertEquals("99", stdout);
+  }
+
+  @Test
+  void upvalue_add_case2() {
+    String stdout = run(ch10.upvalue_add_case2);
+    assertEquals("100", stdout);
+  }
+
   @Test
   void page_185_upvalue() {
     run(ch10.page_185_upvalue);
@@ -95,6 +109,9 @@ class Page202Test {
         if (luaValue instanceof LuaString) {
           LuaString luaString = (LuaString) luaValue;
           printStream.print(luaString.getValue());
+        } else if (luaValue instanceof LuaInteger) {
+          LuaInteger luaInteger = (LuaInteger) luaValue;
+          printStream.print(luaInteger.getValue());
         } else {
           throw new UnsupportedOperationException("cannot print " + luaValue);
         }

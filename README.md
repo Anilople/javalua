@@ -370,9 +370,9 @@ Lua编译器会把Upvalue相关信息编译进函数原型，存放在Upvalue表
 
 Upvalue表的row包含4 column
 
-| 序号        | 名字   | 捕获的是否是直接外围函数的局部变量 | 局部变量在外围函数调用帧里的索引 |
-| ----------- | ------ | ---------------------------------- | -------------------------------- |
-| 从0开始递增 | 变量名 | 1表示是，0表示否                   | 局部变量在外围函数调用帧里的索引 |
+| 序号        | 名字   | 捕获的是否是父函数的局部变量 | 局部变量在父函数调用帧里的索引 |
+| ----------- | ------ | ---------------------------- | ------------------------------ |
+| 从0开始递增 | 变量名 | 1表示是，0表示否             | 局部变量在父函数调用帧里的索引 |
 
 全局变量实际上是某个特殊的字段
 
@@ -417,9 +417,16 @@ Upvalue索引从1开始递增
 
 Upvalue伪索引 = 注册表伪索引减去改索引
 
+open 表示引用该 upvalue 的 closure 还在执行中，没有结束
+
 ## 参考资料
 
 ### prototype是什么
 
 http://siffiejoe.github.io/lua-prototype/
 
+### upvalue是什么
+
+http://www.lua.org/manual/5.1/manual.html#2.6
+
+A local variable used by an inner function is called an *upvalue*, or *external local variable*, inside the inner function.

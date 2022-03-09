@@ -1,5 +1,5 @@
 
-main <test.lua:0,0> (14 instructions at 0000000000c98a50)
+main <test.lua:0,0> (14 instructions at 00000000007d8a50)
 0+ params, 6 slots, 1 upvalue, 2 locals, 9 constants, 0 functions
 	1	[2]	NEWTABLE 	0 3 0
 	2	[2]	LOADK    	1 -1	; "a"
@@ -15,7 +15,7 @@ main <test.lua:0,0> (14 instructions at 0000000000c98a50)
 	12	[5]	LEN      	5 0
 	13	[5]	CONCAT   	1 1 5
 	14	[5]	RETURN   	0 1
-constants (9) for 0000000000c98a50:
+constants (9) for 00000000007d8a50:
 	1	"a"
 	2	"b"
 	3	"c"
@@ -25,8 +25,8 @@ constants (9) for 0000000000c98a50:
 	7	"Bar"
 	8	3
 	9	1
-locals (2) for 0000000000c98a50:
+locals (2) for 00000000007d8a50:
 	0	t	6	15
 	1	s	14	15
-upvalues (1) for 0000000000c98a50:
+upvalues (1) for 00000000007d8a50:
 	0	_ENV	1	0

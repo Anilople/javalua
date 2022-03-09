@@ -98,6 +98,9 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
 
   @Override
   public LuaValue get(int index) {
+    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
+      throw new IllegalArgumentException("stack frame doesn't save registry, please get it in lua state");
+    }
     if (index < LuaConstants.LUA_REGISTRY_INDEX) {
       // upvalue
       int upvalueIndex = LuaConstants.LUA_REGISTRY_INDEX - index - 1;

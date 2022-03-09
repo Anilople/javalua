@@ -13,6 +13,9 @@ public class LuaClosure implements LuaValue {
 
   final Prototype prototype;
   final JavaFunction javaFunction;
+  /**
+   * 闭包要捕获父函数的局部变量
+   */
   final LuaUpvalue[] luaUpvalues;
 
   public LuaClosure(Prototype prototype) {

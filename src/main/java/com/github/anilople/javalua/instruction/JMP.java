@@ -22,7 +22,6 @@ class JMP extends UpvalueInstruction {
     luaVM.addPC(sBx);
     if (0 != a) {
       luaVM.closeUpvalues(a);
-      throw new UnsupportedOperationException("todo，第6章 虚拟机雏形 推迟到第10章");
     }
   }
 }

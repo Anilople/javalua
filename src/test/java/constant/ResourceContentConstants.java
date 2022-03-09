@@ -68,5 +68,7 @@ public interface ResourceContentConstants {
     LuaResource page_199_SETTABUP = new LuaResource("ch10/page_199_SETTABUP.lua");
     LuaResource page_200_JMP = new LuaResource("ch10/page_200_JMP.lua");
     LuaResource page_202_test = new LuaResource("ch10/page_202_test.lua");
+    LuaResource upvalue_add_case1 = new LuaResource("ch10/upvalue_add_case1.lua");
+    LuaResource upvalue_add_case2 = new LuaResource("ch10/upvalue_add_case2.lua");
   }
 }

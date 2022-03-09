@@ -61,13 +61,13 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void copy(int from, int to) {
-    var luaValue = this.callStack.topCallFrame().get(from);
+    var luaValue = this.getLuaValue(from);
     this.callStack.topCallFrame().set(to, luaValue);
   }
 
   @Override
   public void pushValue(int index) {
-    var value = this.callStack.topCallFrame().get(index);
+    var value = this.getLuaValue(index);
     this.pushLuaValue(value);
   }
 
@@ -129,10 +129,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public LuaType luaType(int index) {
-    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
-      return LuaType.LUA_TTABLE;
-    }
-    var value = this.callStack.topCallFrame().get(index);
+    var value = this.getLuaValue(index);
     return value.type();
   }
 
@@ -183,6 +180,9 @@ public class DefaultLuaStateImpl implements LuaState {
     return LuaType.LUA_TSTRING.equals(luaType);
   }
 
+  /**
+   * 这个class中，如果想获取index上的{@link LuaValue}，需要使用这个方法
+   */
   LuaValue getLuaValue(int index) {
     if (index == LuaConstants.LUA_REGISTRY_INDEX) {
       return this.registry;
@@ -306,8 +306,8 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public LuaBoolean compare(int index1, int index2, ComparisonOperator operator) {
-    var a = this.callStack.topCallFrame().get(index1);
-    var b = this.callStack.topCallFrame().get(index2);
+    var a = this.getLuaValue(index1);
+    var b = this.getLuaValue(index2);
     return operator.getOperator().apply(a, b);
   }
 
@@ -421,8 +421,8 @@ public class DefaultLuaStateImpl implements LuaState {
       luaClosure = new LuaClosure(prototype);
       luaClosure.setLuaUpvalue(0, new LuaUpvalue(env));
     } else {
-      // 不需要管 Upvalue
-      luaClosure = new LuaClosure(prototype);
+      // 不需要管 Upvalue?
+      throw new IllegalStateException("_ENV ?");
     }
     this.pushLuaValue(luaClosure);
     return 0;
@@ -474,7 +474,7 @@ public class DefaultLuaStateImpl implements LuaState {
     final LuaClosure luaClosure;
     {
       int indexOfLuaClosure = -(nArgs + 1);
-      LuaValue luaValue = this.callStack.topCallFrame().get(indexOfLuaClosure);
+      LuaValue luaValue = this.getLuaValue(indexOfLuaClosure);
       if (luaValue instanceof LuaClosure) {
         luaClosure = (LuaClosure) luaValue;
       } else {

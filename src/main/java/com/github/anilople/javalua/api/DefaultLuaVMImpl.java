@@ -107,26 +107,30 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
 
   LuaUpvalue[] resolveLuaUpvalues(Prototype prototype) {
     Upvalue[] upvalues = prototype.getUpvalues();
-    LuaUpvalue[] luaUpvalues = new LuaUpvalue[upvalues.length];
-    for (Upvalue upvalue : upvalues) {
+    final int len = upvalues.length;
+    LuaUpvalue[] luaUpvalues = new LuaUpvalue[len];
+    for (int i = 0; i < len; i++) {
+      Upvalue upvalue = upvalues[i];
       int upvalueIndex = (int) upvalue.getIdx();
       switch (upvalue.getInstack()) {
         case 1:
           // 这个upvalue捕获的是当前函数的局部变量
           if (this.callStack.topCallFrame().containsOpenUpvalue(upvalueIndex)) {
             LuaUpvalue luaUpvalue = this.callStack.topCallFrame().getOpenUpvalue(upvalueIndex);
-            luaUpvalues[upvalueIndex] = luaUpvalue;
+            luaUpvalues[i] = luaUpvalue;
           } else {
             // Open 状态的 upvalue 不存在，从栈帧中获取
             LuaValue luaValue = this.callStack.topCallFrame().get(upvalueIndex);
-            luaUpvalues[upvalueIndex] = new LuaUpvalue(luaValue);
+            LuaUpvalue luaUpvalue = new LuaUpvalue(luaValue);
+            luaUpvalues[i] = luaUpvalue;
             // 并且 将其在当前栈帧中，变成 Open 状态
-            this.callStack.topCallFrame().putOpenUpvalue(upvalueIndex, luaUpvalues[upvalueIndex]);
+            this.callStack.topCallFrame().putOpenUpvalue(upvalueIndex, luaUpvalue);
           }
+          break;
         case 0:
-          // 这个upvalue捕获的是更外围的函数中的局部变量
+          // 这个upvalue捕获的是父函数中的 upvalue
           LuaUpvalue luaUpvalue = this.callStack.topCallFrame().getLuaClosure().getLuaUpvalue(upvalueIndex);
-          luaUpvalues[upvalueIndex] = luaUpvalue;
+          luaUpvalues[i] = luaUpvalue;
           break;
         default:
           throw new IllegalStateException("upvalue in stack cannot be " + upvalue.getInstack());
@@ -135,26 +139,43 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
     return luaUpvalues;
   }
 
-  /**
-   * 解决Upvalue的传递问题
-   *
-   * page 192
-   */
-  LuaClosure resolveLuaClosureWithUpvalues(Prototype prototype) {
-    LuaClosure luaClosure = new LuaClosure(prototype);
-    LuaUpvalue[] luaUpvalues = this.resolveLuaUpvalues(prototype);
-    for (int i = 0; i < luaUpvalues.length; i++) {
-      LuaUpvalue luaUpvalue = luaUpvalues[i];
-      luaClosure.setLuaUpvalue(i, luaUpvalue);
-    }
-    return luaClosure;
-  }
-
   @Override
   public void loadPrototype(int index) {
-    var prototype = this.callStack.topCallFrame().getPrototype(index);
-    LuaClosure luaClosure = this.resolveLuaClosureWithUpvalues(prototype);
-    this.callStack.topCallFrame().push(luaClosure);
+    final var frame = this.callStack.topCallFrame();
+    var prototype = frame.getPrototype(index);
+    LuaClosure luaClosure = new LuaClosure(prototype);
+    frame.push(luaClosure);
+
+    // page 192
+    // 需要根据函数原型里的Upvalue表来初始化闭包的Upvalue值
+
+    final Upvalue[] upvalues = prototype.getUpvalues();
+    final int len = upvalues.length;
+    for (int i = 0; i < len; i++) {
+      Upvalue upvalue = upvalues[i];
+      final int upvalueIndex = (int) upvalue.getIdx();
+      final LuaUpvalue luaUpvalue;
+      switch (upvalue.getInstack()) {
+        case 1:
+          // 这个upvalue捕获的是当前函数的局部变量
+          if (frame.containsOpenUpvalue(upvalueIndex)) {
+            luaUpvalue = frame.getOpenUpvalue(upvalueIndex);
+          } else {
+            // Open 状态的 upvalue 不存在，从栈帧中获取
+            luaUpvalue = new LuaUpvalue(frame.get(upvalueIndex));
+            // 并且 将其在当前栈帧中，变成 Open 状态
+            frame.putOpenUpvalue(upvalueIndex, luaUpvalue);
+          }
+          break;
+        case 0:
+          // 这个upvalue捕获的是父函数中的 upvalue
+          luaUpvalue = frame.getLuaClosure().getLuaUpvalue(upvalueIndex);
+          break;
+        default:
+          throw new IllegalStateException("upvalue in stack cannot be " + upvalue.getInstack());
+      }
+      luaClosure.setLuaUpvalue(i, luaUpvalue);
+    }
   }
 
   @Override
