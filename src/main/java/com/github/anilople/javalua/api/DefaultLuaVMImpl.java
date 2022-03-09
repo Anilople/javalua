@@ -129,7 +129,8 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
           break;
         case 0:
           // 这个upvalue捕获的是父函数中的 upvalue
-          LuaUpvalue luaUpvalue = this.callStack.topCallFrame().getLuaClosure().getLuaUpvalue(upvalueIndex);
+          LuaUpvalue luaUpvalue =
+              this.callStack.topCallFrame().getLuaClosure().getLuaUpvalue(upvalueIndex);
           luaUpvalues[i] = luaUpvalue;
           break;
         default:
@@ -182,11 +183,14 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
   public void closeUpvalues(int a) {
     List<Integer> openUpvaluesForRemove = new ArrayList<>();
 
-    this.callStack.topCallFrame().forEachOpenUpvalue(((index, luaUpvalue) -> {
-      if (index >= a - 1) {
-        openUpvaluesForRemove.add(index);
-      }
-    }));
+    this.callStack
+        .topCallFrame()
+        .forEachOpenUpvalue(
+            ((index, luaUpvalue) -> {
+              if (index >= a - 1) {
+                openUpvaluesForRemove.add(index);
+              }
+            }));
 
     for (Integer index : openUpvaluesForRemove) {
       this.callStack.topCallFrame().removeOpenUpvalue(index);

@@ -1,5 +1,7 @@
 package ch10;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.state.LuaInteger;
@@ -12,8 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq

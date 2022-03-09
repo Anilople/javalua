@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.chunk.Upvalue;
 import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
 import java.util.HashMap;
@@ -99,7 +98,8 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   @Override
   public LuaValue get(int index) {
     if (index == LuaConstants.LUA_REGISTRY_INDEX) {
-      throw new IllegalArgumentException("stack frame doesn't save registry, please get it in lua state");
+      throw new IllegalArgumentException(
+          "stack frame doesn't save registry, please get it in lua state");
     }
     if (index < LuaConstants.LUA_REGISTRY_INDEX) {
       // upvalue

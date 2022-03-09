@@ -2,7 +2,6 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.chunk.Upvalue;
 import lombok.Data;
 
 /**
