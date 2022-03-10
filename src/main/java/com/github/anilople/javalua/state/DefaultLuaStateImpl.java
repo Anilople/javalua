@@ -10,7 +10,6 @@ import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import com.github.anilople.javalua.instruction.operator.Length;
 import com.github.anilople.javalua.instruction.operator.StringConcat;
 import com.github.anilople.javalua.util.Return2;
-import java.util.function.Consumer;
 
 public class DefaultLuaStateImpl implements LuaState {
 

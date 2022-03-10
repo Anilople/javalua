@@ -1,13 +1,13 @@
 package com.github.anilople.javalua.api;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaUpvalue;
 import com.github.anilople.javalua.state.LuaValue;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author wxq
