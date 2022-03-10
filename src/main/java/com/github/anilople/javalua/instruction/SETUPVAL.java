@@ -15,7 +15,7 @@ class SETUPVAL extends UpvalueInstruction {
   @Override
   public void applyTo(LuaVM luaVM) {
     int aIndex = operand.A() + 1;
-    int bIndex = operand.B();
+    int bIndex = operand.B() + 1;
 
     int index = luaUpvalueIndex(bIndex);
     luaVM.copy(aIndex, index);
