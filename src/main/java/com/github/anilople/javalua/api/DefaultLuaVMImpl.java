@@ -11,6 +11,8 @@ import com.github.anilople.javalua.state.LuaUpvalue;
 import com.github.anilople.javalua.state.LuaValue;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * page 93
@@ -106,41 +108,6 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
     }
   }
 
-  LuaUpvalue[] resolveLuaUpvalues(Prototype prototype) {
-    Upvalue[] upvalues = prototype.getUpvalues();
-    final int len = upvalues.length;
-    LuaUpvalue[] luaUpvalues = new LuaUpvalue[len];
-    for (int i = 0; i < len; i++) {
-      Upvalue upvalue = upvalues[i];
-      int upvalueIndex = (int) upvalue.getIdx();
-      switch (upvalue.getInstack()) {
-        case 1:
-          // 这个upvalue捕获的是当前函数的局部变量
-          if (this.callStack.topCallFrame().containsOpenUpvalue(upvalueIndex)) {
-            LuaUpvalue luaUpvalue = this.callStack.topCallFrame().getOpenUpvalue(upvalueIndex);
-            luaUpvalues[i] = luaUpvalue;
-          } else {
-            // Open 状态的 upvalue 不存在，从栈帧中获取
-            LuaValue luaValue = this.callStack.topCallFrame().get(upvalueIndex);
-            LuaUpvalue luaUpvalue = new LuaUpvalue(luaValue);
-            luaUpvalues[i] = luaUpvalue;
-            // 并且 将其在当前栈帧中，变成 Open 状态
-            this.callStack.topCallFrame().putOpenUpvalue(upvalueIndex, luaUpvalue);
-          }
-          break;
-        case 0:
-          // 这个upvalue捕获的是父函数中的 upvalue
-          LuaUpvalue luaUpvalue =
-              this.callStack.topCallFrame().getLuaClosure().getLuaUpvalue(upvalueIndex);
-          luaUpvalues[i] = luaUpvalue;
-          break;
-        default:
-          throw new IllegalStateException("upvalue in stack cannot be " + upvalue.getInstack());
-      }
-    }
-    return luaUpvalues;
-  }
-
   static LuaUpvalue resolveLuaUpvalue(CallFrame callFrame, Upvalue upvalue) {
     // page 192
     // 需要根据函数原型里的Upvalue表来初始化闭包的Upvalue值
@@ -154,7 +121,10 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
           luaUpvalue = callFrame.getOpenUpvalue(upvalueIndex);
         } else {
           // Open 状态的 upvalue 不存在，从栈帧中获取
-          luaUpvalue = new LuaUpvalue(callFrame.get(upvalueIndex + 1));
+          final int index = upvalueIndex + 1;
+          Supplier<LuaValue> getter = () -> callFrame.get(index);
+          Consumer<LuaValue> setter = luaValue -> callFrame.set(index, luaValue);
+          luaUpvalue = new LuaUpvalue(getter, setter);
           // 并且 将其在当前栈帧中，变成 Open 状态
           callFrame.putOpenUpvalue(upvalueIndex, luaUpvalue);
         }

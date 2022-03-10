@@ -10,6 +10,7 @@ import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import com.github.anilople.javalua.instruction.operator.Length;
 import com.github.anilople.javalua.instruction.operator.StringConcat;
 import com.github.anilople.javalua.util.Return2;
+import java.util.function.Consumer;
 
 public class DefaultLuaStateImpl implements LuaState {
 
@@ -419,7 +420,7 @@ public class DefaultLuaStateImpl implements LuaState {
       // 设置 _ENV page 191
       var env = this.getEnv();
       luaClosure = new LuaClosure(prototype);
-      luaClosure.setLuaUpvalue(0, new LuaUpvalue(env));
+      luaClosure.setLuaUpvalue(0, LuaUpvalue.newFixedLuaUpvalue(env));
     } else {
       // 不需要管 Upvalue?
       throw new IllegalStateException("_ENV ?");
@@ -548,7 +549,7 @@ public class DefaultLuaStateImpl implements LuaState {
     LuaClosure luaClosure = LuaClosure.newJavaClosure(javaFunction, n);
     for (int i = n - 1; i >= 0; i--) {
       LuaValue luaValue = this.popLuaValue();
-      LuaUpvalue luaUpvalue = new LuaUpvalue(luaValue);
+      LuaUpvalue luaUpvalue = LuaUpvalue.newFixedLuaUpvalue(luaValue);
       luaClosure.setLuaUpvalue(i, luaUpvalue);
     }
     this.pushLuaValue(luaClosure);

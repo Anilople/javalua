@@ -3,6 +3,7 @@ package com.github.anilople.javalua.state;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -119,8 +120,7 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
       // upvalue
       int upvalueIndex = LuaConstants.LUA_REGISTRY_INDEX - index - 1;
       if (null != this.luaClosure && upvalueIndex < this.luaClosure.luaUpvalues.length) {
-        LuaUpvalue luaUpvalue = new LuaUpvalue(luaValue);
-        this.luaClosure.setLuaUpvalue(upvalueIndex, luaUpvalue);
+        this.luaClosure.changeLuaUpvalueReferencedLuaValue(upvalueIndex, luaValue);
       }
       return;
     }
@@ -139,6 +139,9 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
         + "\n"
         + "stack:"
         + toString(this.getLuaValues(), this.getTop())
+        + "\n"
+        + "luaClosure.luaUpvalues:"
+        + Arrays.toString(this.luaClosure.luaUpvalues)
         + "\n"
         + "]";
   }

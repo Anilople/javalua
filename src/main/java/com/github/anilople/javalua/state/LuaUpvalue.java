@@ -1,5 +1,7 @@
 package com.github.anilople.javalua.state;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import lombok.Data;
 
 /**
@@ -7,7 +9,8 @@ import lombok.Data;
  */
 @Data
 public class LuaUpvalue {
-  private final LuaValue luaValue;
+  private final Supplier<LuaValue> getter;
+  private final Consumer<LuaValue> setter;
   //  private final boolean inStack;
   //  private final int index;
 
@@ -22,8 +25,25 @@ public class LuaUpvalue {
   //    return luaUpvalues;
   //  }
 
-  public LuaUpvalue(LuaValue luaValue) {
-    this.luaValue = luaValue;
+  static void unsupportedConsume(LuaValue luaValue) {
+    throw new UnsupportedOperationException();
+  }
+
+  static LuaUpvalue newFixedLuaUpvalue(LuaValue luaValue) {
+    return new LuaUpvalue(() -> luaValue, LuaUpvalue::unsupportedConsume);
+  }
+
+  public LuaUpvalue(Supplier<LuaValue> getter, Consumer<LuaValue> setter) {
+    this.getter = getter;
+    this.setter = setter;
+  }
+
+  public void changeReferencedLuaValueTo(LuaValue luaValue) {
+    this.setter.accept(luaValue);
+  }
+
+  public LuaValue getLuaValue() {
+    return this.getter.get();
   }
 
   //  public LuaUpvalue(Upvalue upvalue) {

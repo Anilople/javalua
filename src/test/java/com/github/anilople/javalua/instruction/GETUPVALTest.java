@@ -33,7 +33,7 @@ class GETUPVALTest {
 
     LuaClosure luaClosure = new LuaClosure(prototype);
     final LuaValue expectedLuaValue = LuaValue.of(999L);
-    LuaUpvalue luaUpvalue = new LuaUpvalue(expectedLuaValue);
+    LuaUpvalue luaUpvalue = new LuaUpvalue(() -> expectedLuaValue, luaValue -> {});
     luaClosure.setLuaUpvalue(1, luaUpvalue);
 
     luaVM.pushCallFrameForPrototype(luaClosure, new LuaValue[0]);
