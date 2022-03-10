@@ -4,6 +4,7 @@ import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
 import com.github.anilople.javalua.config.Config;
 import com.github.anilople.javalua.instruction.Instruction;
+import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.DefaultLuaStateImpl;
 import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaUpvalue;
@@ -140,12 +141,40 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
     return luaUpvalues;
   }
 
+  static LuaUpvalue resolveLuaUpvalue(CallFrame callFrame, Upvalue upvalue) {
+    // page 192
+    // 需要根据函数原型里的Upvalue表来初始化闭包的Upvalue值
+
+    final int upvalueIndex = (int) upvalue.getIdx();
+    final LuaUpvalue luaUpvalue;
+    switch (upvalue.getInstack()) {
+      case 1:
+        // 这个upvalue捕获的是当前函数的局部变量
+        if (callFrame.containsOpenUpvalue(upvalueIndex)) {
+          luaUpvalue = callFrame.getOpenUpvalue(upvalueIndex);
+        } else {
+          // Open 状态的 upvalue 不存在，从栈帧中获取
+          luaUpvalue = new LuaUpvalue(callFrame.get(upvalueIndex + 1));
+          // 并且 将其在当前栈帧中，变成 Open 状态
+          callFrame.putOpenUpvalue(upvalueIndex, luaUpvalue);
+        }
+        break;
+      case 0:
+        // 这个upvalue捕获的是父函数中的 upvalue
+        luaUpvalue = callFrame.getLuaClosure().getLuaUpvalue(upvalueIndex);
+        break;
+      default:
+        throw new IllegalStateException("upvalue in stack cannot be " + upvalue.getInstack());
+    }
+    return luaUpvalue;
+  }
+
   @Override
   public void loadPrototype(int index) {
-    final var frame = this.callStack.topCallFrame();
-    var prototype = frame.getPrototype(index);
+    final var callFrame = this.callStack.topCallFrame();
+    var prototype = callFrame.getPrototype(index);
     LuaClosure luaClosure = new LuaClosure(prototype);
-    frame.push(luaClosure);
+    callFrame.push(luaClosure);
 
     // page 192
     // 需要根据函数原型里的Upvalue表来初始化闭包的Upvalue值
@@ -154,27 +183,7 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
     final int len = upvalues.length;
     for (int i = 0; i < len; i++) {
       Upvalue upvalue = upvalues[i];
-      final int upvalueIndex = (int) upvalue.getIdx();
-      final LuaUpvalue luaUpvalue;
-      switch (upvalue.getInstack()) {
-        case 1:
-          // 这个upvalue捕获的是当前函数的局部变量
-          if (frame.containsOpenUpvalue(upvalueIndex)) {
-            luaUpvalue = frame.getOpenUpvalue(upvalueIndex);
-          } else {
-            // Open 状态的 upvalue 不存在，从栈帧中获取
-            luaUpvalue = new LuaUpvalue(frame.get(upvalueIndex));
-            // 并且 将其在当前栈帧中，变成 Open 状态
-            frame.putOpenUpvalue(upvalueIndex, luaUpvalue);
-          }
-          break;
-        case 0:
-          // 这个upvalue捕获的是父函数中的 upvalue
-          luaUpvalue = frame.getLuaClosure().getLuaUpvalue(upvalueIndex);
-          break;
-        default:
-          throw new IllegalStateException("upvalue in stack cannot be " + upvalue.getInstack());
-      }
+      LuaUpvalue luaUpvalue = resolveLuaUpvalue(callFrame, upvalue);
       luaClosure.setLuaUpvalue(i, luaUpvalue);
     }
   }

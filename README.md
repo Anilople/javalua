@@ -419,6 +419,8 @@ Upvalue伪索引 = 注册表伪索引减去改索引
 
 open 表示引用该 upvalue 的 closure 还在执行中，没有结束
 
+坑：upvalue从stack中获取lua value时，用的是upvalueIndex，从0开始计数，而不是从1开始
+
 ## 参考资料
 
 ### prototype是什么
