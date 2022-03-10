@@ -330,6 +330,10 @@ public interface Instruction {
       this.codeValue = codeValue;
     }
 
+    public int getCodeValue() {
+      return this.codeValue;
+    }
+
     public int A() {
       return A(this.codeValue);
     }
@@ -390,6 +394,13 @@ public interface Instruction {
 
     static Operand of(int code) {
       return new Operand(code);
+    }
+
+    static Operand iABC(int B, int C, int A) {
+      int value = B << 23;
+      value |= C << 14;
+      value |= A << 6;
+      return Operand.of(value);
     }
   }
 }

@@ -20,7 +20,7 @@ public class CallStack {
 
   private CallFrame callFrame = null;
 
-  private CallStack() {}
+  CallStack() {}
 
   CallFrame popCallFrame() {
     if (null == callFrame) {
@@ -62,7 +62,7 @@ public class CallStack {
    * @param luaClosure 闭包
    * @param allArgs 传递给闭包的所有参数，闭包不一定能全部用上
    */
-  void pushCallFrameForPrototype(LuaClosure luaClosure, LuaValue[] allArgs) {
+  public void pushCallFrameForPrototype(LuaClosure luaClosure, LuaValue[] allArgs) {
     final Prototype prototype = luaClosure.prototype;
     if (prototype == null) {
       throw new IllegalArgumentException("prototype cannot be null");

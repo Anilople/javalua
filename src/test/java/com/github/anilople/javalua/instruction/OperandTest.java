@@ -34,4 +34,28 @@ public class OperandTest {
     assertEquals(1, operand.A());
     assertEquals(4, operand.sBx());
   }
+
+  @Test
+  void iABC_case1() {
+    Operand operand = Operand.iABC(7, 8, 9);
+    assertEquals(7, operand.B());
+    assertEquals(8, operand.C());
+    assertEquals(9, operand.A());
+  }
+
+  @Test
+  void iABC_case2() {
+    Operand operand = Operand.iABC(1, 1, 1);
+    assertEquals(1, operand.B());
+    assertEquals(1, operand.C());
+    assertEquals(1, operand.A());
+  }
+
+  @Test
+  void iABC_case3() {
+    Operand operand = Operand.iABC(8, 8, 8);
+    assertEquals(8, operand.B());
+    assertEquals(8, operand.C());
+    assertEquals(8, operand.A());
+  }
 }
