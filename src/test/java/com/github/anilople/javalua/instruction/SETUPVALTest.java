@@ -11,7 +11,6 @@ import com.github.anilople.javalua.instruction.Instruction.Operand;
 import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaUpvalue;
 import com.github.anilople.javalua.state.LuaValue;
-import java.lang.ref.SoftReference;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
@@ -35,10 +34,10 @@ class SETUPVALTest {
     LuaClosure luaClosure = new LuaClosure(prototype);
     final LuaValueWrapper luaValueWrapper = new LuaValueWrapper(null);
     {
-      LuaUpvalue luaUpvalue = new LuaUpvalue(luaValueWrapper::getLuaValue, luaValueWrapper::setLuaValue);
+      LuaUpvalue luaUpvalue =
+          new LuaUpvalue(luaValueWrapper::getLuaValue, luaValueWrapper::setLuaValue);
       luaClosure.setLuaUpvalue(0, luaUpvalue);
     }
-
 
     final LuaValue expectedLuaValue = LuaValue.of(999L);
     luaVM.pushCallFrameForPrototype(luaClosure, new LuaValue[0]);
@@ -56,6 +55,7 @@ class SETUPVALTest {
   @Data
   static class LuaValueWrapper {
     LuaValue luaValue;
+
     public LuaValueWrapper(LuaValue luaValue) {
       this.luaValue = luaValue;
     }
