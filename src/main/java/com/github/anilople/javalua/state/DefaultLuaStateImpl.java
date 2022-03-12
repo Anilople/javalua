@@ -29,6 +29,13 @@ public class DefaultLuaStateImpl implements LuaState {
     this.registry.put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
   }
 
+  /**
+   * @return 全局环境 _ENV
+   */
+  LuaTable getEnv() {
+    return (LuaTable) this.registry.get(LuaConstants.LUA_RIDX_GLOBALS);
+  }
+
   @Override
   public int getTop() {
     return this.callStack.topCallFrame().getTop();
@@ -36,9 +43,6 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public int absIndex(int index) {
-    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
-      return LuaConstants.LUA_REGISTRY_INDEX;
-    }
     return this.callStack.topCallFrame().absIndex(index);
   }
 
@@ -57,13 +61,13 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void copy(int from, int to) {
-    var luaValue = this.callStack.topCallFrame().get(from);
+    var luaValue = this.getLuaValue(from);
     this.callStack.topCallFrame().set(to, luaValue);
   }
 
   @Override
   public void pushValue(int index) {
-    var value = this.callStack.topCallFrame().get(index);
+    var value = this.getLuaValue(index);
     this.pushLuaValue(value);
   }
 
@@ -125,10 +129,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public LuaType luaType(int index) {
-    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
-      return LuaType.LUA_TTABLE;
-    }
-    var value = this.callStack.topCallFrame().get(index);
+    var value = this.getLuaValue(index);
     return value.type();
   }
 
@@ -179,6 +180,9 @@ public class DefaultLuaStateImpl implements LuaState {
     return LuaType.LUA_TSTRING.equals(luaType);
   }
 
+  /**
+   * 这个class中，如果想获取index上的{@link LuaValue}，需要使用这个方法
+   */
   LuaValue getLuaValue(int index) {
     if (index == LuaConstants.LUA_REGISTRY_INDEX) {
       return this.registry;
@@ -302,8 +306,8 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public LuaBoolean compare(int index1, int index2, ComparisonOperator operator) {
-    var a = this.callStack.topCallFrame().get(index1);
-    var b = this.callStack.topCallFrame().get(index2);
+    var a = this.getLuaValue(index1);
+    var b = this.getLuaValue(index2);
     return operator.getOperator().apply(a, b);
   }
 
@@ -400,7 +404,9 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   @Override
-  public void popCallFrame() {}
+  public void popCallFrame() {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
   public int load(byte[] binaryChunk, String chunkName, String mode) {
@@ -408,7 +414,16 @@ public class DefaultLuaStateImpl implements LuaState {
       throw new IllegalArgumentException("not support mode '" + mode + "' yet");
     }
     var prototype = BinaryChunk.getPrototype(binaryChunk);
-    LuaClosure luaClosure = new LuaClosure(prototype);
+    final LuaClosure luaClosure;
+    if (prototype.getUpvalues().length > 0) {
+      // 设置 _ENV page 191
+      var env = this.getEnv();
+      luaClosure = new LuaClosure(prototype);
+      luaClosure.setLuaUpvalue(0, LuaUpvalue.newFixedLuaUpvalue(env));
+    } else {
+      // 不需要管 Upvalue?
+      throw new IllegalStateException("_ENV ?");
+    }
     this.pushLuaValue(luaClosure);
     return 0;
   }
@@ -459,7 +474,7 @@ public class DefaultLuaStateImpl implements LuaState {
     final LuaClosure luaClosure;
     {
       int indexOfLuaClosure = -(nArgs + 1);
-      LuaValue luaValue = this.callStack.topCallFrame().get(indexOfLuaClosure);
+      LuaValue luaValue = this.getLuaValue(indexOfLuaClosure);
       if (luaValue instanceof LuaClosure) {
         luaClosure = (LuaClosure) luaValue;
       } else {
@@ -526,5 +541,16 @@ public class DefaultLuaStateImpl implements LuaState {
   public void register(LuaString name, JavaFunction javaFunction) {
     this.pushJavaFunction(javaFunction);
     this.setGlobal(name);
+  }
+
+  @Override
+  public void pushJavaClosure(JavaFunction javaFunction, int n) {
+    LuaClosure luaClosure = LuaClosure.newJavaClosure(javaFunction, n);
+    for (int i = n - 1; i >= 0; i--) {
+      LuaValue luaValue = this.popLuaValue();
+      LuaUpvalue luaUpvalue = LuaUpvalue.newFixedLuaUpvalue(luaValue);
+      luaClosure.setLuaUpvalue(i, luaUpvalue);
+    }
+    this.pushLuaValue(luaClosure);
   }
 }

@@ -1,7 +1,12 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,6 +23,17 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   final LuaValue[] varargs;
   int pc;
   private final Instruction[] instructions;
+
+  /**
+   * page 192
+   *
+   * Upvalue有开放（Open）状态 和 闭合（Closed）状态。
+   *
+   * 这里暂时记录所有还处于开放状态的Upvalue
+   *
+   * key是局部变量的寄存器索引，value是Upvalue指针
+   */
+  Map<Integer, LuaUpvalue> openuvs = new HashMap<>();
 
   public CallFrame(
       CallFrame prev,
@@ -81,6 +97,37 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   }
 
   @Override
+  public LuaValue get(int index) {
+    if (index == LuaConstants.LUA_REGISTRY_INDEX) {
+      throw new IllegalArgumentException(
+          "stack frame doesn't save registry, please get it in lua state");
+    }
+    if (index < LuaConstants.LUA_REGISTRY_INDEX) {
+      // upvalue
+      int upvalueIndex = LuaConstants.LUA_REGISTRY_INDEX - index - 1;
+      if (null == this.luaClosure || upvalueIndex >= this.luaClosure.luaUpvalues.length) {
+        return LuaValue.NIL;
+      }
+      LuaUpvalue luaUpvalue = this.luaClosure.getLuaUpvalue(upvalueIndex);
+      return luaUpvalue.getLuaValue();
+    }
+    return super.get(index);
+  }
+
+  @Override
+  public void set(int index, LuaValue luaValue) {
+    if (index < LuaConstants.LUA_REGISTRY_INDEX) {
+      // upvalue
+      int upvalueIndex = LuaConstants.LUA_REGISTRY_INDEX - index - 1;
+      if (null != this.luaClosure && upvalueIndex < this.luaClosure.luaUpvalues.length) {
+        this.luaClosure.changeLuaUpvalueReferencedLuaValue(upvalueIndex, luaValue);
+      }
+      return;
+    }
+    super.set(index, luaValue);
+  }
+
+  @Override
   public String toString() {
     return this.getClass().getSimpleName()
         + "[\n"
@@ -92,6 +139,9 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
         + "\n"
         + "stack:"
         + toString(this.getLuaValues(), this.getTop())
+        + "\n"
+        + "luaClosure.luaUpvalues:"
+        + Arrays.toString(this.luaClosure.luaUpvalues)
         + "\n"
         + "]";
   }
@@ -158,7 +208,8 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   }
 
   public void pushN(LuaValue[] luaValues, int nResults) {
-    for (int i = 0; i < nResults; i++) {
+    final int number = nResults < 0 ? luaValues.length : nResults;
+    for (int i = 0; i < number; i++) {
       final LuaValue luaValue;
       if (i < luaValues.length) {
         luaValue = luaValues[i];
@@ -167,5 +218,25 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
       }
       this.push(luaValue);
     }
+  }
+
+  public boolean containsOpenUpvalue(int index) {
+    return this.openuvs.containsKey(index);
+  }
+
+  public LuaUpvalue getOpenUpvalue(int index) {
+    return this.openuvs.get(index);
+  }
+
+  public void putOpenUpvalue(int index, LuaUpvalue luaUpvalue) {
+    this.openuvs.put(index, luaUpvalue);
+  }
+
+  public void forEachOpenUpvalue(BiConsumer<Integer, LuaUpvalue> biConsumer) {
+    this.openuvs.forEach(biConsumer);
+  }
+
+  public void removeOpenUpvalue(int index) {
+    this.openuvs.remove(index);
   }
 }
