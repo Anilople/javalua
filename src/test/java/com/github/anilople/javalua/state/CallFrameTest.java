@@ -48,7 +48,7 @@ class CallFrameTest {
     CallFrame callFrame = new CallFrame(6, new Prototype());
     LuaValue[] luaValues =
         new LuaValue[] {
-            LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
+          LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
         };
     callFrame.pushN(luaValues, -1);
     assertEquals(luaValues[3], callFrame.pop());

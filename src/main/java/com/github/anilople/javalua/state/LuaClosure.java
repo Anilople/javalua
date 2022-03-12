@@ -62,10 +62,14 @@ public class LuaClosure implements LuaValue {
 
   @Override
   public String toString() {
-    return "LuaClosure{" +
-        "prototype=" + "LineDefined " + (prototype == null ? null : prototype.getLineDefined()) +
-        ", javaFunction=" + javaFunction +
-        ", luaUpvalues=" + Arrays.toString(luaUpvalues) +
-        '}';
+    return "LuaClosure{"
+        + "prototype="
+        + "LineDefined "
+        + (prototype == null ? null : prototype.getLineDefined())
+        + ", javaFunction="
+        + javaFunction
+        + ", luaUpvalues="
+        + Arrays.toString(luaUpvalues)
+        + '}';
   }
 }

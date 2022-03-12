@@ -35,8 +35,6 @@ public class LuaUpvalue {
 
   @Override
   public String toString() {
-    return "LuaUpvalue{" +
-        "luaValue=" + getter.get() +
-        '}';
+    return "LuaUpvalue{" + "luaValue=" + getter.get() + '}';
   }
 }
