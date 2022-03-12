@@ -3,6 +3,7 @@ package com.github.anilople.javalua.state;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.anilople.javalua.chunk.Prototype;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -39,6 +40,21 @@ class CallFrameTest {
     callFrame.pushN(luaValues, 2);
     assertEquals(LuaValue.of(3L), callFrame.pop());
     assertEquals(LuaValue.NIL, callFrame.pop());
+  }
+
+  @Test
+  @DisplayName("pushN 希望push的数量是负数 push所有")
+  void testPushNCase3() {
+    CallFrame callFrame = new CallFrame(6, new Prototype());
+    LuaValue[] luaValues =
+        new LuaValue[] {
+            LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
+        };
+    callFrame.pushN(luaValues, -1);
+    assertEquals(luaValues[3], callFrame.pop());
+    assertEquals(luaValues[2], callFrame.pop());
+    assertEquals(luaValues[1], callFrame.pop());
+    assertEquals(luaValues[0], callFrame.pop());
   }
 
   @Test

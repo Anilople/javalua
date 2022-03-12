@@ -208,7 +208,8 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   }
 
   public void pushN(LuaValue[] luaValues, int nResults) {
-    for (int i = 0; i < nResults; i++) {
+    final int number = nResults < 0 ? luaValues.length : nResults;
+    for (int i = 0; i < number; i++) {
       final LuaValue luaValue;
       if (i < luaValues.length) {
         luaValue = luaValues[i];

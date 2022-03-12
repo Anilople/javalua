@@ -11,19 +11,6 @@ import lombok.Data;
 public class LuaUpvalue {
   private final Supplier<LuaValue> getter;
   private final Consumer<LuaValue> setter;
-  //  private final boolean inStack;
-  //  private final int index;
-
-  //  static LuaUpvalue[] convert(Upvalue[] upvalues) {
-  //    final int len = upvalues.length;
-  //    LuaUpvalue[] luaUpvalues = new LuaUpvalue[upvalues.length];
-  //    for (int i = 0; i < len; i++) {
-  //      Upvalue upvalue = upvalues[i];
-  //      LuaUpvalue luaUpvalue = new LuaUpvalue(luaValue, upvalue);
-  //      luaUpvalues[i] = luaUpvalue;
-  //    }
-  //    return luaUpvalues;
-  //  }
 
   static void unsupportedConsume(LuaValue luaValue) {
     throw new UnsupportedOperationException();
@@ -46,20 +33,10 @@ public class LuaUpvalue {
     return this.getter.get();
   }
 
-  //  public LuaUpvalue(Upvalue upvalue) {
-  //    this.index = (int) upvalue.getIdx();
-  //    if (1 == upvalue.getInstack()) {
-  //      this.inStack = true;
-  //    } else if (0 ==  upvalue.getInstack()) {
-  //      this.inStack = false;
-  //    } else {
-  //      throw new IllegalStateException("upvalue in stack cannot be " + upvalue.getInstack());
-  //    }
-  //  }
-  //  public boolean isInStack() {
-  //    return this.inStack;
-  //  }
-  //  public int getIndex() {
-  //    return this.index;
-  //  }
+  @Override
+  public String toString() {
+    return "LuaUpvalue{" +
+        "luaValue=" + getter.get() +
+        '}';
+  }
 }

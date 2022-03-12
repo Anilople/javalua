@@ -1,32 +1,32 @@
 
-main <page_188_global_variable.lua:0,0> (2 instructions at 0000000000ad8a90)
+main <page_188_global_variable.lua:0,0> (2 instructions at 0000000000c08a90)
 0+ params, 2 slots, 1 upvalue, 1 local, 0 constants, 1 function
-	1	[7]	CLOSURE  	0 0	; 0000000000ad8c40
+	1	[7]	CLOSURE  	0 0	; 0000000000c08c40
 	2	[7]	RETURN   	0 1
-constants (0) for 0000000000ad8a90:
-locals (1) for 0000000000ad8a90:
+constants (0) for 0000000000c08a90:
+locals (1) for 0000000000c08a90:
 	0	f	2	3
-upvalues (1) for 0000000000ad8a90:
+upvalues (1) for 0000000000c08a90:
 	0	_ENV	1	0
 
-function <page_188_global_variable.lua:3,7> (2 instructions at 0000000000ad8c40)
+function <page_188_global_variable.lua:3,7> (2 instructions at 0000000000c08c40)
 0 params, 2 slots, 1 upvalue, 1 local, 0 constants, 1 function
-	1	[6]	CLOSURE  	0 0	; 0000000000ad8d10
+	1	[6]	CLOSURE  	0 0	; 0000000000c08d10
 	2	[7]	RETURN   	0 1
-constants (0) for 0000000000ad8c40:
-locals (1) for 0000000000ad8c40:
+constants (0) for 0000000000c08c40:
+locals (1) for 0000000000c08c40:
 	0	g	2	3
-upvalues (1) for 0000000000ad8c40:
+upvalues (1) for 0000000000c08c40:
 	0	_ENV	0	0
 
-function <page_188_global_variable.lua:4,6> (3 instructions at 0000000000ad8d10)
+function <page_188_global_variable.lua:4,6> (3 instructions at 0000000000c08d10)
 0 params, 2 slots, 1 upvalue, 0 locals, 2 constants, 0 functions
 	1	[5]	GETTABUP 	0 0 -2	; _ENV "y"
 	2	[5]	SETTABUP 	0 -1 0	; _ENV "x"
 	3	[6]	RETURN   	0 1
-constants (2) for 0000000000ad8d10:
+constants (2) for 0000000000c08d10:
 	1	"x"
 	2	"y"
-locals (0) for 0000000000ad8d10:
-upvalues (1) for 0000000000ad8d10:
+locals (0) for 0000000000c08d10:
+upvalues (1) for 0000000000c08d10:
 	0	_ENV	0	0

@@ -2,6 +2,7 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.Prototype;
+import java.util.Arrays;
 import lombok.Data;
 
 /**
@@ -57,5 +58,14 @@ public class LuaClosure implements LuaValue {
   public void changeLuaUpvalueReferencedLuaValue(int index, LuaValue luaValue) {
     LuaUpvalue luaUpvalue = this.luaUpvalues[index];
     luaUpvalue.getSetter().accept(luaValue);
+  }
+
+  @Override
+  public String toString() {
+    return "LuaClosure{" +
+        "prototype=" + "LineDefined " + (prototype == null ? null : prototype.getLineDefined()) +
+        ", javaFunction=" + javaFunction +
+        ", luaUpvalues=" + Arrays.toString(luaUpvalues) +
+        '}';
   }
 }

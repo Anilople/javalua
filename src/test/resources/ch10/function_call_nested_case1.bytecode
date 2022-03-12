@@ -1,0 +1,29 @@
+
+main <function_call_nested_case1.lua:0,0> (8 instructions at 0000000000708a90)
+0+ params, 3 slots, 1 upvalue, 0 locals, 3 constants, 1 function
+	1	[5]	CLOSURE  	0 0	; 0000000000708c00
+	2	[3]	SETTABUP 	0 -1 0	; _ENV "incr"
+	3	[7]	GETTABUP 	0 0 -2	; _ENV "print"
+	4	[7]	GETTABUP 	1 0 -1	; _ENV "incr"
+	5	[7]	LOADK    	2 -3	; 888
+	6	[7]	CALL     	1 2 0
+	7	[7]	CALL     	0 0 1
+	8	[7]	RETURN   	0 1
+constants (3) for 0000000000708a90:
+	1	"incr"
+	2	"print"
+	3	888
+locals (0) for 0000000000708a90:
+upvalues (1) for 0000000000708a90:
+	0	_ENV	1	0
+
+function <function_call_nested_case1.lua:3,5> (3 instructions at 0000000000708c00)
+1 param, 2 slots, 0 upvalues, 1 local, 1 constant, 0 functions
+	1	[4]	ADD      	1 0 -1	; - 1
+	2	[4]	RETURN   	1 2
+	3	[5]	RETURN   	0 1
+constants (1) for 0000000000708c00:
+	1	1
+locals (1) for 0000000000708c00:
+	0	value	1	4
+upvalues (0) for 0000000000708c00:

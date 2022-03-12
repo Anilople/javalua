@@ -59,6 +59,7 @@ public interface ResourceContentConstants {
   }
 
   interface ch10 {
+    LuaResource function_call_nested_case1 = new LuaResource("ch10/function_call_nested_case1.lua");
     LuaResource page_185_upvalue = new LuaResource("ch10/page_185_upvalue.lua");
     LuaResource page_186_upvalue_nested = new LuaResource("ch10/page_186_upvalue_nested.lua");
     LuaResource page_188_global_variable = new LuaResource("ch10/page_188_global_variable.lua");
@@ -68,6 +69,7 @@ public interface ResourceContentConstants {
     LuaResource page_199_SETTABUP = new LuaResource("ch10/page_199_SETTABUP.lua");
     LuaResource page_200_JMP = new LuaResource("ch10/page_200_JMP.lua");
     LuaResource page_202_test = new LuaResource("ch10/page_202_test.lua");
+    LuaResource page_202_test_simpler_case1 = new LuaResource("ch10/page_202_test_simpler_case1.lua");
     LuaResource upvalue_add_case1 = new LuaResource("ch10/upvalue_add_case1.lua");
     LuaResource upvalue_add_case2 = new LuaResource("ch10/upvalue_add_case2.lua");
   }

@@ -34,6 +34,12 @@ class Page202Test {
   }
 
   @Test
+  void function_call_nested_case1() {
+    String stdout = run(ch10.function_call_nested_case1);
+    assertEquals("889", stdout);
+  }
+
+  @Test
   void upvalue_add_case1() {
     String stdout = run(ch10.upvalue_add_case1);
     assertEquals("99", stdout);
@@ -88,6 +94,13 @@ class Page202Test {
   @Test
   void page_202_test() {
     run(ch10.page_202_test);
+  }
+
+  @Test
+  void page_202_test_simpler_case1() {
+    String stdout = run(ch10.page_202_test_simpler_case1);
+    System.out.println(stdout);
+    assertEquals("1", stdout);
   }
 
   static class JavaFunctionExample {
