@@ -1,6 +1,8 @@
 # lua
 # output must not be luac.out
 luac.out
+# lua bytecode
+*.bytecode
 
 ### STS ###
 .apt_generated
