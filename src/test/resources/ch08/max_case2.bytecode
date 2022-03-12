@@ -1,24 +1,24 @@
 
-main <max_case2.lua:0,0> (7 instructions at 00000000001e8a50)
+main <max_case2.lua:0,0> (7 instructions at 00000000006e8a50)
 0+ params, 5 slots, 1 upvalue, 2 locals, 3 constants, 1 function
-	1	[13]	CLOSURE  	0 0	; 00000000001e8c00
+	1	[13]	CLOSURE  	0 0	; 00000000006e8c00
 	2	[15]	MOVE     	1 0
 	3	[15]	LOADK    	2 -1	; 1
 	4	[15]	LOADK    	3 -2	; 2
 	5	[15]	LOADK    	4 -3	; 3
 	6	[15]	CALL     	1 4 2
 	7	[15]	RETURN   	0 1
-constants (3) for 00000000001e8a50:
+constants (3) for 00000000006e8a50:
 	1	1
 	2	2
 	3	3
-locals (2) for 00000000001e8a50:
+locals (2) for 00000000006e8a50:
 	0	max3	2	8
 	1	value	7	8
-upvalues (1) for 00000000001e8a50:
+upvalues (1) for 00000000006e8a50:
 	0	_ENV	1	0
 
-function <max_case2.lua:4,13> (9 instructions at 00000000001e8c00)
+function <max_case2.lua:4,13> (9 instructions at 00000000006e8c00)
 3 params, 4 slots, 0 upvalues, 4 locals, 0 constants, 0 functions
 	1	[5]	MOVE     	3 0
 	2	[6]	LT       	0 3 1
@@ -29,10 +29,10 @@ function <max_case2.lua:4,13> (9 instructions at 00000000001e8c00)
 	7	[10]	MOVE     	3 2
 	8	[12]	RETURN   	3 2
 	9	[13]	RETURN   	0 1
-constants (0) for 00000000001e8c00:
-locals (4) for 00000000001e8c00:
+constants (0) for 00000000006e8c00:
+locals (4) for 00000000006e8c00:
 	0	a	1	10
 	1	b	1	10
 	2	c	1	10
 	3	max_value	2	10
-upvalues (0) for 00000000001e8c00:
+upvalues (0) for 00000000006e8c00:

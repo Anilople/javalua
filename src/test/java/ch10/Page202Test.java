@@ -93,7 +93,9 @@ class Page202Test {
 
   @Test
   void page_202_test() {
-    run(ch10.page_202_test);
+    String stdout = run(ch10.page_202_test);
+    System.out.println(stdout);
+    assertEquals("12132", stdout);
   }
 
   @Test

@@ -15,4 +15,4 @@ print(c1()) --> 2
 c2 = newCounter()
 print(c2()) --> 1
 print(c1()) --> 3
-print(c3()) --> 2
+print(c2()) --> 2

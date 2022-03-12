@@ -1,17 +1,17 @@
 
-main <get_table.lua:0,0> (4 instructions at 0000000000aa8a50)
+main <get_table.lua:0,0> (4 instructions at 0000000000b88a50)
 0+ params, 5 slots, 1 upvalue, 5 locals, 1 constant, 0 functions
 	1	[2]	LOADNIL  	0 4
 	2	[2]	GETTABLE 	3 1 2
 	3	[2]	GETTABLE 	3 1 -1	; 100
 	4	[2]	RETURN   	0 1
-constants (1) for 0000000000aa8a50:
+constants (1) for 0000000000b88a50:
 	1	100
-locals (5) for 0000000000aa8a50:
+locals (5) for 0000000000b88a50:
 	0	a	2	5
 	1	t	2	5
 	2	k	2	5
 	3	v	2	5
 	4	e	2	5
-upvalues (1) for 0000000000aa8a50:
+upvalues (1) for 0000000000b88a50:
 	0	_ENV	1	0

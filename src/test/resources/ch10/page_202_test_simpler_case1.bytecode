@@ -1,7 +1,7 @@
 
-main <page_202_test_simpler_case1.lua:0,0> (11 instructions at 0000000000ac8aa0)
+main <page_202_test_simpler_case1.lua:0,0> (11 instructions at 0000000000b38aa0)
 0+ params, 3 slots, 1 upvalue, 1 local, 3 constants, 1 function
-	1	[9]	CLOSURE  	0 0	; 0000000000ac8c10
+	1	[9]	CLOSURE  	0 0	; 0000000000b38c10
 	2	[3]	SETTABUP 	0 -1 0	; _ENV "newCounter"
 	3	[11]	GETTABUP 	0 0 -1	; _ENV "newCounter"
 	4	[11]	CALL     	0 1 2
@@ -12,28 +12,28 @@ main <page_202_test_simpler_case1.lua:0,0> (11 instructions at 0000000000ac8aa0)
 	9	[13]	MOVE     	2 0
 	10	[13]	CALL     	1 2 1
 	11	[13]	RETURN   	0 1
-constants (3) for 0000000000ac8aa0:
+constants (3) for 0000000000b38aa0:
 	1	"newCounter"
 	2	"c1"
 	3	"print"
-locals (1) for 0000000000ac8aa0:
+locals (1) for 0000000000b38aa0:
 	0	value	8	12
-upvalues (1) for 0000000000ac8aa0:
+upvalues (1) for 0000000000b38aa0:
 	0	_ENV	1	0
 
-function <page_202_test_simpler_case1.lua:3,9> (4 instructions at 0000000000ac8c10)
+function <page_202_test_simpler_case1.lua:3,9> (4 instructions at 0000000000b38c10)
 0 params, 2 slots, 0 upvalues, 1 local, 1 constant, 1 function
 	1	[4]	LOADK    	0 -1	; 0
-	2	[8]	CLOSURE  	1 0	; 0000000000ac8e30
+	2	[8]	CLOSURE  	1 0	; 0000000000b38e30
 	3	[8]	RETURN   	1 2
 	4	[9]	RETURN   	0 1
-constants (1) for 0000000000ac8c10:
+constants (1) for 0000000000b38c10:
 	1	0
-locals (1) for 0000000000ac8c10:
+locals (1) for 0000000000b38c10:
 	0	count	2	5
-upvalues (0) for 0000000000ac8c10:
+upvalues (0) for 0000000000b38c10:
 
-function <page_202_test_simpler_case1.lua:5,8> (6 instructions at 0000000000ac8e30)
+function <page_202_test_simpler_case1.lua:5,8> (6 instructions at 0000000000b38e30)
 0 params, 2 slots, 1 upvalue, 0 locals, 1 constant, 0 functions
 	1	[6]	GETUPVAL 	0 0	; count
 	2	[6]	ADD      	0 0 -1	; - 1
@@ -41,8 +41,8 @@ function <page_202_test_simpler_case1.lua:5,8> (6 instructions at 0000000000ac8e
 	4	[7]	GETUPVAL 	0 0	; count
 	5	[7]	RETURN   	0 2
 	6	[8]	RETURN   	0 1
-constants (1) for 0000000000ac8e30:
+constants (1) for 0000000000b38e30:
 	1	1
-locals (0) for 0000000000ac8e30:
-upvalues (1) for 0000000000ac8e30:
+locals (0) for 0000000000b38e30:
+upvalues (1) for 0000000000b38e30:
 	0	count	1	0

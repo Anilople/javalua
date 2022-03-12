@@ -1,7 +1,7 @@
 
-main <page_202_test.lua:0,0> (29 instructions at 0000000000728ac0)
-0+ params, 2 slots, 1 upvalue, 0 locals, 5 constants, 1 function
-	1	[9]	CLOSURE  	0 0	; 0000000000728c30
+main <page_202_test.lua:0,0> (29 instructions at 0000000000ba8ac0)
+0+ params, 2 slots, 1 upvalue, 0 locals, 4 constants, 1 function
+	1	[9]	CLOSURE  	0 0	; 0000000000ba8c30
 	2	[3]	SETTABUP 	0 -1 0	; _ENV "newCounter"
 	3	[11]	GETTABUP 	0 0 -1	; _ENV "newCounter"
 	4	[11]	CALL     	0 1 2
@@ -26,33 +26,32 @@ main <page_202_test.lua:0,0> (29 instructions at 0000000000728ac0)
 	23	[17]	CALL     	1 1 0
 	24	[17]	CALL     	0 0 1
 	25	[18]	GETTABUP 	0 0 -3	; _ENV "print"
-	26	[18]	GETTABUP 	1 0 -5	; _ENV "c3"
+	26	[18]	GETTABUP 	1 0 -4	; _ENV "c2"
 	27	[18]	CALL     	1 1 0
 	28	[18]	CALL     	0 0 1
 	29	[18]	RETURN   	0 1
-constants (5) for 0000000000728ac0:
+constants (4) for 0000000000ba8ac0:
 	1	"newCounter"
 	2	"c1"
 	3	"print"
 	4	"c2"
-	5	"c3"
-locals (0) for 0000000000728ac0:
-upvalues (1) for 0000000000728ac0:
+locals (0) for 0000000000ba8ac0:
+upvalues (1) for 0000000000ba8ac0:
 	0	_ENV	1	0
 
-function <page_202_test.lua:3,9> (4 instructions at 0000000000728c30)
+function <page_202_test.lua:3,9> (4 instructions at 0000000000ba8c30)
 0 params, 2 slots, 0 upvalues, 1 local, 1 constant, 1 function
 	1	[4]	LOADK    	0 -1	; 0
-	2	[8]	CLOSURE  	1 0	; 0000000000728e50
+	2	[8]	CLOSURE  	1 0	; 0000000000ba8e50
 	3	[8]	RETURN   	1 2
 	4	[9]	RETURN   	0 1
-constants (1) for 0000000000728c30:
+constants (1) for 0000000000ba8c30:
 	1	0
-locals (1) for 0000000000728c30:
+locals (1) for 0000000000ba8c30:
 	0	count	2	5
-upvalues (0) for 0000000000728c30:
+upvalues (0) for 0000000000ba8c30:
 
-function <page_202_test.lua:5,8> (6 instructions at 0000000000728e50)
+function <page_202_test.lua:5,8> (6 instructions at 0000000000ba8e50)
 0 params, 2 slots, 1 upvalue, 0 locals, 1 constant, 0 functions
 	1	[6]	GETUPVAL 	0 0	; count
 	2	[6]	ADD      	0 0 -1	; - 1
@@ -60,8 +59,8 @@ function <page_202_test.lua:5,8> (6 instructions at 0000000000728e50)
 	4	[7]	GETUPVAL 	0 0	; count
 	5	[7]	RETURN   	0 2
 	6	[8]	RETURN   	0 1
-constants (1) for 0000000000728e50:
+constants (1) for 0000000000ba8e50:
 	1	1
-locals (0) for 0000000000728e50:
-upvalues (1) for 0000000000728e50:
+locals (0) for 0000000000ba8e50:
+upvalues (1) for 0000000000ba8e50:
 	0	count	1	0
