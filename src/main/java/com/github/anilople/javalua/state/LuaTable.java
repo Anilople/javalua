@@ -10,6 +10,14 @@ public interface LuaTable extends LuaValue {
     // TODO, lua 5.0 开始支持数组
     return new LuaTableBefore5Impl(Math.max(arraySize, mapSize));
   }
+
+  /**
+   * key在表中是否存在
+   *
+   * @return true 如果key在表中存在
+   */
+  boolean containsKey(LuaValue key);
+
   /**
    * @return {@link LuaValue#NIL}如果key不存在
    */

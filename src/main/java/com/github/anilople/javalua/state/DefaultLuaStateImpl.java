@@ -4,6 +4,7 @@ import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
+import com.github.anilople.javalua.constant.LuaConstants.MetaMethod;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.Comparison;
@@ -413,10 +414,9 @@ public class DefaultLuaStateImpl implements LuaState {
       return;
     }
 
-    final LuaString metaMethodName = LuaValue.of("__len");
     // 元方法
-    if (this.existsMetaMethod(metaMethodName, a)) {
-      var len = this.callMetaMethod(metaMethodName, a);
+    if (this.existsMetaMethod(MetaMethod.LEN, a)) {
+      var len = this.callMetaMethod(MetaMethod.LEN, a);
       this.pushLuaValue(len);
       return;
     }
@@ -440,7 +440,7 @@ public class DefaultLuaStateImpl implements LuaState {
       for (; n >= 2; n--) {
         Predicate<LuaValue> isTypeMatchRawOperator = luaValue ->
             LuaType.LUA_TSTRING.equals(luaValue.type()) || LuaType.LUA_TNUMBER.equals(luaValue.type());
-        this.applyBinaryOperator(isTypeMatchRawOperator, StringConcat::concat, LuaValue.of("__concat"));
+        this.applyBinaryOperator(isTypeMatchRawOperator, StringConcat::concat, MetaMethod.CONCAT);
       }
     }
   }
@@ -456,7 +456,25 @@ public class DefaultLuaStateImpl implements LuaState {
     this.pushLuaValue(luaTable);
   }
 
+  /**
+   * 获取 table[key]
+   *
+   * 如果 table 不是表，或者 key 在表中不存在，就会触发 __index 元方法
+   *
+   * __index 元方法既可以是函数，也可以是表
+   */
   LuaType getTable(LuaValue table, LuaValue key) {
+    if (LuaType.LUA_TTABLE.equals(table.type())) {
+      // table 是表
+      LuaTable luaTable = (LuaTable) table;
+      if (luaTable.containsKey(key)) {
+        LuaValue luaValue = luaTable.get(key);
+        this.pushLuaValue(luaValue);
+        return luaTable.type();
+      }
+    }
+    // __index 元方法
+
     if (!(table instanceof LuaTable)) {
       throw new IllegalStateException("not a table! It is " + table);
     }

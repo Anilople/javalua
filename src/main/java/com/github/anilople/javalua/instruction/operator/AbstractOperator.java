@@ -27,11 +27,11 @@ abstract class AbstractOperator<T, U, R> implements Operator<T, U, R> {
   private final LuaString metaMethodName;
 
   protected AbstractOperator(int enumCount, String content, BiFunction<T, U, R> function,
-      String metaMethodName) {
+      LuaString metaMethodName) {
     this.enumCount = enumCount;
     this.content = content;
     this.function = function;
-    this.metaMethodName = LuaValue.of(metaMethodName);
+    this.metaMethodName = metaMethodName;
   }
 
   @Override

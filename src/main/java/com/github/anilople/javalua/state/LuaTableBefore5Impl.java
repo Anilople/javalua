@@ -20,6 +20,11 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   }
 
   @Override
+  public boolean containsKey(LuaValue key) {
+    return this.map.containsKey(key);
+  }
+
+  @Override
   public LuaValue get(LuaValue key) {
     var value = this.map.get(key);
     return null != value ? value : LuaValue.NIL;
