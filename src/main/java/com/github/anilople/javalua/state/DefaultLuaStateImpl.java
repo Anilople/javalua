@@ -464,24 +464,28 @@ public class DefaultLuaStateImpl implements LuaState {
    * __index 元方法既可以是函数，也可以是表
    */
   LuaType getTable(LuaValue table, LuaValue key) {
+    // table 是表 并且 key 在表中存在
     if (LuaType.LUA_TTABLE.equals(table.type())) {
-      // table 是表
       LuaTable luaTable = (LuaTable) table;
       if (luaTable.containsKey(key)) {
-        LuaValue luaValue = luaTable.get(key);
-        this.pushLuaValue(luaValue);
+        LuaValue result = luaTable.get(key);
+        this.pushLuaValue(result);
         return luaTable.type();
       }
     }
-    // __index 元方法
 
-    if (!(table instanceof LuaTable)) {
-      throw new IllegalStateException("not a table! It is " + table);
+    final LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.INDEX, key);
+    if (LuaType.LUA_TFUNCTION.equals(metaField.type())) {
+      // 触发 __index 元方法
+      LuaValue result = this.callMetaMethod(MetaMethod.INDEX, table, key);
+      this.pushLuaValue(result);
+      return result.type();
+    } else if (LuaType.LUA_TTABLE.equals(metaField.type())) {
+      // 找到的是 table
+      return this.getTable(metaField, key);
+    } else {
+      throw new IllegalStateException("meta field '__index' is not a function or table, it is " + metaField);
     }
-    LuaTable luaTable = (LuaTable) table;
-    var value = luaTable.get(key);
-    this.pushLuaValue(value);
-    return value.type();
   }
 
   @Override
@@ -504,12 +508,25 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   void setTable(LuaValue table, LuaValue key, LuaValue value) {
-    if (!(table instanceof LuaTable)) {
-      // TODO, page 130 第11章 再 完善
-      throw new IllegalStateException("not a table! It is " + table);
+    // table 是表 并且 key 在表中存在
+    if (LuaType.LUA_TTABLE.equals(table.type())) {
+      LuaTable luaTable = (LuaTable) table;
+      if (luaTable.containsKey(key)) {
+        luaTable.put(key, value);
+        return;
+      }
     }
-    LuaTable luaTable = (LuaTable) table;
-    luaTable.put(key, value);
+
+    final LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.INDEX, key);
+    if (LuaType.LUA_TFUNCTION.equals(metaField.type())) {
+      // 触发 __newindex 元方法
+      this.callMetaMethodWithoutReturn(MetaMethod.NEWINDEX, table, key, value);
+    } else if (LuaType.LUA_TTABLE.equals(metaField.type())) {
+      // 找到的是 table
+      this.setTable(metaField, key, value);
+    } else {
+      throw new IllegalStateException("meta field '__index' is not a function or table, it is " + metaField);
+    }
   }
 
   @Override
@@ -762,40 +779,37 @@ public class DefaultLuaStateImpl implements LuaState {
   /**
    * 调用元方法。
    *
-   * 1个参数，1个返回结果
+   * 多个参数，1个返回结果
    *
    * @param metaMethodName 元方法的名字
-   * @param luaValue 元方法的参数
    * @return 元方法的返回结果
    */
-  LuaValue callMetaMethod(LuaString metaMethodName, LuaValue luaValue) {
-    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValue);
-    this.checkStack(3);
+  LuaValue callMetaMethod(LuaString metaMethodName, LuaValue ... luaValues) {
+    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValues[0]);
+    this.checkStack(1 + luaValues.length);
     this.pushLuaValue(metaMethod);
-    this.pushLuaValue(luaValue);
-    this.call(1,1);
+    for (LuaValue luaValue : luaValues) {
+      this.pushLuaValue(luaValue);
+    }
+    this.call(1 + luaValues.length, 1);
     return this.popLuaValue();
   }
 
   /**
    * 调用元方法。
    *
-   * 2个参数，1个返回结果
+   * 多个参数，0个返回结果
    *
    * @param metaMethodName 元方法的名字
-   * @param a 元方法的参数1
-   * @param b 元方法的参数2
    * @return 元方法的返回结果
    */
-  LuaValue callMetaMethod(LuaString metaMethodName, LuaValue a, LuaValue b) {
-    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, a, b);
-    this.checkStack(4);
+  void callMetaMethodWithoutReturn(LuaString metaMethodName, LuaValue ... luaValues) {
+    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValues[0]);
+    this.checkStack(1 + luaValues.length);
     this.pushLuaValue(metaMethod);
-    this.pushLuaValue(a);
-    this.pushLuaValue(b);
-    this.call(2, 1);
-    return this.popLuaValue();
+    for (LuaValue luaValue : luaValues) {
+      this.pushLuaValue(luaValue);
+    }
+    this.call(1 + luaValues.length, 0);
   }
-
-
 }
