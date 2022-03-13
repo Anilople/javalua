@@ -456,6 +456,13 @@ public class DefaultLuaStateImpl implements LuaState {
     this.pushLuaValue(luaTable);
   }
 
+  LuaType rawGetTable(LuaValue table, LuaValue key) {
+    LuaTable luaTable = (LuaTable) table;
+    LuaValue result = luaTable.get(key);
+    this.pushLuaValue(result);
+    return luaTable.type();
+  }
+
   /**
    * 获取 table[key]
    *
@@ -468,9 +475,7 @@ public class DefaultLuaStateImpl implements LuaState {
     if (LuaType.LUA_TTABLE.equals(table.type())) {
       LuaTable luaTable = (LuaTable) table;
       if (luaTable.containsKey(key)) {
-        LuaValue result = luaTable.get(key);
-        this.pushLuaValue(result);
-        return luaTable.type();
+        return this.rawGetTable(table, key);
       }
     }
 
@@ -507,12 +512,17 @@ public class DefaultLuaStateImpl implements LuaState {
     return this.getTable(table, key);
   }
 
+  void rawSetTable(LuaValue table, LuaValue key, LuaValue value) {
+    LuaTable luaTable = (LuaTable) table;
+    luaTable.put(key, value);
+  }
+
   void setTable(LuaValue table, LuaValue key, LuaValue value) {
     // table 是表 并且 key 在表中存在
     if (LuaType.LUA_TTABLE.equals(table.type())) {
       LuaTable luaTable = (LuaTable) table;
       if (luaTable.containsKey(key)) {
-        luaTable.put(key, value);
+        this.rawSetTable(table, key, value);
         return;
       }
     }
@@ -728,8 +738,6 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * 给 lua value设置元表
-   *
-   * 如果元表是null，效果相当于删除元表
    * @param metaTable 元表
    */
   void setMetaTable(LuaValue luaValue, LuaTable metaTable) {
@@ -739,6 +747,16 @@ public class DefaultLuaStateImpl implements LuaState {
     } else {
       LuaString key = resolveKeyOfMetaTableInRegistry(luaValue);
       this.registry.put(key, metaTable);
+    }
+  }
+
+  void removeMetaTable(LuaValue luaValue) {
+    if (luaValue instanceof LuaTable) {
+      LuaTable luaTable = (LuaTable) luaValue;
+      luaTable.removeMetaTable();
+    } else {
+      LuaString key = resolveKeyOfMetaTableInRegistry(luaValue);
+      this.registry.remove(key);
     }
   }
 
@@ -811,7 +829,6 @@ public class DefaultLuaStateImpl implements LuaState {
    * 多个参数，0个返回结果
    *
    * @param metaMethodName 元方法的名字
-   * @return 元方法的返回结果
    */
   void callMetaMethodWithoutReturn(LuaString metaMethodName, LuaValue ... luaValues) {
     LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValues[0]);
@@ -821,5 +838,85 @@ public class DefaultLuaStateImpl implements LuaState {
       this.pushLuaValue(luaValue);
     }
     this.call(1 + luaValues.length, 0);
+  }
+
+  @Override
+  public boolean getMetaTable(int index) {
+    LuaValue luaValue = this.getLuaValue(index);
+    LuaTable metaTable = this.getMetaTable(luaValue);
+    if (!LuaValue.NIL.equals(metaTable)) {
+      this.pushLuaValue(metaTable);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public void setMetaTable(int index) {
+    LuaValue luaValue = this.getLuaValue(index);
+    LuaValue metaTable = this.popLuaValue();
+    if (LuaValue.NIL.equals(metaTable)) {
+      this.removeMetaTable(luaValue);
+    } else if (metaTable instanceof LuaTable) {
+      this.setMetaTable(luaValue, (LuaTable) metaTable);
+    } else {
+      throw new IllegalStateException("meta table " + metaTable);
+    }
+  }
+
+  @Override
+  public void rawLen(int index) {
+    var a = this.getLuaValue(index);
+    if (a instanceof LuaString) {
+      var len = Length.length(a);
+      this.pushLuaValue(len);
+      return;
+    }
+
+    // 表
+    if (a instanceof LuaTable) {
+      LuaTable luaTable = (LuaTable) a;
+      var len = luaTable.length();
+      this.pushLuaValue(len);
+      return;
+    }
+
+    throw new IllegalStateException("cannot resolve length of " + a);
+  }
+
+  @Override
+  public boolean rawEqual(int index1, int index2) {
+    LuaValue a = this.getLuaValue(index1);
+    LuaValue b = this.getLuaValue(index2);
+    return a.equals(b);
+  }
+
+  @Override
+  public LuaType rawGet(int index) {
+    LuaValue table = this.getLuaValue(index);
+    LuaValue key = this.popLuaValue();
+    return this.rawGetTable(table, key);
+  }
+
+  @Override
+  public void rawSet(int index) {
+    LuaValue table = this.getLuaValue(index);
+    LuaValue value = this.popLuaValue();
+    LuaValue key = this.popLuaValue();
+    this.rawSetTable(table, key, value);
+  }
+
+  @Override
+  public LuaType rawGetI(int index, LuaInteger i) {
+    var table = this.getLuaValue(index);
+    return this.rawGetTable(table, i);
+  }
+
+  @Override
+  public void rawSetI(int index, LuaInteger i) {
+    var table = this.getLuaValue(index);
+    var value = this.popLuaValue();
+    this.rawSetTable(table, i, value);
   }
 }

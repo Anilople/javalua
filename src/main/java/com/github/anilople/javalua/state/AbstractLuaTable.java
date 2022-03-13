@@ -8,7 +8,7 @@ abstract class AbstractLuaTable implements LuaTable {
   /**
    * 元表 page 207
    */
-  private LuaTable metaTable;
+  private LuaValue metaTable = LuaValue.NIL;
 
   void ensureKeyValid(LuaValue key) {
     if (null == key) {
@@ -27,7 +27,12 @@ abstract class AbstractLuaTable implements LuaTable {
 
   @Override
   public LuaTable getMetaTable() {
-    return metaTable;
+    return (LuaTable) metaTable;
+  }
+
+  @Override
+  public void removeMetaTable() {
+    this.metaTable = LuaValue.NIL;
   }
 
   @Override

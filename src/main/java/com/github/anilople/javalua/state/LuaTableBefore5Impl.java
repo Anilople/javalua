@@ -40,6 +40,12 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   }
 
   @Override
+  public LuaValue remove(LuaValue key) {
+    var value = this.map.remove(key);
+    return value == null ? LuaValue.NIL : value;
+  }
+
+  @Override
   public LuaInteger length() {
     var size = 0;
     for (int i = 1; this.map.containsKey(LuaValue.of(i)); i++) {

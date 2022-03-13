@@ -25,6 +25,8 @@ public interface LuaTable extends LuaValue {
 
   void put(LuaValue key, LuaValue value);
 
+  LuaValue remove(LuaValue key);
+
   /**
    * page 124
    * @return 数组的长度
@@ -32,6 +34,8 @@ public interface LuaTable extends LuaValue {
   LuaInteger length();
 
   void setMetaTable(LuaTable luaTable);
+
+  void removeMetaTable();
 
   LuaTable getMetaTable();
 
