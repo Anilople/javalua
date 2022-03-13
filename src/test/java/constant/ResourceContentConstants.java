@@ -74,4 +74,10 @@ public interface ResourceContentConstants {
     LuaResource upvalue_add_case1 = new LuaResource("ch10/upvalue_add_case1.lua");
     LuaResource upvalue_add_case2 = new LuaResource("ch10/upvalue_add_case2.lua");
   }
+
+  interface ch11 {
+    LuaResource page_206_debug_setmetatable = new LuaResource("ch11/page_206_debug_setmetatable.lua");
+    LuaResource page_206_getmetatable = new LuaResource("ch11/page_206_getmetatable.lua");
+    LuaResource page_207_metatable_add = new LuaResource("ch11/page_207_metatable_add.lua");
+  }
 }

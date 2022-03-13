@@ -6,10 +6,16 @@ import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
+import com.github.anilople.javalua.instruction.operator.Comparison;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import com.github.anilople.javalua.instruction.operator.Length;
 import com.github.anilople.javalua.instruction.operator.StringConcat;
 import com.github.anilople.javalua.util.Return2;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.*;
 
 public class DefaultLuaStateImpl implements LuaState {
 
@@ -275,47 +281,155 @@ public class DefaultLuaStateImpl implements LuaState {
     this.pushLuaValue(value);
   }
 
-  @Override
-  public void arithmetic(ArithmeticOperator operator) {
+  void applyUnaryOperator(
+      Predicate<LuaValue> isTypeMatchRawOperator,
+      Function<LuaValue, ? extends LuaValue> operator,
+      LuaString metaMethodName
+  ) {
+    LuaValue luaValue = this.popLuaValue();
+    if (isTypeMatchRawOperator.test(luaValue)) {
+      LuaValue result = operator.apply(luaValue);
+      this.pushLuaValue(result);
+      return;
+    }
+    if (this.existsMetaMethod(metaMethodName, luaValue)) {
+      LuaValue result = this.callMetaMethod(metaMethodName, luaValue);
+      this.pushLuaValue(result);
+      return;
+    }
+    throw new UnsupportedOperationException("not found meta method of " + luaValue);
+  }
+
+  void applyBinaryOperator(
+      Predicate<LuaValue> isTypeMatchRawOperator,
+      BiFunction<LuaValue, LuaValue, ? extends LuaValue> operator,
+      LuaString metaMethodName
+  ) {
     // 先pop b，再pop a
     var b = this.popLuaValue();
-    final LuaValue result;
-    if (ArithmeticOperator.LUA_OPUNM.equals(operator)) {
-      result = operator.getOperator().apply(b, null);
-    } else {
-      var a = this.popLuaValue();
-      result = operator.getOperator().apply(a, b);
+    var a = this.popLuaValue();
+    if (isTypeMatchRawOperator.test(a) && isTypeMatchRawOperator.test(b)) {
+      LuaValue result = operator.apply(a, b);
+      assert result != null;
+      this.pushLuaValue(result);
+      return;
     }
-    assert result != null;
-    this.pushLuaValue(result);
+    if (this.existsMetaMethod(metaMethodName, a, b)) {
+      LuaValue result = this.callMetaMethod(metaMethodName, a, b);
+      assert result != null;
+      this.pushLuaValue(result);
+      return;
+    }
+    throw new UnsupportedOperationException("not found meta method of " + a + " and " + b);
+  }
+
+  @Override
+  public void arithmetic(ArithmeticOperator operator) {
+    Predicate<LuaValue> isTypeMatchRawOperator = luaValue -> LuaType.LUA_TNUMBER.equals(luaValue.type());
+    if (ArithmeticOperator.LUA_OPUNM.equals(operator)) {
+      // 一元运算
+      this.applyUnaryOperator(
+          isTypeMatchRawOperator,
+          luaValue -> ArithmeticOperator.LUA_OPUNM.getOperator().apply(luaValue, null),
+          ArithmeticOperator.LUA_OPUNM.getMetaMethodName()
+      );
+    } else {
+      this.applyBinaryOperator(
+          isTypeMatchRawOperator,
+          ArithmeticOperator.LUA_OPUNM.getOperator(),
+          ArithmeticOperator.LUA_OPUNM.getMetaMethodName()
+      );
+    }
   }
 
   @Override
   public void bitwise(BitwiseOperator operator) {
-    var a = this.popLuaValue();
-    final LuaValue result;
+    Predicate<LuaValue> isTypeMatchRawOperator = luaValue -> luaValue instanceof LuaInteger;
     if (BitwiseOperator.LUA_OPBNOT.equals(operator)) {
-      result = operator.getOperator().apply(a, null);
+      // 一元运算
+      this.applyUnaryOperator(
+          isTypeMatchRawOperator,
+          luaValue -> BitwiseOperator.LUA_OPBNOT.getOperator().apply(luaValue, null),
+          BitwiseOperator.LUA_OPBNOT.getMetaMethodName()
+      );
     } else {
-      var b = this.popLuaValue();
-      result = operator.getOperator().apply(a, b);
+      this.applyBinaryOperator(
+          isTypeMatchRawOperator,
+          ArithmeticOperator.LUA_OPUNM.getOperator(),
+          ArithmeticOperator.LUA_OPUNM.getMetaMethodName()
+      );
     }
-    assert result != null;
-    this.pushLuaValue(result);
   }
 
   @Override
   public LuaBoolean compare(int index1, int index2, ComparisonOperator operator) {
-    var a = this.getLuaValue(index1);
-    var b = this.getLuaValue(index2);
-    return operator.getOperator().apply(a, b);
+    final var a = this.getLuaValue(index1);
+    final var b = this.getLuaValue(index2);
+
+    final LuaValue result;
+    // 触发元方法
+    if (LUA_OPEQ.equals(operator)) {
+      // 等于 ==
+      if (Comparison.isEqualsTypeMatch(a, b)) {
+        result = operator.getOperator().apply(a, b);
+      } else {
+        result = this.callMetaMethod(LUA_OPEQ.getMetaMethodName(), a, b);
+      }
+    } else if (LUA_OPLT.equals(operator)) {
+      // 小于 <
+      if (Comparison.isLessThanTypeMatch(a, b)) {
+        result = operator.getOperator().apply(a, b);
+      } else {
+        result = this.callMetaMethod(LUA_OPLT.getMetaMethodName(), a, b);
+      }
+    } else if (LUA_OPLE.equals(operator)) {
+      // 小于等于 <=
+      if (Comparison.isLessThanOrEqualsTypeMatch(a, b)) {
+        result = operator.getOperator().apply(a, b);
+      } else {
+        // 如果Lua找不到 __le 元方法，则会尝试调用 __lt 元方法
+        if (this.existsMetaMethod(LUA_OPLE.getMetaMethodName(), a, b)) {
+          // __le 元方法
+          result = this.callMetaMethod(LUA_OPLE.getMetaMethodName(), a, b);
+        } else if (this.existsMetaMethod(LUA_OPLT.getMetaMethodName(), a, b)) {
+          // __lt 元方法
+          result = this.callMetaMethod(LUA_OPLT.getMetaMethodName(), a, b);
+        } else {
+          throw new IllegalStateException("cannot find meta method of operator " + operator + ", a = " + a + ", b = " + b);
+        }
+      }
+    } else {
+      throw new IllegalArgumentException("comparison operator " + operator);
+    }
+    return LuaBoolean.from(result);
   }
 
   @Override
   public void len(int index) {
     var a = this.getLuaValue(index);
-    var len = Length.length(a);
-    this.pushLuaValue(len);
+    if (a instanceof LuaString) {
+      var len = Length.length(a);
+      this.pushLuaValue(len);
+      return;
+    }
+
+    final LuaString metaMethodName = LuaValue.of("__len");
+    // 元方法
+    if (this.existsMetaMethod(metaMethodName, a)) {
+      var len = this.callMetaMethod(metaMethodName, a);
+      this.pushLuaValue(len);
+      return;
+    }
+
+    // 表
+    if (a instanceof LuaTable) {
+      LuaTable luaTable = (LuaTable) a;
+      var len = luaTable.length();
+      this.pushLuaValue(len);
+      return;
+    }
+
+    throw new IllegalStateException("cannot resolve length of " + a);
   }
 
   @Override
@@ -324,10 +438,9 @@ public class DefaultLuaStateImpl implements LuaState {
       this.pushLuaValue(LuaValue.of(""));
     } else {
       for (; n >= 2; n--) {
-        var b = this.popLuaValue();
-        var a = this.popLuaValue();
-        var result = StringConcat.concat(a, b);
-        this.pushLuaValue(result);
+        Predicate<LuaValue> isTypeMatchRawOperator = luaValue ->
+            LuaType.LUA_TSTRING.equals(luaValue.type()) || LuaType.LUA_TNUMBER.equals(luaValue.type());
+        this.applyBinaryOperator(isTypeMatchRawOperator, StringConcat::concat, LuaValue.of("__concat"));
       }
     }
   }
@@ -553,4 +666,118 @@ public class DefaultLuaStateImpl implements LuaState {
     }
     this.pushLuaValue(luaClosure);
   }
+
+  /**
+   * 非{@link LuaTable}，在注册表中，放它对应的元表，
+   *
+   * 为了保证相同类型的数据，元表一样，需要对key的生产定一个规则
+   *
+   * @return 对应的key，字符串 _MT + type
+   */
+  static LuaString resolveKeyOfMetaTableInRegistry(LuaValue luaValue) {
+    if (luaValue instanceof LuaTable) {
+      throw new IllegalArgumentException("cannot be lua table. " + luaValue);
+    }
+    return LuaValue.of("_MT" + luaValue.type());
+  }
+
+  /**
+   * 给 lua value设置元表
+   *
+   * 如果元表是null，效果相当于删除元表
+   * @param metaTable 元表
+   */
+  void setMetaTable(LuaValue luaValue, LuaTable metaTable) {
+    if (luaValue instanceof LuaTable) {
+      LuaTable luaTable = (LuaTable) luaValue;
+      luaTable.setMetaTable(metaTable);
+    } else {
+      LuaString key = resolveKeyOfMetaTableInRegistry(luaValue);
+      this.registry.put(key, metaTable);
+    }
+  }
+
+  LuaTable getMetaTable(LuaValue luaValue) {
+    if (luaValue instanceof LuaTable) {
+      LuaTable luaTable = (LuaTable) luaValue;
+      return luaTable.getMetaTable();
+    } else {
+      LuaString key = resolveKeyOfMetaTableInRegistry(luaValue);
+      return (LuaTable) this.registry.get(key);
+    }
+  }
+
+  /**
+   * page 210
+   *
+   * 对应书里的 getMetafield
+   *
+   * getmetatable(luaValue)[fieldName]
+   */
+  LuaValue getMetaFieldInMetaTable(LuaString fieldName, LuaValue luaValue) {
+    var metaTable = this.getMetaTable(luaValue);
+    return metaTable.get(fieldName);
+  }
+
+  LuaValue getMetaFieldInMetaTable(LuaString fieldName, LuaValue a, LuaValue b) {
+    LuaValue metaFieldInA = this.getMetaFieldInMetaTable(fieldName, a);
+    if (!LuaValue.NIL.equals(metaFieldInA)) {
+      return metaFieldInA;
+    }
+    LuaValue metaFieldInB = this.getMetaFieldInMetaTable(fieldName, b);
+    if (!LuaValue.NIL.equals(metaFieldInB)) {
+      return metaFieldInB;
+    }
+    return LuaValue.NIL;
+  }
+
+  boolean existsMetaMethod(LuaString metaMethodName, LuaValue luaValue) {
+    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValue);
+    return !LuaValue.NIL.equals(metaMethod);
+  }
+
+  boolean existsMetaMethod(LuaString metaMethodName, LuaValue a, LuaValue b) {
+    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, a, b);
+    return !LuaValue.NIL.equals(metaMethod);
+  }
+
+  /**
+   * 调用元方法。
+   *
+   * 1个参数，1个返回结果
+   *
+   * @param metaMethodName 元方法的名字
+   * @param luaValue 元方法的参数
+   * @return 元方法的返回结果
+   */
+  LuaValue callMetaMethod(LuaString metaMethodName, LuaValue luaValue) {
+    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValue);
+    this.checkStack(3);
+    this.pushLuaValue(metaMethod);
+    this.pushLuaValue(luaValue);
+    this.call(1,1);
+    return this.popLuaValue();
+  }
+
+  /**
+   * 调用元方法。
+   *
+   * 2个参数，1个返回结果
+   *
+   * @param metaMethodName 元方法的名字
+   * @param a 元方法的参数1
+   * @param b 元方法的参数2
+   * @return 元方法的返回结果
+   */
+  LuaValue callMetaMethod(LuaString metaMethodName, LuaValue a, LuaValue b) {
+    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, a, b);
+    this.checkStack(4);
+    this.pushLuaValue(metaMethod);
+    this.pushLuaValue(a);
+    this.pushLuaValue(b);
+    this.call(2, 1);
+    return this.popLuaValue();
+  }
+
+
 }

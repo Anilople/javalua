@@ -421,6 +421,68 @@ open 表示引用该 upvalue 的 closure 还在执行中，没有结束
 
 坑：upvalue从stack中获取lua value时，用的是upvalueIndex，从0开始计数，而不是从1开始
 
+### 第11章 元编程
+
+元程序（Metaprogram）：指能够处理程序的程序，处理指读取、生成、分析、转换等
+
+元编程（Metaprogramming）：指编写元程序的编程技术。例如C语言的宏（Macro）和C++的模板（Template）可以在编译期生成代码，Java语言的反射（Reflection）可以在运行期获取程序信息，JavaScript语言的eval()函数可以在运行期生成并执行代码
+
+Lua语言通过debug标准库提供了类似Java语言的反射能力，通过load()函数提供在运行时执行任意代码的能力。
+
+本章主要讨论元表（Metatable）和元方法（Metamethod）
+
+如何对2个lua的table，进行加法运算？可以用元表和元方法
+
+在Lua里，每个值都可以有一个元表。如果值是表或者用户数据，可以拥有自己专属的元表，其它类型的值是每种类型共享一个元表。
+
+Lua标准库提供了getmetatable函数，可以获取与值关联的元表
+
+```lua
+print(getmetatable(nil)) -- nil
+print(getmetatable(false)) -- nil
+print(getmetatable(100)) -- nil
+print(getmetatable({})) -- nil
+print(getmetatable(print)) -- nil
+```
+
+Lua标准库提供了setmetatable函数，仅仅可以给lua的table设置元表，另外有debug库的setmetatable，可以给其它类型设置元表
+
+```lua
+debug.setmetatable(100, mt)
+print(getmetatable(100) == mt) -- true
+```
+
+当我们对2个表进行加法运算，Lua会看这2个表是否有元表，如果有，则进一步看元表里是否有`__add`方法；如果有，则将2个表作为参数调用这个方法，并将结果返回
+
+通过元表和元方法，Lua提供了一种**插件机制**。我们可以用Lua代码来编写插件，达到扩展Lua语言的目的
+
+Lua语言里，每一个运算符都有一个元方法与之相对应，表操作和函数调用也有相应的元方法
+
+注册表中，下划线开头+大写字母的字段名是保留给Lua实现使用的，例如`_MT1`
+
+对于运算符`+`，元方法的查找过程如下
+
+```
+luaState.registry["_MTLUA_TNUMBER"]["__add"]
+```
+
+| 运算符 | 含义     | 对应的元方法 |
+| ------ | -------- | ------------ |
+| #      | 长度     | __len        |
+| ..     | 拼接     | __concat     |
+| ==     | 等于     | __eq         |
+| <      | 小于     | __lt         |
+| <=     | 小于等于 | __le         |
+
+索引元方法：
+
+| 索引元方法 | 作用         |
+| ---------- | ------------ |
+| __index    | 索引取值操作 |
+| __newIndex | 索引赋值操作 |
+
+
+
 ## 参考资料
 
 ### prototype是什么

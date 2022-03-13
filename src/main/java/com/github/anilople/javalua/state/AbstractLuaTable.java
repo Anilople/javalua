@@ -5,6 +5,11 @@ package com.github.anilople.javalua.state;
  */
 abstract class AbstractLuaTable implements LuaTable {
 
+  /**
+   * 元表 page 207
+   */
+  private LuaTable metaTable;
+
   void ensureKeyValid(LuaValue key) {
     if (null == key) {
       throw new IllegalArgumentException("cannot be java null");
@@ -18,5 +23,15 @@ abstract class AbstractLuaTable implements LuaTable {
         throw new IllegalArgumentException("NaN " + luaNumber);
       }
     }
+  }
+
+  @Override
+  public LuaTable getMetaTable() {
+    return metaTable;
+  }
+
+  @Override
+  public void setMetaTable(LuaTable metatable) {
+    this.metaTable = metatable;
   }
 }

@@ -23,6 +23,10 @@ public interface LuaTable extends LuaValue {
    */
   LuaInteger length();
 
+  void setMetaTable(LuaTable luaTable);
+
+  LuaTable getMetaTable();
+
   @Override
   default LuaType type() {
     return LuaType.LUA_TTABLE;

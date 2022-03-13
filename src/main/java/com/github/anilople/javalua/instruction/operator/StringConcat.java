@@ -26,4 +26,8 @@ public class StringConcat {
     }
     return concatLuaString(luaStrings);
   }
+
+  public static LuaString concat(LuaValue a, LuaValue b) {
+    return concat(new LuaValue[]{a, b});
+  }
 }

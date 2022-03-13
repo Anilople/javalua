@@ -8,16 +8,16 @@ import java.util.function.BiFunction;
  * @author wxq
  */
 public final class BitwiseOperator extends AbstractOperator<LuaValue, LuaValue, LuaInteger> {
-  public static final BitwiseOperator LUA_OPBAND = new BitwiseOperator(7, "&", Bitwise::and);
-  public static final BitwiseOperator LUA_OPBOR = new BitwiseOperator(8, "|", Bitwise::or);
-  public static final BitwiseOperator LUA_OPBXOR = new BitwiseOperator(9, "~", Bitwise::xor);
-  public static final BitwiseOperator LUA_OPSHL = new BitwiseOperator(10, "<<", Bitwise::shiftLeft);
+  public static final BitwiseOperator LUA_OPBAND = new BitwiseOperator(7, "&", Bitwise::and, "__band");
+  public static final BitwiseOperator LUA_OPBOR = new BitwiseOperator(8, "|", Bitwise::or, "__bor");
+  public static final BitwiseOperator LUA_OPBXOR = new BitwiseOperator(9, "~", Bitwise::xor, "__bxor");
+  public static final BitwiseOperator LUA_OPSHL = new BitwiseOperator(10, "<<", Bitwise::shiftLeft, "__shl");
   public static final BitwiseOperator LUA_OPSHR =
-      new BitwiseOperator(11, ">>", Bitwise::shiftRight);
-  public static final BitwiseOperator LUA_OPBNOT = new BitwiseOperator(13, "~", Bitwise::negate);
+      new BitwiseOperator(11, ">>", Bitwise::shiftRight, "__shr");
+  public static final BitwiseOperator LUA_OPBNOT = new BitwiseOperator(13, "~", Bitwise::negate, "__bnot");
 
   private BitwiseOperator(
-      int enumCount, String content, BiFunction<LuaValue, LuaValue, LuaInteger> function) {
-    super(enumCount, content, function);
+      int enumCount, String content, BiFunction<LuaValue, LuaValue, LuaInteger> function, String metaMethodName) {
+    super(enumCount, content, function, metaMethodName);
   }
 }
