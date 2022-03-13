@@ -1,5 +1,7 @@
 package com.github.anilople.javalua.state;
 
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.*;
+
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
@@ -15,8 +17,6 @@ import com.github.anilople.javalua.util.Return2;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.*;
 
 public class DefaultLuaStateImpl implements LuaState {
 
@@ -285,8 +285,7 @@ public class DefaultLuaStateImpl implements LuaState {
   void applyUnaryOperator(
       Predicate<LuaValue> isTypeMatchRawOperator,
       Function<LuaValue, ? extends LuaValue> operator,
-      LuaString metaMethodName
-  ) {
+      LuaString metaMethodName) {
     LuaValue luaValue = this.popLuaValue();
     if (isTypeMatchRawOperator.test(luaValue)) {
       LuaValue result = operator.apply(luaValue);
@@ -304,8 +303,7 @@ public class DefaultLuaStateImpl implements LuaState {
   void applyBinaryOperator(
       Predicate<LuaValue> isTypeMatchRawOperator,
       BiFunction<LuaValue, LuaValue, ? extends LuaValue> operator,
-      LuaString metaMethodName
-  ) {
+      LuaString metaMethodName) {
     // 先pop b，再pop a
     var b = this.popLuaValue();
     var a = this.popLuaValue();
@@ -326,20 +324,19 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void arithmetic(ArithmeticOperator operator) {
-    Predicate<LuaValue> isTypeMatchRawOperator = luaValue -> LuaType.LUA_TNUMBER.equals(luaValue.type());
+    Predicate<LuaValue> isTypeMatchRawOperator =
+        luaValue -> LuaType.LUA_TNUMBER.equals(luaValue.type());
     if (ArithmeticOperator.LUA_OPUNM.equals(operator)) {
       // 一元运算
       this.applyUnaryOperator(
           isTypeMatchRawOperator,
           luaValue -> ArithmeticOperator.LUA_OPUNM.getOperator().apply(luaValue, null),
-          ArithmeticOperator.LUA_OPUNM.getMetaMethodName()
-      );
+          ArithmeticOperator.LUA_OPUNM.getMetaMethodName());
     } else {
       this.applyBinaryOperator(
           isTypeMatchRawOperator,
           ArithmeticOperator.LUA_OPUNM.getOperator(),
-          ArithmeticOperator.LUA_OPUNM.getMetaMethodName()
-      );
+          ArithmeticOperator.LUA_OPUNM.getMetaMethodName());
     }
   }
 
@@ -351,14 +348,12 @@ public class DefaultLuaStateImpl implements LuaState {
       this.applyUnaryOperator(
           isTypeMatchRawOperator,
           luaValue -> BitwiseOperator.LUA_OPBNOT.getOperator().apply(luaValue, null),
-          BitwiseOperator.LUA_OPBNOT.getMetaMethodName()
-      );
+          BitwiseOperator.LUA_OPBNOT.getMetaMethodName());
     } else {
       this.applyBinaryOperator(
           isTypeMatchRawOperator,
           ArithmeticOperator.LUA_OPUNM.getOperator(),
-          ArithmeticOperator.LUA_OPUNM.getMetaMethodName()
-      );
+          ArithmeticOperator.LUA_OPUNM.getMetaMethodName());
     }
   }
 
@@ -396,7 +391,8 @@ public class DefaultLuaStateImpl implements LuaState {
           // __lt 元方法
           result = this.callMetaMethod(LUA_OPLT.getMetaMethodName(), a, b);
         } else {
-          throw new IllegalStateException("cannot find meta method of operator " + operator + ", a = " + a + ", b = " + b);
+          throw new IllegalStateException(
+              "cannot find meta method of operator " + operator + ", a = " + a + ", b = " + b);
         }
       }
     } else {
@@ -438,8 +434,10 @@ public class DefaultLuaStateImpl implements LuaState {
       this.pushLuaValue(LuaValue.of(""));
     } else {
       for (; n >= 2; n--) {
-        Predicate<LuaValue> isTypeMatchRawOperator = luaValue ->
-            LuaType.LUA_TSTRING.equals(luaValue.type()) || LuaType.LUA_TNUMBER.equals(luaValue.type());
+        Predicate<LuaValue> isTypeMatchRawOperator =
+            luaValue ->
+                LuaType.LUA_TSTRING.equals(luaValue.type())
+                    || LuaType.LUA_TNUMBER.equals(luaValue.type());
         this.applyBinaryOperator(isTypeMatchRawOperator, StringConcat::concat, MetaMethod.CONCAT);
       }
     }
@@ -489,7 +487,8 @@ public class DefaultLuaStateImpl implements LuaState {
       // 找到的是 table
       return this.getTable(metaField, key);
     } else {
-      throw new IllegalStateException("meta field '__index' is not a function or table, it is " + metaField);
+      throw new IllegalStateException(
+          "meta field '__index' is not a function or table, it is " + metaField);
     }
   }
 
@@ -535,7 +534,8 @@ public class DefaultLuaStateImpl implements LuaState {
       // 找到的是 table
       this.setTable(metaField, key, value);
     } else {
-      throw new IllegalStateException("meta field '__index' is not a function or table, it is " + metaField);
+      throw new IllegalStateException(
+          "meta field '__index' is not a function or table, it is " + metaField);
     }
   }
 
@@ -642,10 +642,11 @@ public class DefaultLuaStateImpl implements LuaState {
           luaClosure = (LuaClosure) metaField;
         } else {
           throw new IllegalStateException(
-              "lua value " + luaValue
+              "lua value "
+                  + luaValue
                   + " is not a closure and it's meta method __call doesn't exist."
-                  + " meta field " + metaField
-          );
+                  + " meta field "
+                  + metaField);
         }
       }
     }
@@ -812,7 +813,7 @@ public class DefaultLuaStateImpl implements LuaState {
    * @param metaMethodName 元方法的名字
    * @return 元方法的返回结果
    */
-  LuaValue callMetaMethod(LuaString metaMethodName, LuaValue ... luaValues) {
+  LuaValue callMetaMethod(LuaString metaMethodName, LuaValue... luaValues) {
     LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValues[0]);
     this.checkStack(1 + luaValues.length);
     this.pushLuaValue(metaMethod);
@@ -830,7 +831,7 @@ public class DefaultLuaStateImpl implements LuaState {
    *
    * @param metaMethodName 元方法的名字
    */
-  void callMetaMethodWithoutReturn(LuaString metaMethodName, LuaValue ... luaValues) {
+  void callMetaMethodWithoutReturn(LuaString metaMethodName, LuaValue... luaValues) {
     LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValues[0]);
     this.checkStack(1 + luaValues.length);
     this.pushLuaValue(metaMethod);

@@ -42,6 +42,7 @@ public interface LuaConstants {
       LuaString IDIV = LuaValue.of("__idiv");
       LuaString UNM = LuaValue.of("__unm");
     }
+
     interface Bitwise {
       LuaString AND = LuaValue.of("__band");
       LuaString OR = LuaValue.of("__bor");
@@ -50,11 +51,13 @@ public interface LuaConstants {
       LuaString SHR = LuaValue.of("__shr");
       LuaString NOT = LuaValue.of("__bnot");
     }
+
     interface Comparison {
       LuaString EQ = LuaValue.of("__eq");
       LuaString LT = LuaValue.of("__lt");
       LuaString LE = LuaValue.of("__le");
     }
+
     LuaString LEN = LuaValue.of("__len");
     LuaString CONCAT = LuaValue.of("__concat");
     LuaString INDEX = LuaValue.of("__index");

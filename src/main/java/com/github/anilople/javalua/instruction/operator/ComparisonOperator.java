@@ -1,11 +1,11 @@
 package com.github.anilople.javalua.instruction.operator;
 
+import static com.github.anilople.javalua.constant.LuaConstants.MetaMethod.Comparison.*;
+
 import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaValue;
 import java.util.function.BiFunction;
-
-import static com.github.anilople.javalua.constant.LuaConstants.MetaMethod.Comparison.*;
 
 /**
  * @author wxq
@@ -19,7 +19,10 @@ public final class ComparisonOperator extends AbstractOperator<LuaValue, LuaValu
       new ComparisonOperator(2, "<=", Comparison::lessThanOrEquals, LE);
 
   private ComparisonOperator(
-      int enumCount, String content, BiFunction<LuaValue, LuaValue, LuaBoolean> function, LuaString metaMethodName) {
+      int enumCount,
+      String content,
+      BiFunction<LuaValue, LuaValue, LuaBoolean> function,
+      LuaString metaMethodName) {
     super(enumCount, content, function, metaMethodName);
   }
 }

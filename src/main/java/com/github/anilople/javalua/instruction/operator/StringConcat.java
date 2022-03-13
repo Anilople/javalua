@@ -28,6 +28,6 @@ public class StringConcat {
   }
 
   public static LuaString concat(LuaValue a, LuaValue b) {
-    return concat(new LuaValue[]{a, b});
+    return concat(new LuaValue[] {a, b});
   }
 }

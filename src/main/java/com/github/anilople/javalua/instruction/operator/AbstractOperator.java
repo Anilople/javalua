@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.instruction.operator;
 
 import com.github.anilople.javalua.state.LuaString;
-import com.github.anilople.javalua.state.LuaValue;
 import java.util.function.BiFunction;
 
 /**
@@ -26,8 +25,8 @@ abstract class AbstractOperator<T, U, R> implements Operator<T, U, R> {
    */
   private final LuaString metaMethodName;
 
-  protected AbstractOperator(int enumCount, String content, BiFunction<T, U, R> function,
-      LuaString metaMethodName) {
+  protected AbstractOperator(
+      int enumCount, String content, BiFunction<T, U, R> function, LuaString metaMethodName) {
     this.enumCount = enumCount;
     this.content = content;
     this.function = function;

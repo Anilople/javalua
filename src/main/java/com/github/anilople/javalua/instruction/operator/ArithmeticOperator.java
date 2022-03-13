@@ -1,10 +1,10 @@
 package com.github.anilople.javalua.instruction.operator;
 
+import static com.github.anilople.javalua.constant.LuaConstants.MetaMethod.Arithmetic.*;
+
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaValue;
 import java.util.function.BiFunction;
-
-import static com.github.anilople.javalua.constant.LuaConstants.MetaMethod.Arithmetic.*;
 
 /**
  * @author wxq
@@ -32,7 +32,10 @@ public final class ArithmeticOperator extends AbstractOperator<LuaValue, LuaValu
       new ArithmeticOperator(12, "-", Arithmetic::unaryMinus, UNM);
 
   private ArithmeticOperator(
-      int enumCount, String content, BiFunction<LuaValue, LuaValue, LuaValue> function, LuaString metaMethodName) {
+      int enumCount,
+      String content,
+      BiFunction<LuaValue, LuaValue, LuaValue> function,
+      LuaString metaMethodName) {
     super(enumCount, content, function, metaMethodName);
   }
 }

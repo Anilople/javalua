@@ -270,9 +270,14 @@ public interface LuaState {
    * 与{@link #len(int)}不同的是，这个方法不会去触发 元方法 __len
    */
   void rawLen(int index);
+
   boolean rawEqual(int index1, int index2);
+
   LuaType rawGet(int index);
+
   void rawSet(int index);
+
   LuaType rawGetI(int index, LuaInteger i);
+
   void rawSetI(int index, LuaInteger i);
 }
