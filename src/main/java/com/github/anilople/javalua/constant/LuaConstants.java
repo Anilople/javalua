@@ -59,5 +59,6 @@ public interface LuaConstants {
     LuaString CONCAT = LuaValue.of("__concat");
     LuaString INDEX = LuaValue.of("__index");
     LuaString NEWINDEX = LuaValue.of("__newindex");
+    LuaString CALL = LuaValue.of("__call");
   }
 }

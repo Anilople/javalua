@@ -626,7 +626,17 @@ public class DefaultLuaStateImpl implements LuaState {
       if (luaValue instanceof LuaClosure) {
         luaClosure = (LuaClosure) luaValue;
       } else {
-        throw new IllegalStateException(luaValue + "'s type isn't " + LuaClosure.class);
+        // 触发元方法 __call
+        LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.CALL, luaValue);
+        if (metaField instanceof LuaClosure) {
+          luaClosure = (LuaClosure) metaField;
+        } else {
+          throw new IllegalStateException(
+              "lua value " + luaValue
+                  + " is not a closure and it's meta method __call doesn't exist."
+                  + " meta field " + metaField
+          );
+        }
       }
     }
     if (luaClosure.prototype != null) {

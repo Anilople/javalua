@@ -481,6 +481,16 @@ luaState.registry["_MTLUA_TNUMBER"]["__add"]
 | __index    | 索引取值操作 | table[key]       |
 | __newIndex | 索引赋值操作 | table[key]=value |
 
+当试图调用一个非函数类型的值时，Lua会看这个值是否有__call元方法，如果有，Lua会以该值为第一个参数，后面跟元方法调用其它参数，返回元方法的返回值
+
+Lua标准库还有其它元方法，比如
+
+| 函数                           | 对应的元方法 |
+| ------------------------------ | ------------ |
+| tostring()                     | __tostring   |
+| pairs()                        | __pairs      |
+| getmetatable()和setmetatable() | __metatable  |
+
 
 
 ## 参考资料
