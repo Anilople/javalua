@@ -511,7 +511,10 @@ public class DefaultLuaStateImpl implements LuaState {
     return this.getTable(table, key);
   }
 
-  void rawSetTable(LuaValue table, LuaValue key, LuaValue value) {
+  /**
+   * 不处理元方法
+   */
+  void setTableWithoutResolveMetaMethod(LuaValue table, LuaValue key, LuaValue value) {
     LuaTable luaTable = (LuaTable) table;
     luaTable.put(key, value);
   }
@@ -521,7 +524,7 @@ public class DefaultLuaStateImpl implements LuaState {
     if (LuaType.LUA_TTABLE.equals(table.type())) {
       LuaTable luaTable = (LuaTable) table;
       if (luaTable.containsKey(key)) {
-        this.rawSetTable(table, key, value);
+        this.setTableWithoutResolveMetaMethod(table, key, value);
         return;
       }
     }
@@ -703,7 +706,7 @@ public class DefaultLuaStateImpl implements LuaState {
   public void setGlobal(LuaString name) {
     var globalTable = this.getGlobalTable();
     var value = this.popLuaValue();
-    this.setTable(globalTable, name, value);
+    this.setTableWithoutResolveMetaMethod(globalTable, name, value);
   }
 
   @Override
@@ -905,7 +908,7 @@ public class DefaultLuaStateImpl implements LuaState {
     LuaValue table = this.getLuaValue(index);
     LuaValue value = this.popLuaValue();
     LuaValue key = this.popLuaValue();
-    this.rawSetTable(table, key, value);
+    this.setTableWithoutResolveMetaMethod(table, key, value);
   }
 
   @Override
@@ -918,6 +921,6 @@ public class DefaultLuaStateImpl implements LuaState {
   public void rawSetI(int index, LuaInteger i) {
     var table = this.getLuaValue(index);
     var value = this.popLuaValue();
-    this.rawSetTable(table, i, value);
+    this.setTableWithoutResolveMetaMethod(table, i, value);
   }
 }

@@ -95,6 +95,11 @@ class LuaTable5Impl extends AbstractLuaTable {
   }
 
   @Override
+  public LuaValue remove(LuaValue key) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public LuaInteger length() {
     throw new UnsupportedOperationException();
   }
