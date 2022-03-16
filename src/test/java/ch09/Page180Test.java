@@ -27,5 +27,4 @@ class Page180Test {
     String stringPrinted = byteArrayOutputStream.toString(StandardCharsets.UTF_8);
     assertEquals("Hello, World!", stringPrinted);
   }
-
 }

@@ -5,10 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.api.stdlib.Print;
 import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.state.LuaInteger;
-import com.github.anilople.javalua.state.LuaState;
-import com.github.anilople.javalua.state.LuaString;
-import com.github.anilople.javalua.state.LuaValue;
 import constant.ResourceContentConstants.LuaResource;
 import constant.ResourceContentConstants.ch10;
 import java.io.ByteArrayOutputStream;
@@ -104,5 +100,4 @@ class Page202Test {
     System.out.println(stdout);
     assertEquals("1", stdout);
   }
-
 }
