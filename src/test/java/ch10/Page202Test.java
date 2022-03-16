@@ -3,6 +3,7 @@ package ch10;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.api.stdlib.Print;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaState;
@@ -22,10 +23,9 @@ class Page202Test {
 
   static String run(LuaResource luaResource) {
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    JavaFunctionExample javaFunctionExample = new JavaFunctionExample(byteArrayOutputStream);
 
     LuaVM luaVM = LuaVM.create(1, new Prototype());
-    luaVM.register(LuaValue.of("print"), javaFunctionExample::print);
+    Print.registerTo(luaVM, new PrintStream(byteArrayOutputStream));
     luaVM.load(luaResource.getLuacOut(), luaResource.getLuaFilePath(), "b");
     luaVM.call(0, 0);
 
@@ -105,36 +105,4 @@ class Page202Test {
     assertEquals("1", stdout);
   }
 
-  static class JavaFunctionExample {
-    private final PrintStream printStream;
-
-    JavaFunctionExample(ByteArrayOutputStream byteArrayOutputStream) {
-      this.printStream = new PrintStream(byteArrayOutputStream);
-    }
-
-    /**
-     * page 179
-     * 第一个Java函数
-     * 对应Lua里的print函数
-     */
-    int print(LuaState luaState) {
-      int nArgs = luaState.getTop();
-      for (int index = 1; index <= nArgs; index++) {
-        LuaValue luaValue = luaState.toLuaValue(index);
-        if (luaValue instanceof LuaString) {
-          LuaString luaString = (LuaString) luaValue;
-          printStream.print(luaString.getValue());
-        } else if (luaValue instanceof LuaInteger) {
-          LuaInteger luaInteger = (LuaInteger) luaValue;
-          printStream.print(luaInteger.getValue());
-        } else {
-          throw new UnsupportedOperationException("cannot print " + luaValue);
-        }
-        if (index < nArgs) {
-          printStream.print("\t");
-        }
-      }
-      return 0;
-    }
-  }
 }
