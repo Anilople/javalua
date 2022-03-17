@@ -521,9 +521,13 @@ public class DefaultLuaStateImpl implements LuaState {
         this.setTableWithoutResolveMetaMethod(table, key, value);
         return;
       }
+      if (!this.existsMetaMethod(MetaMethod.NEWINDEX, luaTable)) {
+        this.setTableWithoutResolveMetaMethod(table, key, value);
+        return;
+      }
     }
 
-    final LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.INDEX, key);
+    final LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.NEWINDEX, key);
     if (LuaType.LUA_TFUNCTION.equals(metaField.type())) {
       // 触发 __newindex 元方法
       this.callMetaMethodWithoutReturn(MetaMethod.NEWINDEX, table, key, value);
@@ -784,6 +788,14 @@ public class DefaultLuaStateImpl implements LuaState {
     }
   }
 
+  boolean existsMetaFieldInMetaTable(LuaString fieldName, LuaValue luaValue) {
+    if (!this.existsMetaTableOf(luaValue)) {
+      return false;
+    }
+    var metaTable = this.getMetaTable(luaValue);
+    return metaTable.containsKey(fieldName);
+  }
+
   /**
    * page 210
    *
@@ -809,7 +821,7 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   boolean existsMetaMethod(LuaString metaMethodName, LuaValue luaValue) {
-    if (!this.existsMetaTableOf(luaValue)) {
+    if (!this.existsMetaFieldInMetaTable(metaMethodName, luaValue)) {
       return false;
     }
     LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValue);
