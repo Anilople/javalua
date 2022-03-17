@@ -15,6 +15,7 @@ import com.github.anilople.javalua.instruction.operator.Length;
 import com.github.anilople.javalua.instruction.operator.StringConcat;
 import com.github.anilople.javalua.util.Return2;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -301,13 +302,13 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   void applyBinaryOperator(
-      Predicate<LuaValue> isTypeMatchRawOperator,
+      BiPredicate<LuaValue, LuaValue> isTypeMatchRawOperator,
       BiFunction<LuaValue, LuaValue, ? extends LuaValue> operator,
       LuaString metaMethodName) {
     // 先pop b，再pop a
     var b = this.popLuaValue();
     var a = this.popLuaValue();
-    if (isTypeMatchRawOperator.test(a) && isTypeMatchRawOperator.test(b)) {
+    if (isTypeMatchRawOperator.test(a, b)) {
       LuaValue result = operator.apply(a, b);
       assert result != null;
       this.pushLuaValue(result);
@@ -324,36 +325,33 @@ public class DefaultLuaStateImpl implements LuaState {
 
   @Override
   public void arithmetic(ArithmeticOperator operator) {
-    Predicate<LuaValue> isTypeMatchRawOperator =
-        luaValue -> LuaType.LUA_TNUMBER.equals(luaValue.type());
     if (ArithmeticOperator.LUA_OPUNM.equals(operator)) {
       // 一元运算
       this.applyUnaryOperator(
-          isTypeMatchRawOperator,
+          a -> operator.canApply(a, a),
           luaValue -> ArithmeticOperator.LUA_OPUNM.getOperator().apply(luaValue, null),
           ArithmeticOperator.LUA_OPUNM.getMetaMethodName());
     } else {
       this.applyBinaryOperator(
-          isTypeMatchRawOperator,
-          ArithmeticOperator.LUA_OPUNM.getOperator(),
-          ArithmeticOperator.LUA_OPUNM.getMetaMethodName());
+          operator::canApply,
+          operator.getOperator(),
+          operator.getMetaMethodName());
     }
   }
 
   @Override
   public void bitwise(BitwiseOperator operator) {
-    Predicate<LuaValue> isTypeMatchRawOperator = luaValue -> luaValue instanceof LuaInteger;
     if (BitwiseOperator.LUA_OPBNOT.equals(operator)) {
       // 一元运算
       this.applyUnaryOperator(
-          isTypeMatchRawOperator,
+          a -> operator.canApply(a, a),
           luaValue -> BitwiseOperator.LUA_OPBNOT.getOperator().apply(luaValue, null),
           BitwiseOperator.LUA_OPBNOT.getMetaMethodName());
     } else {
       this.applyBinaryOperator(
-          isTypeMatchRawOperator,
-          ArithmeticOperator.LUA_OPUNM.getOperator(),
-          ArithmeticOperator.LUA_OPUNM.getMetaMethodName());
+          operator::canApply,
+          operator.getOperator(),
+          operator.getMetaMethodName());
     }
   }
 
@@ -434,11 +432,7 @@ public class DefaultLuaStateImpl implements LuaState {
       this.pushLuaValue(LuaValue.of(""));
     } else {
       for (; n >= 2; n--) {
-        Predicate<LuaValue> isTypeMatchRawOperator =
-            luaValue ->
-                LuaType.LUA_TSTRING.equals(luaValue.type())
-                    || LuaType.LUA_TNUMBER.equals(luaValue.type());
-        this.applyBinaryOperator(isTypeMatchRawOperator, StringConcat::concat, MetaMethod.CONCAT);
+        this.applyBinaryOperator(StringConcat::canConcat, StringConcat::concat, MetaMethod.CONCAT);
       }
     }
   }
@@ -764,7 +758,23 @@ public class DefaultLuaStateImpl implements LuaState {
     }
   }
 
+  /**
+   * @return true 如果对应的meta table存在
+   */
+  boolean existsMetaTableOf(LuaValue luaValue) {
+    if (luaValue instanceof LuaTable) {
+      LuaTable luaTable = (LuaTable) luaValue;
+      return luaTable.existsMetaTable();
+    } else {
+      LuaString key = resolveKeyOfMetaTableInRegistry(luaValue);
+      return this.registry.containsKey(key);
+    }
+  }
+
   LuaTable getMetaTable(LuaValue luaValue) {
+    if (!this.existsMetaTableOf(luaValue)) {
+      throw new IllegalStateException("meta table of lua value " + luaValue + " doesn't exist");
+    }
     if (luaValue instanceof LuaTable) {
       LuaTable luaTable = (LuaTable) luaValue;
       return luaTable.getMetaTable();
@@ -799,11 +809,20 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   boolean existsMetaMethod(LuaString metaMethodName, LuaValue luaValue) {
+    if (!this.existsMetaTableOf(luaValue)) {
+      return false;
+    }
     LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValue);
     return !LuaValue.NIL.equals(metaMethod);
   }
 
   boolean existsMetaMethod(LuaString metaMethodName, LuaValue a, LuaValue b) {
+    if (!this.existsMetaTableOf(a)) {
+      return false;
+    }
+    if (!this.existsMetaTableOf(b)) {
+      return false;
+    }
     LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, a, b);
     return !LuaValue.NIL.equals(metaMethod);
   }

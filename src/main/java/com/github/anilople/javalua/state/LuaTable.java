@@ -37,6 +37,8 @@ public interface LuaTable extends LuaValue {
 
   void removeMetaTable();
 
+  boolean existsMetaTable();
+
   LuaTable getMetaTable();
 
   @Override

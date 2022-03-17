@@ -26,6 +26,11 @@ abstract class AbstractLuaTable implements LuaTable {
   }
 
   @Override
+  public boolean existsMetaTable() {
+    return LuaValue.NIL.equals(this.metaTable);
+  }
+
+  @Override
   public LuaTable getMetaTable() {
     return (LuaTable) metaTable;
   }

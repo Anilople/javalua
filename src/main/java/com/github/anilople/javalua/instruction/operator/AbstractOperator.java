@@ -41,4 +41,9 @@ abstract class AbstractOperator<T, U, R> implements Operator<T, U, R> {
   public LuaString getMetaMethodName() {
     return this.metaMethodName;
   }
+
+  /**
+   * @return true 如果可以运算
+   */
+  public abstract boolean canApply(T a, U b);
 }

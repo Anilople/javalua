@@ -28,4 +28,15 @@ public final class BitwiseOperator extends AbstractOperator<LuaValue, LuaValue, 
       LuaString metaMethodName) {
     super(enumCount, content, function, metaMethodName);
   }
+
+  @Override
+  public boolean canApply(LuaValue a, LuaValue b) {
+    if (!ToLuaIntegerConverter.canConvert(a)) {
+      return false;
+    }
+    if (!ToLuaIntegerConverter.canConvert(b)) {
+      return false;
+    }
+    return true;
+  }
 }

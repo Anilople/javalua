@@ -19,4 +19,10 @@ class StringConcatTest {
     assertEquals(
         LuaValue.of("123"), StringConcat.concat(LuaValue.of(1), LuaValue.of(2), LuaValue.of(3)));
   }
+
+  @Test
+  void canConcat() {
+    assertTrue(StringConcat.canConcat(LuaValue.of(-8)));
+    assertTrue(StringConcat.canConcat(LuaValue.of(-8), LuaValue.of(3)));
+  }
 }

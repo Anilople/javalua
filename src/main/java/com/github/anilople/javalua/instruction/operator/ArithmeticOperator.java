@@ -38,4 +38,15 @@ public final class ArithmeticOperator extends AbstractOperator<LuaValue, LuaValu
       LuaString metaMethodName) {
     super(enumCount, content, function, metaMethodName);
   }
+
+  @Override
+  public boolean canApply(LuaValue a, LuaValue b) {
+    if (!ToLuaNumberConverter.canConvert(a)) {
+      return false;
+    }
+    if (!ToLuaNumberConverter.canConvert(b)) {
+      return false;
+    }
+    return true;
+  }
 }

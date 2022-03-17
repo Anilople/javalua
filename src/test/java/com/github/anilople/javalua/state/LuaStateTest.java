@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -110,6 +111,29 @@ class LuaStateTest {
     assertEquals(LuaValue.of("d"), luaState.toLuaString(3));
     assertEquals(LuaValue.of("e"), luaState.toLuaString(4));
     assertEquals(LuaValue.of("b"), luaState.toLuaString(5));
+  }
+
+  @Test
+  @DisplayName("string和number相加 '3.0' + 4.0")
+  void addStringAndNumber() {
+    LuaState luaState = LuaState.create();
+    luaState.pushLuaString(LuaValue.of("3.0"));
+    luaState.pushLuaNumber(LuaValue.of(4.0));
+    luaState.arithmetic(ArithmeticOperator.LUA_OPADD);
+    LuaState.printStack(luaState);
+    assertTrue(luaState.isLuaNumber(1));
+    assertEquals(LuaValue.of(7.0), luaState.toLuaNumber(1));
+  }
+
+  @Test
+  @DisplayName("concat 2个lua number 整数")
+  void concatLuaInteger() {
+    LuaState luaState = LuaState.create();
+    luaState.pushLuaInteger(LuaValue.of(-8));
+    luaState.pushLuaInteger(LuaValue.of(3));
+    luaState.concat(2);
+    assertTrue(luaState.isLuaString(1));
+    assertEquals(LuaValue.of("-83"), luaState.toLuaString(1));
   }
 
   /**
