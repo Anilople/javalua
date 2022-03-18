@@ -32,5 +32,4 @@ class ToLuaIntegerConverter {
       return ERROR_RETURN;
     }
   }
-
 }

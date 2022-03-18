@@ -333,9 +333,7 @@ public class DefaultLuaStateImpl implements LuaState {
           ArithmeticOperator.LUA_OPUNM.getMetaMethodName());
     } else {
       this.applyBinaryOperator(
-          operator::canApply,
-          operator.getOperator(),
-          operator.getMetaMethodName());
+          operator::canApply, operator.getOperator(), operator.getMetaMethodName());
     }
   }
 
@@ -349,9 +347,7 @@ public class DefaultLuaStateImpl implements LuaState {
           BitwiseOperator.LUA_OPBNOT.getMetaMethodName());
     } else {
       this.applyBinaryOperator(
-          operator::canApply,
-          operator.getOperator(),
-          operator.getMetaMethodName());
+          operator::canApply, operator.getOperator(), operator.getMetaMethodName());
     }
   }
 

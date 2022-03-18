@@ -34,7 +34,7 @@ public class StringConcat {
   /**
    * @return false 如果无法使用 {@link #concat(LuaValue...)}
    */
-  public static boolean canConcat(LuaValue ... luaValues) {
+  public static boolean canConcat(LuaValue... luaValues) {
     for (LuaValue luaValue : luaValues) {
       if (!canConcat(luaValue)) {
         return false;
