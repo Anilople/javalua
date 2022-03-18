@@ -17,16 +17,16 @@ import java.io.PrintStream;
  *
  * @author wxq
  */
-public class Print implements JavaFunction {
+public class print implements JavaFunction {
 
   private final PrintStream printStream;
 
-  private Print(PrintStream printStream) {
+  private print(PrintStream printStream) {
     this.printStream = printStream;
   }
 
   public static void registerTo(LuaVM luaVM, PrintStream printStream) {
-    Print print = new Print(printStream);
+    print print = new print(printStream);
     luaVM.register(LuaValue.of("print"), print);
   }
 

@@ -1,33 +1,15 @@
 package ch10;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static util.LuaVMUtils.run;
 
-import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.api.stdlib.Print;
-import com.github.anilople.javalua.chunk.Prototype;
-import constant.ResourceContentConstants.LuaResource;
 import constant.ResourceContentConstants.ch10;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author wxq
  */
 class Page202Test {
-
-  static String run(LuaResource luaResource) {
-    final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-    LuaVM luaVM = LuaVM.create(1, new Prototype());
-    Print.registerTo(luaVM, new PrintStream(byteArrayOutputStream));
-    luaVM.load(luaResource.getLuacOut(), luaResource.getLuaFilePath(), "b");
-    luaVM.call(0, 0);
-
-    // 返回 stdout
-    return byteArrayOutputStream.toString(StandardCharsets.UTF_8);
-  }
 
   @Test
   void function_call_nested_case1() {

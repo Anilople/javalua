@@ -3,7 +3,7 @@ package ch09;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.api.stdlib.Print;
+import com.github.anilople.javalua.api.stdlib.print;
 import constant.ResourceContentConstants.ch02;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -19,7 +19,7 @@ class Page180Test {
   void testJavaFunctionPrint() {
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     LuaVM luaVM = LuaVM.of(ch02.hello_world.getLuacOut());
-    Print.registerTo(luaVM, new PrintStream(byteArrayOutputStream));
+    print.registerTo(luaVM, new PrintStream(byteArrayOutputStream));
     luaVM.load(ch02.hello_world.getLuacOut(), "hello_world.lua", "b");
     luaVM.call(0, 0);
 
