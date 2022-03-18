@@ -469,6 +469,9 @@ public class DefaultLuaStateImpl implements LuaState {
       if (luaTable.containsKey(key)) {
         return this.rawGetTable(table, key);
       }
+      if (!this.existsMetaMethod(MetaMethod.INDEX, luaTable)) {
+        return this.rawGetTable(table, key);
+      }
     }
 
     final LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.INDEX, key);
