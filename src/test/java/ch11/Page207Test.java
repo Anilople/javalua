@@ -1,9 +1,9 @@
 package ch11;
 
+import static util.LuaVMUtils.run;
+
 import constant.ResourceContentConstants.ch11;
 import org.junit.jupiter.api.Test;
-
-import static util.LuaVMUtils.run;
 
 /**
  * @author wxq
