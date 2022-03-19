@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.api.stdlib;
 
-import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaState;

@@ -1,8 +1,8 @@
 package ch11;
 
-import constant.ResourceContentConstants.ch11;
 import static org.junit.jupiter.api.Assertions.*;
 
+import constant.ResourceContentConstants.ch11;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import util.LuaVMUtils;
