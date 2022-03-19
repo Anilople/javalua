@@ -19,7 +19,7 @@ class Page180Test {
   void testJavaFunctionPrint() {
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     LuaVM luaVM = LuaVM.of(ch02.hello_world.getLuacOut());
-    print.registerTo(luaVM, new PrintStream(byteArrayOutputStream));
+    new print(new PrintStream(byteArrayOutputStream)).registerTo(luaVM);
     luaVM.load(ch02.hello_world.getLuacOut(), "hello_world.lua", "b");
     luaVM.call(0, 0);
 

@@ -183,11 +183,24 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   /**
    * pop出n个{@link LuaValue}，栈顶的在数组的最前面
    */
-  public LuaValue[] popN(int n) {
+  public LuaValue[] popNResults(int n) {
     LuaValue[] luaValues = new LuaValue[n];
     for (int i = 0; i < n; i++) {
       LuaValue luaValue = this.pop();
       luaValues[i] = luaValue;
+    }
+    return luaValues;
+  }
+
+  /**
+   * 与{@link #popNResults(int)}不同，栈顶的元素在数组的最后一位
+   */
+  public LuaValue[] popNArgs(int n) {
+    LuaValue[] luaValues = new LuaValue[n];
+    for (int i = 0; i < n; i++) {
+      LuaValue luaValue = this.pop();
+      int index = n - i - 1;
+      luaValues[index] = luaValue;
     }
     return luaValues;
   }
@@ -198,7 +211,7 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   public LuaValue[] popResults() {
     var nRegs = this.getPrototype().getRegisterCount();
     var numOfReturnArgs = this.getTop() - nRegs;
-    return this.popN(numOfReturnArgs);
+    return this.popNResults(numOfReturnArgs);
   }
 
   public void pushN(LuaValue[] luaValues) {

@@ -587,7 +587,7 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   CallFrame callLuaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
-    var allArgs = this.callStack.topCallFrame().popN(nArgs);
+    var allArgs = this.callStack.topCallFrame().popNArgs(nArgs);
     // pop function
     this.popLuaValue();
 
@@ -609,7 +609,7 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   CallFrame callJavaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
-    var allArgs = this.callStack.topCallFrame().popN(nArgs);
+    var allArgs = this.callStack.topCallFrame().popNArgs(nArgs);
     // pop function
     this.popLuaValue();
 
@@ -620,7 +620,7 @@ public class DefaultLuaStateImpl implements LuaState {
     // pop Java函数用的栈帧
     var functionCallFrame = this.callStack.popCallFrame();
     if (nResults != 0) {
-      var results = functionCallFrame.popN(numberOfElementsFunctionReturned);
+      var results = functionCallFrame.popNResults(numberOfElementsFunctionReturned);
       this.checkStack(results.length);
       this.callStack.topCallFrame().pushN(results, nResults);
     }
@@ -877,8 +877,8 @@ public class DefaultLuaStateImpl implements LuaState {
   @Override
   public boolean getMetaTable(int index) {
     LuaValue luaValue = this.getLuaValue(index);
-    LuaTable metaTable = this.getMetaTable(luaValue);
-    if (!LuaValue.NIL.equals(metaTable)) {
+    if (this.existsMetaTableOf(luaValue)) {
+      LuaTable metaTable = this.getMetaTable(luaValue);
       this.pushLuaValue(metaTable);
       return true;
     } else {

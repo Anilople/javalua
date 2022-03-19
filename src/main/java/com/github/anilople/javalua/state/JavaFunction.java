@@ -1,5 +1,6 @@
 package com.github.anilople.javalua.state;
 
+import com.github.anilople.javalua.api.LuaVM;
 import java.util.function.Function;
 
 /**
@@ -9,4 +10,6 @@ import java.util.function.Function;
  *
  * @author wxq
  */
-public interface JavaFunction extends Function<LuaState, Integer> {}
+public interface JavaFunction extends Function<LuaState, Integer> {
+  void registerTo(LuaVM luaVM);
+}

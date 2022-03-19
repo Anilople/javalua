@@ -17,6 +17,7 @@ public class Page206Test {
 
   @Test
   void page_206_getmetatable() {
-    run(ch11.page_206_getmetatable);
+    String stdout = run(ch11.page_206_getmetatable);
+    System.out.println(stdout);
   }
 }

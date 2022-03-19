@@ -1,0 +1,1 @@
+print(getmetatable(nil)) -- nil
