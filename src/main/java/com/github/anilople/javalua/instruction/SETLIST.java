@@ -37,8 +37,8 @@ class SETLIST extends AbstractInstruction {
       luaVM.pop(1);
       setI(luaVM, indexOfArray, beginIndexInArray, newLength);
       final int argsAmount = luaVM.getTop() - luaVM.getRegisterCount();
-      for (int offset = 0; offset < argsAmount; offset++) {
-        final int valueIndex = luaVM.getRegisterCount() + 1 + offset;
+      for (int offset = 1; offset <= argsAmount; offset++) {
+        final int valueIndex = luaVM.getRegisterCount() + offset;
         luaVM.pushValue(valueIndex);
         var indexInArray = LuaValue.of(beginIndexInArray + offset);
         luaVM.setI(indexOfArray, indexInArray);

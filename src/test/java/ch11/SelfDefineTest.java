@@ -37,4 +37,18 @@ class SelfDefineTest {
     String stdout = LuaVMUtils.run(ch11.sub);
     assertEquals("111", stdout);
   }
+
+  @Test
+  @DisplayName("从数组中获取元素")
+  void get_from_array() {
+    String stdout = LuaVMUtils.run(ch11.get_from_array);
+    assertEquals("222", stdout);
+  }
+
+  @Test
+  @DisplayName("从数组中获取元素 带vararg")
+  void get_from_array_vararg() {
+    String stdout = LuaVMUtils.run(ch11.get_from_array_vararg);
+    assertEquals("666666", stdout);
+  }
 }
