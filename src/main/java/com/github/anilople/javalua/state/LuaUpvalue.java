@@ -35,6 +35,13 @@ public class LuaUpvalue {
 
   @Override
   public String toString() {
-    return "LuaUpvalue{" + "luaValue=" + getter.get() + '}';
+    LuaValue luaValue = getter.get();
+    final String luaValueString;
+    if (luaValue instanceof LuaTable) {
+      luaValueString = "table: " + Long.toHexString(luaValue.hashCode());
+    } else {
+      luaValueString = luaValue.toString();
+    }
+    return "LuaUpvalue{" + "luaValue=" + luaValueString + '}';
   }
 }

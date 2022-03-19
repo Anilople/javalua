@@ -85,5 +85,8 @@ public interface ResourceContentConstants {
     LuaResource page_207_metatable_add = new LuaResource("ch11/page_207_metatable_add.lua");
     LuaResource setmetatable_case1 = new LuaResource("ch11/setmetatable_case1.lua");
     LuaResource sub = new LuaResource("ch11/sub.lua");
+    LuaResource __eq_always_true = new LuaResource("ch11/__eq_always_true.lua");
+    LuaResource __eq_not_call = new LuaResource("ch11/__eq_not_call.lua");
+    LuaResource __len_fixed = new LuaResource("ch11/__len_fixed.lua");
   }
 }

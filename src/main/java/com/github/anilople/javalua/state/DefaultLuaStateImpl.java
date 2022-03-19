@@ -363,7 +363,11 @@ public class DefaultLuaStateImpl implements LuaState {
       if (Comparison.isEqualsTypeMatch(a, b)) {
         result = operator.getOperator().apply(a, b);
       } else {
-        result = this.callMetaMethod(LUA_OPEQ.getMetaMethodName(), a, b);
+        if (this.existsMetaMethod(LUA_OPEQ.getMetaMethodName(), a, b)) {
+          result = this.callMetaMethod(LUA_OPEQ.getMetaMethodName(), a, b);
+        } else {
+          return LuaValue.of(a.equals(b));
+        }
       }
     } else if (LUA_OPLT.equals(operator)) {
       // 小于 <
@@ -828,14 +832,13 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   boolean existsMetaMethod(LuaString metaMethodName, LuaValue a, LuaValue b) {
-    if (!this.existsMetaTableOf(a)) {
-      return false;
+    if (this.existsMetaTableOf(a)) {
+      return this.existsMetaFieldInMetaTable(metaMethodName, a);
     }
-    if (!this.existsMetaTableOf(b)) {
-      return false;
+    if (this.existsMetaTableOf(b)) {
+      return this.existsMetaFieldInMetaTable(metaMethodName, b);
     }
-    LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, a, b);
-    return !LuaValue.NIL.equals(metaMethod);
+    return false;
   }
 
   /**
@@ -853,7 +856,7 @@ public class DefaultLuaStateImpl implements LuaState {
     for (LuaValue luaValue : luaValues) {
       this.pushLuaValue(luaValue);
     }
-    this.call(1 + luaValues.length, 1);
+    this.call(luaValues.length, 1);
     return this.popLuaValue();
   }
 
@@ -871,7 +874,7 @@ public class DefaultLuaStateImpl implements LuaState {
     for (LuaValue luaValue : luaValues) {
       this.pushLuaValue(luaValue);
     }
-    this.call(1 + luaValues.length, 0);
+    this.call(luaValues.length, 0);
   }
 
   @Override

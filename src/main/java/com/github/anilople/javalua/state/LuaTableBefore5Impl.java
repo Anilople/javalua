@@ -58,8 +58,21 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   public String toString() {
     List<String> pairs = new ArrayList<>();
     for (Map.Entry<LuaValue, LuaValue> entry : this.map.entrySet()) {
-      String pair = entry.getKey() + " = " + entry.getValue();
-      pairs.add(pair);
+      var key = entry.getKey();
+      var value = entry.getValue();
+      StringBuilder stringBuilder = new StringBuilder();
+      if (key instanceof LuaTable) {
+        stringBuilder.append("table: ").append(Long.toHexString(key.hashCode()));
+      } else {
+        stringBuilder.append(key.toString());
+      }
+      stringBuilder.append(" = ");
+      if (value instanceof LuaTable) {
+        stringBuilder.append("table: ").append(Long.toHexString(value.hashCode()));
+      } else {
+        stringBuilder.append(value.toString());
+      }
+      pairs.add(stringBuilder.toString());
     }
     return "Table:" + this.mapSize + " {" + String.join(",", pairs) + "}";
   }

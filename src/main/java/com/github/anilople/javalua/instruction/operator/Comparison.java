@@ -25,7 +25,8 @@ public class Comparison {
     if (!LuaType.LUA_TTABLE.equals(b.type())) {
       return true;
     }
-    // 2个都是table
+    // 2个都是table，必须是不同的table，才会执行元方法
+    // 如果table相同，应该返回true
     return a.equals(b);
   }
 

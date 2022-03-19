@@ -2,6 +2,7 @@ package ch11;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import constant.ResourceContentConstants.LuaResource;
 import constant.ResourceContentConstants.ch11;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,5 +51,25 @@ class SelfDefineTest {
   void get_from_array_vararg() {
     String stdout = LuaVMUtils.run(ch11.get_from_array_vararg);
     assertEquals("666666", stdout);
+  }
+
+  @Test
+  @DisplayName("__len 固定长度")
+  void __len_fixed() {
+    String stdout = LuaVMUtils.run(ch11.__len_fixed);
+    assertEquals("999", stdout);
+  }
+
+  @Test
+  @DisplayName("不执行元方法__eq")
+  void __eq_not_call() {
+    String stdout = LuaVMUtils.run(ch11.__eq_not_call);
+    assertEquals("truetrue", stdout);
+  }
+
+  @Test
+  void __eq_always_true() {
+    String stdout = LuaVMUtils.run(ch11.__eq_always_true);
+    assertEquals("falsetrue", stdout);
   }
 }
