@@ -71,4 +71,16 @@ class SelfDefineTest {
     String stdout = LuaVMUtils.run(ch11.__eq_always_true);
     assertEquals("falsetrue", stdout);
   }
+
+  @Test
+  void __sub_print_self() {
+    String stdout = LuaVMUtils.run(ch11.__sub_print_self);
+    assertEquals("999", stdout);
+  }
+
+  @Test
+  void TAILCALL_case1() {
+    String stdout = LuaVMUtils.run(ch11.TAILCALL_case1);
+    assertEquals("nil", stdout);
+  }
 }

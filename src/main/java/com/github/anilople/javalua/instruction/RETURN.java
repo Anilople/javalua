@@ -15,12 +15,12 @@ class RETURN extends FunctionInstruction {
   @Override
   public void applyTo(LuaVM luaVM) {
     int aIndex = operand.A() + 1;
-    int registerCount = operand.B() - 1;
-    if (registerCount == 0) {
+    int wantResultCount = operand.B() - 1;
+    if (wantResultCount == 0) {
 
-    } else if (registerCount > 0) {
-      luaVM.checkStack(registerCount);
-      for (int offset = 0; offset < registerCount; offset++) {
+    } else if (wantResultCount > 0) {
+      luaVM.checkStack(wantResultCount);
+      for (int offset = 0; offset < wantResultCount; offset++) {
         int index = aIndex + offset;
         luaVM.pushValue(index);
       }

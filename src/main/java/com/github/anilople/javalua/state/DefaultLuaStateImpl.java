@@ -104,6 +104,11 @@ public class DefaultLuaStateImpl implements LuaState {
     final int toIndex = this.callStack.topCallFrame().getTop();
     final int fromIndex = this.absIndex(index);
     final int length = toIndex - fromIndex + 1;
+    if (length <= 0) {
+      throw new IllegalArgumentException(
+          "need length > 0 now length = " + length + ", from index " + fromIndex + " to index "
+              + toIndex);
+    }
     final int movedIndexCount = n % length;
     final int midIndex;
     if (movedIndexCount >= 0) {
@@ -590,75 +595,64 @@ public class DefaultLuaStateImpl implements LuaState {
     return 0;
   }
 
-  CallFrame callLuaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
-    var allArgs = this.callStack.topCallFrame().popNArgs(nArgs);
-    // pop function
-    this.popLuaValue();
-
-    this.callStack.pushCallFrameForPrototype(luaClosure, allArgs);
-    this.runLuaClosure();
-    var functionCallFrame = this.callStack.popCallFrame();
-
-    if (0 != nResults) {
-      // 把被调函数的所有返回值 放入 当前的 调用帧
-      var results = functionCallFrame.popResults();
-      this.callStack.topCallFrame().check(results.length);
-      this.callStack.topCallFrame().pushN(results, nResults);
-    }
-    return functionCallFrame;
-  }
-
   protected void runLuaClosure() {
     throw new UnsupportedOperationException("please implement it in subclass");
   }
 
-  CallFrame callJavaClosure(LuaClosure luaClosure, int nArgs, int nResults) {
-    var allArgs = this.callStack.topCallFrame().popNArgs(nArgs);
-    // pop function
-    this.popLuaValue();
-
-    // push Java函数用的栈帧
-    this.callStack.pushCallFrameForJavaFunction(luaClosure, allArgs);
-    // 调用Java函数
-    int numberOfElementsFunctionReturned = luaClosure.javaFunction.apply(this);
-    // pop Java函数用的栈帧
-    var functionCallFrame = this.callStack.popCallFrame();
-    if (nResults != 0) {
-      var results = functionCallFrame.popNResults(numberOfElementsFunctionReturned);
-      this.checkStack(results.length);
-      this.callStack.topCallFrame().pushN(results, nResults);
+  LuaClosure resolveLuaClosure(LuaValue luaValue) {
+    if (luaValue instanceof LuaClosure) {
+      return (LuaClosure) luaValue;
+    } else {
+      // 触发元方法 __call
+      LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.CALL, luaValue);
+      if (metaField instanceof LuaClosure) {
+        return (LuaClosure) metaField;
+      } else {
+        throw new IllegalStateException(
+            "lua value "
+                + luaValue
+                + " is not a closure and it's meta method __call doesn't exist."
+                + " meta field "
+                + metaField);
+      }
     }
-    return functionCallFrame;
   }
 
   @Override
-  public CallFrame call(int nArgs, int nResults) {
-    final LuaClosure luaClosure;
-    {
-      int indexOfLuaClosure = -(nArgs + 1);
-      LuaValue luaValue = this.getLuaValue(indexOfLuaClosure);
-      if (luaValue instanceof LuaClosure) {
-        luaClosure = (LuaClosure) luaValue;
-      } else {
-        // 触发元方法 __call
-        LuaValue metaField = this.getMetaFieldInMetaTable(MetaMethod.CALL, luaValue);
-        if (metaField instanceof LuaClosure) {
-          luaClosure = (LuaClosure) metaField;
-        } else {
-          throw new IllegalStateException(
-              "lua value "
-                  + luaValue
-                  + " is not a closure and it's meta method __call doesn't exist."
-                  + " meta field "
-                  + metaField);
-        }
-      }
-    }
+  public CallFrame call(int nArgs, int numberOfResultsWanted) {
+    var allArgs = this.callStack.topCallFrame().popNArgs(nArgs);
+    LuaClosure luaClosure = this.resolveLuaClosure(this.popLuaValue());
+    // 函数的返回值个数
+    final int numberOfElementsFunctionReturned;
+    final CallFrame calledFrame;
     if (luaClosure.prototype != null) {
-      return this.callLuaClosure(luaClosure, nArgs, nResults);
+      this.callStack.pushCallFrameForPrototype(luaClosure, allArgs);
+      this.runLuaClosure();
+      calledFrame = this.callStack.popCallFrame();
+      var nRegs = luaClosure.prototype.getRegisterCount();
+      numberOfElementsFunctionReturned = calledFrame.getTop() - nRegs;
+    } else if (luaClosure.javaFunction != null) {
+      this.callStack.pushCallFrameForJavaFunction(luaClosure, allArgs);
+      numberOfElementsFunctionReturned = luaClosure.javaFunction.apply(this);
+      calledFrame = this.callStack.popCallFrame();
     } else {
-      return this.callJavaClosure(luaClosure, nArgs, nResults);
+      throw new IllegalStateException("nothing to call in closure " + luaClosure);
     }
+
+    // 把 被调帧 中 的结果，放入 当前帧
+    if (0 == numberOfResultsWanted) {
+      // do nothing
+    } else if (numberOfResultsWanted > 0) {
+      var results = calledFrame.popNResults(numberOfElementsFunctionReturned);
+      this.callStack.topCallFrame().check(numberOfResultsWanted);
+      this.callStack.topCallFrame().pushN(results, numberOfResultsWanted);
+    } else {
+      // 想放入所有
+      var results = calledFrame.popNResults(numberOfElementsFunctionReturned);
+      this.callStack.topCallFrame().check(numberOfElementsFunctionReturned);
+      this.callStack.topCallFrame().pushN(results);
+    }
+    return calledFrame;
   }
 
   @Override

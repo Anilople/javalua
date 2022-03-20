@@ -205,23 +205,14 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
     return luaValues;
   }
 
-  /**
-   * @return 函数的返回值
-   */
-  public LuaValue[] popResults() {
-    var nRegs = this.getPrototype().getRegisterCount();
-    var numOfReturnArgs = this.getTop() - nRegs;
-    return this.popNResults(numOfReturnArgs);
-  }
-
   public void pushN(LuaValue[] luaValues) {
     for (LuaValue luaValue : luaValues) {
       this.push(luaValue);
     }
   }
 
-  public void pushN(LuaValue[] luaValues, int nResults) {
-    final int number = nResults < 0 ? luaValues.length : nResults;
+  public void pushN(LuaValue[] luaValues, int numberOfResultsWanted) {
+    final int number = numberOfResultsWanted < 0 ? luaValues.length : numberOfResultsWanted;
     for (int i = 0; i < number; i++) {
       final LuaValue luaValue;
       if (i < luaValues.length) {

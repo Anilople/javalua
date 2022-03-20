@@ -205,10 +205,10 @@ public interface LuaState {
    * 对lua函数进行调用
    *
    * @param nArgs 函数的参数个数
-   * @param nResults 需要的返回值数量，如果是-1，被调函数的返回值会全部留在栈顶
+   * @param numberOfResultsWanted 需要的返回值个数。如果是-1，被调函数的返回值会全部留在栈顶，返回值不会被pop
    * @return 调用函数的栈帧（已经被pop）
    */
-  CallFrame call(int nArgs, int nResults);
+  CallFrame call(int nArgs, int numberOfResultsWanted);
 
   void pushJavaFunction(JavaFunction javaFunction);
 
