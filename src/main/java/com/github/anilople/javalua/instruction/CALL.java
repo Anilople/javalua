@@ -13,6 +13,8 @@ import com.github.anilople.javalua.api.LuaVM;
  * <p>
  * 由于lua在设计上可以接受多个返回值， 例如 {@code f(1, 2, g())}，无论g有几个返回值，f都会接收，用 特殊值 0来处理这种情况， 此时 g的操作数C =
  * 0，f的操作数B=0
+ * <p>
+ * R(A), ... , R(A+C-2) := R(A)(R(A+1), ... , R(A+B-1))
  */
 class CALL extends FunctionInstruction {
 
@@ -25,9 +27,9 @@ class CALL extends FunctionInstruction {
     final var aIndex = operand.A() + 1;
     final var argsAmount = operand.B();
     // 返回值的数量
-    int resultsAmount = operand.C() - 1;
+    int numberOfResultsWanted = operand.C() - 1;
     final var nArgs = pushFuncAndArgs(aIndex, argsAmount, luaVM);
-    luaVM.call(nArgs, resultsAmount);
-    popResults(aIndex, resultsAmount, luaVM);
+    luaVM.call(nArgs, numberOfResultsWanted);
+    popResults(aIndex, numberOfResultsWanted, luaVM);
   }
 }

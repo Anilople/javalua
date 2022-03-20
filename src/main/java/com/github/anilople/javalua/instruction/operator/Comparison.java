@@ -1,5 +1,6 @@
 package com.github.anilople.javalua.instruction.operator;
 
+import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaNumber;
@@ -14,6 +15,22 @@ import com.github.anilople.javalua.state.LuaValue;
 public class Comparison {
 
   /**
+   * 参数从类型上，是否支持{@link #equals(LuaValue, LuaValue)}运算，如果不支持，需要走元方法
+   */
+  public static boolean isEqualsTypeMatch(LuaValue a, LuaValue b) {
+    // 当2个操作数是不同的表时，才会执行元方法
+    if (!LuaType.LUA_TTABLE.equals(a.type())) {
+      return true;
+    }
+    if (!LuaType.LUA_TTABLE.equals(b.type())) {
+      return true;
+    }
+    // 2个都是table，必须是不同的table，才会执行元方法
+    // 如果table相同，应该返回true
+    return a.equals(b);
+  }
+
+  /**
    * 只有当2个操作数在Lua语言层面具有相同类型时，等于运算才有可能返回true
    */
   public static LuaBoolean equals(LuaValue a, LuaValue b) {
@@ -24,6 +41,29 @@ public class Comparison {
   public static LuaBoolean notEquals(LuaValue a, LuaValue b) {
     var luaBoolean = equals(a, b);
     return Logical.not(luaBoolean);
+  }
+
+  static boolean isLessThanTypeMatch(LuaValue luaValue) {
+    if (LuaType.LUA_TNUMBER.equals(luaValue.type())) {
+      return true;
+    }
+    if (LuaType.LUA_TSTRING.equals(luaValue.type())) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * 参数从类型上，是否支持{@link #lessThan(LuaValue, LuaValue)}运算，如果不支持，需要走元方法
+   */
+  public static boolean isLessThanTypeMatch(LuaValue a, LuaValue b) {
+    if (isLessThanTypeMatch(a)) {
+      return true;
+    }
+    if (isLessThanTypeMatch(b)) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -54,6 +94,13 @@ public class Comparison {
     } else {
       throw new UnsupportedOperationException("a " + a + " b " + b);
     }
+  }
+
+  /**
+   * 参数从类型上，是否支持{@link #lessThanOrEquals(LuaValue, LuaValue)}运算，如果不支持，需要走元方法
+   */
+  public static boolean isLessThanOrEqualsTypeMatch(LuaValue a, LuaValue b) {
+    return isLessThanTypeMatch(a, b);
   }
 
   public static LuaBoolean lessThanOrEquals(LuaValue a, LuaValue b) {

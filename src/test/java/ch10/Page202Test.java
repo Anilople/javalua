@@ -1,37 +1,15 @@
 package ch10;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static util.LuaVMUtils.run;
 
-import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.state.LuaInteger;
-import com.github.anilople.javalua.state.LuaState;
-import com.github.anilople.javalua.state.LuaString;
-import com.github.anilople.javalua.state.LuaValue;
-import constant.ResourceContentConstants.LuaResource;
 import constant.ResourceContentConstants.ch10;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author wxq
  */
 class Page202Test {
-
-  static String run(LuaResource luaResource) {
-    final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    JavaFunctionExample javaFunctionExample = new JavaFunctionExample(byteArrayOutputStream);
-
-    LuaVM luaVM = LuaVM.create(1, new Prototype());
-    luaVM.register(LuaValue.of("print"), javaFunctionExample::print);
-    luaVM.load(luaResource.getLuacOut(), luaResource.getLuaFilePath(), "b");
-    luaVM.call(0, 0);
-
-    // 返回 stdout
-    return byteArrayOutputStream.toString(StandardCharsets.UTF_8);
-  }
 
   @Test
   void function_call_nested_case1() {
@@ -103,38 +81,5 @@ class Page202Test {
     String stdout = run(ch10.page_202_test_simpler_case1);
     System.out.println(stdout);
     assertEquals("1", stdout);
-  }
-
-  static class JavaFunctionExample {
-    private final PrintStream printStream;
-
-    JavaFunctionExample(ByteArrayOutputStream byteArrayOutputStream) {
-      this.printStream = new PrintStream(byteArrayOutputStream);
-    }
-
-    /**
-     * page 179
-     * 第一个Java函数
-     * 对应Lua里的print函数
-     */
-    int print(LuaState luaState) {
-      int nArgs = luaState.getTop();
-      for (int index = 1; index <= nArgs; index++) {
-        LuaValue luaValue = luaState.toLuaValue(index);
-        if (luaValue instanceof LuaString) {
-          LuaString luaString = (LuaString) luaValue;
-          printStream.print(luaString.getValue());
-        } else if (luaValue instanceof LuaInteger) {
-          LuaInteger luaInteger = (LuaInteger) luaValue;
-          printStream.print(luaInteger.getValue());
-        } else {
-          throw new UnsupportedOperationException("cannot print " + luaValue);
-        }
-        if (index < nArgs) {
-          printStream.print("\t");
-        }
-      }
-      return 0;
-    }
   }
 }

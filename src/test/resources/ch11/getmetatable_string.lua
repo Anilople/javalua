@@ -1,0 +1,1 @@
+print(getmetatable("abc")) -- table: 0000000000eb9f90

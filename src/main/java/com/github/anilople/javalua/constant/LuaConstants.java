@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.constant;
 
 import com.github.anilople.javalua.state.LuaInteger;
+import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaValue;
 
 /**
@@ -26,4 +27,41 @@ public interface LuaConstants {
    * 全局环境在注册表里的索引
    */
   LuaInteger LUA_RIDX_GLOBALS = LuaValue.of(2L);
+
+  /**
+   * 元方法
+   */
+  interface MetaMethod {
+    interface Arithmetic {
+      LuaString ADD = LuaValue.of("__add");
+      LuaString SUB = LuaValue.of("__sub");
+      LuaString MUL = LuaValue.of("__mul");
+      LuaString MOD = LuaValue.of("__mod");
+      LuaString POW = LuaValue.of("__pow");
+      LuaString DIV = LuaValue.of("__div");
+      LuaString IDIV = LuaValue.of("__idiv");
+      LuaString UNM = LuaValue.of("__unm");
+    }
+
+    interface Bitwise {
+      LuaString AND = LuaValue.of("__band");
+      LuaString OR = LuaValue.of("__bor");
+      LuaString XOR = LuaValue.of("__bxor");
+      LuaString SHL = LuaValue.of("__shl");
+      LuaString SHR = LuaValue.of("__shr");
+      LuaString NOT = LuaValue.of("__bnot");
+    }
+
+    interface Comparison {
+      LuaString EQ = LuaValue.of("__eq");
+      LuaString LT = LuaValue.of("__lt");
+      LuaString LE = LuaValue.of("__le");
+    }
+
+    LuaString LEN = LuaValue.of("__len");
+    LuaString CONCAT = LuaValue.of("__concat");
+    LuaString INDEX = LuaValue.of("__index");
+    LuaString NEWINDEX = LuaValue.of("__newindex");
+    LuaString CALL = LuaValue.of("__call");
+  }
 }

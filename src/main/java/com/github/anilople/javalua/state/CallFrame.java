@@ -183,7 +183,7 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   /**
    * pop出n个{@link LuaValue}，栈顶的在数组的最前面
    */
-  public LuaValue[] popN(int n) {
+  public LuaValue[] popNResults(int n) {
     LuaValue[] luaValues = new LuaValue[n];
     for (int i = 0; i < n; i++) {
       LuaValue luaValue = this.pop();
@@ -193,12 +193,16 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
   }
 
   /**
-   * @return 函数的返回值
+   * 与{@link #popNResults(int)}不同，栈顶的元素在数组的最后一位
    */
-  public LuaValue[] popResults() {
-    var nRegs = this.getPrototype().getRegisterCount();
-    var numOfReturnArgs = this.getTop() - nRegs;
-    return this.popN(numOfReturnArgs);
+  public LuaValue[] popNArgs(int n) {
+    LuaValue[] luaValues = new LuaValue[n];
+    for (int i = 0; i < n; i++) {
+      LuaValue luaValue = this.pop();
+      int index = n - i - 1;
+      luaValues[index] = luaValue;
+    }
+    return luaValues;
   }
 
   public void pushN(LuaValue[] luaValues) {
@@ -207,8 +211,8 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
     }
   }
 
-  public void pushN(LuaValue[] luaValues, int nResults) {
-    final int number = nResults < 0 ? luaValues.length : nResults;
+  public void pushN(LuaValue[] luaValues, int numberOfResultsWanted) {
+    final int number = numberOfResultsWanted < 0 ? luaValues.length : numberOfResultsWanted;
     for (int i = 0; i < number; i++) {
       final LuaValue luaValue;
       if (i < luaValues.length) {

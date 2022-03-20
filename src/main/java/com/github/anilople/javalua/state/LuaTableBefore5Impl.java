@@ -20,6 +20,11 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   }
 
   @Override
+  public boolean containsKey(LuaValue key) {
+    return this.map.containsKey(key);
+  }
+
+  @Override
   public LuaValue get(LuaValue key) {
     var value = this.map.get(key);
     return null != value ? value : LuaValue.NIL;
@@ -35,6 +40,12 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   }
 
   @Override
+  public LuaValue remove(LuaValue key) {
+    var value = this.map.remove(key);
+    return value == null ? LuaValue.NIL : value;
+  }
+
+  @Override
   public LuaInteger length() {
     var size = 0;
     for (int i = 1; this.map.containsKey(LuaValue.of(i)); i++) {
@@ -47,8 +58,21 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   public String toString() {
     List<String> pairs = new ArrayList<>();
     for (Map.Entry<LuaValue, LuaValue> entry : this.map.entrySet()) {
-      String pair = entry.getKey() + " = " + entry.getValue();
-      pairs.add(pair);
+      var key = entry.getKey();
+      var value = entry.getValue();
+      StringBuilder stringBuilder = new StringBuilder();
+      if (key instanceof LuaTable) {
+        stringBuilder.append("table: ").append(Long.toHexString(key.hashCode()));
+      } else {
+        stringBuilder.append(key.toString());
+      }
+      stringBuilder.append(" = ");
+      if (value instanceof LuaTable) {
+        stringBuilder.append("table: ").append(Long.toHexString(value.hashCode()));
+      } else {
+        stringBuilder.append(value.toString());
+      }
+      pairs.add(stringBuilder.toString());
     }
     return "Table:" + this.mapSize + " {" + String.join(",", pairs) + "}";
   }

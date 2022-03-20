@@ -205,10 +205,10 @@ public interface LuaState {
    * 对lua函数进行调用
    *
    * @param nArgs 函数的参数个数
-   * @param nResults 需要的返回值数量，如果是-1，被调函数的返回值会全部留在栈顶
+   * @param numberOfResultsWanted 需要的返回值个数。如果是-1，被调函数的返回值会全部留在栈顶，返回值不会被pop
    * @return 调用函数的栈帧（已经被pop）
    */
-  CallFrame call(int nArgs, int nResults);
+  CallFrame call(int nArgs, int numberOfResultsWanted);
 
   void pushJavaFunction(JavaFunction javaFunction);
 
@@ -253,4 +253,31 @@ public interface LuaState {
    * 和{@link #pushJavaFunction(JavaFunction)}的区别在于，这个方法会先从栈顶弹出n个Lua值，这些值会成为Java闭包的Upvalue
    */
   void pushJavaClosure(JavaFunction javaFunction, int n);
+
+  /**
+   * 看索引 index 指定的 value，是否有对应的元表，
+   * 如果有，则把元表推入栈顶并返回true；否则栈的状态不改变，并返回false
+   */
+  boolean getMetaTable(int index);
+
+  /**
+   * 从栈顶弹出1个table t，然后找到指定索引 index 处对应的value，把这个value对应的元表改成 t
+   */
+  void setMetaTable(int index);
+
+  /* rawXxx 带raw作为前缀的方法，在执行过程中，不会触发元方法 */
+  /**
+   * 与{@link #len(int)}不同的是，这个方法不会去触发 元方法 __len
+   */
+  void rawLen(int index);
+
+  boolean rawEqual(int index1, int index2);
+
+  LuaType rawGet(int index);
+
+  void rawSet(int index);
+
+  LuaType rawGetI(int index, LuaInteger i);
+
+  void rawSetI(int index, LuaInteger i);
 }

@@ -56,6 +56,11 @@ class LuaTable5Impl extends AbstractLuaTable {
     return CANNOT_RESOLVE_INDEX;
   }
 
+  @Override
+  public boolean containsKey(LuaValue key) {
+    throw new UnsupportedOperationException();
+  }
+
   /**
    * 如果key是整数（或者是可以转为整数的浮点数），并且在数组索引范围之内，直接按索引访问数组部分
    */
@@ -87,6 +92,11 @@ class LuaTable5Impl extends AbstractLuaTable {
     } else {
       this.map.put(key, value);
     }
+  }
+
+  @Override
+  public LuaValue remove(LuaValue key) {
+    throw new UnsupportedOperationException();
   }
 
   @Override

@@ -74,4 +74,22 @@ public interface ResourceContentConstants {
     LuaResource upvalue_add_case1 = new LuaResource("ch10/upvalue_add_case1.lua");
     LuaResource upvalue_add_case2 = new LuaResource("ch10/upvalue_add_case2.lua");
   }
+
+  interface ch11 {
+    LuaResource getmetatable_nil = new LuaResource("ch11/getmetatable_nil.lua");
+    LuaResource getmetatable_string = new LuaResource("ch11/getmetatable_string.lua");
+    LuaResource get_from_array = new LuaResource("ch11/get_from_array.lua");
+    LuaResource get_from_array_vararg = new LuaResource("ch11/get_from_array_vararg.lua");
+    LuaResource page_206_debug_setmetatable =
+        new LuaResource("ch11/page_206_debug_setmetatable.lua");
+    LuaResource page_206_getmetatable = new LuaResource("ch11/page_206_getmetatable.lua");
+    LuaResource page_207_metatable_add = new LuaResource("ch11/page_207_metatable_add.lua");
+    LuaResource setmetatable_case1 = new LuaResource("ch11/setmetatable_case1.lua");
+    LuaResource sub = new LuaResource("ch11/sub.lua");
+    LuaResource TAILCALL_case1 = new LuaResource("ch11/TAILCALL_case1.lua");
+    LuaResource __eq_always_true = new LuaResource("ch11/__eq_always_true.lua");
+    LuaResource __eq_not_call = new LuaResource("ch11/__eq_not_call.lua");
+    LuaResource __len_fixed = new LuaResource("ch11/__len_fixed.lua");
+    LuaResource __sub_print_self = new LuaResource("ch11/__sub_print_self.lua");
+  }
 }
