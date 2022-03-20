@@ -80,7 +80,8 @@ public interface ResourceContentConstants {
     LuaResource getmetatable_string = new LuaResource("ch11/getmetatable_string.lua");
     LuaResource get_from_array = new LuaResource("ch11/get_from_array.lua");
     LuaResource get_from_array_vararg = new LuaResource("ch11/get_from_array_vararg.lua");
-    LuaResource page_206_debug_setmetatable = new LuaResource("ch11/page_206_debug_setmetatable.lua");
+    LuaResource page_206_debug_setmetatable =
+        new LuaResource("ch11/page_206_debug_setmetatable.lua");
     LuaResource page_206_getmetatable = new LuaResource("ch11/page_206_getmetatable.lua");
     LuaResource page_207_metatable_add = new LuaResource("ch11/page_207_metatable_add.lua");
     LuaResource setmetatable_case1 = new LuaResource("ch11/setmetatable_case1.lua");

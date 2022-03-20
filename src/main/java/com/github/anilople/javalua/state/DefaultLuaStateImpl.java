@@ -106,7 +106,11 @@ public class DefaultLuaStateImpl implements LuaState {
     final int length = toIndex - fromIndex + 1;
     if (length <= 0) {
       throw new IllegalArgumentException(
-          "need length > 0 now length = " + length + ", from index " + fromIndex + " to index "
+          "need length > 0 now length = "
+              + length
+              + ", from index "
+              + fromIndex
+              + " to index "
               + toIndex);
     }
     final int movedIndexCount = n % length;

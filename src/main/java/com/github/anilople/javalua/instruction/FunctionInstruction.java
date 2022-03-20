@@ -74,10 +74,7 @@ abstract class FunctionInstruction extends AbstractInstruction {
     final int length = oldBeginIndex - newBeginIndex;
     if (length < 0) {
       throw new IllegalStateException(
-          "length = " + length
-              + " top value = " + topValue
-              + " begin index = " + newBeginIndex
-      );
+          "length = " + length + " top value = " + topValue + " begin index = " + newBeginIndex);
     }
     if (length == 0) {
       return;
