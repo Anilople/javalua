@@ -221,15 +221,17 @@ public class DefaultLuaStateImpl implements LuaState {
   }
 
   <T extends LuaValue> void throwIllegalStateExceptionIfConvertFail(
-      int index,
-      Return2<T, Boolean> return2,
-      Class<T> clazz) {
+      int index, Return2<T, Boolean> return2, Class<T> clazz) {
     if (!return2.r1) {
       LuaValue luaValue = this.getLuaValue(index);
       throw new IllegalStateException(
-          "cannot convert lua value " + luaValue + " in index " + index
-              + " to " + clazz + ", please check before convert"
-      );
+          "cannot convert lua value "
+              + luaValue
+              + " in index "
+              + index
+              + " to "
+              + clazz
+              + ", please check before convert");
     }
   }
 

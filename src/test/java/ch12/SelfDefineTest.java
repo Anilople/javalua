@@ -1,10 +1,10 @@
 package ch12;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import constant.ResourceContentConstants.ch12;
 import org.junit.jupiter.api.Test;
 import util.LuaVMUtils;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq

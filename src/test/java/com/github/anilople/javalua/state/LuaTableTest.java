@@ -1,13 +1,13 @@
 package com.github.anilople.javalua.state;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author wxq
@@ -62,11 +62,9 @@ class LuaTableTest {
     }
 
     Set<LuaValue> keysActual = new HashSet<>();
-    for (
-        LuaValue key = table.nextKey(LuaValue.NIL);
+    for (LuaValue key = table.nextKey(LuaValue.NIL);
         !LuaValue.NIL.equals(key);
-        key = table.nextKey(key)
-    ) {
+        key = table.nextKey(key)) {
       keysActual.add(key);
     }
     assertArrayEquals(keysExpected.toArray(), keysActual.toArray());

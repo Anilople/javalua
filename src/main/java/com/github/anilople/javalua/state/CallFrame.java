@@ -141,7 +141,9 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
         + toString(this.getLuaValues(), this.getTop())
         + "\n"
         + "luaClosure.luaUpvalues:"
-        + (null == this.luaClosure ? " lua closure is null " : Arrays.toString(this.luaClosure.luaUpvalues))
+        + (null == this.luaClosure
+            ? " lua closure is null "
+            : Arrays.toString(this.luaClosure.luaUpvalues))
         + "\n"
         + "]";
   }

@@ -1,17 +1,15 @@
 package com.github.anilople.javalua.instruction;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.instruction.Instruction.Opcode;
 import com.github.anilople.javalua.instruction.Instruction.Operand;
 import com.github.anilople.javalua.state.JavaFunction;
-import com.github.anilople.javalua.state.LuaClosure;
-import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaValue;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author wxq
@@ -36,19 +34,20 @@ class TFORCALLTest {
     luaVM.pushLuaNil();
     // R(A)
     {
-      JavaFunction javaFunction = new JavaFunction() {
-        @Override
-        public void registerTo(LuaVM luaVM) {
-          luaVM.register(LuaValue.of("temp-for-TFORCALL"), this);
-        }
+      JavaFunction javaFunction =
+          new JavaFunction() {
+            @Override
+            public void registerTo(LuaVM luaVM) {
+              luaVM.register(LuaValue.of("temp-for-TFORCALL"), this);
+            }
 
-        @Override
-        public Integer apply(LuaState luaState) {
-          luaState.pop(2);
-          luaState.pushLuaInteger(LuaValue.of(999L));
-          return 1;
-        }
-      };
+            @Override
+            public Integer apply(LuaState luaState) {
+              luaState.pop(2);
+              luaState.pushLuaInteger(LuaValue.of(999L));
+              return 1;
+            }
+          };
       luaVM.pushJavaFunction(javaFunction);
     }
     // R(A+1)
