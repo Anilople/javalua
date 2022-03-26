@@ -14,19 +14,19 @@ class Page202Test {
   @Test
   void function_call_nested_case1() {
     String stdout = run(ch10.function_call_nested_case1);
-    assertEquals("889", stdout);
+    assertEquals("889\n", stdout);
   }
 
   @Test
   void upvalue_add_case1() {
     String stdout = run(ch10.upvalue_add_case1);
-    assertEquals("99", stdout);
+    assertEquals("99\n", stdout);
   }
 
   @Test
   void upvalue_add_case2() {
     String stdout = run(ch10.upvalue_add_case2);
-    assertEquals("100", stdout);
+    assertEquals("100\n", stdout);
   }
 
   @Test
@@ -73,13 +73,13 @@ class Page202Test {
   void page_202_test() {
     String stdout = run(ch10.page_202_test);
     System.out.println(stdout);
-    assertEquals("12132", stdout);
+    assertEquals("1\n2\n1\n3\n2\n", stdout);
   }
 
   @Test
   void page_202_test_simpler_case1() {
     String stdout = run(ch10.page_202_test_simpler_case1);
     System.out.println(stdout);
-    assertEquals("1", stdout);
+    assertEquals("1\n", stdout);
   }
 }

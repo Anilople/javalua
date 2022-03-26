@@ -70,6 +70,7 @@ public class print extends AbstractJavaFunction {
         printStream.print("\t");
       }
     }
+    printStream.print("\n");
     return 0;
   }
 }
