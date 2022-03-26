@@ -97,6 +97,8 @@ public interface ResourceContentConstants {
     LuaResource ipairs_array_1_element = new LuaResource("ch12/ipairs_array_1_element.lua");
     LuaResource ipairs_case1 = new LuaResource("ch12/ipairs_case1.lua");
     LuaResource ipairs_empty_array = new LuaResource("ch12/ipairs_empty_array.lua");
+    LuaResource page_165_test_simpler_case1 = new LuaResource("ch12/page_165_test_simpler_case1.lua");
+    LuaResource page_165_test_simpler_case2 = new LuaResource("ch12/page_165_test_simpler_case2.lua");
     LuaResource page_224_array_iterate = new LuaResource("ch12/page_224_array_iterate.lua");
     LuaResource page_224_for_in = new LuaResource("ch12/page_224_for_in.lua");
     LuaResource page_225_for_in_with_next = new LuaResource("ch12/page_225_for_in_with_next.lua");

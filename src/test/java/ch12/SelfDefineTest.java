@@ -37,6 +37,20 @@ class SelfDefineTest {
   }
 
   @Test
+  void page_165_test_simpler_case1() {
+    String stdout = LuaVMUtils.run(ch12.page_165_test_simpler_case1);
+    System.out.println(stdout);
+    assertEquals("", stdout);
+  }
+
+  @Test
+  void page_165_test_simpler_case2() {
+    String stdout = LuaVMUtils.run(ch12.page_165_test_simpler_case2);
+    System.out.println(stdout);
+    assertEquals("", stdout);
+  }
+
+  @Test
   void pairs_array_1_element() {
     String stdout = LuaVMUtils.run(ch12.pairs_array_1_element);
     System.out.println(stdout);
