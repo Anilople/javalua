@@ -14,7 +14,7 @@ import com.github.anilople.javalua.state.LuaValue;
  *    }
  *   }
  * </pre>
-
+ *
  */
 class TEST extends AbstractInstruction {
   TEST(int originCodeValue) {
