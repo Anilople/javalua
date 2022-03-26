@@ -167,6 +167,8 @@ public interface LuaState {
   LuaType getField(int index, LuaString key);
   /**
    * 根据索引获取数组元素
+   * @param index table的所在处
+   * @param key 数组的索引
    */
   LuaType getI(int index, LuaInteger key);
 
@@ -280,4 +282,15 @@ public interface LuaState {
   LuaType rawGetI(int index, LuaInteger i);
 
   void rawSetI(int index, LuaInteger i);
+
+  /**
+   * page 228
+   *
+   * 表从索引处获取，
+   * key从栈顶弹出
+   *
+   * @param index 表的索引
+   * @return true如果还没开始遍历，或者遍历没有结束；false如果遍历已经结束
+   */
+  boolean next(int index);
 }

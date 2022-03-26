@@ -5,7 +5,7 @@ import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import com.github.anilople.javalua.state.LuaValue;
 
-class FORLOOP extends AbstractInstruction {
+class FORLOOP extends FOR {
   FORLOOP(int originCodeValue) {
     super(originCodeValue);
   }

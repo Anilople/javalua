@@ -15,9 +15,17 @@ import java.io.PrintStream;
  *
  * 对应Lua里的print函数
  *
+ * 每个元素之间用 '\t' 分隔，最后会追加 '\n'
+ *
  * @author wxq
  */
 public class print extends AbstractJavaFunction {
+
+  private static final print INSTANCE = new print(System.out);
+
+  public static print getInstance() {
+    return INSTANCE;
+  }
 
   private final PrintStream printStream;
 
@@ -62,6 +70,7 @@ public class print extends AbstractJavaFunction {
         printStream.print("\t");
       }
     }
+    printStream.print("\n");
     return 0;
   }
 }

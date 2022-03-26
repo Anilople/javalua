@@ -491,9 +491,90 @@ Lua标准库还有其它元方法，比如
 | pairs()                        | __pairs      |
 | getmetatable()和setmetatable() | __metatable  |
 
+### 第12章 迭代器
+
+数值for循环：在2个数值范围内按照一定的步长进行迭代
+
+通用for循环：常用于对表进行迭代
+
+为了对集合（Collection）或者容器（Container）进行遍历，迭代器需要保存一些内部状态
+
+在Java里，迭代器以对象形式存在，在Lua里，用函数来表示迭代器，内部状态由闭包捕获
+
+```lua
+-- page 224
+function ipairs(t)
+    local i = 0
+    return function()
+        i = i + 1
+        if t[i] == nil then
+            return nil, nil
+        else
+            return i, t[i]
+        end
+    end
+end
+t = {10, 20, 30}
+iter = ipairs(t)
+while true do
+    local i, v = iter()
+    if i == nil then
+        break
+    end
+    print(i, v)
+end
+
+```
+
+lua还可以使用for-in语句
+
+```lua
+for i, v in ipairs(t) do
+    print(i, v)
+end
+```
+
+lua提供了next函数来遍历表
+
+```lua
+function pairs(t)
+    local k, v
+    return function()
+        k, v = next(t, k)
+        return k, v
+    end
+end
+
+t = {a=10, b=20, c=30}
+for k, v in pairs(t) do
+    print(k, v)
+end
+
+-- 或者简化成
+t = {a=10, b=20, c=30}
+for k, v in next, t, nil do
+    print(k, v)
+end
+```
+
+实际上，ipairs和pairs是Lua标准库的内容
+
+2条在Lua虚拟机中来实现for-in语句的指令：TFORCALL 和 TFORLOOP
+
+为了满足next函数，需要修改table的数据结构，让其支持key的遍历
+
 
 
 ## 参考资料
+
+### 书里的参考资料
+
+* Programming in Lua, Fourth Edition
+* Lua 5.3 Reference Manual
+* The Evolution of Lua
+* The Implementation of Lua 5.0
+* [A No-Frills Introduction to Lua 5.1 VM Instructions](http://underpop.free.fr/l/lua/docs/a-no-frills-introduction-to-lua-5.1-vm-instructions.pdf)
+* Lua 5.3 Bytecode Reference
 
 ### prototype是什么
 

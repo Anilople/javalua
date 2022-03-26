@@ -14,6 +14,6 @@ class Page207Test {
   void page_207_metatable_add() {
     String stdout = run(ch11.page_207_metatable_add);
     System.out.println(stdout);
-    assertEquals("4\t7", stdout);
+    assertEquals("4\t7\n", stdout);
   }
 }

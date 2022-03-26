@@ -25,7 +25,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * page 172.
-   *
+   * <p>
    * Lua注册表
    */
   protected final LuaTable registry;
@@ -220,6 +220,21 @@ public class DefaultLuaStateImpl implements LuaState {
     return this.getLuaValue(index);
   }
 
+  <T extends LuaValue> void throwIllegalStateExceptionIfConvertFail(
+      int index, Return2<T, Boolean> return2, Class<T> clazz) {
+    if (!return2.r1) {
+      LuaValue luaValue = this.getLuaValue(index);
+      throw new IllegalStateException(
+          "cannot convert lua value "
+              + luaValue
+              + " in index "
+              + index
+              + " to "
+              + clazz
+              + ", please check before convert");
+    }
+  }
+
   @Override
   public LuaBoolean toLuaBoolean(int index) {
     var value = this.getLuaValue(index);
@@ -229,6 +244,7 @@ public class DefaultLuaStateImpl implements LuaState {
   @Override
   public LuaInteger toLuaInteger(int index) {
     var r = toLuaIntegerX(index);
+    throwIllegalStateExceptionIfConvertFail(index, r, LuaInteger.class);
     return r.r0;
   }
 
@@ -241,6 +257,7 @@ public class DefaultLuaStateImpl implements LuaState {
   @Override
   public LuaNumber toLuaNumber(int index) {
     var r = toLuaNumberX(index);
+    throwIllegalStateExceptionIfConvertFail(index, r, LuaNumber.class);
     return r.r0;
   }
 
@@ -253,6 +270,7 @@ public class DefaultLuaStateImpl implements LuaState {
   @Override
   public LuaString toLuaString(int index) {
     var r = toLuaStringX(index);
+    throwIllegalStateExceptionIfConvertFail(index, r, LuaString.class);
     return r.r0;
   }
 
@@ -466,9 +484,9 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * 获取 table[key]
-   *
+   * <p>
    * 如果 table 不是表，或者 key 在表中不存在，就会触发 __index 元方法
-   *
+   * <p>
    * __index 元方法既可以是函数，也可以是表
    */
   LuaType getTable(LuaValue table, LuaValue key) {
@@ -647,12 +665,12 @@ public class DefaultLuaStateImpl implements LuaState {
     if (0 == numberOfResultsWanted) {
       // do nothing
     } else if (numberOfResultsWanted > 0) {
-      var results = calledFrame.popNResults(numberOfElementsFunctionReturned);
+      var results = calledFrame.popNArgs(numberOfElementsFunctionReturned);
       this.callStack.topCallFrame().check(numberOfResultsWanted);
       this.callStack.topCallFrame().pushN(results, numberOfResultsWanted);
     } else {
       // 想放入所有
-      var results = calledFrame.popNResults(numberOfElementsFunctionReturned);
+      var results = calledFrame.popNArgs(numberOfElementsFunctionReturned);
       this.callStack.topCallFrame().check(numberOfElementsFunctionReturned);
       this.callStack.topCallFrame().pushN(results);
     }
@@ -727,7 +745,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * 非{@link LuaTable}，在注册表中，放它对应的元表，
-   *
+   * <p>
    * 为了保证相同类型的数据，元表一样，需要对key的生产定一个规则
    *
    * @return 对应的key，字符串 _MT + type
@@ -741,6 +759,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * 给 lua value设置元表
+   *
    * @param metaTable 元表
    */
   void setMetaTable(LuaValue luaValue, LuaTable metaTable) {
@@ -799,9 +818,9 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * page 210
-   *
+   * <p>
    * 对应书里的 getMetafield
-   *
+   * <p>
    * getmetatable(luaValue)[fieldName]
    */
   LuaValue getMetaFieldInMetaTable(LuaString fieldName, LuaValue luaValue) {
@@ -841,7 +860,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * 调用元方法。
-   *
+   * <p>
    * 多个参数，1个返回结果
    *
    * @param metaMethodName 元方法的名字
@@ -860,7 +879,7 @@ public class DefaultLuaStateImpl implements LuaState {
 
   /**
    * 调用元方法。
-   *
+   * <p>
    * 多个参数，0个返回结果
    *
    * @param metaMethodName 元方法的名字
@@ -953,5 +972,26 @@ public class DefaultLuaStateImpl implements LuaState {
     var table = this.getLuaValue(index);
     var value = this.popLuaValue();
     this.setTableWithoutResolveMetaMethod(table, i, value);
+  }
+
+  @Override
+  public boolean next(int index) {
+    LuaValue luaValue = this.getLuaValue(index);
+    if (!(luaValue instanceof LuaTable)) {
+      throw new IllegalStateException(
+          "expected a table in index " + index + " but get " + luaValue);
+    }
+    LuaTable luaTable = (LuaTable) luaValue;
+    LuaValue key = this.popLuaValue();
+    LuaValue nextKey = luaTable.nextKey(key);
+    if (LuaValue.NIL.equals(nextKey)) {
+      // 遍历结束
+      return false;
+    } else {
+      LuaValue nextValue = luaTable.get(nextKey);
+      this.pushLuaValue(nextKey);
+      this.pushLuaValue(nextValue);
+      return true;
+    }
   }
 }

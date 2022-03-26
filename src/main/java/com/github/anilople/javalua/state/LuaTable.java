@@ -41,6 +41,15 @@ public interface LuaTable extends LuaValue {
 
   LuaTable getMetaTable();
 
+  /**
+   * page 227
+   *
+   * 遍历table时，根据当前的key获取下一个key
+   *
+   * @return {@link LuaValue#NIL}如果所有的key都遍历完成
+   */
+  LuaValue nextKey(LuaValue currentKey);
+
   @Override
   default LuaType type() {
     return LuaType.LUA_TTABLE;

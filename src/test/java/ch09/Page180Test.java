@@ -25,6 +25,6 @@ class Page180Test {
 
     // 检查是否真的输出了 "Hello, World!"
     String stringPrinted = byteArrayOutputStream.toString(StandardCharsets.UTF_8);
-    assertEquals("Hello, World!", stringPrinted);
+    assertEquals("Hello, World!\n", stringPrinted);
   }
 }

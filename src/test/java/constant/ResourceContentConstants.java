@@ -92,4 +92,23 @@ public interface ResourceContentConstants {
     LuaResource __len_fixed = new LuaResource("ch11/__len_fixed.lua");
     LuaResource __sub_print_self = new LuaResource("ch11/__sub_print_self.lua");
   }
+
+  interface ch12 {
+    LuaResource ipairs_array_1_element = new LuaResource("ch12/ipairs_array_1_element.lua");
+    LuaResource ipairs_case1 = new LuaResource("ch12/ipairs_case1.lua");
+    LuaResource ipairs_empty_array = new LuaResource("ch12/ipairs_empty_array.lua");
+    LuaResource page_165_test_simpler_case1 =
+        new LuaResource("ch12/page_165_test_simpler_case1.lua");
+    LuaResource page_165_test_simpler_case2 =
+        new LuaResource("ch12/page_165_test_simpler_case2.lua");
+    LuaResource page_224_array_iterate = new LuaResource("ch12/page_224_array_iterate.lua");
+    LuaResource page_224_for_in = new LuaResource("ch12/page_224_for_in.lua");
+    LuaResource page_225_for_in_with_next = new LuaResource("ch12/page_225_for_in_with_next.lua");
+    LuaResource page_226_for_in_with_next_simpler =
+        new LuaResource("ch12/page_226_for_in_with_next_simpler.lua");
+    LuaResource page_234_test = new LuaResource("ch12/page_234_test.lua");
+    LuaResource pairs_array_1_element = new LuaResource("ch12/pairs_array_1_element.lua");
+    LuaResource pairs_array_3_element = new LuaResource("ch12/pairs_array_3_element.lua");
+    LuaResource pairs_empty_array = new LuaResource("ch12/pairs_empty_array.lua");
+  }
 }

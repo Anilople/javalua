@@ -103,4 +103,9 @@ class LuaTable5Impl extends AbstractLuaTable {
   public LuaInteger length() {
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public LuaValue nextKey(LuaValue currentKey) {
+    throw new UnsupportedOperationException();
+  }
 }
