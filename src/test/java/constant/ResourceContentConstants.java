@@ -100,8 +100,10 @@ public interface ResourceContentConstants {
     LuaResource page_224_array_iterate = new LuaResource("ch12/page_224_array_iterate.lua");
     LuaResource page_224_for_in = new LuaResource("ch12/page_224_for_in.lua");
     LuaResource page_225_for_in_with_next = new LuaResource("ch12/page_225_for_in_with_next.lua");
-    LuaResource page_226_for_in_with_next_simpler =
-        new LuaResource("ch12/page_226_for_in_with_next_simpler.lua");
+    LuaResource page_226_for_in_with_next_simpler = new LuaResource("ch12/page_226_for_in_with_next_simpler.lua");
     LuaResource page_234_test = new LuaResource("ch12/page_234_test.lua");
+    LuaResource pairs_array_1_element = new LuaResource("ch12/pairs_array_1_element.lua");
+    LuaResource pairs_array_3_element = new LuaResource("ch12/pairs_array_3_element.lua");
+    LuaResource pairs_empty_array = new LuaResource("ch12/pairs_empty_array.lua");
   }
 }

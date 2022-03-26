@@ -4,6 +4,7 @@ import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.Return2;
+import java.util.Arrays;
 
 /**
  * 函数调用栈
@@ -36,6 +37,7 @@ public class CallStack {
    * @param allArgs 所有参数
    * @param isVararg 函数的参数中是否存在vararg
    * @param nParams 函数的固定参数个数
+   * @return 函数参数 和 varargs
    */
   static Return2<LuaValue[], LuaValue[]> resolveArgsAndVarargs(
       LuaValue[] allArgs, boolean isVararg, int nParams) {
@@ -51,11 +53,22 @@ public class CallStack {
     }
 
     // 都是固定参数
-    if (allArgs.length != nParams) {
-      throw new IllegalArgumentException(
-          "所有参数的个数是" + allArgs.length + " 和函数所需的固定参数个数" + nParams + "不同");
+    // https://www.lua.org/pil/5.html
+    // 可以允许参数个数与函数签名内容不一致
+    if (nParams < allArgs.length) {
+      // 只使用前半部分
+      LuaValue[] realArgs = ArrayUtils.slice(allArgs, 0, nParams);
+      return new Return2<>(realArgs, new LuaValue[0]);
+    } else if (nParams == allArgs.length) {
+      // 使用全部
+      return new Return2<>(allArgs, new LuaValue[0]);
+    } else {
+      // 不够用，用 nil 来补充
+      LuaValue[] realArgs = new LuaValue[nParams];
+      System.arraycopy(allArgs, 0, realArgs, 0, allArgs.length);
+      Arrays.fill(realArgs, allArgs.length, nParams, LuaValue.NIL);
+      return new Return2<>(realArgs, new LuaValue[0]);
     }
-    return new Return2<>(allArgs, new LuaValue[0]);
   }
 
   /**
