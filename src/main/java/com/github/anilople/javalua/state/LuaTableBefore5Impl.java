@@ -2,8 +2,10 @@ package com.github.anilople.javalua.state;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * lua 5.0 之前的table实现，没有为了性能引入数组
@@ -14,9 +16,29 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   private Map<LuaValue, LuaValue> map;
   private final int mapSize;
 
+  /**
+   * 遍历结束后会设置成 null
+   *
+   * 如果是null，表示遍历未开始
+   */
+  private Map<LuaValue, LuaValue> currentKey2NextKey;
+
   LuaTableBefore5Impl(int mapSize) {
     this.map = new HashMap<>(mapSize * 2);
     this.mapSize = mapSize;
+  }
+
+  static Map<LuaValue, LuaValue> generateCurrentKey2NextKey(Map<LuaValue, LuaValue> map) {
+    Set<LuaValue> keys = map.keySet();
+    Map<LuaValue, LuaValue> currentKey2NextKey = new HashMap<>(keys.size() * 2);
+
+    LuaValue currentKey = LuaValue.NIL;
+    for (LuaValue nextKey : keys) {
+      currentKey2NextKey.put(currentKey, nextKey);
+      currentKey = nextKey;
+    }
+    currentKey2NextKey.put(currentKey, LuaValue.NIL);
+    return currentKey2NextKey;
   }
 
   @Override
@@ -52,6 +74,36 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
       size++;
     }
     return LuaValue.of(size);
+  }
+
+  @Override
+  public LuaValue nextKey(LuaValue currentKey) {
+    if (null == currentKey) {
+      throw new IllegalArgumentException("cannot be null should use nil i.e " + LuaValue.NIL);
+    }
+    if (LuaValue.NIL.equals(currentKey)) {
+      // 遍历未开始
+      if (null == this.currentKey2NextKey) {
+        this.currentKey2NextKey = generateCurrentKey2NextKey(this.map);
+      } else {
+        throw new IllegalStateException("key iterator exists already");
+      }
+    } else {
+      // 使用者期望已经在遍历中
+      if (null == this.currentKey2NextKey) {
+        // 实际上遍历已经结束
+        throw new IllegalStateException("key iterator finished already");
+      } else {
+
+      }
+    }
+
+    LuaValue nextKey = this.currentKey2NextKey.get(currentKey);
+    if (LuaValue.NIL.equals(nextKey)) {
+      // 遍历结束
+      this.currentKey2NextKey = null;
+    }
+    return nextKey;
   }
 
   @Override

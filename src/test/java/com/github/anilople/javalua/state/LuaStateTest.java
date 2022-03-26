@@ -203,4 +203,10 @@ class LuaStateTest {
     assertEquals(1, luaState.getTop());
     assertTrue(luaState.isLuaNil(1));
   }
+
+  @Test
+  void testNextMeetException() {
+    LuaState luaState = LuaState.create();
+    assertThrows(IllegalStateException.class, () -> luaState.next(-1));
+  }
 }

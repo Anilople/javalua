@@ -19,7 +19,7 @@ public class Arithmetic {
 
   private Arithmetic() {}
 
-  static LuaInteger addLuaInteger(LuaInteger a, LuaInteger b) {
+  public static LuaInteger addLuaInteger(LuaInteger a, LuaInteger b) {
     var value = a.getValue() + b.getValue();
     return new LuaInteger(value);
   }

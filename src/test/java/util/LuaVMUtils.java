@@ -2,6 +2,9 @@ package util;
 
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.api.stdlib.getmetatable;
+import com.github.anilople.javalua.api.stdlib.ipairs;
+import com.github.anilople.javalua.api.stdlib.next;
+import com.github.anilople.javalua.api.stdlib.pairs;
 import com.github.anilople.javalua.api.stdlib.print;
 import com.github.anilople.javalua.api.stdlib.setmetatable;
 import com.github.anilople.javalua.chunk.Prototype;
@@ -26,8 +29,11 @@ public class LuaVMUtils {
 
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     new print(new PrintStream(byteArrayOutputStream)).registerTo(luaVM);
-    new setmetatable().registerTo(luaVM);
-    new getmetatable().registerTo(luaVM);
+    setmetatable.getInstance().registerTo(luaVM);
+    getmetatable.getInstance().registerTo(luaVM);
+    pairs.getInstance().registerTo(luaVM);
+    ipairs.getInstance().registerTo(luaVM);
+    next.getInstance().registerTo(luaVM);
 
     luaVM.load(luaResource.getLuacOut(), luaResource.getLuaFilePath(), "b");
 
