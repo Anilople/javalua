@@ -7,6 +7,8 @@ import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.constant.LuaConstants.MetaMethod;
+import com.github.anilople.javalua.constant.LuaConstants.ThreadStatus;
+import com.github.anilople.javalua.exception.LuaErrorRuntimeException;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.Comparison;
@@ -211,7 +213,8 @@ public class DefaultLuaStateImpl implements LuaState {
     this.callStack.topCallFrame().push(luaValue);
   }
 
-  LuaValue popLuaValue() {
+  @Override
+  public LuaValue popLuaValue() {
     return this.callStack.topCallFrame().pop();
   }
 
@@ -992,6 +995,36 @@ public class DefaultLuaStateImpl implements LuaState {
       this.pushLuaValue(nextKey);
       this.pushLuaValue(nextValue);
       return true;
+    }
+  }
+
+  @Override
+  public int error() {
+    var err = this.popLuaValue();
+    throw new LuaErrorRuntimeException(err);
+  }
+
+  @Override
+  public ThreadStatus pcall(int nArgs, int nResults, int msgh) {
+    final CallFrame callerCallFrame = this.callStack.topCallFrame();
+    try {
+      this.call(nArgs, nResults);
+      return ThreadStatus.LUA_OK;
+    } catch (Exception e) {
+      // 碰到异常时，调用栈 需要修复
+      while (!callerCallFrame.equals(this.callStack.topCallFrame())) {
+        this.callStack.popCallFrame();
+      }
+      // 把异常信息放入
+      if (e instanceof LuaErrorRuntimeException) {
+        LuaValue exceptionMessage = ((LuaErrorRuntimeException) e).getLuaValue();
+        this.pushLuaValue(exceptionMessage);
+      } else {
+        // 不是 error 函数抛出的异常
+        LuaString exceptionMessage = LuaValue.of(e.getMessage());
+        this.pushLuaValue(exceptionMessage);
+      }
+      return ThreadStatus.LUA_ERRRUN;
     }
   }
 }

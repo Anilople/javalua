@@ -563,6 +563,35 @@ end
 
 为了满足next函数，需要修改table的数据结构，让其支持key的遍历
 
+### 第13章 异常和错误处理
+
+大多数语言，例如C++ C# Java JavaScript PHP，利用throw关键字抛出异常，利用try-catch-finally结构处理可能会产生异常的代码
+
+Lua语言并没有在语法层面直接支持异常处理，但是在标准库中提供了一些函数，可以用来抛出或者捕获异常
+
+使用error()函数
+
+pcall可以捕获异常
+
+```lua
+pcall(function() sleep(2000) end)
+-- 函数和参数都直接传给pcall
+pcall(sleep, 2000)
+```
+
+如果一切正常，pcall放回 true和函数的返回值，否则放回false和异常
+
+这里和go语言的思路差不多，需要通过返回值来判断是否有异常
+
+```lua
+local ok, msg = pcall(sleep, 2000)
+if ok then
+    -- xxx
+else
+    -- yyy
+end
+```
+
 
 
 ## 参考资料
