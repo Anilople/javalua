@@ -1,8 +1,11 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
+import com.github.anilople.javalua.api.stdlib.error;
+import com.github.anilople.javalua.api.stdlib.pcall;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
+import com.github.anilople.javalua.constant.LuaConstants.ThreadStatus;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
@@ -101,6 +104,8 @@ public interface LuaState {
   boolean isLuaNumber(int index);
 
   boolean isLuaString(int index);
+
+  LuaValue popLuaValue();
 
   LuaValue toLuaValue(int index);
 
@@ -293,4 +298,22 @@ public interface LuaState {
    * @return true如果还没开始遍历，或者遍历没有结束；false如果遍历已经结束
    */
   boolean next(int index);
+
+  /**
+   * 抛异常
+   *
+   * 从栈顶弹出1个Lua值，把该值作为错误抛出
+   * 对应lua函数{@link error}
+   */
+  int error();
+
+  /**
+   * 对应lua函数 {@link pcall}
+   *
+   * @param nArgs 函数参数个数
+   * @param nResults 函数返回参数个数
+   * @param msgh 指定错误处理器，第13章暂不考虑
+   * @return 错误码
+   */
+  ThreadStatus pcall(int nArgs, int nResults, int msgh);
 }

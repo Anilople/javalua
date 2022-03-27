@@ -64,4 +64,21 @@ public interface LuaConstants {
     LuaString NEWINDEX = LuaValue.of("__newindex");
     LuaString CALL = LuaValue.of("__call");
   }
+
+  enum ThreadStatus {
+//    int LUA_OK = 0;
+//    int LUA_YIELD = 1;
+//    int LUA_ERRRUN = 2;
+//    int LUA_ERRSYNTAX = 3;
+//    int LUA_ERRMEM = 4;
+//    int LUA_ERRGCMM = 5;
+//    int LUA_ERRERR = 6;
+    LUA_OK,
+    LUA_YIELD,
+    LUA_ERRRUN,
+    LUA_ERRSYNTAX,
+    LUA_ERRMEM,
+    LUA_ERRGCMM,
+    LUA_ERRERR,
+  }
 }

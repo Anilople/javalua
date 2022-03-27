@@ -2,6 +2,7 @@ package com.github.anilople.javalua.api.stdlib;
 
 import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaInteger;
+import com.github.anilople.javalua.state.LuaNumber;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaTable;
@@ -47,6 +48,10 @@ public class print extends AbstractJavaFunction {
     if (luaValue instanceof LuaInteger) {
       LuaInteger luaInteger = (LuaInteger) luaValue;
       return luaInteger.toString();
+    }
+    if (luaValue instanceof LuaNumber) {
+      LuaNumber luaNumber = (LuaNumber) luaValue;
+      return luaNumber.toString();
     }
     if (luaValue instanceof LuaBoolean) {
       LuaBoolean luaBoolean = (LuaBoolean) luaValue;

@@ -111,4 +111,11 @@ public interface ResourceContentConstants {
     LuaResource pairs_array_3_element = new LuaResource("ch12/pairs_array_3_element.lua");
     LuaResource pairs_empty_array = new LuaResource("ch12/pairs_empty_array.lua");
   }
+
+  interface ch13 {
+    LuaResource error_case1 = new LuaResource("ch13/error_case1.lua");
+    LuaResource page_241_test = new LuaResource("ch13/page_241_test.lua");
+    LuaResource pcall_error = new LuaResource("ch13/pcall_error.lua");
+    LuaResource pcall_print = new LuaResource("ch13/pcall_print.lua");
+  }
 }
