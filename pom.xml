@@ -15,6 +15,7 @@
 
   <modules>
     <module>javalua-vm</module>
+    <module>javalua-vm-test</module>
     <module>javalua-compiler</module>
   </modules>
 
