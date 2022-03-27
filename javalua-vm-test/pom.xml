@@ -14,6 +14,7 @@
         <dependency>
             <groupId>com.github.anilople</groupId>
             <artifactId>javalua-vm</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

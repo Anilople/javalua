@@ -5,6 +5,7 @@ import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.io.DecodeInputStream;
 import constant.ResourceContentConstants;
 import java.io.IOException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,9 +39,9 @@ class Ch02BinaryChunkTest {
     for (Instruction instruction : instructions) {
       System.out.println(instruction.getOpcode());
     }
-    assertEquals("GETTABUP", instructions[0].getOpcode().getName());
-    assertEquals("LOADK", instructions[1].getOpcode().getName());
-    assertEquals("CALL", instructions[2].getOpcode().getName());
-    assertEquals("RETURN", instructions[3].getOpcode().getName());
+    Assertions.assertEquals("GETTABUP", instructions[0].getOpcode().getName());
+    Assertions.assertEquals("LOADK", instructions[1].getOpcode().getName());
+    Assertions.assertEquals("CALL", instructions[2].getOpcode().getName());
+    Assertions.assertEquals("RETURN", instructions[3].getOpcode().getName());
   }
 }

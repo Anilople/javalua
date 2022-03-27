@@ -7,6 +7,7 @@ import constant.ResourceContentConstants.ch02;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static com.github.anilople.javalua.chunk.Header.LUAC_DATA;
@@ -40,7 +41,7 @@ class Ch02HeaderTest {
         Arrays.copyOfRange(ResourceContentConstants.ch02.hello_world.getLuacOut(), 0, Header.SIZE);
     var header = ByteUtils.decode(bytes, Header.class);
 
-    assertArrayEquals(expectedHeader.encode(), header.encode());
+    Assertions.assertArrayEquals(expectedHeader.encode(), header.encode());
   }
 
 
@@ -53,11 +54,11 @@ class Ch02HeaderTest {
 
     int pos = 0;
     // LUA_SIGNATURE
-    assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, pos, LUA_SIGNATURE.length),
-        Arrays.copyOfRange(actualHeaderByteArray, pos, LUA_SIGNATURE.length),
+    Assertions.assertArrayEquals(
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, Header.LUA_SIGNATURE.length),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, Header.LUA_SIGNATURE.length),
         "LUA_SIGNATURE");
-    pos += LUA_SIGNATURE.length;
+    pos += Header.LUA_SIGNATURE.length;
 
     // LUAC_VERSION
     assertArrayEquals(
@@ -74,11 +75,11 @@ class Ch02HeaderTest {
     pos++;
 
     // until LUAC_DATA
-    assertArrayEquals(
-        Arrays.copyOfRange(expectedHeaderByteArray, pos, LUAC_DATA.length),
-        Arrays.copyOfRange(actualHeaderByteArray, pos, LUAC_DATA.length),
+    Assertions.assertArrayEquals(
+        Arrays.copyOfRange(expectedHeaderByteArray, pos, Header.LUAC_DATA.length),
+        Arrays.copyOfRange(actualHeaderByteArray, pos, Header.LUAC_DATA.length),
         "LUAC_DATA");
-    pos += LUAC_DATA.length;
+    pos += Header.LUAC_DATA.length;
 
     // until sizeof(int)
     assertArrayEquals(
@@ -129,7 +130,7 @@ class Ch02HeaderTest {
         "LUAC_NUM");
     pos += 8;
 
-    assertEquals(Header.SIZE, pos);
+    Assertions.assertEquals(Header.SIZE, pos);
   }
 
 }

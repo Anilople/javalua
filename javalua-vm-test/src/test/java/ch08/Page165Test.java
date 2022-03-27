@@ -6,6 +6,7 @@ import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaValue;
 import constant.ResourceContentConstants.ch08;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -18,7 +19,7 @@ class Page165Test {
     var callFrame = LuaVM.evalAndPrint(ch08.max_case1.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
-    assertEquals(LuaValue.of(64), returnedLuaValue);
+    Assertions.assertEquals(LuaValue.of(64), returnedLuaValue);
   }
 
   @Test
@@ -26,7 +27,7 @@ class Page165Test {
     var callFrame = LuaVM.evalAndPrint(ch08.max_case2.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
-    assertEquals(LuaValue.of(3), returnedLuaValue);
+    Assertions.assertEquals(LuaValue.of(3), returnedLuaValue);
   }
 
   @Test
@@ -34,7 +35,7 @@ class Page165Test {
     var callFrame = LuaVM.evalAndPrint(ch08.max_with_vararg_case1.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
-    assertEquals(LuaValue.of(99), returnedLuaValue);
+    Assertions.assertEquals(LuaValue.of(99), returnedLuaValue);
   }
 
   @Test
