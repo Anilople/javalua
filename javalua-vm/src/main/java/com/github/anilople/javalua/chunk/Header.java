@@ -26,11 +26,11 @@ public class Header implements Encodable, Decodable {
    * <p>
    * lua的魔数也是4个字节，ESC，L，u，a的ASCII码，16进制是0x1B4C7561
    */
-  static final byte[] LUA_SIGNATURE = {ESC, L, u, a};
+  public static final byte[] LUA_SIGNATURE = {ESC, L, u, a};
 
   static final byte LUAC_VERSION = Version.INSTANCE.encode();
   static final byte LUAC_FORMAT = 0;
-  static final byte[] LUAC_DATA = new byte[] {0x19, (byte) 0x93, CR, LF, 0x1a, LF};
+  public static final byte[] LUAC_DATA = new byte[] {0x19, (byte) 0x93, CR, LF, 0x1a, LF};
 
   /**
    * Lua虚拟机指令占用的字节数
