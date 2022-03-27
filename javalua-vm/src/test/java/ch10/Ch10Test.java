@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author wxq
  */
-class Page202Test {
+class Ch10Test {
 
   @Test
   void function_call_nested_case1() {
