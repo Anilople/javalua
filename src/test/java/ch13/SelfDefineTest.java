@@ -1,12 +1,11 @@
 package ch13;
 
-import com.github.anilople.javalua.exception.LuaErrorRuntimeException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import constant.ResourceContentConstants.ch13;
 import org.junit.jupiter.api.Test;
 import util.LuaVMUtils;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author wxq
@@ -28,10 +27,6 @@ class SelfDefineTest {
   void pcall_print() {
     String stdout = LuaVMUtils.run(ch13.pcall_print);
     System.out.println(stdout);
-    assertEquals(
-        "1\t2\t3\n"
-        + "true\n",
-        stdout
-    );
+    assertEquals("1\t2\t3\n" + "true\n", stdout);
   }
 }

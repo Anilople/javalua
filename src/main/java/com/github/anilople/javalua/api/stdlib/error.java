@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.api.stdlib;
 
-import com.github.anilople.javalua.exception.LuaErrorRuntimeException;
 import com.github.anilople.javalua.state.LuaState;
 
 /**

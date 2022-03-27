@@ -66,13 +66,13 @@ public interface LuaConstants {
   }
 
   enum ThreadStatus {
-//    int LUA_OK = 0;
-//    int LUA_YIELD = 1;
-//    int LUA_ERRRUN = 2;
-//    int LUA_ERRSYNTAX = 3;
-//    int LUA_ERRMEM = 4;
-//    int LUA_ERRGCMM = 5;
-//    int LUA_ERRERR = 6;
+    //    int LUA_OK = 0;
+    //    int LUA_YIELD = 1;
+    //    int LUA_ERRRUN = 2;
+    //    int LUA_ERRSYNTAX = 3;
+    //    int LUA_ERRMEM = 4;
+    //    int LUA_ERRGCMM = 5;
+    //    int LUA_ERRERR = 6;
     LUA_OK,
     LUA_YIELD,
     LUA_ERRRUN,

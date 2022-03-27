@@ -1,13 +1,13 @@
 package ch13;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import constant.ResourceContentConstants.ch13;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import util.LuaVMUtils;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author wxq
@@ -28,5 +28,4 @@ class Ch13Test {
     // 第3行
     assertTrue(lines.get(2).startsWith("false"));
   }
-  
 }
