@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -36,12 +37,7 @@ public class LuaResourceUtils {
     return luaFileName.substring(0, luaFileName.length() - LUA_SUFFIX.length());
   }
 
-  static void forEachLuaFile(Path directory, BiConsumer<File, String> consumer) throws IOException {
-    List<Path> luaFiles =
-        Files.walk(directory)
-            .filter(path -> !Files.isDirectory(path))
-            .filter(path -> path.getFileName().toString().endsWith(LUA_SUFFIX))
-            .collect(Collectors.toList());
+  static void forEachLuaFile(Collection<Path> luaFiles, BiConsumer<File, String> consumer) {
     for (Path luaFile : luaFiles) {
       final String luaFileName = luaFile.getFileName().toString();
       final File workingDirectory = luaFile.getParent().toFile();
@@ -71,9 +67,10 @@ public class LuaResourceUtils {
    * 运行命令
    */
   static void run(ProcessBuilder processBuilder) {
-    System.out.println("working directory " + processBuilder.directory().getAbsolutePath());
-    System.out.println(String.join(" ", processBuilder.command()));
-    System.out.println();
+    String stringForStdout = "working directory " + processBuilder.directory().getAbsolutePath()
+        + "\n"
+        + String.join(" ", processBuilder.command());
+    System.out.println(stringForStdout);
     final Process process;
     try {
       process = processBuilder.start();
@@ -95,16 +92,7 @@ public class LuaResourceUtils {
     }
   }
 
-  static void generateJavaCode(Path directory, String chapter) throws IOException {
-    List<String> luaFileNames = new ArrayList<>();
-    forEachLuaFile(
-        directory,
-        (workingDirectory, luaFileName) -> {
-          if (workingDirectory.getAbsolutePath().contains(chapter)) {
-            luaFileNames.add(luaFileName);
-          }
-        });
-
+  static void generateJavaCode(String chapter, List<String> luaFileNames) {
     if (luaFileNames.isEmpty()) {
       return;
     }
@@ -131,24 +119,58 @@ public class LuaResourceUtils {
     System.out.println(stringBuilder);
   }
 
+  static boolean isTestResource(Path path) {
+    String absPath = path.toAbsolutePath().toString();
+    if (!absPath.contains("src")) {
+      return false;
+    }
+    if (!absPath.contains("test")) {
+      return false;
+    }
+    if (!absPath.contains("resources")) {
+      return false;
+    }
+    return true;
+  }
+
+  static List<Path> findAllLuaFilesUnderTestResources(Path directory) throws IOException {
+    List<Path> luaFiles = Files.walk(directory)
+        .filter(path -> !Files.isDirectory(path))
+        .filter(path -> path.getFileName().toString().endsWith(LUA_SUFFIX))
+        .collect(Collectors.toList())
+        ;
+    return luaFiles.stream()
+        .filter(LuaResourceUtils::isTestResource)
+        .collect(Collectors.toList())
+        ;
+  }
+
   public static void main(String[] args) throws IOException, InterruptedException {
-    Path directory = Paths.get("src", "test", "resources");
-    System.out.println("directory " + directory.toAbsolutePath());
+    Path currentDirectory = Paths.get(".");
+    System.out.println("currentDirectory " + currentDirectory.toAbsolutePath());
+    List<Path> luaFiles = findAllLuaFilesUnderTestResources(currentDirectory);
+    System.out.println("luaFiles " + luaFiles);
     forEachLuaFile(
-        directory,
+        luaFiles,
         (workingDirectory, luaFileName) -> {
           compileLua(workingDirectory, luaFileName);
           decompileToBytecode(workingDirectory, luaFileName);
         });
 
-    for (int i = 0; i < 10; i++) {
-      String chapter = "ch0" + i;
-      generateJavaCode(directory, chapter);
-    }
-
-    for (int i = 10; i < 30; i++) {
-      String chapter = "ch" + i;
-      generateJavaCode(directory, chapter);
+    for (int i = 0; i < 30; i++) {
+      final String chapter;
+      if (i < 10) {
+        chapter = "ch0" + i;
+      } else {
+        chapter = "ch" + i;
+      }
+      List<String> luaFileNames = new ArrayList<>();
+      for (Path path : luaFiles) {
+        if (path.toAbsolutePath().toString().contains(chapter)) {
+          luaFileNames.add(path.getFileName().toString());
+        }
+      }
+      generateJavaCode(chapter, luaFileNames);
     }
   }
 }
