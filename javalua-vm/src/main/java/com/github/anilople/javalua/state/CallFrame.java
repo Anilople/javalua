@@ -47,7 +47,7 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
     this.luaClosure = luaClosure;
     this.varargs = varargs;
     if (luaClosure.getPrototype() != null) {
-      this.instructions = luaClosure.getPrototype().getCode().getInstructions();
+      this.instructions = Instruction.convert(luaClosure.getPrototype().getCode());
     } else {
       this.instructions = null;
     }
@@ -62,7 +62,7 @@ public class CallFrame extends LuaStackImpl implements LuaStack {
     this.prev = null;
     this.luaClosure = new LuaClosure(prototype);
     this.varargs = null;
-    this.instructions = prototype.getCode().getInstructions();
+    this.instructions = Instruction.convert(prototype.getCode());
   }
 
   /**

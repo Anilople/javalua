@@ -27,7 +27,7 @@ class Page138Test {
     luaVM.setTop(nRegisters);
 
     // 指令数量
-    Assertions.assertEquals(14, mainFunc.getCode().getInstructions().length);
+    Assertions.assertEquals(14, mainFunc.getCode().getCode().length);
     for (Instruction instruction = luaVM.fetch();
         !instruction.getOpcode().equals(Opcode.RETURN);
         instruction = luaVM.fetch()) {

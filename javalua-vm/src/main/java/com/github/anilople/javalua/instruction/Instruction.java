@@ -4,6 +4,7 @@ import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMa
 import static com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode.*;
 
 import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.chunk.Code;
 import com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode;
 import com.github.anilople.javalua.util.ByteUtils;
 import java.util.Arrays;
@@ -119,6 +120,21 @@ public interface Instruction {
       default:
         throw new IllegalStateException("unknown op code " + opcode + " origin code value " + code);
     }
+  }
+
+  static Instruction[] convert(int[] code) {
+    final int length = code.length;
+    Instruction[] instructions = new Instruction[length];
+    for (int i = 0; i < length; i++) {
+      int codeValue = code[i];
+      Instruction instruction = Instruction.of(codeValue);
+      instructions[i] = instruction;
+    }
+    return instructions;
+  }
+
+  static Instruction[] convert(Code code) {
+    return convert(code.getCode());
   }
 
   Opcode getOpcode();
