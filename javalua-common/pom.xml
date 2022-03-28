@@ -9,13 +9,6 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>javalua-vm-chunk</artifactId>
+  <artifactId>javalua-common</artifactId>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.github.anilople</groupId>
-      <artifactId>javalua-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
 </project>
