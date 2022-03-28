@@ -1,10 +1,10 @@
 package com.github.anilople.javalua.chunk;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.github.anilople.javalua.io.DecodeInputStream;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq
@@ -31,6 +31,4 @@ class BinaryChunkTest {
     assertEquals(binaryChunk.sizeUpvalues, binaryChunkNew.sizeUpvalues);
     assertEquals(binaryChunk.mainFunc, binaryChunkNew.mainFunc);
   }
-
-
 }

@@ -1,7 +1,6 @@
 package ch06;
 
 import static com.github.anilople.javalua.api.LuaVM.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.BinaryChunk;

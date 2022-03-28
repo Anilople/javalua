@@ -67,9 +67,11 @@ public class LuaResourceUtils {
    * 运行命令
    */
   static void run(ProcessBuilder processBuilder) {
-    String stringForStdout = "working directory " + processBuilder.directory().getAbsolutePath()
-        + "\n"
-        + String.join(" ", processBuilder.command());
+    String stringForStdout =
+        "working directory "
+            + processBuilder.directory().getAbsolutePath()
+            + "\n"
+            + String.join(" ", processBuilder.command());
     System.out.println(stringForStdout);
     final Process process;
     try {
@@ -134,15 +136,12 @@ public class LuaResourceUtils {
   }
 
   static List<Path> findAllLuaFilesUnderTestResources(Path directory) throws IOException {
-    List<Path> luaFiles = Files.walk(directory)
-        .filter(path -> !Files.isDirectory(path))
-        .filter(path -> path.getFileName().toString().endsWith(LUA_SUFFIX))
-        .collect(Collectors.toList())
-        ;
-    return luaFiles.stream()
-        .filter(LuaResourceUtils::isTestResource)
-        .collect(Collectors.toList())
-        ;
+    List<Path> luaFiles =
+        Files.walk(directory)
+            .filter(path -> !Files.isDirectory(path))
+            .filter(path -> path.getFileName().toString().endsWith(LUA_SUFFIX))
+            .collect(Collectors.toList());
+    return luaFiles.stream().filter(LuaResourceUtils::isTestResource).collect(Collectors.toList());
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
