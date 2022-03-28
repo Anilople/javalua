@@ -2,7 +2,6 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
-import com.github.anilople.javalua.util.ArrayUtils;
 import com.github.anilople.javalua.util.Return2;
 import java.util.Arrays;
 
@@ -46,8 +45,8 @@ public class CallStack {
       if (nArgs > nParams) {
         // 传过来的参数个数大于 固定参数个数，那么多出来的参数，就放到 varargs 中
         // 前 nParams 个是固定参数，后面的是 vararg
-        var args = ArrayUtils.slice(allArgs, 0, nParams);
-        var varargs = ArrayUtils.slice(allArgs, nParams);
+        var args = Arrays.copyOfRange(allArgs, 0, nParams);
+        var varargs = Arrays.copyOfRange(allArgs, nParams, allArgs.length);
         return new Return2<>(args, varargs);
       }
     }
@@ -57,7 +56,7 @@ public class CallStack {
     // 可以允许参数个数与函数签名内容不一致
     if (nParams < allArgs.length) {
       // 只使用前半部分
-      LuaValue[] realArgs = ArrayUtils.slice(allArgs, 0, nParams);
+      LuaValue[] realArgs = Arrays.copyOfRange(allArgs, 0, nParams);
       return new Return2<>(realArgs, new LuaValue[0]);
     } else if (nParams == allArgs.length) {
       // 使用全部
