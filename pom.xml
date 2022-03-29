@@ -8,10 +8,18 @@
   <groupId>com.github.anilople</groupId>
   <artifactId>javalua</artifactId>
   <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <name>javalua</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/Anilople/javalua</url>
+
+  <modules>
+    <module>javalua-vm</module>
+    <module>javalua-vm-test</module>
+    <module>javalua-compiler</module>
+    <module>javalua-vm-chunk</module>
+    <module>javalua-common</module>
+  </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
