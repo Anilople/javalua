@@ -1,10 +1,10 @@
 package com.github.anilople.javalua.compiler.lexer;
 
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_EOF;
+
 import com.github.anilople.javalua.util.CachedIterator;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_EOF;
 
 /**
  * @author wxq
@@ -23,11 +23,9 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
   static List<LuaToken> lexer(String luaCode) {
     LuaLexer luaLexer = newLuaLexer(luaCode);
     List<LuaToken> luaTokens = new ArrayList<>();
-    for (
-        LuaToken luaToken = luaLexer.next();
+    for (LuaToken luaToken = luaLexer.next();
         !TOKEN_EOF.equals(luaToken.getKind());
-        luaToken = luaLexer.next()
-    ) {
+        luaToken = luaLexer.next()) {
       luaTokens.add(luaToken);
     }
     return luaTokens;

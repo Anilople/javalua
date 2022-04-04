@@ -1,8 +1,5 @@
 package com.github.anilople.javalua.compiler.lexer;
 
-import java.util.List;
-import org.junit.jupiter.api.Test;
-
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_IDENTIFIER;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_FUNCTION;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_LOCAL;
@@ -12,6 +9,9 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_RPAREN;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author wxq

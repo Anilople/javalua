@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * 文本资源，一个大字符串
- * 
+ *
  * @author wxq
  */
 @Data
@@ -29,10 +29,11 @@ public class TextResource implements CharSequence {
    * 当前这一行的偏移
    */
   private int currentLineColumnOffset;
-  
+
   public TextResource(String content) {
     this.content = content;
   }
+
   @Override
   public int length() {
     return this.content.length() - this.index;
@@ -50,7 +51,6 @@ public class TextResource implements CharSequence {
     int endResolved = this.index + end;
     return this.content.subSequence(startResolved, endResolved);
   }
-
 
   public boolean hasNextChar() {
     return this.index < this.content.length();
@@ -125,5 +125,4 @@ public class TextResource implements CharSequence {
       this.nextChar();
     }
   }
-
 }

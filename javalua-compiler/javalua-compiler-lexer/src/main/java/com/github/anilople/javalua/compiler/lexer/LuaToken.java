@@ -22,8 +22,7 @@ public class LuaToken {
    */
   private final String content;
 
-  public LuaToken(LuaTokenLocation location,
-      TokenEnums kind, String content) {
+  public LuaToken(LuaTokenLocation location, TokenEnums kind, String content) {
     this.location = location;
     this.kind = kind;
     this.content = content;

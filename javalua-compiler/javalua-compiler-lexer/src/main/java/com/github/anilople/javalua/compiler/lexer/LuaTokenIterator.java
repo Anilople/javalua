@@ -1,5 +1,10 @@
 package com.github.anilople.javalua.compiler.lexer;
 
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_EOF;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_IDENTIFIER;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_NUMBER;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
+
 import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
 import com.github.anilople.javalua.constant.PatternConstants;
 import com.github.anilople.javalua.util.CharacterUtils;
@@ -9,11 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_EOF;
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_IDENTIFIER;
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_NUMBER;
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
 
 /**
  * @author wxq
@@ -26,8 +26,8 @@ class LuaTokenIterator implements Iterator<LuaToken> {
 
   static {
     TokenEnums[] array = TokenEnums.values();
-    Comparator<TokenEnums> compareByLength = (o1, o2) ->
-        o2.getContent().length() - o1.getContent().length();
+    Comparator<TokenEnums> compareByLength =
+        (o1, o2) -> o2.getContent().length() - o1.getContent().length();
     Arrays.sort(array, compareByLength);
     TOKEN_ENUMS_BY_CONTENT_LENGTH_DESC = List.of(array);
   }
@@ -40,8 +40,7 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     return new LuaTokenLocation(
         this.resource.getSourceCodeFileName(),
         this.resource.getCurrentLineNumber(),
-        this.resource.getCurrentLineColumnOffset()
-    );
+        this.resource.getCurrentLineColumnOffset());
   }
 
   private LuaToken getLuaToken(TokenEnums tokenEnums) {

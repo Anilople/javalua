@@ -116,28 +116,50 @@ public enum TokenEnums {
 
   public static TokenEnums fromKeyword(String keyword) {
     switch (keyword) {
-      case "and": return TOKEN_OP_AND;
-      case "break": return TOKEN_KW_BREAK;
-      case "do": return TOKEN_KW_DO;
-      case "else": return TOKEN_KW_ELSE;
-      case "elseif": return TOKEN_KW_ELSEIF;
-      case "end": return TOKEN_KW_END;
-      case "false": return TOKEN_KW_FALSE;
-      case "for": return TOKEN_KW_FOR;
-      case "function": return TOKEN_KW_FUNCTION;
-      case "goto": return TOKEN_KW_GOTO;
-      case "if": return TOKEN_KW_IF;
-      case "in": return TOKEN_KW_IN;
-      case "local": return TOKEN_KW_LOCAL;
-      case "nil": return TOKEN_KW_NIL;
-      case "not": return TOKEN_OP_NOT;
-      case "or": return TOKEN_OP_OR;
-      case "repeat": return TOKEN_KW_REPEAT;
-      case "return": return TOKEN_KW_RETURN;
-      case "then": return TOKEN_KW_THEN;
-      case "true": return TOKEN_KW_TRUE;
-      case "until": return TOKEN_KW_UNTIL;
-      case "while": return TOKEN_KW_WHILE;
+      case "and":
+        return TOKEN_OP_AND;
+      case "break":
+        return TOKEN_KW_BREAK;
+      case "do":
+        return TOKEN_KW_DO;
+      case "else":
+        return TOKEN_KW_ELSE;
+      case "elseif":
+        return TOKEN_KW_ELSEIF;
+      case "end":
+        return TOKEN_KW_END;
+      case "false":
+        return TOKEN_KW_FALSE;
+      case "for":
+        return TOKEN_KW_FOR;
+      case "function":
+        return TOKEN_KW_FUNCTION;
+      case "goto":
+        return TOKEN_KW_GOTO;
+      case "if":
+        return TOKEN_KW_IF;
+      case "in":
+        return TOKEN_KW_IN;
+      case "local":
+        return TOKEN_KW_LOCAL;
+      case "nil":
+        return TOKEN_KW_NIL;
+      case "not":
+        return TOKEN_OP_NOT;
+      case "or":
+        return TOKEN_OP_OR;
+      case "repeat":
+        return TOKEN_KW_REPEAT;
+      case "return":
+        return TOKEN_KW_RETURN;
+      case "then":
+        return TOKEN_KW_THEN;
+      case "true":
+        return TOKEN_KW_TRUE;
+      case "until":
+        return TOKEN_KW_UNTIL;
+      case "while":
+        return TOKEN_KW_WHILE;
       default:
         throw new IllegalArgumentException("keyword '" + keyword + "'");
     }

@@ -24,5 +24,4 @@ class LuaResource extends TextResource {
   public LuaResource(String sourceCodeContent) {
     this(sourceCodeContent, "unknown");
   }
-
 }
