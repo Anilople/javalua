@@ -7,7 +7,7 @@ import util.ResourceReadUtils;
 /**
  * little endian 小端
  *
- * 汇总 src/test/resources 下的资源
+ * 汇总 resources 下的资源
  *
  * 如果没有特殊表示，都是luac53的编译输出
  *
