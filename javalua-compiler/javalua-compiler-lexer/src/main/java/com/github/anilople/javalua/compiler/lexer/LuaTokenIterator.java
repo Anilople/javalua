@@ -1,15 +1,12 @@
 package com.github.anilople.javalua.compiler.lexer;
 
-import com.github.anilople.javalua.compiler.lexer.LuaToken.TokenLocation;
 import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
 import com.github.anilople.javalua.constant.PatternConstants;
 import com.github.anilople.javalua.util.CharacterUtils;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +20,7 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
  */
 class LuaTokenIterator implements Iterator<LuaToken> {
 
-  private final LuaResource luaResource;
+  private final LuaResource resource;
 
   private static final List<TokenEnums> TOKEN_ENUMS_BY_CONTENT_LENGTH_DESC;
 
@@ -35,24 +32,16 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     TOKEN_ENUMS_BY_CONTENT_LENGTH_DESC = List.of(array);
   }
 
-  public LuaTokenIterator(String luaCode) {
-    this.luaResource = new LuaResource(luaCode, "unknown");
+  public LuaTokenIterator(LuaResource resource) {
+    this.resource = resource;
   }
 
-  /**
-   * 发生了错误
-   */
-  void error(TokenEnums process) {
-    throw new IllegalStateException(
-        "process token " + process
-            + " file " + this.luaResource.getSourceCodeFileName()
-            + " line " + this.luaResource.getCurrentLineNumber()
-            + " column " + this.luaResource.getCurrentLineColumnOffset()
+  LuaTokenLocation getTokenLocation() {
+    return new LuaTokenLocation(
+        this.resource.getSourceCodeFileName(),
+        this.resource.getCurrentLineNumber(),
+        this.resource.getCurrentLineColumnOffset()
     );
-  }
-
-  TokenLocation getTokenLocation() {
-    return new TokenLocation(this.luaResource);
   }
 
   private LuaToken getLuaToken(TokenEnums tokenEnums) {
@@ -63,8 +52,8 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     for (TokenEnums tokenEnums : TOKEN_ENUMS_BY_CONTENT_LENGTH_DESC) {
       String content = tokenEnums.getContent();
       if (!content.isEmpty()) {
-        if (this.luaResource.test(content)) {
-          this.luaResource.skipChars(content.length());
+        if (this.resource.test(content)) {
+          this.resource.skipChars(content.length());
           return tokenEnums;
         }
       }
@@ -83,11 +72,11 @@ class LuaTokenIterator implements Iterator<LuaToken> {
   }
 
   boolean isLongString() {
-    if (this.luaResource.test("[[")) {
+    if (this.resource.test("[[")) {
       return true;
     }
-    if (this.luaResource.test("[=")) {
-      throw new UnsupportedOperationException("[=" + this.luaResource.getCurrentLineNumber());
+    if (this.resource.test("[=")) {
+      throw new UnsupportedOperationException("[=" + this.resource.getCurrentLineNumber());
     }
     return false;
   }
@@ -100,10 +89,10 @@ class LuaTokenIterator implements Iterator<LuaToken> {
   }
 
   boolean isShortString() {
-    if (this.luaResource.test("'")) {
+    if (this.resource.test("'")) {
       return true;
     }
-    if (this.luaResource.test("\"")) {
+    if (this.resource.test("\"")) {
       return true;
     }
     return false;
@@ -126,13 +115,13 @@ class LuaTokenIterator implements Iterator<LuaToken> {
    * 数字开头或者小数点开头
    */
   boolean isNumber() {
-    char c = this.luaResource.previewNextChar();
+    char c = this.resource.previewNextChar();
     if (CharacterUtils.isDigit(c)) {
       return true;
     }
     if (c == '.') {
-      if (this.luaResource.hasNextChars(2)) {
-        String s = this.luaResource.previewNextChars(2);
+      if (this.resource.hasNextChars(2)) {
+        String s = this.resource.previewNextChars(2);
         return CharacterUtils.isDigit(s.charAt(1));
       }
     }
@@ -141,12 +130,12 @@ class LuaTokenIterator implements Iterator<LuaToken> {
   }
 
   boolean isMatchPrefix(Pattern pattern) {
-    Matcher matcher = pattern.matcher(this.luaResource);
+    Matcher matcher = pattern.matcher(this.resource);
     return matcher.find();
   }
 
   String scanByPattern(Pattern pattern) {
-    Matcher matcher = pattern.matcher(this.luaResource);
+    Matcher matcher = pattern.matcher(this.resource);
     if (!matcher.find()) {
       throw new IllegalStateException("cannot find by pattern " + pattern);
     }
@@ -154,7 +143,7 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     if (content.isEmpty()) {
       throw new IllegalStateException("cannot get content by pattern " + pattern);
     }
-    this.luaResource.skipChars(content.length());
+    this.resource.skipChars(content.length());
     return content;
   }
 
@@ -174,7 +163,7 @@ class LuaTokenIterator implements Iterator<LuaToken> {
    * not beginning with a digit
    */
   boolean isIdentifier() {
-    char c = this.luaResource.previewNextChar();
+    char c = this.resource.previewNextChar();
     if (c == '_') {
       return true;
     }
@@ -186,17 +175,17 @@ class LuaTokenIterator implements Iterator<LuaToken> {
 
   LuaToken scanIdentifier() {
     StringBuilder identifier = new StringBuilder();
-    while (this.luaResource.hasNextChar()) {
-      final char c = this.luaResource.previewNextChar();
+    while (this.resource.hasNextChar()) {
+      final char c = this.resource.previewNextChar();
       if (CharacterUtils.isLetter(c)) {
         identifier.append(c);
-        this.luaResource.skipChars(1);
+        this.resource.skipChars(1);
       } else if (CharacterUtils.isDigit(c)) {
         identifier.append(c);
-        this.luaResource.skipChars(1);
+        this.resource.skipChars(1);
       } else if (c == '_') {
         identifier.append(c);
-        this.luaResource.skipChars(1);
+        this.resource.skipChars(1);
       } else {
         break;
       }
@@ -206,13 +195,13 @@ class LuaTokenIterator implements Iterator<LuaToken> {
 
   @Override
   public boolean hasNext() {
-    return this.luaResource.hasNextChar();
+    return this.resource.hasNextChar();
   }
 
   @Override
   public LuaToken next() {
     this.skipWhiteSpaces();
-    if (!this.luaResource.hasNextChar()) {
+    if (!this.resource.hasNextChar()) {
       return this.getLuaToken(TOKEN_EOF);
     }
 
@@ -251,19 +240,19 @@ class LuaTokenIterator implements Iterator<LuaToken> {
    * 跳过无关内容，包括注释在内
    */
   void skipWhiteSpaces() {
-    while (this.luaResource.hasNextChar()) {
-      if (this.luaResource.test("--")) {
+    while (this.resource.hasNextChar()) {
+      if (this.resource.test("--")) {
         this.skipComment();
-      } else if (this.luaResource.test("\r\n")) {
-        this.luaResource.nextChar();
-        this.luaResource.nextChar();
-      } else if (this.luaResource.test("\n\r")) {
-        this.luaResource.nextChar();
-        this.luaResource.nextChar();
-      } else if (CharacterUtils.isNewLine(this.luaResource.previewNextChar())) {
-        this.luaResource.nextChar();
-      } else if (CharacterUtils.isWhiteSpace(this.luaResource.previewNextChar())) {
-        this.luaResource.nextChar();
+      } else if (this.resource.test("\r\n")) {
+        this.resource.nextChar();
+        this.resource.nextChar();
+      } else if (this.resource.test("\n\r")) {
+        this.resource.nextChar();
+        this.resource.nextChar();
+      } else if (CharacterUtils.isNewLine(this.resource.previewNextChar())) {
+        this.resource.nextChar();
+      } else if (CharacterUtils.isWhiteSpace(this.resource.previewNextChar())) {
+        this.resource.nextChar();
       } else {
         break;
       }
@@ -271,21 +260,21 @@ class LuaTokenIterator implements Iterator<LuaToken> {
   }
 
   void skipComment() {
-    if (!this.luaResource.test("--")) {
+    if (!this.resource.test("--")) {
       throw new IllegalStateException();
     }
-    this.luaResource.nextChar();
-    this.luaResource.nextChar();
-    if (this.luaResource.test("[")) {
+    this.resource.nextChar();
+    this.resource.nextChar();
+    if (this.resource.test("[")) {
       // long comment
       // TODO
       throw new UnsupportedOperationException("skip long comment");
     }
 
     // short comment
-    while (this.luaResource.hasNextChar()
-        && !CharacterUtils.isWhiteSpace(this.luaResource.previewNextChar())) {
-      this.luaResource.nextChar();
+    while (this.resource.hasNextChar()
+        && !CharacterUtils.isWhiteSpace(this.resource.previewNextChar())) {
+      this.resource.nextChar();
     }
   }
 }

@@ -21,7 +21,7 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
   }
 
   static List<LuaToken> lexer(String luaCode) {
-    LuaTokenIterator luaLexer = new LuaTokenIterator(luaCode);
+    LuaLexer luaLexer = newLuaLexer(luaCode);
     List<LuaToken> luaTokens = new ArrayList<>();
     for (
         LuaToken luaToken = luaLexer.next();
@@ -33,8 +33,7 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
     return luaTokens;
   }
 
-  static CachedIterator<LuaToken> newLuaLexer(String luaCode) {
-    LuaTokenIterator iterator = new LuaTokenIterator(luaCode);
-    return CachedIterator.newCachedIterator(iterator);
+  static LuaLexer newLuaLexer(String luaCode) {
+    return new LuaLexerImpl(luaCode);
   }
 }

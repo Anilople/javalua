@@ -12,7 +12,7 @@ public class LuaToken {
   /**
    * token在源码中的位置
    */
-  private final TokenLocation location;
+  private final LuaTokenLocation location;
   /**
    * token的类型
    */
@@ -22,31 +22,14 @@ public class LuaToken {
    */
   private final String content;
 
-  public LuaToken(TokenLocation location,
+  public LuaToken(LuaTokenLocation location,
       TokenEnums kind, String content) {
     this.location = location;
     this.kind = kind;
     this.content = content;
   }
 
-  public LuaToken(TokenLocation location, TokenEnums kind) {
+  public LuaToken(LuaTokenLocation location, TokenEnums kind) {
     this(location, kind, kind.getContent());
-  }
-
-  /**
-   * token在源码中的位置
-   */
-  public static class TokenLocation {
-    private final LuaResource luaResource;
-    public TokenLocation(LuaResource luaResource) {
-      this.luaResource = luaResource;
-    }
-
-    @Override
-    public String toString() {
-      return "lua code file name '" + luaResource.getSourceCodeFileName() + "'"
-          + " line " + this.luaResource.getCurrentLineNumber()
-          + " column " + this.luaResource.getCurrentLineColumnOffset();
-    }
   }
 }

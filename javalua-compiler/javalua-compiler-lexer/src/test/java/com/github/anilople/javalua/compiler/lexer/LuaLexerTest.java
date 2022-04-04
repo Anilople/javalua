@@ -59,25 +59,25 @@ class LuaLexerTest {
     assertEquals(TOKEN_STRING, luaToken.getKind());
     assertEquals("abcd", luaToken.getContent());
   }
-//
-//  @Test
-//  void testLookAhead() {
-//    LuaLexer luaLexer = LuaLexer.newLuaLexer("function f(a, b) return a + b end");
-//    {
-//      LuaToken luaToken = luaLexer.previewNext();
-//      assertEquals(TOKEN_KW_FUNCTION, luaToken.getKind());
-//    }
-//    {
-//      LuaToken luaToken = luaLexer.lookAhead();
-//      assertEquals(TOKEN_KW_FUNCTION, luaToken.getKind());
-//    }
-//    luaLexer.next();
-//    {
-//      LuaToken luaToken = luaLexer.lookAhead();
-//      assertEquals(TOKEN_IDENTIFIER, luaToken.getKind());
-//      assertEquals("f", luaToken.getContent());
-//    }
-//  }
+
+  @Test
+  void testLookAhead() {
+    LuaLexer luaLexer = LuaLexer.newLuaLexer("function f(a, b) return a + b end");
+    {
+      LuaToken luaToken = luaLexer.previewNext();
+      assertEquals(TOKEN_KW_FUNCTION, luaToken.getKind());
+    }
+    {
+      LuaToken luaToken = luaLexer.lookAhead();
+      assertEquals(TOKEN_KW_FUNCTION, luaToken.getKind());
+    }
+    luaLexer.next();
+    {
+      LuaToken luaToken = luaLexer.lookAhead();
+      assertEquals(TOKEN_IDENTIFIER, luaToken.getKind());
+      assertEquals("f", luaToken.getContent());
+    }
+  }
 
   @Test
   void testHelloWorld() {
