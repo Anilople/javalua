@@ -592,7 +592,71 @@ else
 end
 ```
 
+## 第三部分 Lua语法和编译器
 
+### 第14章 词法分析
+
+编译器
+
+```mermaid
+flowchart TD
+	subgraph FrontEnd
+		预处理
+		词法分析
+		语法分析
+		语义分析
+		中间代码生成
+	end
+	subgraph MiddleEnd
+		中间代码优化
+	end
+	subgraph BackEnd
+		目标代码生成
+	end
+	
+	FrontEnd --> MiddleEnd --> BackEnd
+```
+
+本书不讨论中间代码生成和优化
+
+```mermaid
+graph LR
+	Source --> |Lexer|Tokens
+	Tokens --> |Parser|AST
+	AST --> |Codegen|Bytecodes
+```
+
+Source: .lua文件
+
+AST：抽象语法树。Abstract Syntax Tree
+
+Bytecodes: .out文件
+
+词法分析一般用**有限状态机（Finite-state Machin，FSM）**实现
+
+token：空白字符，注释，标识符，关键字，数字字面量，字符串字面量，运算符和分隔符
+
+Lexer的整个过程，输入是封装好的字符流，把1个或多个字符流，转成1个token，不断得转换，得到token流
+
+需要注意，整个解析过程是有状态的，如果引入方法previewNextChar预览下一个字符的内容，而不改变指针的位置，会大幅降低代码编写的复杂度
+
+同时也可以引入方法，预览多个字符而不改变指针的位置
+
+### 第15章 抽象语法树
+
+### 第16章 语法分析
+
+### 第17章 代码生成
+
+## 第四部分 Lua标准库
+
+### 第18章 辅助API和基础库
+
+### 第19章 工具库
+
+### 第20章 包和模块
+
+### 第21章 协程
 
 ## 参考资料
 
