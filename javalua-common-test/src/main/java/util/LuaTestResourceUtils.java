@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * @author wxq
  */
-public class LuaResourceUtils {
+public class LuaTestResourceUtils {
 
   static final String LUAC = "luac53";
   static final String LUA_SUFFIX = ".lua";
@@ -141,7 +141,7 @@ public class LuaResourceUtils {
             .filter(path -> !Files.isDirectory(path))
             .filter(path -> path.getFileName().toString().endsWith(LUA_SUFFIX))
             .collect(Collectors.toList());
-    return luaFiles.stream().filter(LuaResourceUtils::isTestResource).collect(Collectors.toList());
+    return luaFiles.stream().filter(LuaTestResourceUtils::isTestResource).collect(Collectors.toList());
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
