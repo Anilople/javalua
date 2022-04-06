@@ -1,5 +1,7 @@
 package io;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import util.LuaTestResourceUtils;
 import util.ResourceReadUtils;
@@ -12,12 +14,25 @@ import util.ResourceReadUtils;
 @Getter
 public class LuaTestResource {
 
+  /**
+   * 读取过的资源都会缓存到这里
+   *
+   * key是资源的路径，value是资源的内容
+   */
+  private static final Map<String, LuaTestResource> RESOURCE_REGISTRY = new ConcurrentHashMap<>();
+
   private final String luaFilePath;
+  private final String luaCode;
   private final byte[] luacOut;
 
-  public LuaTestResource(String luaFilePath) {
+  private LuaTestResource(String luaFilePath) {
     this.luaFilePath = luaFilePath;
+    this.luaCode = ResourceReadUtils.readString(luaFilePath);
     this.luacOut =
         ResourceReadUtils.readBytes(LuaTestResourceUtils.resolveOutFilename(this.luaFilePath));
+  }
+
+  public static LuaTestResource resolve(String luaFilePath) {
+    return RESOURCE_REGISTRY.computeIfAbsent(luaFilePath, LuaTestResource::new);
   }
 }
