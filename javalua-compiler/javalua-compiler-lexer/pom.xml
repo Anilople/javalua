@@ -16,7 +16,7 @@
     <dependency>
       <groupId>com.github.anilople</groupId>
       <artifactId>javalua-common</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>

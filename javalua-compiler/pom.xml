@@ -13,4 +13,13 @@
     </parent>
     <artifactId>javalua-compiler</artifactId>
     <packaging>pom</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.anilople</groupId>
+            <artifactId>javalua-common-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
