@@ -10,7 +10,6 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
 import static org.junit.jupiter.api.Assertions.*;
 
-import constant.ResourceContentConstants;
 import constant.ResourceContentConstants.ch02;
 import java.util.List;
 import org.junit.jupiter.api.Test;

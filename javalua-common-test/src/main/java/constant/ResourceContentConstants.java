@@ -36,8 +36,10 @@ public interface ResourceContentConstants {
     LuaTestResource closure = LuaTestResource.resolve("ch08/closure.lua");
     LuaTestResource max_case1 = LuaTestResource.resolve("ch08/max_case1.lua");
     LuaTestResource max_case2 = LuaTestResource.resolve("ch08/max_case2.lua");
-    LuaTestResource max_with_vararg_case1 = LuaTestResource.resolve("ch08/max_with_vararg_case1.lua");
-    LuaTestResource max_with_vararg_case2 = LuaTestResource.resolve("ch08/max_with_vararg_case2.lua");
+    LuaTestResource max_with_vararg_case1 =
+        LuaTestResource.resolve("ch08/max_with_vararg_case1.lua");
+    LuaTestResource max_with_vararg_case2 =
+        LuaTestResource.resolve("ch08/max_with_vararg_case2.lua");
     LuaTestResource _return = LuaTestResource.resolve("ch08/return.lua");
     LuaTestResource test = LuaTestResource.resolve("ch08/test.lua");
     LuaTestResource vararg_case1 = LuaTestResource.resolve("ch08/vararg_case1.lua");
@@ -45,10 +47,13 @@ public interface ResourceContentConstants {
   }
 
   interface ch10 {
-    LuaTestResource function_call_nested_case1 = LuaTestResource.resolve("ch10/function_call_nested_case1.lua");
+    LuaTestResource function_call_nested_case1 =
+        LuaTestResource.resolve("ch10/function_call_nested_case1.lua");
     LuaTestResource page_185_upvalue = LuaTestResource.resolve("ch10/page_185_upvalue.lua");
-    LuaTestResource page_186_upvalue_nested = LuaTestResource.resolve("ch10/page_186_upvalue_nested.lua");
-    LuaTestResource page_188_global_variable = LuaTestResource.resolve("ch10/page_188_global_variable.lua");
+    LuaTestResource page_186_upvalue_nested =
+        LuaTestResource.resolve("ch10/page_186_upvalue_nested.lua");
+    LuaTestResource page_188_global_variable =
+        LuaTestResource.resolve("ch10/page_188_global_variable.lua");
     LuaTestResource page_195_GETUPVAL = LuaTestResource.resolve("ch10/page_195_GETUPVAL.lua");
     LuaTestResource page_197_SETUPVAL = LuaTestResource.resolve("ch10/page_197_SETUPVAL.lua");
     LuaTestResource page_198_GETTABUP = LuaTestResource.resolve("ch10/page_198_GETTABUP.lua");
@@ -65,11 +70,14 @@ public interface ResourceContentConstants {
     LuaTestResource getmetatable_nil = LuaTestResource.resolve("ch11/getmetatable_nil.lua");
     LuaTestResource getmetatable_string = LuaTestResource.resolve("ch11/getmetatable_string.lua");
     LuaTestResource get_from_array = LuaTestResource.resolve("ch11/get_from_array.lua");
-    LuaTestResource get_from_array_vararg = LuaTestResource.resolve("ch11/get_from_array_vararg.lua");
+    LuaTestResource get_from_array_vararg =
+        LuaTestResource.resolve("ch11/get_from_array_vararg.lua");
     LuaTestResource page_206_debug_setmetatable =
         LuaTestResource.resolve("ch11/page_206_debug_setmetatable.lua");
-    LuaTestResource page_206_getmetatable = LuaTestResource.resolve("ch11/page_206_getmetatable.lua");
-    LuaTestResource page_207_metatable_add = LuaTestResource.resolve("ch11/page_207_metatable_add.lua");
+    LuaTestResource page_206_getmetatable =
+        LuaTestResource.resolve("ch11/page_206_getmetatable.lua");
+    LuaTestResource page_207_metatable_add =
+        LuaTestResource.resolve("ch11/page_207_metatable_add.lua");
     LuaTestResource setmetatable_case1 = LuaTestResource.resolve("ch11/setmetatable_case1.lua");
     LuaTestResource sub = LuaTestResource.resolve("ch11/sub.lua");
     LuaTestResource TAILCALL_case1 = LuaTestResource.resolve("ch11/TAILCALL_case1.lua");
@@ -80,21 +88,26 @@ public interface ResourceContentConstants {
   }
 
   interface ch12 {
-    LuaTestResource ipairs_array_1_element = LuaTestResource.resolve("ch12/ipairs_array_1_element.lua");
+    LuaTestResource ipairs_array_1_element =
+        LuaTestResource.resolve("ch12/ipairs_array_1_element.lua");
     LuaTestResource ipairs_case1 = LuaTestResource.resolve("ch12/ipairs_case1.lua");
     LuaTestResource ipairs_empty_array = LuaTestResource.resolve("ch12/ipairs_empty_array.lua");
     LuaTestResource page_165_test_simpler_case1 =
         LuaTestResource.resolve("ch12/page_165_test_simpler_case1.lua");
     LuaTestResource page_165_test_simpler_case2 =
         LuaTestResource.resolve("ch12/page_165_test_simpler_case2.lua");
-    LuaTestResource page_224_array_iterate = LuaTestResource.resolve("ch12/page_224_array_iterate.lua");
+    LuaTestResource page_224_array_iterate =
+        LuaTestResource.resolve("ch12/page_224_array_iterate.lua");
     LuaTestResource page_224_for_in = LuaTestResource.resolve("ch12/page_224_for_in.lua");
-    LuaTestResource page_225_for_in_with_next = LuaTestResource.resolve("ch12/page_225_for_in_with_next.lua");
+    LuaTestResource page_225_for_in_with_next =
+        LuaTestResource.resolve("ch12/page_225_for_in_with_next.lua");
     LuaTestResource page_226_for_in_with_next_simpler =
         LuaTestResource.resolve("ch12/page_226_for_in_with_next_simpler.lua");
     LuaTestResource page_234_test = LuaTestResource.resolve("ch12/page_234_test.lua");
-    LuaTestResource pairs_array_1_element = LuaTestResource.resolve("ch12/pairs_array_1_element.lua");
-    LuaTestResource pairs_array_3_element = LuaTestResource.resolve("ch12/pairs_array_3_element.lua");
+    LuaTestResource pairs_array_1_element =
+        LuaTestResource.resolve("ch12/pairs_array_1_element.lua");
+    LuaTestResource pairs_array_3_element =
+        LuaTestResource.resolve("ch12/pairs_array_3_element.lua");
     LuaTestResource pairs_empty_array = LuaTestResource.resolve("ch12/pairs_empty_array.lua");
   }
 

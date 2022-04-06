@@ -141,7 +141,9 @@ public class LuaTestResourceUtils {
             .filter(path -> !Files.isDirectory(path))
             .filter(path -> path.getFileName().toString().endsWith(LUA_SUFFIX))
             .collect(Collectors.toList());
-    return luaFiles.stream().filter(LuaTestResourceUtils::isTestResource).collect(Collectors.toList());
+    return luaFiles.stream()
+        .filter(LuaTestResourceUtils::isTestResource)
+        .collect(Collectors.toList());
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
