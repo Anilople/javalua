@@ -1,5 +1,6 @@
 package util;
 
+import constant.ResourceContentConstants;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +27,7 @@ public class LuaTestResourceUtils {
     return luaFileName.replace(LUA_SUFFIX, OUT_SUFFIX);
   }
 
-  public static String resolveBytecodeFilename(String luaFileName) {
+  static String resolveBytecodeFilename(String luaFileName) {
     return luaFileName.replace(LUA_SUFFIX, BYTECODE_SUFFIX);
   }
 
@@ -146,18 +147,16 @@ public class LuaTestResourceUtils {
         .collect(Collectors.toList());
   }
 
-  public static void main(String[] args) throws IOException, InterruptedException {
+  static List<Path> resolveLuaFilePaths() throws IOException {
     Path currentDirectory = Paths.get(".");
     System.out.println("currentDirectory " + currentDirectory.toAbsolutePath());
-    List<Path> luaFiles = findAllLuaFilesUnderTestResources(currentDirectory);
-    System.out.println("luaFiles " + luaFiles);
-    forEachLuaFile(
-        luaFiles,
-        (workingDirectory, luaFileName) -> {
-          compileLua(workingDirectory, luaFileName);
-          decompileToBytecode(workingDirectory, luaFileName);
-        });
+    return findAllLuaFilesUnderTestResources(currentDirectory);
+  }
 
+  /**
+   * 生成 {@link ResourceContentConstants} 里的内容
+   */
+  static void generateResourceContentConstants(List<Path> luaFiles) {
     for (int i = 0; i < 30; i++) {
       final String chapter;
       if (i < 10) {
@@ -173,5 +172,24 @@ public class LuaTestResourceUtils {
       }
       generateJavaCode(chapter, luaFileNames);
     }
+  }
+
+  /**
+   * 编译所有lua代码
+   */
+  static void compileAllLuaCode(List<Path> luaFiles) {
+    System.out.println("luaFiles " + luaFiles);
+    forEachLuaFile(
+        luaFiles,
+        (workingDirectory, luaFileName) -> {
+          compileLua(workingDirectory, luaFileName);
+          decompileToBytecode(workingDirectory, luaFileName);
+        });
+  }
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    List<Path> luaFiles = resolveLuaFilePaths();
+    compileAllLuaCode(luaFiles);
+    generateResourceContentConstants(luaFiles);
   }
 }
