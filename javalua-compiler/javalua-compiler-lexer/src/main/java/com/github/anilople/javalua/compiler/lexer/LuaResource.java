@@ -24,4 +24,19 @@ class LuaResource extends TextResource {
   public LuaResource(String sourceCodeContent) {
     this(sourceCodeContent, "unknown");
   }
+
+  @Override
+  public String toString() {
+    return "LuaResource{"
+        + "sourceCodeFileName='"
+        + sourceCodeFileName
+        + '\''
+        + ", line='"
+        + getCurrentLineNumber()
+        + '\''
+        + ", column='"
+        + getCurrentLineColumnOffset()
+        + '\''
+        + '}';
+  }
 }

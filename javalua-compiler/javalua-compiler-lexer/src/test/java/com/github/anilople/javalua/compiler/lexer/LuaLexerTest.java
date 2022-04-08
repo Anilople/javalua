@@ -10,8 +10,13 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
 import static org.junit.jupiter.api.Assertions.*;
 
+import constant.ResourceContentConstants.ch02;
+import constant.ResourceContentConstants.ch14;
+import io.LuaTestResource;
+import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import util.LuaTestResourceUtils;
 
 /**
  * @author wxq
@@ -81,7 +86,7 @@ class LuaLexerTest {
 
   @Test
   void testHelloWorld() {
-    List<LuaToken> luaTokens = LuaLexer.lexer("print(\"Hello, World!\")");
+    List<LuaToken> luaTokens = LuaLexer.lexer(ch02.hello_world.getLuaCode());
     luaTokens.forEach(System.out::println);
     assertEquals(4, luaTokens.size());
     {
@@ -101,6 +106,21 @@ class LuaLexerTest {
     {
       LuaToken luaToken = luaTokens.get(3);
       assertEquals(TOKEN_SEP_RPAREN, luaToken.getKind());
+    }
+  }
+
+  @Test
+  void max_case1() {
+    List<LuaToken> luaTokens = LuaLexer.lexer(ch14.max_case1.getLuaCode());
+    luaTokens.forEach(System.out::println);
+  }
+
+  @Test
+  void lexerAllLuaCode() throws IOException {
+    List<LuaTestResource> luaTestResources = LuaTestResourceUtils.getLuaTestResources();
+    System.out.println("luaTestResources size " + luaTestResources.size());
+    for (LuaTestResource luaTestResource : luaTestResources) {
+      LuaLexer.lexer(luaTestResource.getLuaCode(), luaTestResource.getLuaFilePath());
     }
   }
 }

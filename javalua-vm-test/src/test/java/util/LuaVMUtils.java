@@ -10,7 +10,7 @@ import com.github.anilople.javalua.api.stdlib.pcall;
 import com.github.anilople.javalua.api.stdlib.print;
 import com.github.anilople.javalua.api.stdlib.setmetatable;
 import com.github.anilople.javalua.chunk.Prototype;
-import constant.ResourceContentConstants.LuaResource;
+import io.LuaTestResource;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -23,10 +23,10 @@ public class LuaVMUtils {
   /**
    * 运行lua的字节码，返回 stdout 标准输出
    *
-   * @param luaResource src/test/resources 下的lua资源
+   * @param luaTestResource src/test/resources 下的lua资源
    * @return stdout 标准输出
    */
-  public static String run(LuaResource luaResource) {
+  public static String run(LuaTestResource luaTestResource) {
     LuaVM luaVM = LuaVM.create(1, new Prototype());
 
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -39,7 +39,7 @@ public class LuaVMUtils {
     error.getInstance().registerTo(luaVM);
     pcall.getInstance().registerTo(luaVM);
 
-    luaVM.load(luaResource.getLuacOut(), luaResource.getLuaFilePath(), "b");
+    luaVM.load(luaTestResource.getLuacOut(), luaTestResource.getLuaFilePath(), "b");
 
     try {
       luaVM.call(0, 0);

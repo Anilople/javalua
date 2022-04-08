@@ -9,8 +9,8 @@ class LuaLexerImpl implements LuaLexer {
 
   private final CachedIterator<LuaToken> cachedIterator;
 
-  public LuaLexerImpl(String luaCode, String sourceCodeFileName) {
-    LuaResource luaResource = new LuaResource(luaCode, sourceCodeFileName);
+  public LuaLexerImpl(String luaCode, String sourceCodeFilePath) {
+    LuaResource luaResource = new LuaResource(luaCode, sourceCodeFilePath);
     LuaTokenIterator luaTokenIterator = new LuaTokenIterator(luaResource);
     this.cachedIterator = CachedIterator.newCachedIterator(luaTokenIterator);
   }

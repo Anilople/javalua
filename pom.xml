@@ -19,6 +19,7 @@
     <module>javalua-compiler</module>
     <module>javalua-vm-chunk</module>
     <module>javalua-common</module>
+    <module>javalua-common-test</module>
   </modules>
 
   <properties>

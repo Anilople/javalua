@@ -1,5 +1,7 @@
 package util;
 
+import constant.ResourceContentConstants;
+import io.LuaTestResource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,18 +17,31 @@ import java.util.stream.Collectors;
 /**
  * @author wxq
  */
-public class LuaResourceUtils {
+public class LuaTestResourceUtils {
 
   static final String LUAC = "luac53";
   static final String LUA_SUFFIX = ".lua";
   static final String OUT_SUFFIX = ".out";
   static final String BYTECODE_SUFFIX = ".bytecode";
 
+  public static void main(String[] args) throws IOException, InterruptedException {
+    List<Path> luaFiles = resolveLuaFilePaths();
+    compileAllLuaCode(luaFiles);
+    generateResourceContentConstants(luaFiles);
+  }
+
   public static String resolveOutFilename(String luaFileName) {
     return luaFileName.replace(LUA_SUFFIX, OUT_SUFFIX);
   }
 
-  public static String resolveBytecodeFilename(String luaFileName) {
+  public static Path resolveOutFilePath(Path luaFile) {
+    String luaFileName = luaFile.getFileName().toString();
+    Path directory = luaFile.getParent();
+    String outFileName = resolveOutFilename(luaFileName);
+    return directory.resolve(outFileName);
+  }
+
+  static String resolveBytecodeFilename(String luaFileName) {
     return luaFileName.replace(LUA_SUFFIX, BYTECODE_SUFFIX);
   }
 
@@ -141,21 +156,33 @@ public class LuaResourceUtils {
             .filter(path -> !Files.isDirectory(path))
             .filter(path -> path.getFileName().toString().endsWith(LUA_SUFFIX))
             .collect(Collectors.toList());
-    return luaFiles.stream().filter(LuaResourceUtils::isTestResource).collect(Collectors.toList());
+    return luaFiles.stream()
+        .filter(LuaTestResourceUtils::isTestResource)
+        .collect(Collectors.toUnmodifiableList());
   }
 
-  public static void main(String[] args) throws IOException, InterruptedException {
-    Path currentDirectory = Paths.get(".");
-    System.out.println("currentDirectory " + currentDirectory.toAbsolutePath());
-    List<Path> luaFiles = findAllLuaFilesUnderTestResources(currentDirectory);
-    System.out.println("luaFiles " + luaFiles);
-    forEachLuaFile(
-        luaFiles,
-        (workingDirectory, luaFileName) -> {
-          compileLua(workingDirectory, luaFileName);
-          decompileToBytecode(workingDirectory, luaFileName);
-        });
+  static Path resolveJavaLuaDirectory() {
+    final String folderName = "javalua";
+    for (Path currentDirectory = Paths.get(".").toAbsolutePath();
+        null != currentDirectory && !currentDirectory.equals(currentDirectory.getParent());
+        currentDirectory = currentDirectory.getParent()) {
+      if (folderName.equals(currentDirectory.getFileName().toString())) {
+        return currentDirectory;
+      }
+    }
+    throw new IllegalStateException("cannot find directory " + folderName);
+  }
 
+  static List<Path> resolveLuaFilePaths() throws IOException {
+    Path currentDirectory = resolveJavaLuaDirectory();
+    System.out.println("currentDirectory " + currentDirectory.toAbsolutePath());
+    return findAllLuaFilesUnderTestResources(currentDirectory);
+  }
+
+  /**
+   * 生成 {@link ResourceContentConstants} 里的内容
+   */
+  static void generateResourceContentConstants(List<Path> luaFiles) {
     for (int i = 0; i < 30; i++) {
       final String chapter;
       if (i < 10) {
@@ -171,5 +198,28 @@ public class LuaResourceUtils {
       }
       generateJavaCode(chapter, luaFileNames);
     }
+  }
+
+  /**
+   * 编译所有lua代码
+   */
+  static void compileAllLuaCode(List<Path> luaFiles) {
+    System.out.println("luaFiles " + luaFiles);
+    forEachLuaFile(
+        luaFiles,
+        (workingDirectory, luaFileName) -> {
+          compileLua(workingDirectory, luaFileName);
+          decompileToBytecode(workingDirectory, luaFileName);
+        });
+  }
+
+  public static List<LuaTestResource> getLuaTestResources() throws IOException {
+    List<Path> luaFiles = resolveLuaFilePaths();
+    List<LuaTestResource> luaTestResources = new ArrayList<>();
+    for (Path luaFile : luaFiles) {
+      LuaTestResource luaTestResource = LuaTestResource.resolve(luaFile);
+      luaTestResources.add(luaTestResource);
+    }
+    return luaTestResources;
   }
 }
