@@ -29,6 +29,8 @@ class LuaResource extends TextResource {
   public String toString() {
     return "LuaResource{" +
         "sourceCodeFileName='" + sourceCodeFileName + '\'' +
+        ", line='" + getCurrentLineNumber() + '\'' +
+        ", column='" + getCurrentLineColumnOffset() + '\'' +
         '}';
   }
 }

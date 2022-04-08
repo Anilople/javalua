@@ -232,7 +232,7 @@ class LuaTokenIterator implements Iterator<LuaToken> {
       return this.scanIdentifier();
     }
 
-    throw new IllegalStateException("" + this.resource);
+    throw new IllegalStateException(this.resource + " location " + this.getTokenLocation());
   }
 
   /**
@@ -243,11 +243,9 @@ class LuaTokenIterator implements Iterator<LuaToken> {
       if (this.resource.test("--")) {
         this.skipComment();
       } else if (this.resource.test("\r\n")) {
-        this.resource.nextChar();
-        this.resource.nextChar();
+        this.resource.skipChars(2);
       } else if (this.resource.test("\n\r")) {
-        this.resource.nextChar();
-        this.resource.nextChar();
+        this.resource.skipChars(2);
       } else if (CharacterUtils.isNewLine(this.resource.previewNextChar())) {
         this.resource.nextChar();
       } else if (CharacterUtils.isWhiteSpace(this.resource.previewNextChar())) {
@@ -262,8 +260,7 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     if (!this.resource.test("--")) {
       throw new IllegalStateException();
     }
-    this.resource.nextChar();
-    this.resource.nextChar();
+    this.resource.skipChars(2);
     if (this.resource.test("[")) {
       // long comment
       // TODO
@@ -271,9 +268,11 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     }
 
     // short comment
-    while (this.resource.hasNextChar()
-        && !CharacterUtils.isWhiteSpace(this.resource.previewNextChar())) {
-      this.resource.nextChar();
+    while (this.resource.hasNextChar()) {
+      final char c = this.resource.nextChar();
+      if (CharacterUtils.isNewLine(c)) {
+        break;
+      }
     }
   }
 }

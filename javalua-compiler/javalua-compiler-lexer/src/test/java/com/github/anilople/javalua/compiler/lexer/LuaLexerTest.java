@@ -11,6 +11,7 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static org.junit.jupiter.api.Assertions.*;
 
 import constant.ResourceContentConstants.ch02;
+import constant.ResourceContentConstants.ch14;
 import io.LuaTestResource;
 import java.io.IOException;
 import java.util.List;
@@ -106,6 +107,12 @@ class LuaLexerTest {
       LuaToken luaToken = luaTokens.get(3);
       assertEquals(TOKEN_SEP_RPAREN, luaToken.getKind());
     }
+  }
+
+  @Test
+  void max_case1() {
+    List<LuaToken> luaTokens = LuaLexer.lexer(ch14.max_case1.getLuaCode());
+    luaTokens.forEach(System.out::println);
   }
 
   @Test

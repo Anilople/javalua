@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -24,6 +23,12 @@ public class LuaTestResourceUtils {
   static final String LUA_SUFFIX = ".lua";
   static final String OUT_SUFFIX = ".out";
   static final String BYTECODE_SUFFIX = ".bytecode";
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    List<Path> luaFiles = resolveLuaFilePaths();
+    compileAllLuaCode(luaFiles);
+    generateResourceContentConstants(luaFiles);
+  }
 
   public static String resolveOutFilename(String luaFileName) {
     return luaFileName.replace(LUA_SUFFIX, OUT_SUFFIX);
@@ -218,11 +223,5 @@ public class LuaTestResourceUtils {
       luaTestResources.add(luaTestResource);
     }
     return luaTestResources;
-  }
-
-  public static void main(String[] args) throws IOException, InterruptedException {
-    List<Path> luaFiles = resolveLuaFilePaths();
-    compileAllLuaCode(luaFiles);
-    generateResourceContentConstants(luaFiles);
   }
 }

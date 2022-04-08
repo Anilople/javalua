@@ -117,4 +117,8 @@ public interface ResourceContentConstants {
     LuaTestResource pcall_error = LuaTestResource.resolve("ch13/pcall_error.lua");
     LuaTestResource pcall_print = LuaTestResource.resolve("ch13/pcall_print.lua");
   }
+
+  interface ch14 {
+    LuaTestResource max_case1 = LuaTestResource.resolve("ch14/max_case1.lua");
+  }
 }
