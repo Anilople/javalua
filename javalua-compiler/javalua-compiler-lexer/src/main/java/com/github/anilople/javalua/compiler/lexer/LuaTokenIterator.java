@@ -232,7 +232,7 @@ class LuaTokenIterator implements Iterator<LuaToken> {
       return this.scanIdentifier();
     }
 
-    throw new IllegalStateException();
+    throw new IllegalStateException("" + this.resource);
   }
 
   /**

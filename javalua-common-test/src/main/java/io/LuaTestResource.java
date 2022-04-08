@@ -1,5 +1,8 @@
 package io;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
@@ -32,7 +35,25 @@ public class LuaTestResource {
         ResourceReadUtils.readBytes(LuaTestResourceUtils.resolveOutFilename(this.luaFilePath));
   }
 
+  private LuaTestResource(Path luaFile) {
+    this.luaFilePath = luaFile.toAbsolutePath().toString();
+    try {
+      this.luaCode = Files.readString(luaFile);
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
+    try {
+      this.luacOut = Files.readAllBytes(LuaTestResourceUtils.resolveOutFilePath(luaFile));
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
   public static LuaTestResource resolve(String luaFilePath) {
     return RESOURCE_REGISTRY.computeIfAbsent(luaFilePath, LuaTestResource::new);
+  }
+
+  public static LuaTestResource resolve(Path luaFile) {
+    return RESOURCE_REGISTRY.computeIfAbsent(luaFile.toAbsolutePath().toString(), key -> new LuaTestResource(luaFile));
   }
 }

@@ -20,8 +20,9 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
     return this.previewNext();
   }
 
-  static List<LuaToken> lexer(String luaCode) {
-    LuaLexer luaLexer = newLuaLexer(luaCode);
+
+  static List<LuaToken> lexer(String luaCode, String sourceCodeFilePath) {
+    LuaLexer luaLexer = newLuaLexer(luaCode, sourceCodeFilePath);
     List<LuaToken> luaTokens = new ArrayList<>();
     for (LuaToken luaToken = luaLexer.next();
         !TOKEN_EOF.equals(luaToken.getKind());
@@ -31,7 +32,16 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
     return luaTokens;
   }
 
+  static List<LuaToken> lexer(String luaCode) {
+    return lexer(luaCode, "unknown");
+  }
+
+
   static LuaLexer newLuaLexer(String luaCode) {
     return new LuaLexerImpl(luaCode);
+  }
+
+  static LuaLexer newLuaLexer(String luaCode, String sourceCodeFilePath) {
+    return new LuaLexerImpl(luaCode, sourceCodeFilePath);
   }
 }

@@ -11,8 +11,11 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static org.junit.jupiter.api.Assertions.*;
 
 import constant.ResourceContentConstants.ch02;
+import io.LuaTestResource;
+import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import util.LuaTestResourceUtils;
 
 /**
  * @author wxq
@@ -102,6 +105,15 @@ class LuaLexerTest {
     {
       LuaToken luaToken = luaTokens.get(3);
       assertEquals(TOKEN_SEP_RPAREN, luaToken.getKind());
+    }
+  }
+
+  @Test
+  void lexerAllLuaCode() throws IOException {
+    List<LuaTestResource> luaTestResources = LuaTestResourceUtils.getLuaTestResources();
+    System.out.println("luaTestResources size " + luaTestResources.size());
+    for (LuaTestResource luaTestResource : luaTestResources) {
+      LuaLexer.lexer(luaTestResource.getLuaCode(), luaTestResource.getLuaFilePath());
     }
   }
 }

@@ -1,6 +1,7 @@
 package util;
 
 import constant.ResourceContentConstants;
+import io.LuaTestResource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,13 @@ public class LuaTestResourceUtils {
 
   public static String resolveOutFilename(String luaFileName) {
     return luaFileName.replace(LUA_SUFFIX, OUT_SUFFIX);
+  }
+
+  public static Path resolveOutFilePath(Path luaFile) {
+    String luaFileName = luaFile.getFileName().toString();
+    Path directory = luaFile.getParent();
+    String outFileName = resolveOutFilename(luaFileName);
+    return directory.resolve(outFileName);
   }
 
   static String resolveBytecodeFilename(String luaFileName) {
@@ -144,11 +153,25 @@ public class LuaTestResourceUtils {
             .collect(Collectors.toList());
     return luaFiles.stream()
         .filter(LuaTestResourceUtils::isTestResource)
-        .collect(Collectors.toList());
+        .collect(Collectors.toUnmodifiableList());
+  }
+
+  static Path resolveJavaLuaDirectory() {
+    final String folderName = "javalua";
+    for (
+        Path currentDirectory = Paths.get(".").toAbsolutePath();
+        null != currentDirectory && !currentDirectory.equals(currentDirectory.getParent());
+        currentDirectory = currentDirectory.getParent()
+    ) {
+      if (folderName.equals(currentDirectory.getFileName().toString())) {
+        return currentDirectory;
+      }
+    }
+    throw new IllegalStateException("cannot find directory " + folderName);
   }
 
   static List<Path> resolveLuaFilePaths() throws IOException {
-    Path currentDirectory = Paths.get(".");
+    Path currentDirectory = resolveJavaLuaDirectory();
     System.out.println("currentDirectory " + currentDirectory.toAbsolutePath());
     return findAllLuaFilesUnderTestResources(currentDirectory);
   }
@@ -185,6 +208,16 @@ public class LuaTestResourceUtils {
           compileLua(workingDirectory, luaFileName);
           decompileToBytecode(workingDirectory, luaFileName);
         });
+  }
+
+  public static List<LuaTestResource> getLuaTestResources() throws IOException {
+    List<Path> luaFiles = resolveLuaFilePaths();
+    List<LuaTestResource> luaTestResources = new ArrayList<>();
+    for (Path luaFile : luaFiles) {
+      LuaTestResource luaTestResource = LuaTestResource.resolve(luaFile);
+      luaTestResources.add(luaTestResource);
+    }
+    return luaTestResources;
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
