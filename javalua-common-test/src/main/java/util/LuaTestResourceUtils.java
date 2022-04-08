@@ -163,11 +163,9 @@ public class LuaTestResourceUtils {
 
   static Path resolveJavaLuaDirectory() {
     final String folderName = "javalua";
-    for (
-        Path currentDirectory = Paths.get(".").toAbsolutePath();
+    for (Path currentDirectory = Paths.get(".").toAbsolutePath();
         null != currentDirectory && !currentDirectory.equals(currentDirectory.getParent());
-        currentDirectory = currentDirectory.getParent()
-    ) {
+        currentDirectory = currentDirectory.getParent()) {
       if (folderName.equals(currentDirectory.getFileName().toString())) {
         return currentDirectory;
       }

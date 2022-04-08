@@ -54,6 +54,7 @@ public class LuaTestResource {
   }
 
   public static LuaTestResource resolve(Path luaFile) {
-    return RESOURCE_REGISTRY.computeIfAbsent(luaFile.toAbsolutePath().toString(), key -> new LuaTestResource(luaFile));
+    return RESOURCE_REGISTRY.computeIfAbsent(
+        luaFile.toAbsolutePath().toString(), key -> new LuaTestResource(luaFile));
   }
 }

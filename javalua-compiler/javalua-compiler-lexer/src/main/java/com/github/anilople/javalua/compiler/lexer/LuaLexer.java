@@ -20,7 +20,6 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
     return this.previewNext();
   }
 
-
   static List<LuaToken> lexer(String luaCode, String sourceCodeFilePath) {
     LuaLexer luaLexer = newLuaLexer(luaCode, sourceCodeFilePath);
     List<LuaToken> luaTokens = new ArrayList<>();
@@ -35,7 +34,6 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
   static List<LuaToken> lexer(String luaCode) {
     return lexer(luaCode, "unknown");
   }
-
 
   static LuaLexer newLuaLexer(String luaCode) {
     return new LuaLexerImpl(luaCode);

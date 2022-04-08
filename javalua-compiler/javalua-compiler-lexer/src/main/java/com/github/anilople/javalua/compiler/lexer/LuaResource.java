@@ -27,10 +27,16 @@ class LuaResource extends TextResource {
 
   @Override
   public String toString() {
-    return "LuaResource{" +
-        "sourceCodeFileName='" + sourceCodeFileName + '\'' +
-        ", line='" + getCurrentLineNumber() + '\'' +
-        ", column='" + getCurrentLineColumnOffset() + '\'' +
-        '}';
+    return "LuaResource{"
+        + "sourceCodeFileName='"
+        + sourceCodeFileName
+        + '\''
+        + ", line='"
+        + getCurrentLineNumber()
+        + '\''
+        + ", column='"
+        + getCurrentLineColumnOffset()
+        + '\''
+        + '}';
   }
 }
