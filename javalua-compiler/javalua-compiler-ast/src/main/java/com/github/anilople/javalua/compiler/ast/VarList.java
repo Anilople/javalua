@@ -8,8 +8,7 @@ import java.util.List;
  * @author wxq
  */
 public class VarList extends XxxList<Var> {
-  public VarList(LuaAstLocation luaAstLocation, Var var,
-      List<Var> list) {
+  public VarList(LuaAstLocation luaAstLocation, Var var, List<Var> list) {
     super(luaAstLocation, var, list);
   }
 }

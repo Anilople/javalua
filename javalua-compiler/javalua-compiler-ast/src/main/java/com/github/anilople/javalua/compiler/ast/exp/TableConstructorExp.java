@@ -13,10 +13,12 @@ import lombok.Getter;
 @Getter
 public class TableConstructorExp extends AbstractExp {
   private final Optional<FieldList> optionalFieldList;
+
   public TableConstructorExp(LuaAstLocation luaAstLocation) {
     super(luaAstLocation);
     this.optionalFieldList = Optional.empty();
   }
+
   public TableConstructorExp(LuaAstLocation luaAstLocation, FieldList fieldList) {
     super(luaAstLocation);
     this.optionalFieldList = Optional.of(fieldList);

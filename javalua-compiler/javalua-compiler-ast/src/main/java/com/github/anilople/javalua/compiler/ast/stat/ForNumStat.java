@@ -53,5 +53,6 @@ public class ForNumStat implements Stat {
    * 不存在时，使用数值 1
    */
   private final Optional<Exp> stepExp;
+
   private final Block block;
 }

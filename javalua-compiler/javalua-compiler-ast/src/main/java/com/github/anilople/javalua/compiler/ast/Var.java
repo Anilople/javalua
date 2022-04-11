@@ -22,8 +22,8 @@ public abstract class Var extends AbstractLuaAst {
   public static class PrefixExpVar extends Var {
     private final PrefixExp prefixExp;
     private final Exp exp;
-    public PrefixExpVar(LuaAstLocation luaAstLocation,
-        PrefixExp prefixExp, Exp exp) {
+
+    public PrefixExpVar(LuaAstLocation luaAstLocation, PrefixExp prefixExp, Exp exp) {
       super(luaAstLocation);
       this.prefixExp = prefixExp;
       this.exp = exp;
@@ -37,6 +37,7 @@ public abstract class Var extends AbstractLuaAst {
    */
   public static class NameVar extends Var {
     private final Name name;
+
     public NameVar(LuaAstLocation luaAstLocation, Name name) {
       super(luaAstLocation);
       this.name = name;
@@ -51,8 +52,8 @@ public abstract class Var extends AbstractLuaAst {
   public static class PrefixExpNameVar extends Var {
     private final PrefixExp prefixExp;
     private final Name name;
-    public PrefixExpNameVar(LuaAstLocation luaAstLocation,
-        PrefixExp prefixExp, Name name) {
+
+    public PrefixExpNameVar(LuaAstLocation luaAstLocation, PrefixExp prefixExp, Name name) {
       super(luaAstLocation);
       this.prefixExp = prefixExp;
       this.name = name;

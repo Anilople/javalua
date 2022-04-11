@@ -10,8 +10,7 @@ import java.util.List;
  */
 public class ExpList extends XxxList<Exp> {
 
-  public ExpList(LuaAstLocation luaAstLocation, Exp exp,
-      List<Exp> list) {
+  public ExpList(LuaAstLocation luaAstLocation, Exp exp, List<Exp> list) {
     super(luaAstLocation, exp, list);
   }
 }

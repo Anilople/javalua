@@ -8,7 +8,7 @@ import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
  * @author wxq
  */
 public class FunctionDefExp extends AbstractExp {
-//  private final FuncBo
+  //  private final FuncBo
   public FunctionDefExp(LuaAstLocation luaAstLocation) {
     super(luaAstLocation);
   }

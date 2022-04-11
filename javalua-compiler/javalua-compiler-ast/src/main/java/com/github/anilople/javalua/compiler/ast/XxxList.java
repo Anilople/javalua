@@ -10,6 +10,7 @@ import java.util.List;
 public class XxxList<T> extends AbstractLuaAst {
   private final T t;
   private final List<T> list;
+
   public XxxList(LuaAstLocation luaAstLocation, T t, List<T> list) {
     super(luaAstLocation);
     this.t = t;

@@ -14,8 +14,9 @@ public class NameFunctionCall extends FunctionCall {
   private final PrefixExp prefixExp;
   private final Name name;
   private final Args args;
-  public NameFunctionCall(LuaAstLocation luaAstLocation,
-      PrefixExp prefixExp, Name name, Args args) {
+
+  public NameFunctionCall(
+      LuaAstLocation luaAstLocation, PrefixExp prefixExp, Name name, Args args) {
     super(luaAstLocation);
     this.prefixExp = prefixExp;
     this.name = name;

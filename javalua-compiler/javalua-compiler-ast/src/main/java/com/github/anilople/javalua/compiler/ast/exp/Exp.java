@@ -6,6 +6,4 @@ package com.github.anilople.javalua.compiler.ast.exp;
  *
  * @author wxq
  */
-public interface Exp {
-
-}
+public interface Exp {}

@@ -20,17 +20,15 @@ public class Funcname extends AbstractLuaAst {
    */
   private final Optional<Name> colonName;
 
-  public Funcname(LuaAstLocation luaAstLocation, Name name,
-      List<Name> dotNameList,
-      Name colonName) {
+  public Funcname(
+      LuaAstLocation luaAstLocation, Name name, List<Name> dotNameList, Name colonName) {
     super(luaAstLocation);
     this.name = name;
     this.dotNameList = dotNameList;
     this.colonName = Optional.of(colonName);
   }
 
-  public Funcname(LuaAstLocation luaAstLocation, Name name,
-      List<Name> dotNameList) {
+  public Funcname(LuaAstLocation luaAstLocation, Name name, List<Name> dotNameList) {
     super(luaAstLocation);
     this.name = name;
     this.dotNameList = dotNameList;

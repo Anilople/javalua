@@ -19,9 +19,9 @@ public abstract class ParList extends AbstractLuaAst {
   public static class NameListParList extends ParList {
     private final NameList nameList;
     private final Optional<VarargExp> optionalVarargExp;
-    public NameListParList(LuaAstLocation luaAstLocation,
-        NameList nameList,
-        Optional<VarargExp> optionalVarargExp) {
+
+    public NameListParList(
+        LuaAstLocation luaAstLocation, NameList nameList, Optional<VarargExp> optionalVarargExp) {
       super(luaAstLocation);
       this.nameList = nameList;
       this.optionalVarargExp = optionalVarargExp;

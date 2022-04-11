@@ -10,8 +10,8 @@ import java.util.Optional;
 public class FuncBody extends AbstractLuaAst {
   private final Optional<ParList> optionalParList;
   private final Block block;
-  public FuncBody(LuaAstLocation luaAstLocation,
-      Optional<ParList> optionalParList, Block block) {
+
+  public FuncBody(LuaAstLocation luaAstLocation, Optional<ParList> optionalParList, Block block) {
     super(luaAstLocation);
     this.optionalParList = optionalParList;
     this.block = block;

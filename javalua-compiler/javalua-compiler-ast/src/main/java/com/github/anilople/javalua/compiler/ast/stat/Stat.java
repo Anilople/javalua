@@ -19,6 +19,4 @@ package com.github.anilople.javalua.compiler.ast.stat;
  *
  * @author wxq
  */
-public interface Stat {
-
-}
+public interface Stat {}

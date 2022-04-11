@@ -9,8 +9,8 @@ import java.util.Optional;
  */
 public class Retstat extends AbstractLuaAst {
   private final Optional<ExpList> optionalExpList;
-  public Retstat(LuaAstLocation luaAstLocation,
-      Optional<ExpList> optionalExpList) {
+
+  public Retstat(LuaAstLocation luaAstLocation, Optional<ExpList> optionalExpList) {
     super(luaAstLocation);
     this.optionalExpList = optionalExpList;
   }

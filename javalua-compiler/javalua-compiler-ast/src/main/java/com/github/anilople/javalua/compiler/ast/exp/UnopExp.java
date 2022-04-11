@@ -13,8 +13,8 @@ import com.github.anilople.javalua.compiler.ast.Unop;
 public class UnopExp extends AbstractExp {
   private final Unop unop;
   private final Exp exp;
-  public UnopExp(LuaAstLocation luaAstLocation, Unop unop,
-      Exp exp) {
+
+  public UnopExp(LuaAstLocation luaAstLocation, Unop unop, Exp exp) {
     super(luaAstLocation);
     this.unop = unop;
     this.exp = exp;

@@ -10,8 +10,8 @@ import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 public class NoNameFunctionCall extends FunctionCall {
   private final PrefixExp prefixExp;
   private final Args args;
-  public NoNameFunctionCall(LuaAstLocation luaAstLocation,
-      PrefixExp prefixExp, Args args) {
+
+  public NoNameFunctionCall(LuaAstLocation luaAstLocation, PrefixExp prefixExp, Args args) {
     super(luaAstLocation);
     this.prefixExp = prefixExp;
     this.args = args;

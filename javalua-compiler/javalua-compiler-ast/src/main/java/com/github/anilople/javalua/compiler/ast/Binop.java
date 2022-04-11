@@ -12,6 +12,7 @@ package com.github.anilople.javalua.compiler.ast;
  */
 public class Binop extends AbstractLuaAst {
   private final String symbol;
+
   public Binop(LuaAstLocation luaAstLocation, String symbol) {
     super(luaAstLocation);
     this.symbol = symbol;

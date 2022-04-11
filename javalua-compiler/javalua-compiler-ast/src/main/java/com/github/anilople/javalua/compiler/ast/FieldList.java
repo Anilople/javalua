@@ -15,9 +15,11 @@ public class FieldList extends AbstractLuaAst {
    * {fieldsep field}
    */
   private final List<Entry<FieldSep, Field>> list;
+
   private final Optional<FieldSep> optionalFieldsep;
 
-  public FieldList(LuaAstLocation luaAstLocation,
+  public FieldList(
+      LuaAstLocation luaAstLocation,
       Field field,
       List<Entry<FieldSep, Field>> list,
       Optional<FieldSep> optionalFieldsep) {
