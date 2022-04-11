@@ -3,7 +3,6 @@ package com.github.anilople.javalua.compiler.ast;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
 import java.util.List;
 import java.util.Optional;
-import lombok.Data;
 
 /**
  *
@@ -11,9 +10,16 @@ import lombok.Data;
  *
  * @author wxq
  */
-@Data
-public class Block {
+public class Block extends AbstractLuaAst {
 
-  List<Stat> statList;
-  Optional<Retstat> optionalRetstat;
+  private final List<Stat> statList;
+  private final Optional<Retstat> optionalRetstat;
+
+  public Block(LuaAstLocation luaAstLocation,
+      List<Stat> statList,
+      Optional<Retstat> optionalRetstat) {
+    super(luaAstLocation);
+    this.statList = statList;
+    this.optionalRetstat = optionalRetstat;
+  }
 }
