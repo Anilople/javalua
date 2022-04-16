@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>javalua-compiler-lexer</module>
+      <module>javalua-compiler-ast</module>
     </modules>
     <parent>
         <groupId>com.github.anilople</groupId>

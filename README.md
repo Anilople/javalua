@@ -644,6 +644,56 @@ Lexer的整个过程，输入是封装好的字符流，把1个或多个字符�
 
 ### 第15章 抽象语法树
 
+输入是token，输出是AST
+
+Abstract Syntax Tree 抽象语法树
+
+Concrete Syntax Tree，CST，具体语法树，也叫解析树（Parse Tree或者Parsing Tree）
+
+AST是CST的子集
+
+上下文无关文法（Context-free Grammar）CFG
+
+CFG一般用巴科斯范式（Backus-Naur Form，BNF）或者其扩展EBNF（Extend BNF）来书写
+
+| 符号 | 表示                         | 例子                       |
+| ---- | ---------------------------- | -------------------------- |
+| ::=  | 被定义为                     | chunk ::= block            |
+| {A}  | A可以出现任意次（0或者多次） | block ::= {stat} [retstat] |
+| [A]  | A可选（出现0次或者1次）      |                            |
+| \|   | 或                           |                            |
+
+语句（statement）是最基本的执行单位，表达式（expression）是构成语句的要素之一。
+
+语句只能执行不能用于求值，表达式只能用于求值不能单独执行
+
+本章主要内容是定义好AST，并不写parser
+
+语句：
+
+* 简单
+
+* while和repeat
+* if
+* 数值for，通用for
+* 局部变量声明
+* 赋值
+* 非局部函数定义
+* 局部函数定义
+
+表达式：
+
+* 简单
+* 运算符
+* 表构造
+* 函数定义
+* 前缀
+* 圆括号
+* 表访问
+* 函数调用
+
+
+
 ### 第16章 语法分析
 
 ### 第17章 代码生成
