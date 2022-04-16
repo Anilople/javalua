@@ -14,8 +14,8 @@ public class UnopExp extends AbstractExp {
   private final Unop unop;
   private final Exp exp;
 
-  public UnopExp(LuaAstLocation luaAstLocation, Unop unop, Exp exp) {
-    super(luaAstLocation);
+  public UnopExp(Unop unop, Exp exp) {
+    super(unop.getLuaAstLocation());
     this.unop = unop;
     this.exp = exp;
   }

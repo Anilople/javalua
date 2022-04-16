@@ -6,6 +6,6 @@ import lombok.Data;
  * @author wxq
  */
 @Data
-public abstract class AbstractLuaAst {
+public abstract class AbstractLuaAst implements LuaAst {
   private final LuaAstLocation luaAstLocation;
 }

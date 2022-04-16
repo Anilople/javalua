@@ -1,14 +1,17 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.Name;
-import lombok.Data;
 
 /**
  * label ::= ‘::’ Name ‘::’
  *
  * @author wxq
  */
-@Data
-public class Label implements Stat {
+public class LabelStat extends AbstractStat {
   private final Name name;
+
+  public LabelStat(Name name) {
+    super(name.getLuaAstLocation());
+    this.name = name;
+  }
 }

@@ -37,9 +37,8 @@ public abstract class Args extends AbstractLuaAst {
   public static class TableConstructorArgs extends Args {
     private final TableConstructorExp tableConstructorExp;
 
-    public TableConstructorArgs(
-        LuaAstLocation luaAstLocation, TableConstructorExp tableConstructorExp) {
-      super(luaAstLocation);
+    public TableConstructorArgs(TableConstructorExp tableConstructorExp) {
+      super(tableConstructorExp.getLuaAstLocation());
       this.tableConstructorExp = tableConstructorExp;
     }
   }
@@ -52,8 +51,8 @@ public abstract class Args extends AbstractLuaAst {
   public static class LiteralStringArgs extends Args {
     private final LiteralStringExp literalStringExp;
 
-    public LiteralStringArgs(LuaAstLocation luaAstLocation, LiteralStringExp literalStringExp) {
-      super(luaAstLocation);
+    public LiteralStringArgs(LiteralStringExp literalStringExp) {
+      super(literalStringExp.getLuaAstLocation());
       this.literalStringExp = literalStringExp;
     }
   }

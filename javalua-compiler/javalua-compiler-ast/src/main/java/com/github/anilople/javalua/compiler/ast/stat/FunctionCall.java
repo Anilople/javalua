@@ -1,16 +1,18 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
-import com.github.anilople.javalua.compiler.ast.AbstractLuaAst;
-import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 
 /**
  * functioncall ::=  prefixexp args | prefixexp ‘:’ Name args
  *
  * @author wxq
  */
-abstract class FunctionCall extends AbstractLuaAst implements Stat {
+public abstract class FunctionCall extends AbstractStat {
 
-  public FunctionCall(LuaAstLocation luaAstLocation) {
-    super(luaAstLocation);
+  private final PrefixExp prefixExp;
+
+  public FunctionCall(PrefixExp prefixExp) {
+    super(prefixExp.getLuaAstLocation());
+    this.prefixExp = prefixExp;
   }
 }

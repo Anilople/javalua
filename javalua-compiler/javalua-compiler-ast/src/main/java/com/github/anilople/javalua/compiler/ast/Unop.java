@@ -32,8 +32,8 @@ public class Unop extends AbstractLuaAst {
   /**
    * ‘#’
    */
-  public static class SharpUnop extends Unop {
-    public SharpUnop(LuaAstLocation luaAstLocation) {
+  public static class LengthUnop extends Unop {
+    public LengthUnop(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
     }
   }
@@ -41,8 +41,8 @@ public class Unop extends AbstractLuaAst {
   /**
    * ‘~’
    */
-  public static class TildeUnop extends Unop {
-    public TildeUnop(LuaAstLocation luaAstLocation) {
+  public static class BitNotUnop extends Unop {
+    public BitNotUnop(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
     }
   }

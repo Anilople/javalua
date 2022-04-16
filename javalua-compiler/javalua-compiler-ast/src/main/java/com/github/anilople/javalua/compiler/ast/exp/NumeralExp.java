@@ -11,7 +11,7 @@ import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
  *
  * @author wxq
  */
-abstract class NumeralExp extends AbstractExp {
+public abstract class NumeralExp extends AbstractExp {
 
   public NumeralExp(LuaAstLocation luaAstLocation) {
     super(luaAstLocation);

@@ -1,12 +1,18 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
-import lombok.Data;
 
 /**
+ * goto Name
+ *
  * @author wxq
  */
-@Data
-public class GotoStat implements Stat {
+public class GotoStat extends AbstractStat {
   private final Name name;
+
+  public GotoStat(Name name) {
+    super(name.getLuaAstLocation());
+    this.name = name;
+  }
 }

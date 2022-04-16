@@ -2,8 +2,8 @@ package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.ExpList;
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.NameList;
-import lombok.Data;
 
 /**
  * for namelist in explist do block end
@@ -12,10 +12,16 @@ import lombok.Data;
  *
  * @author wxq
  */
-@Data
-public class ForInStat implements Stat {
-  private final int lineOfDo;
+public class ForInStat extends AbstractStat {
   private final NameList namelist;
   private final ExpList explist;
   private final Block block;
+
+  public ForInStat(LuaAstLocation luaAstLocation,
+      NameList namelist, ExpList explist, Block block) {
+    super(luaAstLocation);
+    this.namelist = namelist;
+    this.explist = explist;
+    this.block = block;
+  }
 }

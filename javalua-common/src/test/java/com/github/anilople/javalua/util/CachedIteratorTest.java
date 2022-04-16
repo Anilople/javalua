@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 
@@ -46,5 +47,24 @@ class CachedIteratorTest {
     assertFalse(cachedIterator.hasNext());
     assertThrows(NoSuchElementException.class, cachedIterator::previewNext);
     assertThrows(NoSuchElementException.class, cachedIterator::next);
+  }
+
+  @Test
+  void testPreviewNextCase1() {
+    CachedIterator<Integer> cachedIterator =
+        CachedIterator.newCachedIterator(Arrays.asList(111, 222, 333).iterator());
+    assertThrows(NoSuchElementException.class, () -> cachedIterator.previewNext(4));
+    assertEquals(Arrays.asList(111, 222, 333), cachedIterator.previewNext(3));
+
+    cachedIterator.next();
+    assertEquals(Arrays.asList(222, 333), cachedIterator.previewNext(2));
+    assertEquals(cachedIterator.previewNext(2), cachedIterator.previewNext(2));
+
+    cachedIterator.next();
+    assertEquals(List.of(333), cachedIterator.previewNext(1));
+    assertEquals(cachedIterator.previewNext(), cachedIterator.previewNext(1).get(0));
+
+    cachedIterator.next();
+    assertFalse(cachedIterator.hasNext());
   }
 }

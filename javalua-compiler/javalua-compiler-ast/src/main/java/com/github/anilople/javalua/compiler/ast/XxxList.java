@@ -7,13 +7,13 @@ import java.util.List;
  *
  * @author wxq
  */
-public class XxxList<T> extends AbstractLuaAst {
-  private final T t;
-  private final List<T> list;
+public class XxxList<T extends LuaAst> extends AbstractLuaAst {
+  private final T first;
+  private final List<T> tail;
 
-  public XxxList(LuaAstLocation luaAstLocation, T t, List<T> list) {
-    super(luaAstLocation);
-    this.t = t;
-    this.list = list;
+  public XxxList(T first, List<T> tail) {
+    super(first.getLuaAstLocation());
+    this.first = first;
+    this.tail = tail;
   }
 }

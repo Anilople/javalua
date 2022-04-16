@@ -1,16 +1,13 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
-import lombok.Data;
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 
 /**
  * @author wxq
  */
-@Data
-public class BreakStat implements Stat {
+public class BreakStat extends AbstractStat {
 
-  private final int line;
-
-  public BreakStat(int line) {
-    this.line = line;
+  public BreakStat(LuaAstLocation luaAstLocation) {
+    super(luaAstLocation);
   }
 }

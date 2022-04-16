@@ -1,4 +1,4 @@
-package com.github.anilople.javalua.compiler.ast.exp;
+package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.AbstractLuaAst;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
@@ -6,9 +6,9 @@ import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 /**
  * @author wxq
  */
-abstract class AbstractExp extends AbstractLuaAst implements Exp {
+public class AbstractStat extends AbstractLuaAst implements Stat {
 
-  public AbstractExp(LuaAstLocation luaAstLocation) {
+  public AbstractStat(LuaAstLocation luaAstLocation) {
     super(luaAstLocation);
   }
 }

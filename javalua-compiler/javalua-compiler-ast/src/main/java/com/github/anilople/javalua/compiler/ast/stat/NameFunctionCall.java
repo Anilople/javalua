@@ -11,14 +11,11 @@ import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
  * @author wxq
  */
 public class NameFunctionCall extends FunctionCall {
-  private final PrefixExp prefixExp;
   private final Name name;
   private final Args args;
 
-  public NameFunctionCall(
-      LuaAstLocation luaAstLocation, PrefixExp prefixExp, Name name, Args args) {
-    super(luaAstLocation);
-    this.prefixExp = prefixExp;
+  public NameFunctionCall(PrefixExp prefixExp, Name name, Args args) {
+    super(prefixExp);
     this.name = name;
     this.args = args;
   }

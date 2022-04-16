@@ -1,8 +1,9 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.FuncBody;
-import com.github.anilople.javalua.compiler.ast.Funcname;
-import lombok.Data;
+import com.github.anilople.javalua.compiler.ast.FuncName;
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+import com.github.anilople.javalua.compiler.ast.Name;
 
 /**
  * local function Name funcbody
@@ -10,8 +11,15 @@ import lombok.Data;
  * @see FunctionDefineStat
  * @author wxq
  */
-@Data
-public class LocalFunctionDefineStat implements Stat {
-  private final Funcname funcname;
+public class LocalFunctionDefineStat extends AbstractStat {
+  private final Name name;
   private final FuncBody funcbody;
+
+  public LocalFunctionDefineStat(
+      LuaAstLocation luaAstLocation, Name name,
+      FuncBody funcbody) {
+    super(luaAstLocation);
+    this.name = name;
+    this.funcbody = funcbody;
+  }
 }

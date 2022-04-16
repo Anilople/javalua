@@ -1,17 +1,14 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+
 /**
  *  ‘;’
  *
  * @author wxq
  */
-public class EmptyStat implements Stat {
-
-  private static final EmptyStat INSTANCE = new EmptyStat();
-
-  private EmptyStat() {}
-
-  public static EmptyStat getInstance() {
-    return INSTANCE;
+public class EmptyStat extends AbstractStat {
+  public EmptyStat(LuaAstLocation luaAstLocation) {
+    super(luaAstLocation);
   }
 }
