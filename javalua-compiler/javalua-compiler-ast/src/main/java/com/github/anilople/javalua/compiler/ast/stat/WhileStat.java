@@ -13,8 +13,7 @@ public class WhileStat extends AbstractStat {
   private final Exp exp;
   private final Block block;
 
-  public WhileStat(LuaAstLocation luaAstLocation,
-      Exp exp, Block block) {
+  public WhileStat(LuaAstLocation luaAstLocation, Exp exp, Block block) {
     super(luaAstLocation);
     this.exp = exp;
     this.block = block;

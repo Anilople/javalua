@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.compiler.ast.exp;
 
-import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Unop;
 
 /**

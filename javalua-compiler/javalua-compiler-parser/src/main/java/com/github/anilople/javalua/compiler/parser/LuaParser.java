@@ -1,5 +1,14 @@
 package com.github.anilople.javalua.compiler.parser;
 
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseTableConstructorExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseVarargExp;
+import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
+
 import com.github.anilople.javalua.compiler.ast.Args;
 import com.github.anilople.javalua.compiler.ast.Args.ExpListArgs;
 import com.github.anilople.javalua.compiler.ast.Args.LiteralStringArgs;
@@ -39,21 +48,11 @@ import com.github.anilople.javalua.compiler.ast.stat.Stat;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
 import com.github.anilople.javalua.compiler.lexer.LuaToken;
 import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
-import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
-
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseTableConstructorExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseVarargExp;
-import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 /**
  * @author wxq

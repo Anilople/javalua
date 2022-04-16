@@ -25,7 +25,10 @@ public class IfStat extends AbstractStat {
    */
   private final Optional<Block> elseBlock;
 
-  public IfStat(LuaAstLocation luaAstLocation, Exp exp, Block block,
+  public IfStat(
+      LuaAstLocation luaAstLocation,
+      Exp exp,
+      Block block,
       List<Entry<Exp, Block>> elseif,
       Optional<Block> elseBlock) {
     super(luaAstLocation);

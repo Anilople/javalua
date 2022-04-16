@@ -13,8 +13,7 @@ public class RepeatStat extends AbstractStat {
   private final Block block;
   private final Exp exp;
 
-  public RepeatStat(LuaAstLocation luaAstLocation,
-      Block block, Exp exp) {
+  public RepeatStat(LuaAstLocation luaAstLocation, Block block, Exp exp) {
     super(luaAstLocation);
     this.block = block;
     this.exp = exp;

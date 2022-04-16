@@ -1,10 +1,17 @@
 package com.github.anilople.javalua.compiler.parser;
 
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseUnop;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
+import static com.github.anilople.javalua.compiler.parser.LuaStatParser.parseFunctionCall;
+import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
+
 import com.github.anilople.javalua.compiler.ast.Binop;
 import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.FieldList;
 import com.github.anilople.javalua.compiler.ast.FuncBody;
-import com.github.anilople.javalua.compiler.ast.LuaAst;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Unop;
 import com.github.anilople.javalua.compiler.ast.Var;
@@ -35,15 +42,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseField;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseUnop;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
-import static com.github.anilople.javalua.compiler.parser.LuaStatParser.parseFunctionCall;
-import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 /**
  * page 303
@@ -88,8 +86,7 @@ class LuaExpParser {
       LuaLexer lexer,
       Exp expX,
       Predicate<TokenEnums> opPredicate,
-      Function<LuaLexer, Exp> functionOfParseExpY
-  ) {
+      Function<LuaLexer, Exp> functionOfParseExpY) {
     if (!lexer.hasNext()) {
       return expX;
     }
@@ -105,7 +102,7 @@ class LuaExpParser {
       return expX;
     }
   }
-  
+
   static boolean canParseExp(LuaLexer lexer) {
     return canParseExp2(lexer);
   }
@@ -123,13 +120,11 @@ class LuaExpParser {
   static Exp parseExp12(LuaLexer lexer) {
     Exp exp11 = parseExp11(lexer);
     if (lexer.lookAheadTest(TOKEN_OP_OR)) {
-      return resolveBinopExp(lexer, exp11, TOKEN_OP_OR::equals,
-          LuaExpParser::parseExp11);
+      return resolveBinopExp(lexer, exp11, TOKEN_OP_OR::equals, LuaExpParser::parseExp11);
     } else {
       return exp11;
     }
   }
-
 
   /**
    * Exp11 ::= exp10 {and exp10}
@@ -137,40 +132,39 @@ class LuaExpParser {
   static Exp parseExp11(LuaLexer lexer) {
     Exp exp10 = parseExp10(lexer);
     if (lexer.lookAheadTest(TOKEN_OP_AND)) {
-      return resolveBinopExp(lexer, exp10, TOKEN_OP_AND::equals,
-          LuaExpParser::parseExp10);
+      return resolveBinopExp(lexer, exp10, TOKEN_OP_AND::equals, LuaExpParser::parseExp10);
     } else {
       return exp10;
     }
   }
-
 
   /**
    * Exp10 ::= exp9 {(‘<’ | ‘>’ | ‘<=’ | ‘>=’ | ‘~=’ | ‘==’) exp9}
    */
   static Exp parseExp10(LuaLexer lexer) {
     Exp exp9 = parseExp9(lexer);
-    Predicate<TokenEnums> predicate = tokenEnums -> {
-      if (TOKEN_OP_LT.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_GT.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_LE.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_GE.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_NE.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_EQ.equals(tokenEnums)) {
-        return true;
-      }
-      return false;
-    };
+    Predicate<TokenEnums> predicate =
+        tokenEnums -> {
+          if (TOKEN_OP_LT.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_GT.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_LE.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_GE.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_NE.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_EQ.equals(tokenEnums)) {
+            return true;
+          }
+          return false;
+        };
     LuaToken token = lexer.lookAhead();
     if (predicate.test(token.getKind())) {
       return resolveBinopExp(lexer, exp9, predicate, LuaExpParser::parseExp9);
@@ -178,7 +172,6 @@ class LuaExpParser {
       return exp9;
     }
   }
-
 
   /**
    * Exp9 ::= exp8 {‘|’ exp8}
@@ -192,20 +185,17 @@ class LuaExpParser {
     }
   }
 
-
   /**
    * Exp8 ::= exp7 {‘~’ exp7}
    */
   static Exp parseExp8(LuaLexer lexer) {
     Exp exp7 = parseExp7(lexer);
     if (lexer.lookAheadTest(TOKEN_OP_BNOT)) {
-      return resolveBinopExp(lexer, exp7, TOKEN_OP_BNOT::equals,
-          LuaExpParser::parseExp7);
+      return resolveBinopExp(lexer, exp7, TOKEN_OP_BNOT::equals, LuaExpParser::parseExp7);
     } else {
       return exp7;
     }
   }
-
 
   /**
    * Exp7 ::= exp6 {‘&’ exp6}
@@ -213,28 +203,27 @@ class LuaExpParser {
   static Exp parseExp7(LuaLexer lexer) {
     Exp exp6 = parseExp6(lexer);
     if (lexer.lookAheadTest(TOKEN_OP_BAND)) {
-      return resolveBinopExp(lexer, exp6, TOKEN_OP_BAND::equals,
-          LuaExpParser::parseExp6);
+      return resolveBinopExp(lexer, exp6, TOKEN_OP_BAND::equals, LuaExpParser::parseExp6);
     } else {
       return exp6;
     }
   }
-
 
   /**
    * Exp6 ::= exp5 {(‘<<’ | ‘>>’) exp5}
    */
   static Exp parseExp6(LuaLexer lexer) {
     Exp exp5 = parseExp5(lexer);
-    Predicate<TokenEnums> predicate = tokenEnums -> {
-      if (TOKEN_OP_SHL.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_SHR.equals(tokenEnums)) {
-        return true;
-      }
-      return false;
-    };
+    Predicate<TokenEnums> predicate =
+        tokenEnums -> {
+          if (TOKEN_OP_SHL.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_SHR.equals(tokenEnums)) {
+            return true;
+          }
+          return false;
+        };
     LuaToken token = lexer.lookAhead();
     if (predicate.test(token.getKind())) {
       return resolveBinopExp(lexer, exp5, predicate, LuaExpParser::parseExp5);
@@ -243,35 +232,33 @@ class LuaExpParser {
     }
   }
 
-
   /**
    * Exp5 ::= exp4 {‘..’ exp4}
    */
   static Exp parseExp5(LuaLexer lexer) {
     Exp exp4 = parseExp4(lexer);
     if (lexer.lookAheadTest(TOKEN_OP_CONCAT)) {
-      return resolveBinopExp(lexer, exp4, TOKEN_OP_CONCAT::equals,
-          LuaExpParser::parseExp4);
+      return resolveBinopExp(lexer, exp4, TOKEN_OP_CONCAT::equals, LuaExpParser::parseExp4);
     } else {
       return exp4;
     }
   }
-
 
   /**
    * Exp4 ::= exp3 {(‘+’ | ‘-’) exp3}
    */
   static Exp parseExp4(LuaLexer lexer) {
     Exp exp3 = parseExp3(lexer);
-    Predicate<TokenEnums> predicate = tokenEnums -> {
-      if (TOKEN_OP_ADD.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_SUB.equals(tokenEnums)) {
-        return true;
-      }
-      return false;
-    };
+    Predicate<TokenEnums> predicate =
+        tokenEnums -> {
+          if (TOKEN_OP_ADD.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_SUB.equals(tokenEnums)) {
+            return true;
+          }
+          return false;
+        };
     LuaToken token = lexer.lookAhead();
     if (predicate.test(token.getKind())) {
       return resolveBinopExp(lexer, exp3, predicate, LuaExpParser::parseExp3);
@@ -280,27 +267,27 @@ class LuaExpParser {
     }
   }
 
-
   /**
    * Exp3 ::= exp2 {(‘*’ | ‘/’ | ‘//’ | ‘%’) exp2}
    */
   static Exp parseExp3(LuaLexer lexer) {
     Exp exp2 = parseExp2(lexer);
-    Predicate<TokenEnums> predicate = tokenEnums -> {
-      if (TOKEN_OP_MUL.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_DIV.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_IDIV.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_MOD.equals(tokenEnums)) {
-        return true;
-      }
-      return false;
-    };
+    Predicate<TokenEnums> predicate =
+        tokenEnums -> {
+          if (TOKEN_OP_MUL.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_DIV.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_IDIV.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_MOD.equals(tokenEnums)) {
+            return true;
+          }
+          return false;
+        };
     LuaToken token = lexer.lookAhead();
     if (predicate.test(token.getKind())) {
       return resolveBinopExp(lexer, exp2, predicate, LuaExpParser::parseExp2);
@@ -334,21 +321,22 @@ class LuaExpParser {
    * @see UnopExp
    */
   static Exp parseExp2(LuaLexer lexer) {
-    Predicate<TokenEnums> predicate = tokenEnums -> {
-      if (TOKEN_OP_NOT.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_LEN.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_SUB.equals(tokenEnums)) {
-        return true;
-      }
-      if (TOKEN_OP_BNOT.equals(tokenEnums)) {
-        return true;
-      }
-      return false;
-    };
+    Predicate<TokenEnums> predicate =
+        tokenEnums -> {
+          if (TOKEN_OP_NOT.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_LEN.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_SUB.equals(tokenEnums)) {
+            return true;
+          }
+          if (TOKEN_OP_BNOT.equals(tokenEnums)) {
+            return true;
+          }
+          return false;
+        };
     LuaToken token = lexer.lookAhead();
     if (predicate.test(token.getKind())) {
       Unop unop = parseUnop(lexer);
@@ -406,7 +394,7 @@ class LuaExpParser {
     }
     return canParsePrefixExp(lexer);
   }
-  
+
   /**
    * Exp0 ::= nil | false | true | Numeral | LiteralString | ‘...’ | functiondef | prefixexp |
    * tableconstructor

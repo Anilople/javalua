@@ -47,6 +47,7 @@ public class ForNumStat extends AbstractStat {
    * do 关键字所在位置
    */
   private final LuaAstLocation locationOfDo;
+
   private final Name name;
   private final Exp initExp;
   private final Exp limitExp;
@@ -57,10 +58,14 @@ public class ForNumStat extends AbstractStat {
 
   private final Block block;
 
-  public ForNumStat(LuaAstLocation locationOfFor,
-      LuaAstLocation locationOfDo, Name name,
-      Exp initExp, Exp limitExp,
-      Optional<Exp> stepExp, Block block) {
+  public ForNumStat(
+      LuaAstLocation locationOfFor,
+      LuaAstLocation locationOfDo,
+      Name name,
+      Exp initExp,
+      Exp limitExp,
+      Optional<Exp> stepExp,
+      Block block) {
     super(locationOfFor);
     this.locationOfDo = locationOfDo;
     this.name = name;

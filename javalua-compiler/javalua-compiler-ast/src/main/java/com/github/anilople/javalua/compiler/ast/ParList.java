@@ -32,6 +32,7 @@ public abstract class ParList extends AbstractLuaAst {
    */
   public static class VarargParList extends ParList {
     private final VarargExp varargExp;
+
     public VarargParList(VarargExp varargExp) {
       super(varargExp.getLuaAstLocation());
       this.varargExp = varargExp;

@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.compiler.ast.exp;
 
 import com.github.anilople.javalua.compiler.ast.Binop;
-import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 
 /**
  * page 281

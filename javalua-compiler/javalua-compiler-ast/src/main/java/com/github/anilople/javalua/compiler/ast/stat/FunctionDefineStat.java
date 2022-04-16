@@ -15,8 +15,7 @@ public class FunctionDefineStat extends AbstractStat {
   private final FuncName funcname;
   private final FuncBody funcbody;
 
-  public FunctionDefineStat(LuaAstLocation luaAstLocation,
-      FuncName funcname, FuncBody funcbody) {
+  public FunctionDefineStat(LuaAstLocation luaAstLocation, FuncName funcname, FuncBody funcbody) {
     super(luaAstLocation);
     this.funcname = funcname;
     this.funcbody = funcbody;

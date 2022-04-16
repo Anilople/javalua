@@ -17,8 +17,7 @@ public class ForInStat extends AbstractStat {
   private final ExpList explist;
   private final Block block;
 
-  public ForInStat(LuaAstLocation luaAstLocation,
-      NameList namelist, ExpList explist, Block block) {
+  public ForInStat(LuaAstLocation luaAstLocation, NameList namelist, ExpList explist, Block block) {
     super(luaAstLocation);
     this.namelist = namelist;
     this.explist = explist;

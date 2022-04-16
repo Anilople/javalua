@@ -20,6 +20,7 @@ public class PrefixExp extends AbstractExp {
    */
   public static class VarPrefixExp extends PrefixExp {
     private final Var var;
+
     public VarPrefixExp(Var var) {
       super(var.getLuaAstLocation());
       this.var = var;
@@ -31,6 +32,7 @@ public class PrefixExp extends AbstractExp {
    */
   public static class FunctionCallPrefixExp extends PrefixExp {
     private final FunctionCall functionCall;
+
     public FunctionCallPrefixExp(FunctionCall functionCall) {
       super(functionCall.getLuaAstLocation());
       this.functionCall = functionCall;
@@ -42,8 +44,8 @@ public class PrefixExp extends AbstractExp {
    */
   public static class ParenthesesPrefixExp extends PrefixExp {
     private final Exp exp;
-    public ParenthesesPrefixExp(LuaAstLocation luaAstLocation,
-        Exp exp) {
+
+    public ParenthesesPrefixExp(LuaAstLocation luaAstLocation, Exp exp) {
       super(luaAstLocation);
       this.exp = exp;
     }

@@ -19,9 +19,8 @@ public class LocalVarDeclStat extends AbstractStat {
    */
   private final Optional<ExpList> optionalExpList;
 
-  public LocalVarDeclStat(LuaAstLocation luaAstLocation,
-      NameList namelist,
-      Optional<ExpList> optionalExpList) {
+  public LocalVarDeclStat(
+      LuaAstLocation luaAstLocation, NameList namelist, Optional<ExpList> optionalExpList) {
     super(luaAstLocation);
     this.namelist = namelist;
     this.optionalExpList = optionalExpList;
