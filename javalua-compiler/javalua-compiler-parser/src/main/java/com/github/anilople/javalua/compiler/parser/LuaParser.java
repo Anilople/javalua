@@ -7,12 +7,22 @@ import com.github.anilople.javalua.compiler.ast.Args.TableConstructorArgs;
 import com.github.anilople.javalua.compiler.ast.Binop;
 import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.ExpList;
+import com.github.anilople.javalua.compiler.ast.Field;
+import com.github.anilople.javalua.compiler.ast.Field.ExpField;
+import com.github.anilople.javalua.compiler.ast.Field.NameField;
+import com.github.anilople.javalua.compiler.ast.Field.TableField;
+import com.github.anilople.javalua.compiler.ast.FieldList;
+import com.github.anilople.javalua.compiler.ast.FieldSep;
+import com.github.anilople.javalua.compiler.ast.FieldSep.CommaFieldSep;
+import com.github.anilople.javalua.compiler.ast.FieldSep.SemicolonFieldSep;
 import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.FuncName;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.ParList;
+import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
+import com.github.anilople.javalua.compiler.ast.ParList.VarargParList;
 import com.github.anilople.javalua.compiler.ast.Retstat;
 import com.github.anilople.javalua.compiler.ast.Unop;
 import com.github.anilople.javalua.compiler.ast.Unop.BitNotUnop;
@@ -21,19 +31,28 @@ import com.github.anilople.javalua.compiler.ast.Unop.MinusUnop;
 import com.github.anilople.javalua.compiler.ast.Unop.NotUnop;
 import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.VarList;
+import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
+import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
 import com.github.anilople.javalua.compiler.lexer.LuaToken;
 import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseTableConstructorExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseVarargExp;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 /**
@@ -81,13 +100,13 @@ public class LuaParser {
   static NameList parseNameList(LuaLexer lexer) {
     final Name first;
     {
-      LuaToken token = lexer.skip(TokenEnums.TOKEN_IDENTIFIER);
+      LuaToken token = lexer.skip(TOKEN_IDENTIFIER);
       LuaAstLocation location = convert(token);
       first = new Name(location, token.getContent());
     }
     List<Name> tail = new ArrayList<>();
-    while (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_COMMA)) {
-      LuaToken token = lexer.skip(TokenEnums.TOKEN_SEP_COMMA);
+    while (lexer.lookAheadTest(TOKEN_SEP_COMMA)) {
+      LuaToken token = lexer.skip(TOKEN_SEP_COMMA);
       LuaAstLocation location = convert(token);
       Name name = new Name(location, token.getContent());
       tail.add(name);
@@ -111,8 +130,8 @@ public class LuaParser {
   static VarList parseVarList(LuaLexer lexer) {
     Var first = parseVar(lexer);
     List<Var> tail = new ArrayList<>();
-    while (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_COMMA)) {
-      lexer.skip(TokenEnums.TOKEN_SEP_COMMA);
+    while (lexer.lookAheadTest(TOKEN_SEP_COMMA)) {
+      lexer.skip(TOKEN_SEP_COMMA);
       Var var = parseVar(lexer);
       tail.add(var);
     }
@@ -126,16 +145,16 @@ public class LuaParser {
     final Name name = parseName(lexer);
     // {‘.’ Name}
     final List<Name> dotNameList = new ArrayList<>();
-    while (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_DOT)) {
-      lexer.skip(TokenEnums.TOKEN_SEP_DOT);
+    while (lexer.lookAheadTest(TOKEN_SEP_DOT)) {
+      lexer.skip(TOKEN_SEP_DOT);
       Name nameAfterDot = parseName(lexer);
       dotNameList.add(nameAfterDot);
     }
 
     // [‘:’ Name]
     Optional<Name> optionalColonName;
-    if (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_COLON)) {
-      lexer.skip(TokenEnums.TOKEN_SEP_COLON);
+    if (lexer.lookAheadTest(TOKEN_SEP_COLON)) {
+      lexer.skip(TOKEN_SEP_COLON);
       optionalColonName = Optional.of(parseName(lexer));
     } else {
       optionalColonName = Optional.empty();
@@ -150,26 +169,65 @@ public class LuaParser {
   static FuncBody parseFuncBody(LuaLexer lexer) {
     final LuaAstLocation location;
     {
-      LuaToken token = lexer.skip(TokenEnums.TOKEN_SEP_LPAREN);
+      LuaToken token = lexer.skip(TOKEN_SEP_LPAREN);
       location = convert(token);
     }
-    final Optional<ParList> optionalParList = parseOptionalParList(lexer);
+    final Optional<ParList> optionalParList;
+    if (canParseParList(lexer)) {
+      ParList parList = parseParList(lexer);
+      optionalParList = Optional.of(parList);
+    } else {
+      optionalParList = Optional.empty();
+    }
+    lexer.skip(TOKEN_SEP_RPAREN);
     final Block block = parseBlock(lexer);
     return new FuncBody(location, optionalParList, block);
   }
 
-  static Optional<ParList> parseOptionalParList(LuaLexer lexer) {
-    throw new UnsupportedOperationException();
+  /**
+   * parlist ::= namelist [‘,’ ‘...’] | ‘...’
+   * <p>
+   * namelist ::= Name {‘,’ Name}
+   * <p>
+   */
+  static boolean canParseParList(LuaLexer lexer) {
+    if (lexer.lookAheadTest(TOKEN_VARARG)) {
+      return true;
+    }
+    if (lexer.lookAheadTest(TOKEN_STRING)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * parlist ::= namelist [‘,’ ‘...’] | ‘...’
+   */
+  static ParList parseParList(LuaLexer lexer) {
+    if (lexer.lookAheadTest(TOKEN_VARARG)) {
+      VarargExp varargExp = parseVarargExp(lexer);
+      return new VarargParList(varargExp);
+    } else {
+      NameList nameList = parseNameList(lexer);
+      final Optional<VarargExp> optionalVarargExp;
+      if (lexer.lookAheadTest(TOKEN_SEP_COMMA)) {
+        VarargExp varargExp = parseVarargExp(lexer);
+        optionalVarargExp = Optional.of(varargExp);
+      } else {
+        optionalVarargExp = Optional.empty();
+      }
+      return new NameListParList(nameList, optionalVarargExp);
+    }
   }
 
   /**
    * args ::=  ‘(’ [explist] ‘)’ | tableconstructor | LiteralString
    */
   static Args parseArgs(LuaLexer lexer) {
-    if (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_LPAREN)) {
+    if (lexer.lookAheadTest(TOKEN_SEP_LPAREN)) {
       return parseExpListArgs(lexer);
     }
-    if (lexer.lookAheadTest(TokenEnums.TOKEN_STRING)) {
+    if (lexer.lookAheadTest(TOKEN_STRING)) {
       return parseLiteralStringArgs(lexer);
     }
     return parseTableConstructorArgs(lexer);
@@ -181,7 +239,7 @@ public class LuaParser {
   static Args.ExpListArgs parseExpListArgs(LuaLexer lexer) {
     final LuaAstLocation location;
     {
-      LuaToken token = lexer.skip(TokenEnums.TOKEN_SEP_LPAREN);
+      LuaToken token = lexer.skip(TOKEN_SEP_LPAREN);
       location = convert(token);
     }
     Optional<ExpList> optionalExpList = parseOptionalExpList(lexer);
@@ -234,5 +292,104 @@ public class LuaParser {
     LuaToken token = lexer.next();
     LuaAstLocation location = convert(token);
     return new Binop(location, token.getContent());
+  }
+
+  /**
+   * fieldlist ::= field {fieldsep field} [fieldsep]
+   */
+  static boolean canParseFieldList(LuaLexer lexer) {
+    return canParseField(lexer);
+  }
+
+  /**
+   * fieldlist ::= field {fieldsep field} [fieldsep]
+   */
+  static FieldList parseFieldList(LuaLexer lexer) {
+    Field field = parseField(lexer);
+    final List<Entry<FieldSep, Field>> list = new ArrayList<>();
+    while (canParseFieldSep(lexer)) {
+      FieldSep fieldSep = parseFieldSep(lexer);
+      list.add(new SimpleImmutableEntry<>(fieldSep, parseField(lexer)));
+    }
+    final Optional<FieldSep> optionalFieldSep;
+    if (canParseFieldSep(lexer)) {
+      FieldSep fieldSep = parseFieldSep(lexer);
+      optionalFieldSep = Optional.of(fieldSep);
+    } else {
+      optionalFieldSep = Optional.empty();
+    }
+    return new FieldList(field, list, optionalFieldSep);
+  }
+
+  /**
+   * field ::= ‘[’ exp ‘]’ ‘=’ exp | Name ‘=’ exp | exp
+   */
+  static boolean canParseField(LuaLexer lexer) {
+    if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
+      return true;
+    }
+    if (lexer.lookAheadTest(TOKEN_STRING)) {
+      return true;
+    }
+    if (canParseExp(lexer)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * field ::= ‘[’ exp ‘]’ ‘=’ exp | Name ‘=’ exp | exp
+   */
+  static Field parseField(LuaLexer lexer) {
+    if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
+      // ‘[’
+      LuaToken token = lexer.skip(TOKEN_SEP_LBRACK);
+      LuaAstLocation location = convert(token);
+      Exp expInSquare = parseExp(lexer);
+      // ‘]’
+      lexer.skip(TOKEN_SEP_RBRACK);
+      // ‘=’
+      lexer.skip(TOKEN_OP_ASSIGN);
+      Exp exp = parseExp(lexer);
+      return new TableField(location, expInSquare, exp);
+    } else if (lexer.lookAheadTest(TOKEN_STRING)) {
+      Name name = parseName(lexer);
+      // ‘=’
+      lexer.skip(TOKEN_OP_ASSIGN);
+      Exp exp = parseExp(lexer);
+      return new NameField(name, exp);
+    } else {
+      Exp exp = parseExp(lexer);
+      return new ExpField(exp);
+    }
+  }
+
+  /**
+   * fieldsep ::= ‘,’ | ‘;’
+   */
+  static boolean canParseFieldSep(LuaLexer lexer) {
+    if (lexer.lookAheadTest(TOKEN_SEP_COMMA)) {
+      return true;
+    }
+    if (lexer.lookAheadTest(TOKEN_SEP_SEMI)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * fieldsep ::= ‘,’ | ‘;’
+   */
+  static FieldSep parseFieldSep(LuaLexer lexer) {
+    LuaToken token = lexer.next();
+    LuaAstLocation location = convert(token);
+    TokenEnums kind = token.getKind();
+    if (TOKEN_SEP_COMMA.equals(kind)) {
+      return new CommaFieldSep(location);
+    }
+    if (TOKEN_SEP_SEMI.equals(kind)) {
+      return new SemicolonFieldSep(location);
+    }
+    throw new IllegalStateException("token " + token);
   }
 }

@@ -34,8 +34,8 @@ public abstract class Field extends AbstractLuaAst {
     private final Name name;
     private final Exp exp;
 
-    public NameField(LuaAstLocation luaAstLocation, Name name, Exp exp) {
-      super(luaAstLocation);
+    public NameField(Name name, Exp exp) {
+      super(name.getLuaAstLocation());
       this.name = name;
       this.exp = exp;
     }
@@ -47,8 +47,8 @@ public abstract class Field extends AbstractLuaAst {
   public static class ExpField extends Field {
     private final Exp exp;
 
-    public ExpField(LuaAstLocation luaAstLocation, Exp exp) {
-      super(luaAstLocation);
+    public ExpField(Exp exp) {
+      super(exp.getLuaAstLocation());
       this.exp = exp;
     }
   }
