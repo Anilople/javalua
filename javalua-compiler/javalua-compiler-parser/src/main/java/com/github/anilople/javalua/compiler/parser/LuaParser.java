@@ -39,9 +39,13 @@ import com.github.anilople.javalua.compiler.ast.Unop.LengthUnop;
 import com.github.anilople.javalua.compiler.ast.Unop.MinusUnop;
 import com.github.anilople.javalua.compiler.ast.Unop.NotUnop;
 import com.github.anilople.javalua.compiler.ast.Var;
+import com.github.anilople.javalua.compiler.ast.Var.NameVar;
+import com.github.anilople.javalua.compiler.ast.Var.PrefixExpNameVar;
+import com.github.anilople.javalua.compiler.ast.Var.PrefixExpVar;
 import com.github.anilople.javalua.compiler.ast.VarList;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
 import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
@@ -53,6 +57,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
+
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parsePrefixExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseTableConstructorExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseVarargExp;
+import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 /**
  * @author wxq
@@ -83,14 +97,43 @@ public class LuaParser {
     return new Block(luaAstLocation, statList, optionalRetstat);
   }
 
+  /**
+   * retstat ::= return [explist] [‘;’]
+   */
+  static boolean canParseRetstat(LuaLexer lexer) {
+    return lexer.lookAheadTest(TOKEN_KW_RETURN);
+  }
+
+  /**
+   * retstat ::= return [explist] [‘;’]
+   */
+  static Retstat parseRetstat(LuaLexer lexer) {
+    LuaToken token = lexer.skip(TOKEN_KW_RETURN);
+    LuaAstLocation location = convert(token);
+    Optional<ExpList> optionalExpList = parseOptionalExpList(lexer);
+    if (lexer.lookAheadTest(TOKEN_SEP_COLON)) {
+      lexer.skip(TOKEN_SEP_COLON);
+    }
+    return new Retstat(location, optionalExpList);
+  }
+
   static Optional<Retstat> parseOptionalRetstat(LuaLexer lexer) {
-    throw new UnsupportedOperationException();
+    if (canParseRetstat(lexer)) {
+      Retstat retstat = parseRetstat(lexer);
+      return Optional.of(retstat);
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  static boolean canParseName(LuaLexer lexer) {
+    return lexer.lookAheadTest(TOKEN_IDENTIFIER);
   }
 
   static Name parseName(LuaLexer lexer) {
-    LuaToken token = lexer.next();
-    LuaAstLocation luaAstLocation = convert(token.getLocation());
-    return new Name(luaAstLocation, token.getContent());
+    LuaToken token = lexer.skip(TOKEN_IDENTIFIER);
+    LuaAstLocation location = convert(token.getLocation());
+    return new Name(location, token.getContent());
   }
 
   /**
@@ -120,7 +163,23 @@ public class LuaParser {
    *
    */
   static Var parseVar(LuaLexer lexer) {
-    throw new UnsupportedOperationException();
+    if (canParseName(lexer)) {
+      Name name = parseName(lexer);
+      return new NameVar(name);
+    }
+    PrefixExp prefixExp = parsePrefixExp(lexer);
+    if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
+      lexer.skip(TOKEN_SEP_LBRACK);
+      Exp exp = parseExp(lexer);
+      lexer.skip(TOKEN_SEP_RBRACK);
+      return new PrefixExpVar(prefixExp, exp);
+    } else if (lexer.lookAheadTest(TOKEN_SEP_DOT)) {
+      lexer.skip(TOKEN_SEP_DOT);
+      Name name = parseName(lexer);
+      return new PrefixExpNameVar(prefixExp, name);
+    } else {
+      throw new IllegalStateException("unknown token after prefixexp " + lexer);
+    }
   }
 
   /**
@@ -318,6 +377,20 @@ public class LuaParser {
       optionalFieldSep = Optional.empty();
     }
     return new FieldList(field, list, optionalFieldSep);
+  }
+
+  /**
+   * fieldlist ::= field {fieldsep field} [fieldsep]
+   * <p>
+   * field ::= ‘[’ exp ‘]’ ‘=’ exp | Name ‘=’ exp | exp
+   */
+  static Optional<FieldList> parseOptionalFieldList(LuaLexer lexer) {
+    if (canParseFieldList(lexer)) {
+      FieldList fieldList = parseFieldList(lexer);
+      return Optional.of(fieldList);
+    } {
+      return Optional.empty();
+    }
   }
 
   /**
