@@ -1,15 +1,13 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import com.github.anilople.javalua.compiler.ast.Field;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.anilople.javalua.compiler.ast.Field.NameField;
 import com.github.anilople.javalua.compiler.ast.FieldList;
 import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
-import java.util.List;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author wxq
@@ -22,7 +20,6 @@ class LuaExpParserTest {
     TableConstructorExp tableConstructorExp = LuaExpParser.parseTableConstructorExp(lexer);
     assertTrue(tableConstructorExp.getOptionalFieldList().isEmpty());
   }
-
 
   @Test
   void parseTableConstructorExp_1_elments() {

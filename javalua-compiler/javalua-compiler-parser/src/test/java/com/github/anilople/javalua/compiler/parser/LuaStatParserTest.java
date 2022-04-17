@@ -1,12 +1,11 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import com.github.anilople.javalua.compiler.ast.Block;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
 import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author wxq

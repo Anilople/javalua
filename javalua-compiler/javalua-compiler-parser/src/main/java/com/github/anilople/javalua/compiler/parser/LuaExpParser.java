@@ -1,34 +1,5 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import com.github.anilople.javalua.compiler.ast.Binop;
-import com.github.anilople.javalua.compiler.ast.ExpList;
-import com.github.anilople.javalua.compiler.ast.FieldList;
-import com.github.anilople.javalua.compiler.ast.FuncBody;
-import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
-import com.github.anilople.javalua.compiler.ast.Unop;
-import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
-import com.github.anilople.javalua.compiler.ast.exp.Exp;
-import com.github.anilople.javalua.compiler.ast.exp.FalseExp;
-import com.github.anilople.javalua.compiler.ast.exp.FloatExp;
-import com.github.anilople.javalua.compiler.ast.exp.FunctionDefExp;
-import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
-import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
-import com.github.anilople.javalua.compiler.ast.exp.NilExp;
-import com.github.anilople.javalua.compiler.ast.exp.NumeralExp;
-import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
-import com.github.anilople.javalua.compiler.ast.exp.TrueExp;
-import com.github.anilople.javalua.compiler.ast.exp.UnopExp;
-import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
-import com.github.anilople.javalua.compiler.lexer.LuaLexer;
-import com.github.anilople.javalua.compiler.lexer.LuaToken;
-import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
-import com.github.anilople.javalua.util.LuaConvertUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_FALSE;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_FUNCTION;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_NIL;
@@ -69,6 +40,35 @@ import static com.github.anilople.javalua.compiler.parser.LuaParser.parseUnop;
 import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.canParsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.parsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
+
+import com.github.anilople.javalua.compiler.ast.Binop;
+import com.github.anilople.javalua.compiler.ast.ExpList;
+import com.github.anilople.javalua.compiler.ast.FieldList;
+import com.github.anilople.javalua.compiler.ast.FuncBody;
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+import com.github.anilople.javalua.compiler.ast.Unop;
+import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
+import com.github.anilople.javalua.compiler.ast.exp.Exp;
+import com.github.anilople.javalua.compiler.ast.exp.FalseExp;
+import com.github.anilople.javalua.compiler.ast.exp.FloatExp;
+import com.github.anilople.javalua.compiler.ast.exp.FunctionDefExp;
+import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
+import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
+import com.github.anilople.javalua.compiler.ast.exp.NilExp;
+import com.github.anilople.javalua.compiler.ast.exp.NumeralExp;
+import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
+import com.github.anilople.javalua.compiler.ast.exp.TrueExp;
+import com.github.anilople.javalua.compiler.ast.exp.UnopExp;
+import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
+import com.github.anilople.javalua.compiler.lexer.LuaLexer;
+import com.github.anilople.javalua.compiler.lexer.LuaToken;
+import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
+import com.github.anilople.javalua.util.LuaConvertUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * page 303
@@ -481,7 +481,6 @@ class LuaExpParser {
       return Optional.empty();
     }
   }
-
 
   /**
    * tableconstructor ::= ‘{’ [fieldlist] ‘}’

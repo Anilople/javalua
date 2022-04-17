@@ -1,22 +1,5 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import com.github.anilople.javalua.compiler.ast.Args;
-import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
-import com.github.anilople.javalua.compiler.ast.Name;
-import com.github.anilople.javalua.compiler.ast.Var;
-import com.github.anilople.javalua.compiler.ast.Var.NameVar;
-import com.github.anilople.javalua.compiler.ast.exp.Exp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.FunctionCallPrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.ParenthesesPrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.TableAccessExp;
-import com.github.anilople.javalua.compiler.ast.stat.FunctionCall;
-import com.github.anilople.javalua.compiler.ast.stat.NameFunctionCall;
-import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
-import com.github.anilople.javalua.compiler.lexer.LuaLexer;
-import com.github.anilople.javalua.compiler.lexer.LuaToken;
-
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_IDENTIFIER;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_COLON;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_DOT;
@@ -30,6 +13,21 @@ import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseName
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseArgs;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseName;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
+
+import com.github.anilople.javalua.compiler.ast.Args;
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+import com.github.anilople.javalua.compiler.ast.Name;
+import com.github.anilople.javalua.compiler.ast.Var.NameVar;
+import com.github.anilople.javalua.compiler.ast.exp.Exp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.FunctionCallPrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.ParenthesesPrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.TableAccessExp;
+import com.github.anilople.javalua.compiler.ast.stat.NameFunctionCall;
+import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
+import com.github.anilople.javalua.compiler.lexer.LuaLexer;
+import com.github.anilople.javalua.compiler.lexer.LuaToken;
 
 /**
  * @author wxq

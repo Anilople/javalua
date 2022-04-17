@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.compiler.ast;
 
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 import lombok.Getter;
 
 /**

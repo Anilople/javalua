@@ -9,7 +9,6 @@ import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
-import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
 import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;

@@ -47,17 +47,14 @@ import com.github.anilople.javalua.compiler.ast.Var.PrefixExpVar;
 import com.github.anilople.javalua.compiler.ast.VarList;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
 import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
 import com.github.anilople.javalua.compiler.lexer.LuaToken;
 import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 
 /**
