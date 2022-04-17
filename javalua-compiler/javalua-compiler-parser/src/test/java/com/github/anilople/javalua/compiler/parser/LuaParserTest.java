@@ -63,7 +63,22 @@ class LuaParserTest {
   }
 
   @Test
-  void localVariable() {
+  void localVariableAssign() {
     LuaParser.parse("local a = 1");
+  }
+
+  @Test
+  void localVariables() {
+    LuaParser.parse("local a,t,k,v,e;");
+  }
+
+  @Test
+  void tableAccess() {
+    LuaParser.parse("v = t[k];");
+  }
+
+  @Test
+  void arrayAccess() {
+    LuaParser.parse("v = t[100]");
   }
 }

@@ -148,17 +148,11 @@ public class LuaParser {
    * namelist ::= Name {‘,’ Name}
    */
   static NameList parseNameList(LuaLexer lexer) {
-    final Name first;
-    {
-      LuaToken token = lexer.skip(TOKEN_IDENTIFIER);
-      LuaAstLocation location = convert(token);
-      first = new Name(location, token.getContent());
-    }
+    final Name first = parseName(lexer);
     List<Name> tail = new ArrayList<>();
     while (lexer.lookAheadTest(TOKEN_SEP_COMMA)) {
-      LuaToken token = lexer.skip(TOKEN_SEP_COMMA);
-      LuaAstLocation location = convert(token);
-      Name name = new Name(location, token.getContent());
+      lexer.skip(TOKEN_SEP_COMMA);
+      Name name = parseName(lexer);
       tail.add(name);
     }
     return new NameList(first, tail);
