@@ -27,7 +27,7 @@ class LuaLexerImpl implements LuaLexer {
 
   @Override
   public List<LuaToken> previewNext(int n) {
-    return this.previewNext(n);
+    return this.cachedIterator.previewNext(n);
   }
 
   @Override
