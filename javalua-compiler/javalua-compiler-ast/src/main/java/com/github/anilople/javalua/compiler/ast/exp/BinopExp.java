@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.compiler.ast.exp;
 
 import com.github.anilople.javalua.compiler.ast.Binop;
+import lombok.Getter;
 
 /**
  * page 281
@@ -9,6 +10,7 @@ import com.github.anilople.javalua.compiler.ast.Binop;
  *
  * @author wxq
  */
+@Getter
 public class BinopExp extends AbstractExp {
   private final Exp exp1;
   private final Binop binop;

@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.compiler.ast.exp;
 
 import com.github.anilople.javalua.compiler.ast.Unop;
+import lombok.Getter;
 
 /**
  * page 281
@@ -9,6 +10,7 @@ import com.github.anilople.javalua.compiler.ast.Unop;
  *
  * @author wxq
  */
+@Getter
 public class UnopExp extends AbstractExp {
   private final Unop unop;
   private final Exp exp;

@@ -2,6 +2,7 @@ package com.github.anilople.javalua.compiler.ast;
 
 import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
 import java.util.Optional;
+import lombok.Getter;
 
 /**
  * parlist ::= namelist [‘,’ ‘...’] | ‘...’
@@ -16,6 +17,7 @@ public abstract class ParList extends AbstractLuaAst {
   /**
    * namelist [‘,’ ‘...’]
    */
+  @Getter
   public static class NameListParList extends ParList {
     private final NameList nameList;
     private final Optional<VarargExp> optionalVarargExp;

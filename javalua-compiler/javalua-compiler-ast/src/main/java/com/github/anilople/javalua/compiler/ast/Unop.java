@@ -5,7 +5,7 @@ package com.github.anilople.javalua.compiler.ast;
  *
  * @author wxq
  */
-public class Unop extends AbstractLuaAst {
+public abstract class Unop extends AbstractLuaAst {
 
   public Unop(LuaAstLocation luaAstLocation) {
     super(luaAstLocation);

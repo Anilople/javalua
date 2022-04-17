@@ -280,7 +280,7 @@ public class LuaParser {
     if (lexer.lookAheadTest(TOKEN_VARARG)) {
       return true;
     }
-    if (lexer.lookAheadTest(TOKEN_STRING)) {
+    if (canParseName(lexer)) {
       return true;
     }
     return false;

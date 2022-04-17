@@ -19,6 +19,7 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_LE;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_LEN;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_LT;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_MINUS;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_MOD;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_MUL;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_NE;
@@ -33,6 +34,7 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_RCURLY;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_VARARG;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parse;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseOptionalFieldList;
@@ -123,7 +125,7 @@ class LuaExpParser {
       // 放到左子树
       Binop binop = parseBinop(lexer);
       Exp expY = functionOfParseExpY.apply(lexer);
-      BinopExp binopExp = new BinopExp(expY, binop, expY);
+      BinopExp binopExp = new BinopExp(expX, binop, expY);
       return resolveBinopExp(lexer, binopExp, opPredicate, functionOfParseExpY);
     } else {
       return expX;
@@ -356,7 +358,7 @@ class LuaExpParser {
           if (TOKEN_OP_LEN.equals(tokenEnums)) {
             return true;
           }
-          if (TOKEN_OP_SUB.equals(tokenEnums)) {
+          if (TOKEN_OP_MINUS.equals(tokenEnums)) {
             return true;
           }
           if (TOKEN_OP_BNOT.equals(tokenEnums)) {
@@ -441,7 +443,7 @@ class LuaExpParser {
       case TOKEN_NUMBER:
         return parseNumeralExp(lexer);
       case TOKEN_VARARG:
-        return new VarargExp(location);
+        return parseVarargExp(lexer);
       case TOKEN_KW_FUNCTION:
         return parseFunctionDefExp(lexer);
       case TOKEN_SEP_LCURLY:
@@ -521,7 +523,7 @@ class LuaExpParser {
    * functiondef ::= function funcbody
    */
   static FunctionDefExp parseFunctionDefExp(LuaLexer lexer) {
-    LuaToken functionToken = lexer.next();
+    LuaToken functionToken = lexer.skip(TOKEN_KW_FUNCTION);
     LuaAstLocation location = convert(functionToken);
     FuncBody funcBody = parseFuncBody(lexer);
     return new FunctionDefExp(location, funcBody);
