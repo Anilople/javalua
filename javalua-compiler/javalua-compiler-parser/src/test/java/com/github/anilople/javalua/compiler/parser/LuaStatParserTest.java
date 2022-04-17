@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
-import com.github.anilople.javalua.compiler.ast.exp.FunctionDefExp;
 import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
 import com.github.anilople.javalua.compiler.ast.stat.BreakStat;
 import com.github.anilople.javalua.compiler.ast.stat.DoStat;
@@ -30,8 +29,7 @@ class LuaStatParserTest {
   }
 
   @Test
-  void parseStatList() {
-  }
+  void parseStatList() {}
 
   @Test
   void parseGotoStat() {
@@ -59,8 +57,7 @@ class LuaStatParserTest {
   }
 
   @Test
-  void parseRepeatStat() {
-  }
+  void parseRepeatStat() {}
 
   @Test
   void parseEmptyStat() {
@@ -83,8 +80,7 @@ class LuaStatParserTest {
   }
 
   @Test
-  void parseWhileStat() {
-  }
+  void parseWhileStat() {}
 
   @Test
   void parseDoStat() {
@@ -94,8 +90,7 @@ class LuaStatParserTest {
 
   @Test
   void parseFunctionDefineStat() {
-    FunctionDefineStat stat =
-        (FunctionDefineStat) parseStat("function add(a, b) return a + b end");
+    FunctionDefineStat stat = (FunctionDefineStat) parseStat("function add(a, b) return a + b end");
     assertEquals("add", stat.getFuncName().getName().getIdentifier());
     FuncBody funcBody = stat.getFuncBody();
     NameListParList nameListParList = (NameListParList) funcBody.getOptionalParList().get();
@@ -106,34 +101,26 @@ class LuaStatParserTest {
   }
 
   @Test
-  void parseIfStat() {
-  }
+  void parseIfStat() {}
 
   @Test
-  void parseForInStat() {
-  }
+  void parseForInStat() {}
 
   @Test
-  void parseForNumStat() {
-  }
+  void parseForNumStat() {}
 
   @Test
-  void parseAssignStat() {
-  }
+  void parseAssignStat() {}
 
   @Test
-  void testParseAssignStat() {
-  }
+  void testParseAssignStat() {}
 
   @Test
-  void parseForStat() {
-  }
+  void parseForStat() {}
 
   @Test
-  void parseLocalAssignOrFuncDefStat() {
-  }
+  void parseLocalAssignOrFuncDefStat() {}
 
   @Test
-  void parseAssignOrFunctionCallStat() {
-  }
+  void parseAssignOrFunctionCallStat() {}
 }
