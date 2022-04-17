@@ -5,6 +5,7 @@ import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseE
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseTableConstructorExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseVarargExp;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
@@ -57,16 +58,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
-
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parsePrefixExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseTableConstructorExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseVarargExp;
-import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 /**
  * @author wxq
@@ -388,7 +379,8 @@ public class LuaParser {
     if (canParseFieldList(lexer)) {
       FieldList fieldList = parseFieldList(lexer);
       return Optional.of(fieldList);
-    } {
+    }
+    {
       return Optional.empty();
     }
   }

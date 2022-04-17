@@ -1,8 +1,10 @@
 package com.github.anilople.javalua.compiler.parser;
 
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseName;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseOptionalFieldList;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseUnop;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
 import static com.github.anilople.javalua.compiler.parser.LuaStatParser.parseFunctionCall;
@@ -42,17 +44,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseField;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseName;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseOptionalFieldList;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseUnop;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
-import static com.github.anilople.javalua.compiler.parser.LuaStatParser.parseFunctionCall;
-import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 /**
  * page 303
