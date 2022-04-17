@@ -11,7 +11,7 @@ public class LabelStat extends AbstractStat {
   private final Name name;
 
   public LabelStat(Name name) {
-    super(name.getLuaAstLocation());
+    super(name.getLocation());
     this.name = name;
   }
 }

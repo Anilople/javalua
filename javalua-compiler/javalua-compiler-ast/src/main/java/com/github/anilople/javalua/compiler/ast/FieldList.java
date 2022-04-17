@@ -20,7 +20,7 @@ public class FieldList extends AbstractLuaAst {
 
   public FieldList(
       Field field, List<Entry<FieldSep, Field>> list, Optional<FieldSep> optionalFieldSep) {
-    super(field.getLuaAstLocation());
+    super(field.getLocation());
     this.field = field;
     this.list = list;
     this.optionalFieldSep = optionalFieldSep;

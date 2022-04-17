@@ -21,7 +21,7 @@ public abstract class ParList extends AbstractLuaAst {
     private final Optional<VarargExp> optionalVarargExp;
 
     public NameListParList(NameList nameList, Optional<VarargExp> optionalVarargExp) {
-      super(nameList.getLuaAstLocation());
+      super(nameList.getLocation());
       this.nameList = nameList;
       this.optionalVarargExp = optionalVarargExp;
     }
@@ -34,7 +34,7 @@ public abstract class ParList extends AbstractLuaAst {
     private final VarargExp varargExp;
 
     public VarargParList(VarargExp varargExp) {
-      super(varargExp.getLuaAstLocation());
+      super(varargExp.getLocation());
       this.varargExp = varargExp;
     }
   }

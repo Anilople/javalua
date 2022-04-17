@@ -3,6 +3,7 @@ package com.github.anilople.javalua.compiler.ast;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
 import java.util.Optional;
+import lombok.Getter;
 
 /**
  * args ::=  ‘(’ [explist] ‘)’ | tableconstructor | LiteralString
@@ -20,6 +21,7 @@ public abstract class Args extends AbstractLuaAst {
    *
    * @author wxq
    */
+  @Getter
   public static class ExpListArgs extends Args {
     private final Optional<ExpList> optionalExpList;
 
@@ -34,11 +36,12 @@ public abstract class Args extends AbstractLuaAst {
    *
    * @author wxq
    */
+  @Getter
   public static class TableConstructorArgs extends Args {
     private final TableConstructorExp tableConstructorExp;
 
     public TableConstructorArgs(TableConstructorExp tableConstructorExp) {
-      super(tableConstructorExp.getLuaAstLocation());
+      super(tableConstructorExp.getLocation());
       this.tableConstructorExp = tableConstructorExp;
     }
   }
@@ -48,11 +51,12 @@ public abstract class Args extends AbstractLuaAst {
    *
    * @author wxq
    */
+  @Getter
   public static class LiteralStringArgs extends Args {
     private final LiteralStringExp literalStringExp;
 
     public LiteralStringArgs(LiteralStringExp literalStringExp) {
-      super(literalStringExp.getLuaAstLocation());
+      super(literalStringExp.getLocation());
       this.literalStringExp = literalStringExp;
     }
   }

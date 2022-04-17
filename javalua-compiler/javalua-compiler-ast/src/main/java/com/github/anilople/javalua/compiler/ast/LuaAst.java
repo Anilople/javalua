@@ -8,5 +8,5 @@ public interface LuaAst {
   /**
    * @return ast节点所在位置
    */
-  LuaAstLocation getLuaAstLocation();
+  LuaAstLocation getLocation();
 }

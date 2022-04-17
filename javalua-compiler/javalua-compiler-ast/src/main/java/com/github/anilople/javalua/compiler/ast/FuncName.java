@@ -21,7 +21,7 @@ public class FuncName extends AbstractLuaAst {
   private final Optional<Name> optionalColonName;
 
   public FuncName(Name name, List<Name> dotNameList, Optional<Name> optionalColonName) {
-    super(name.getLuaAstLocation());
+    super(name.getLocation());
     this.name = name;
     this.dotNameList = dotNameList;
     this.optionalColonName = optionalColonName;

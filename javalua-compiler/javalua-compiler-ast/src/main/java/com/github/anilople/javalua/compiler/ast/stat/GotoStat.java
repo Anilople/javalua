@@ -11,7 +11,7 @@ public class GotoStat extends AbstractStat {
   private final Name name;
 
   public GotoStat(Name name) {
-    super(name.getLuaAstLocation());
+    super(name.getLocation());
     this.name = name;
   }
 }

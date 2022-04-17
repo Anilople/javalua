@@ -3,6 +3,7 @@ package com.github.anilople.javalua.compiler.ast.exp;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.stat.FunctionCall;
+import lombok.Getter;
 
 /**
  * prefixexp ::= var | functioncall | ‘(’ exp ‘)’
@@ -18,11 +19,12 @@ public class PrefixExp extends AbstractExp {
   /**
    * var
    */
+  @Getter
   public static class VarPrefixExp extends PrefixExp {
     private final Var var;
 
     public VarPrefixExp(Var var) {
-      super(var.getLuaAstLocation());
+      super(var.getLocation());
       this.var = var;
     }
   }
@@ -30,11 +32,12 @@ public class PrefixExp extends AbstractExp {
   /**
    * functioncall
    */
+  @Getter
   public static class FunctionCallPrefixExp extends PrefixExp {
     private final FunctionCall functionCall;
 
     public FunctionCallPrefixExp(FunctionCall functionCall) {
-      super(functionCall.getLuaAstLocation());
+      super(functionCall.getLocation());
       this.functionCall = functionCall;
     }
   }
@@ -42,6 +45,7 @@ public class PrefixExp extends AbstractExp {
   /**
    * ‘(’ exp ‘)’
    */
+  @Getter
   public static class ParenthesesPrefixExp extends PrefixExp {
     private final Exp exp;
 

@@ -15,7 +15,7 @@ public class BinopExp extends AbstractExp {
   private final Exp exp2;
 
   public BinopExp(Exp exp1, Binop binop, Exp exp2) {
-    super(exp1.getLuaAstLocation());
+    super(exp1.getLocation());
     this.exp1 = exp1;
     this.binop = binop;
     this.exp2 = exp2;

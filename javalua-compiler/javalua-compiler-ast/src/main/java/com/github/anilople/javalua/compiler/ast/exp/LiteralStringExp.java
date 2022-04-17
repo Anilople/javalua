@@ -1,10 +1,12 @@
 package com.github.anilople.javalua.compiler.ast.exp;
 
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+import lombok.Getter;
 
 /**
  * @author wxq
  */
+@Getter
 public class LiteralStringExp extends AbstractExp {
   private final String content;
 

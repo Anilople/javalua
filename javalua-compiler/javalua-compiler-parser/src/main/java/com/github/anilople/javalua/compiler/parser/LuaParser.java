@@ -2,6 +2,7 @@ package com.github.anilople.javalua.compiler.parser;
 
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseExp;
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
@@ -65,6 +66,22 @@ import java.util.Optional;
 public class LuaParser {
 
   /**
+   * lua code -> ast
+   */
+  public static Block parse(String luaCode, String sourceCodeFilePath) {
+    LuaLexer lexer = LuaLexer.newLuaLexer(luaCode, sourceCodeFilePath);
+    return parse(lexer);
+  }
+
+  /**
+   * lua code -> ast
+   */
+  public static Block parse(String luaCode) {
+    return parse(luaCode, "unknown");
+  }
+
+
+  /**
    * token -> ast
    */
   public static Block parse(LuaLexer lexer) {
@@ -79,9 +96,9 @@ public class LuaParser {
     Optional<Retstat> optionalRetstat = parseOptionalRetstat(lexer);
     final LuaAstLocation luaAstLocation;
     if (!statList.isEmpty()) {
-      luaAstLocation = statList.get(0).getLuaAstLocation();
+      luaAstLocation = statList.get(0).getLocation();
     } else if (optionalRetstat.isPresent()) {
-      luaAstLocation = optionalRetstat.get().getLuaAstLocation();
+      luaAstLocation = optionalRetstat.get().getLocation();
     } else {
       luaAstLocation = LuaAstLocation.EMPTY;
     }
@@ -147,6 +164,13 @@ public class LuaParser {
     return new NameList(first, tail);
   }
 
+  static boolean canParseVar(LuaLexer lexer) {
+    if (canParseName(lexer)) {
+      return true;
+    }
+    return canParsePrefixExp(lexer);
+  }
+
   /**
    * var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
    * <p>
@@ -171,6 +195,10 @@ public class LuaParser {
     } else {
       throw new IllegalStateException("unknown token after prefixexp " + lexer);
     }
+  }
+
+  static boolean canParseVarList(LuaLexer lexer) {
+    return canParseVar(lexer);
   }
 
   /**

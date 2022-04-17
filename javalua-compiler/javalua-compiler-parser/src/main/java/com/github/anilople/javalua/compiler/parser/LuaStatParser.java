@@ -1,8 +1,10 @@
 package com.github.anilople.javalua.compiler.parser;
 
+import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExpList;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parsePrefixExp;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseVarList;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseArgs;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBlock;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
@@ -39,8 +41,45 @@ import java.util.Optional;
  */
 class LuaStatParser {
 
+  /**
+   * {stat}
+   */
   static List<Stat> parseStatList(LuaLexer lexer) {
-    return null;
+    List<Stat> statList = new ArrayList<>();
+    while (canParseStat(lexer)) {
+      Stat stat = parseStat(lexer);
+      statList.add(stat);
+    }
+    return statList;
+  }
+
+  static boolean canParseStat(LuaLexer lexer) {
+    if (!lexer.hasNext()) {
+      return false;
+    }
+    LuaToken token = lexer.lookAhead();
+    switch (token.getKind()) {
+      case TOKEN_SEP_SEMI:
+      case TOKEN_KW_BREAK:
+      case TOKEN_SEP_LABEL:
+      case TOKEN_KW_GOTO:
+      case TOKEN_KW_DO:
+      case TOKEN_KW_WHILE:
+      case TOKEN_KW_REPEAT:
+      case TOKEN_KW_IF:
+      case TOKEN_KW_FOR:
+      case TOKEN_KW_FUNCTION:
+      case TOKEN_KW_LOCAL:
+        return true;
+      default:
+        if (canParseFunctionCall(lexer)) {
+          return true;
+        }
+        if (canParseVarList(lexer)) {
+          return true;
+        }
+        return false;
+    }
   }
 
   /**
@@ -154,6 +193,10 @@ class LuaStatParser {
       optionalExpList = Optional.empty();
     }
     return new LocalVarDeclStat(location, nameList, optionalExpList);
+  }
+
+  static boolean canParseFunctionCall(LuaLexer lexer) {
+    return canParsePrefixExp(lexer);
   }
 
   /**
@@ -289,12 +332,16 @@ class LuaStatParser {
     return new ForNumStat(locationOfFor, locationOfDo, name, initExp, limitExp, stepExp, block);
   }
 
+  static boolean canParseAssignStat(LuaLexer lexer) {
+    return canParseVarList(lexer);
+  }
+
   /**
    * varlist ‘=’ explist
    */
   static AssignStat parseAssignStat(LuaLexer lexer) {
     VarList varList = parseVarList(lexer);
-    lexer.skip(TokenEnums.TOKEN_OP_EQ);
+    lexer.skip(TokenEnums.TOKEN_OP_ASSIGN);
     ExpList expList = parseExpList(lexer);
     return new AssignStat(varList, expList);
   }
@@ -339,11 +386,12 @@ class LuaStatParser {
    * functioncall
    */
   static Stat parseAssignOrFunctionCallStat(LuaLexer lexer) {
-    if (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_LPAREN)) {
-      // it is a functioncall
+    if (canParseFunctionCall(lexer)) {
       return parseFunctionCall(lexer);
-    } else {
+    }
+    if (canParseAssignStat(lexer)) {
       return parseAssignStat(lexer);
     }
+    throw new IllegalStateException("not assign or function call " + lexer);
   }
 }

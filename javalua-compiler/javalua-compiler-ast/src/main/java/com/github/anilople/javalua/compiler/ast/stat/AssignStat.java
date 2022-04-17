@@ -14,7 +14,7 @@ public class AssignStat extends AbstractStat {
   private final ExpList expList;
 
   public AssignStat(VarList varList, ExpList expList) {
-    super(varList.getLuaAstLocation());
+    super(varList.getLocation());
     this.varList = varList;
     this.expList = expList;
   }
