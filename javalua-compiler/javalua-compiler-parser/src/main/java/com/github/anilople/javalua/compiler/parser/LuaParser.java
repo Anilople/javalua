@@ -407,20 +407,17 @@ public class LuaParser {
    * fieldlist ::= field {fieldsep field} [fieldsep]
    */
   static FieldList parseFieldList(LuaLexer lexer) {
-    Field field = parseField(lexer);
-    final List<Entry<FieldSep, Field>> list = new ArrayList<>();
+    Field first = parseField(lexer);
+    List<Field> tail = new ArrayList<>();
     while (canParseFieldSep(lexer)) {
-      FieldSep fieldSep = parseFieldSep(lexer);
-      list.add(new SimpleImmutableEntry<>(fieldSep, parseField(lexer)));
+      parseFieldSep(lexer);
+      Field field = parseField(lexer);
+      tail.add(field);
     }
-    final Optional<FieldSep> optionalFieldSep;
     if (canParseFieldSep(lexer)) {
-      FieldSep fieldSep = parseFieldSep(lexer);
-      optionalFieldSep = Optional.of(fieldSep);
-    } else {
-      optionalFieldSep = Optional.empty();
+      parseFieldSep(lexer);
     }
-    return new FieldList(field, list, optionalFieldSep);
+    return new FieldList(first, tail);
   }
 
   /**
@@ -432,8 +429,7 @@ public class LuaParser {
     if (canParseFieldList(lexer)) {
       FieldList fieldList = parseFieldList(lexer);
       return Optional.of(fieldList);
-    }
-    {
+    } else {
       return Optional.empty();
     }
   }
@@ -469,7 +465,7 @@ public class LuaParser {
       lexer.skip(TOKEN_OP_ASSIGN);
       Exp exp = parseExp(lexer);
       return new TableField(location, expInSquare, exp);
-    } else if (lexer.lookAheadTest(TOKEN_STRING)) {
+    } else if (canParseName(lexer)) {
       Name name = parseName(lexer);
       // ‘=’
       lexer.skip(TOKEN_OP_ASSIGN);

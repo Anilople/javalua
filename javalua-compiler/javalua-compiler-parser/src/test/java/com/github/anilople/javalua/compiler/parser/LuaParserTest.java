@@ -92,4 +92,9 @@ class LuaParserTest {
   void arrayAccess() {
     LuaParser.parse("v = t[100]");
   }
+
+  @Test
+  void newTable() {
+    LuaParser.parse("b = {x=1, y=2}");
+  }
 }
