@@ -34,7 +34,6 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_RCURLY;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_VARARG;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parse;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseOptionalFieldList;
