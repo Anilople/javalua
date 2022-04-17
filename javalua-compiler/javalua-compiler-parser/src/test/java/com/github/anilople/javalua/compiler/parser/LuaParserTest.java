@@ -1,29 +1,23 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import com.github.anilople.javalua.compiler.ast.Args;
 import com.github.anilople.javalua.compiler.ast.Args.ExpListArgs;
 import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.Name;
-import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
-import com.github.anilople.javalua.compiler.ast.stat.FunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
-import com.github.anilople.javalua.compiler.lexer.LuaLexer;
-import com.github.anilople.javalua.compiler.lexer.LuaToken;
 import constant.ResourceContentConstants.ch02;
-import constant.ResourceContentConstants.ch16;
 import io.LuaTestResource;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import util.LuaTestResourceUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author wxq
@@ -66,11 +60,6 @@ class LuaParserTest {
         throw new IllegalStateException("parse " + luaTestResource.getLuaFilePath(), e);
       }
     }
-  }
-
-  @Test
-  void sum_stack_over_flow() {
-    Block block = LuaParser.parse(ch16.sum_stack_over_flow.getLuaCode());
   }
 
   @Test
