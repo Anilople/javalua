@@ -22,4 +22,17 @@ public class XxxList<T extends LuaAst> extends AbstractLuaAst {
   public int size() {
     return 1 + tail.size();
   }
+
+  /**
+   * @throws IndexOutOfBoundsException – if the index is out of range (index < 0 || index >= size())
+   */
+  public T get(int index) {
+    if (index < 0) {
+      throw new IndexOutOfBoundsException("index " + index);
+    }
+    if (index == 0) {
+      return first;
+    }
+    return this.tail.get(index - 1);
+  }
 }

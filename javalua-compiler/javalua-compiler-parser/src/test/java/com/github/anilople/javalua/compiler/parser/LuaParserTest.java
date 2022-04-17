@@ -7,9 +7,12 @@ import com.github.anilople.javalua.compiler.ast.Args.ExpListArgs;
 import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.Name;
+import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
+import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
+import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
 import constant.ResourceContentConstants.ch02;
@@ -64,12 +67,20 @@ class LuaParserTest {
 
   @Test
   void localVariableAssign() {
-    LuaParser.parse("local a = 1");
+    Block block = LuaParser.parse("local a = 1");
+    assertTrue(block.getStatList().get(0) instanceof LocalVarDeclStat);
   }
 
   @Test
   void localVariables() {
-    LuaParser.parse("local a,t,k,v,e;");
+    Block block = LuaParser.parse("local a,t,k,v,e;");
+    LocalVarDeclStat localVarDeclStat = (LocalVarDeclStat) block.getStatList().get(0);
+    NameList nameList = localVarDeclStat.getNamelist();
+    assertEquals("a", nameList.get(0).getIdentifier());
+    assertEquals("t", nameList.get(1).getIdentifier());
+    assertEquals("k", nameList.get(2).getIdentifier());
+    assertEquals("v", nameList.get(3).getIdentifier());
+    assertEquals("e", nameList.get(4).getIdentifier());
   }
 
   @Test

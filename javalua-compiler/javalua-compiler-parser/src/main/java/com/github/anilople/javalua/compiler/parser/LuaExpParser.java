@@ -1,22 +1,11 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseName;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseOptionalFieldList;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseUnop;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
-import static com.github.anilople.javalua.compiler.parser.LuaStatParser.parseFunctionCall;
-import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
-
 import com.github.anilople.javalua.compiler.ast.Binop;
 import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.FieldList;
 import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Unop;
-import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.FalseExp;
@@ -26,15 +15,10 @@ import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.NilExp;
 import com.github.anilople.javalua.compiler.ast.exp.NumeralExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.FunctionCallPrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.ParenthesesPrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
 import com.github.anilople.javalua.compiler.ast.exp.TrueExp;
 import com.github.anilople.javalua.compiler.ast.exp.UnopExp;
 import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
-import com.github.anilople.javalua.compiler.ast.stat.FunctionCall;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
 import com.github.anilople.javalua.compiler.lexer.LuaToken;
 import com.github.anilople.javalua.compiler.lexer.enums.TokenEnums;
@@ -44,6 +28,47 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_FALSE;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_FUNCTION;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_NIL;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_KW_TRUE;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_NUMBER;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_ADD;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_AND;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_BAND;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_BNOT;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_BOR;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_CONCAT;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_DIV;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_EQ;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_GE;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_GT;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_IDIV;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_LE;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_LEN;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_LT;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_MOD;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_MUL;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_NE;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_NOT;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_OR;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_POW;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_SHL;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_SHR;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_SUB;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_COMMA;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_LCURLY;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_RCURLY;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_VARARG;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBinop;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBody;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseOptionalFieldList;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseUnop;
+import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.canParsePrefixExp;
+import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.parsePrefixExp;
+import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 /**
  * page 303
@@ -457,53 +482,6 @@ class LuaExpParser {
     }
   }
 
-  /**
-   * 前缀表达式只能以标识符或者左圆括号开始
-   */
-  static boolean canParsePrefixExp(LuaLexer lexer) {
-    if (lexer.lookAheadTest(TOKEN_SEP_LPAREN)) {
-      return true;
-    }
-    if (lexer.lookAheadTest(TOKEN_IDENTIFIER)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * page 311
-   * <p>
-   * prefixexp ::= var | functioncall | ‘(’ exp ‘)’
-   * <p>
-   * <pre>
-   *  prefixexp ::=
-   *  Name
-   * | prefixexp ‘[’ exp ‘]’
-   * | prefixexp ‘.’ Name
-   *
-   * | prefixexp args
-   * | prefixexp ‘:’ Name args
-   *
-   * | ‘(’ exp ‘)’
-   * </pre>
-   */
-  static PrefixExp parsePrefixExp(LuaLexer lexer) {
-    if (lexer.lookAheadTest(TOKEN_SEP_LPAREN)) {
-      // ‘(’ exp ‘)’
-      LuaToken token = lexer.skip(TOKEN_SEP_LPAREN);
-      LuaAstLocation location = convert(token);
-      Exp exp = parseExp(lexer);
-      lexer.skip(TOKEN_SEP_RPAREN);
-      return new ParenthesesPrefixExp(location, exp);
-    }
-    if (canParseName(lexer)) {
-      // var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
-      Var var = parseVar(lexer);
-      return new VarPrefixExp(var);
-    }
-    FunctionCall functionCall = parseFunctionCall(lexer);
-    return new FunctionCallPrefixExp(functionCall);
-  }
 
   /**
    * tableconstructor ::= ‘{’ [fieldlist] ‘}’

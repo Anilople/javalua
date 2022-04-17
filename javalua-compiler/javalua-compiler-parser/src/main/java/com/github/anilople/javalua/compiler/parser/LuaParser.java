@@ -2,13 +2,13 @@ package com.github.anilople.javalua.compiler.parser;
 
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.*;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParseExp;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseLiteralStringExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseOptionalExpList;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseTableConstructorExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseVarargExp;
+import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.canParsePrefixExp;
+import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.parsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 import com.github.anilople.javalua.compiler.ast.Args;
@@ -175,7 +175,14 @@ public class LuaParser {
       Name name = parseName(lexer);
       return new NameVar(name);
     }
-    PrefixExp prefixExp = parsePrefixExp(lexer);
+    Exp prefixExp = parsePrefixExp(lexer);
+    return parseVar(lexer, prefixExp);
+  }
+
+  /**
+   * var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
+   */
+  static Var parseVar(LuaLexer lexer, Exp prefixExp) {
     if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
       lexer.skip(TOKEN_SEP_LBRACK);
       Exp exp = parseExp(lexer);
@@ -197,15 +204,27 @@ public class LuaParser {
   /**
    * varlist ::= var {‘,’ var}
    */
+  static VarList parseVarList(LuaLexer lexer, Var first) {
+    List<Var> tail = parseVarListTail(lexer);
+    return new VarList(first, tail);
+  }
+
+  /**
+   * varlist ::= var {‘,’ var}
+   */
   static VarList parseVarList(LuaLexer lexer) {
     Var first = parseVar(lexer);
+    return parseVarList(lexer, first);
+  }
+
+  static List<Var> parseVarListTail(LuaLexer lexer) {
     List<Var> tail = new ArrayList<>();
     while (lexer.lookAheadTest(TOKEN_SEP_COMMA)) {
       lexer.skip(TOKEN_SEP_COMMA);
       Var var = parseVar(lexer);
       tail.add(var);
     }
-    return new VarList(first, tail);
+    return tail;
   }
 
   /**
@@ -288,6 +307,19 @@ public class LuaParser {
       }
       return new NameListParList(nameList, optionalVarargExp);
     }
+  }
+
+  /**
+   * args ::=  ‘(’ [explist] ‘)’ | ‘{’ [fieldlist] ‘}’ | LiteralString
+   */
+  static boolean canParseArgs(LuaLexer lexer) {
+    if (lexer.lookAheadTest(TOKEN_SEP_LPAREN)) {
+      return true;
+    }
+    if (lexer.lookAheadTest(TOKEN_SEP_LCURLY)) {
+      return true;
+    }
+    return lexer.lookAheadTest(TOKEN_STRING);
   }
 
   /**

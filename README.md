@@ -852,7 +852,31 @@ exp0  ::= nil | false | true | Numeral | LiteralString
 
 在二元运算符中，只有拼接`..`和乘方`^`具有右结合性，其他都是左结合性
 
+前缀表达式只能以标识符或者左圆括号开始
 
+编译器分为：前端，中端、后端
+
+优化一般在中端和后端进行
+
+为了简化代码生成器，将在语法分析阶段进行少量的优化
+
+将对全部由字面量参与的算术、按位和逻辑运算符表达式进行优化
+
+common prefix应该被消除，才可以转成LL（Top-down parsing）
+
+left recursive的语法也要消除，例如
+
+```
+assign -> ID "=" expr ";"
+expr -> expr "+" term | term
+term -> ID
+```
+
+expr是左递归，不是LL
+
+改写成右递归，再提取common prefix，就变成LL语法了
+
+也可以直接改写成 ENBF，利用 `{}`来表示出现0次或者多次
 
 ### 第17章 代码生成
 
@@ -886,3 +910,11 @@ http://siffiejoe.github.io/lua-prototype/
 http://www.lua.org/manual/5.1/manual.html#2.6
 
 A local variable used by an inner function is called an *upvalue*, or *external local variable*, inside the inner function.
+
+### BNF
+
+[Backus–Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)
+
+### parser-转成LL
+
+[Grammar equivalence, eliminating ambiguities, adapting to LL parsing](https://fileadmin.cs.lth.se/cs/Education/EDAN65/2021/lectures/L04.pdf)

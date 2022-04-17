@@ -1,9 +1,7 @@
 /**
  * 抽象语法树
  *
- * <a href="https://www.lua.org/manual/5.3/manual.html">lua 5.3 manual</a>
- *
- * 9 – The Complete Syntax of Lua
+ * <a href="https://www.lua.org/manual/5.3/manual.html#9">9 – The Complete Syntax of Lua</a>
  *
  * <pre>
  * 	chunk ::= block

@@ -1,9 +1,7 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.canParsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExpList;
-import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseVarList;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseArgs;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseBlock;
@@ -11,7 +9,10 @@ import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncBod
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseFuncname;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseName;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseNameList;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVarList;
+import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.canParsePrefixExp;
+import static com.github.anilople.javalua.compiler.parser.LuaPrefixExpParser.parsePrefixExp;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 import com.github.anilople.javalua.compiler.ast.Args;
@@ -22,9 +23,13 @@ import com.github.anilople.javalua.compiler.ast.FuncName;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
+import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.VarList;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.FunctionCallPrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.ParenthesesPrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
 import com.github.anilople.javalua.compiler.ast.stat.*;
 import com.github.anilople.javalua.compiler.ast.stat.EmptyStat;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
@@ -185,8 +190,8 @@ class LuaStatParser {
     }
     final NameList nameList = parseNameList(lexer);
     final Optional<ExpList> optionalExpList;
-    if (lexer.lookAheadTest(TokenEnums.TOKEN_OP_EQ)) {
-      lexer.skip(TokenEnums.TOKEN_OP_EQ);
+    if (lexer.lookAheadTest(TokenEnums.TOKEN_OP_ASSIGN)) {
+      lexer.skip(TokenEnums.TOKEN_OP_ASSIGN);
       ExpList expList = parseExpList(lexer);
       optionalExpList = Optional.of(expList);
     } else {
@@ -199,21 +204,21 @@ class LuaStatParser {
     return canParsePrefixExp(lexer);
   }
 
-  /**
-   * functioncall ::=  prefixexp args | prefixexp ‘:’ Name args
-   */
-  static FunctionCall parseFunctionCall(LuaLexer lexer) {
-    PrefixExp prefixExp = parsePrefixExp(lexer);
-    if (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_COLON)) {
-      lexer.skip(TokenEnums.TOKEN_SEP_COLON);
-      Name name = parseName(lexer);
-      Args args = parseArgs(lexer);
-      return new NameFunctionCall(prefixExp, name, args);
-    } else {
-      Args args = parseArgs(lexer);
-      return new NoNameFunctionCall(prefixExp, args);
-    }
-  }
+//  /**
+//   * functioncall ::=  prefixexp args | prefixexp ‘:’ Name args
+//   */
+//  static FunctionCall parseFunctionCall(LuaLexer lexer) {
+//    PrefixExp prefixExp = parsePrefixExp(lexer);
+//    if (lexer.lookAheadTest(TokenEnums.TOKEN_SEP_COLON)) {
+//      lexer.skip(TokenEnums.TOKEN_SEP_COLON);
+//      Name name = parseName(lexer);
+//      Args args = parseArgs(lexer);
+//      return new NameFunctionCall(prefixExp, name, args);
+//    } else {
+//      Args args = parseArgs(lexer);
+//      return new NoNameFunctionCall(prefixExp, args);
+//    }
+//  }
 
   static BreakStat parseBreakStat(LuaLexer lexer) {
     LuaToken token = lexer.next();
@@ -308,7 +313,7 @@ class LuaStatParser {
 
     // Name ‘=’ exp ‘,’
     final Name name = parseName(lexer);
-    lexer.skip(TokenEnums.TOKEN_OP_EQ);
+    lexer.skip(TokenEnums.TOKEN_OP_ASSIGN);
     final Exp initExp = parseExp(lexer);
     lexer.skip(TokenEnums.TOKEN_SEP_COMMA);
 
@@ -347,6 +352,29 @@ class LuaStatParser {
   }
 
   /**
+   * varlist ‘=’ explist
+   * <p>
+   * var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
+   * <p>
+   * var已经解析了一半
+   */
+  static AssignStat parseAssignStat(LuaLexer lexer, Exp prefixExp) {
+    if (prefixExp instanceof FunctionCallPrefixExp) {
+      throw new IllegalArgumentException("prefixExp's type " + prefixExp.getClass());
+    }
+    final Var first;
+    if (prefixExp instanceof VarPrefixExp) {
+      first = ((VarPrefixExp) prefixExp).getVar();
+    } else {
+      first = parseVar(lexer, prefixExp);
+    }
+    VarList varList = parseVarList(lexer, first);
+    lexer.skip(TokenEnums.TOKEN_OP_ASSIGN);
+    ExpList expList = parseExpList(lexer);
+    return new AssignStat(varList, expList);
+  }
+
+  /**
    * for namelist in explist do block end
    * <p>
    * namelist ::= Name {‘,’ Name}
@@ -357,7 +385,7 @@ class LuaStatParser {
    */
   static Stat parseForStat(LuaLexer lexer) {
     List<LuaToken> tokens = lexer.previewNext(3);
-    if (TokenEnums.TOKEN_OP_EQ.equals(tokens.get(2).getKind())) {
+    if (TokenEnums.TOKEN_OP_ASSIGN.equals(tokens.get(2).getKind())) {
       return parseForNumStat(lexer);
     } else {
       return parseForInStat(lexer);
@@ -383,15 +411,16 @@ class LuaStatParser {
    * <p>
    * varlist ‘=’ explist
    * <p>
-   * functioncall
+   * functioncall ::=  prefixexp args | prefixexp ‘:’ Name args
+   * <p>
+   * 函数调用既可以是语句，也可以是前缀表达式，但不一定是var表达式。
    */
   static Stat parseAssignOrFunctionCallStat(LuaLexer lexer) {
-    if (canParseFunctionCall(lexer)) {
-      return parseFunctionCall(lexer);
+    Exp prefixExp = parsePrefixExp(lexer);
+    if (prefixExp instanceof FunctionCallPrefixExp) {
+      return ((FunctionCallPrefixExp) prefixExp).getFunctionCall();
+    } else {
+      return parseAssignStat(lexer, prefixExp);
     }
-    if (canParseAssignStat(lexer)) {
-      return parseAssignStat(lexer);
-    }
-    throw new IllegalStateException("not assign or function call " + lexer);
   }
 }
