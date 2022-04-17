@@ -12,9 +12,7 @@ public abstract class AbstractLuaAst implements LuaAst {
 
   @Override
   public String toString() {
-    return this.getClass().getSimpleName() + "{" +
-        "location=" + location +
-        '}';
+    return this.getClass().getSimpleName() + "{" + "location=" + location + '}';
   }
 
   @Override

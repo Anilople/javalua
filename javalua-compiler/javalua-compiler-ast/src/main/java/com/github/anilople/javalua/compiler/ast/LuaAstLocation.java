@@ -15,9 +15,6 @@ public class LuaAstLocation {
 
   @Override
   public String toString() {
-    return "{" +
-        "line=" + line +
-        ", column=" + column +
-        '}';
+    return "{" + "line=" + line + ", column=" + column + '}';
   }
 }

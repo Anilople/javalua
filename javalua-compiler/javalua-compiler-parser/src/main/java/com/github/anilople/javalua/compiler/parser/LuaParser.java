@@ -80,7 +80,6 @@ public class LuaParser {
     return parse(luaCode, "unknown");
   }
 
-
   /**
    * token -> ast
    */
