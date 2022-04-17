@@ -7,6 +7,10 @@ import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
 import com.github.anilople.javalua.compiler.ast.exp.FunctionDefExp;
 import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
+import com.github.anilople.javalua.compiler.ast.stat.BreakStat;
+import com.github.anilople.javalua.compiler.ast.stat.DoStat;
+import com.github.anilople.javalua.compiler.ast.stat.EmptyStat;
+import com.github.anilople.javalua.compiler.ast.stat.FunctionDefineStat;
 import com.github.anilople.javalua.compiler.ast.stat.GotoStat;
 import com.github.anilople.javalua.compiler.ast.stat.LabelStat;
 import com.github.anilople.javalua.compiler.ast.stat.LocalFunctionDefineStat;
@@ -60,6 +64,8 @@ class LuaStatParserTest {
 
   @Test
   void parseEmptyStat() {
+    Stat stat = parseStat(";");
+    assertTrue(stat instanceof EmptyStat);
   }
 
   @Test
@@ -71,11 +77,9 @@ class LuaStatParserTest {
   }
 
   @Test
-  void canParseFunctionCall() {
-  }
-
-  @Test
   void parseBreakStat() {
+    Stat stat = parseStat("break");
+    assertTrue(stat instanceof BreakStat);
   }
 
   @Test
@@ -84,10 +88,21 @@ class LuaStatParserTest {
 
   @Test
   void parseDoStat() {
+    Stat stat = parseStat("do end");
+    assertTrue(stat instanceof DoStat);
   }
 
   @Test
   void parseFunctionDefineStat() {
+    FunctionDefineStat stat =
+        (FunctionDefineStat) parseStat("function add(a, b) return a + b end");
+    assertEquals("add", stat.getFuncName().getName().getIdentifier());
+    FuncBody funcBody = stat.getFuncBody();
+    NameListParList nameListParList = (NameListParList) funcBody.getOptionalParList().get();
+    NameList nameList = nameListParList.getNameList();
+    assertEquals(2, nameList.size());
+    assertEquals("a", nameList.get(0).getIdentifier());
+    assertEquals("b", nameList.get(1).getIdentifier());
   }
 
   @Test
@@ -100,10 +115,6 @@ class LuaStatParserTest {
 
   @Test
   void parseForNumStat() {
-  }
-
-  @Test
-  void canParseAssignStat() {
   }
 
   @Test

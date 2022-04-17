@@ -181,16 +181,18 @@ public class LuaParser {
    */
   static Var parseVar(LuaLexer lexer, Exp prefixExp) {
     if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
+      // prefixexp ‘[’ exp ‘]’
       lexer.skip(TOKEN_SEP_LBRACK);
       Exp exp = parseExp(lexer);
       lexer.skip(TOKEN_SEP_RBRACK);
       return new PrefixExpVar(prefixExp, exp);
     } else if (lexer.lookAheadTest(TOKEN_SEP_DOT)) {
+      // prefixexp ‘.’ Name
       lexer.skip(TOKEN_SEP_DOT);
       Name name = parseName(lexer);
       return new PrefixExpNameVar(prefixExp, name);
     } else {
-      throw new IllegalStateException("unknown token after prefixexp " + lexer);
+      return new NameVar(prefixExp);
     }
   }
 

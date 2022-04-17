@@ -3,6 +3,7 @@ package com.github.anilople.javalua.compiler.ast.stat;
 import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.FuncName;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+import lombok.Getter;
 
 /**
  * function funcname funcbody
@@ -11,13 +12,14 @@ import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
  *
  * @author wxq
  */
+@Getter
 public class FunctionDefineStat extends AbstractStat {
-  private final FuncName funcname;
-  private final FuncBody funcbody;
+  private final FuncName funcName;
+  private final FuncBody funcBody;
 
-  public FunctionDefineStat(LuaAstLocation luaAstLocation, FuncName funcname, FuncBody funcbody) {
+  public FunctionDefineStat(LuaAstLocation luaAstLocation, FuncName funcName, FuncBody funcBody) {
     super(luaAstLocation);
-    this.funcname = funcname;
-    this.funcbody = funcbody;
+    this.funcName = funcName;
+    this.funcBody = funcBody;
   }
 }

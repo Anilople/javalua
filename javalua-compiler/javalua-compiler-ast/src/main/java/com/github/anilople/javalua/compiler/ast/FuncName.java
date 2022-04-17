@@ -2,12 +2,14 @@ package com.github.anilople.javalua.compiler.ast;
 
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
 
 /**
  * funcname ::= Name {‘.’ Name} [‘:’ Name]
  *
  * @author wxq
  */
+@Getter
 public class FuncName extends AbstractLuaAst {
 
   private final Name name;

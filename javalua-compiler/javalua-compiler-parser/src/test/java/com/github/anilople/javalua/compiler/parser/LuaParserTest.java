@@ -26,9 +26,13 @@ import util.LuaTestResourceUtils;
  */
 class LuaParserTest {
 
+  static Block parse(String luaCode) {
+    return LuaParser.parse(luaCode);
+  }
+
   @Test
   void parseHelloWorld() {
-    Block block = LuaParser.parse(ch02.hello_world.getLuaCode());
+    Block block = parse(ch02.hello_world.getLuaCode());
     assertTrue(block.getOptionalRetstat().isEmpty());
     List<Stat> statList = block.getStatList();
     assertEquals(1, statList.size());
@@ -66,13 +70,13 @@ class LuaParserTest {
 
   @Test
   void localVariableAssign() {
-    Block block = LuaParser.parse("local a = 1");
+    Block block = parse("local a = 1");
     assertTrue(block.getStatList().get(0) instanceof LocalVarDeclStat);
   }
 
   @Test
   void localVariables() {
-    Block block = LuaParser.parse("local a,t,k,v,e;");
+    Block block = parse("local a,t,k,v,e;");
     LocalVarDeclStat localVarDeclStat = (LocalVarDeclStat) block.getStatList().get(0);
     NameList nameList = localVarDeclStat.getNamelist();
     assertEquals("a", nameList.get(0).getIdentifier());
@@ -84,16 +88,21 @@ class LuaParserTest {
 
   @Test
   void tableAccess() {
-    LuaParser.parse("v = t[k];");
+    parse("v = t[k];");
+  }
+
+  @Test
+  void tableSetValue() {
+    parse("t[2] = 3");
   }
 
   @Test
   void arrayAccess() {
-    LuaParser.parse("v = t[100]");
+    parse("v = t[100]");
   }
 
   @Test
   void newTable() {
-    LuaParser.parse("b = {x=1, y=2}");
+    parse("b = {x=1, y=2}");
   }
 }
