@@ -396,7 +396,7 @@ class LuaStatParser {
   static Stat parseLocalAssignOrFuncDefStat(LuaLexer lexer) {
     List<LuaToken> tokens = lexer.previewNext(2);
     if (TokenEnums.TOKEN_KW_FUNCTION.equals(tokens.get(1).getKind())) {
-      return parseFunctionDefineStat(lexer);
+      return parseLocalFunctionDefineStat(lexer);
     } else {
       return parseLocalVarDeclStat(lexer);
     }
