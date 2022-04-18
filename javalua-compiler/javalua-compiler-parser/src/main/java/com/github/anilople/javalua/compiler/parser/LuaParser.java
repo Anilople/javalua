@@ -117,8 +117,8 @@ public class LuaParser {
     LuaToken token = lexer.skip(TOKEN_KW_RETURN);
     LuaAstLocation location = convert(token);
     Optional<ExpList> optionalExpList = parseOptionalExpList(lexer);
-    if (lexer.lookAheadTest(TOKEN_SEP_COLON)) {
-      lexer.skip(TOKEN_SEP_COLON);
+    if (lexer.lookAheadTest(TOKEN_SEP_SEMI)) {
+      lexer.skip(TOKEN_SEP_SEMI);
     }
     return new Retstat(location, optionalExpList);
   }

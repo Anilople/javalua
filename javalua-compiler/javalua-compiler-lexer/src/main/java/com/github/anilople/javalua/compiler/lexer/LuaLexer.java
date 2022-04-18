@@ -50,7 +50,9 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
     LuaToken luaToken = this.previewNext();
     if (!luaToken.getKind().equals(kind)) {
       throw new IllegalStateException(
-          "token's kind not match, want to skip "
+          "token's kind not match, "
+              + luaToken.getLocation()
+              + " want to skip "
               + kind
               + " but get "
               + luaToken.getKind()

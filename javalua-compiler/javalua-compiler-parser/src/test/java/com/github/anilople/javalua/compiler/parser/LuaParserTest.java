@@ -6,11 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.anilople.javalua.compiler.ast.Args.ExpListArgs;
 import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.ExpList;
+import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
+import com.github.anilople.javalua.compiler.ast.ParList;
+import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
+import com.github.anilople.javalua.compiler.ast.Retstat;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
+import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
+import com.github.anilople.javalua.compiler.ast.stat.FunctionDefineStat;
+import com.github.anilople.javalua.compiler.ast.stat.IfStat;
 import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
@@ -104,5 +111,28 @@ class LuaParserTest {
   @Test
   void newTable() {
     parse("b = {x=1, y=2}");
+  }
+
+  @Test
+  void function_max_with_semicolon() {
+    Block block = parse("function max(a, b) if (a > b) then return a; else return b; end end");
+    List<Stat> statList = block.getStatList();
+    assertEquals(1, statList.size());
+    FunctionDefineStat functionDefineStat = (FunctionDefineStat) statList.get(0);
+    assertEquals("max", functionDefineStat.getFuncName().getName().getIdentifier());
+    FuncBody funcBody = functionDefineStat.getFuncBody();
+    NameListParList nameListParList = (NameListParList) funcBody.getOptionalParList().get();
+    assertEquals(2, nameListParList.getNameList().size());
+    assertEquals("a", nameListParList.getNameList().get(0).getIdentifier());
+    assertEquals("b", nameListParList.getNameList().get(1).getIdentifier());
+
+//    IfStat ifStat = (IfStat) funcBody.getBlock().getStatList().get(0);
+//    BinopExp binopExp = (BinopExp) ifStat.getExp();
+//    assertEquals("a", ((LiteralStringExp)binopExp.getExp1()).getContent());
+//    assertEquals("b", ((LiteralStringExp)binopExp.getExp2()).getContent());
+//    Block thenBlock = ifStat.getBlock();
+//    assertTrue(thenBlock.getOptionalRetstat().isEmpty());
+//    assertTrue(thenBlock.getOptionalRetstat().isPresent());
+//    thenBlock.getOptionalRetstat().get();
   }
 }
