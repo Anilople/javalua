@@ -9,15 +9,11 @@ import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
-import com.github.anilople.javalua.compiler.ast.ParList;
 import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
-import com.github.anilople.javalua.compiler.ast.Retstat;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
-import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
 import com.github.anilople.javalua.compiler.ast.stat.FunctionDefineStat;
-import com.github.anilople.javalua.compiler.ast.stat.IfStat;
 import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
@@ -126,14 +122,14 @@ class LuaParserTest {
     assertEquals("a", nameListParList.getNameList().get(0).getIdentifier());
     assertEquals("b", nameListParList.getNameList().get(1).getIdentifier());
 
-//    IfStat ifStat = (IfStat) funcBody.getBlock().getStatList().get(0);
-//    BinopExp binopExp = (BinopExp) ifStat.getExp();
-//    assertEquals("a", ((LiteralStringExp)binopExp.getExp1()).getContent());
-//    assertEquals("b", ((LiteralStringExp)binopExp.getExp2()).getContent());
-//    Block thenBlock = ifStat.getBlock();
-//    assertTrue(thenBlock.getOptionalRetstat().isEmpty());
-//    assertTrue(thenBlock.getOptionalRetstat().isPresent());
-//    thenBlock.getOptionalRetstat().get();
+    //    IfStat ifStat = (IfStat) funcBody.getBlock().getStatList().get(0);
+    //    BinopExp binopExp = (BinopExp) ifStat.getExp();
+    //    assertEquals("a", ((LiteralStringExp)binopExp.getExp1()).getContent());
+    //    assertEquals("b", ((LiteralStringExp)binopExp.getExp2()).getContent());
+    //    Block thenBlock = ifStat.getBlock();
+    //    assertTrue(thenBlock.getOptionalRetstat().isEmpty());
+    //    assertTrue(thenBlock.getOptionalRetstat().isPresent());
+    //    thenBlock.getOptionalRetstat().get();
   }
 
   @Test
