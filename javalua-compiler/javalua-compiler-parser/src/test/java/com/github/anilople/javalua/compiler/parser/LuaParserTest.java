@@ -135,4 +135,9 @@ class LuaParserTest {
 //    assertTrue(thenBlock.getOptionalRetstat().isPresent());
 //    thenBlock.getOptionalRetstat().get();
   }
+
+  @Test
+  void if_then_assign() {
+    parse("if val == nil then a = 1 end");
+  }
 }

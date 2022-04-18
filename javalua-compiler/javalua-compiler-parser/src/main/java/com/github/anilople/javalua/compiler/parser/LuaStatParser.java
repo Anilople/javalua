@@ -171,7 +171,7 @@ class LuaStatParser {
   }
 
   static EmptyStat parseEmptyStat(LuaLexer lexer) {
-    LuaToken token = lexer.next();
+    LuaToken token = lexer.skip(TokenEnums.TOKEN_SEP_SEMI);
     LuaAstLocation luaAstLocation = convert(token.getLocation());
     return new EmptyStat(luaAstLocation);
   }
@@ -218,7 +218,7 @@ class LuaStatParser {
   //  }
 
   static BreakStat parseBreakStat(LuaLexer lexer) {
-    LuaToken token = lexer.next();
+    LuaToken token = lexer.skip(TokenEnums.TOKEN_KW_BREAK);
     LuaAstLocation luaAstLocation = convert(token.getLocation());
     return new BreakStat(luaAstLocation);
   }

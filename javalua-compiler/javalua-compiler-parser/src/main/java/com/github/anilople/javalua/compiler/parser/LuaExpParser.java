@@ -432,10 +432,13 @@ class LuaExpParser {
     LuaAstLocation location = convert(token);
     switch (token.getKind()) {
       case TOKEN_KW_NIL:
+        lexer.skip(TOKEN_KW_NIL);
         return new NilExp(location);
       case TOKEN_KW_FALSE:
+        lexer.skip(TOKEN_KW_FALSE);
         return new FalseExp(location);
       case TOKEN_KW_TRUE:
+        lexer.skip(TOKEN_KW_TRUE);
         return new TrueExp(location);
       case TOKEN_STRING:
         return parseLiteralStringExp(lexer);
