@@ -24,6 +24,7 @@ import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.VarList;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.FunctionCallPrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
 import com.github.anilople.javalua.compiler.ast.stat.*;
@@ -354,7 +355,7 @@ class LuaStatParser {
    * <p>
    * var已经解析了一半
    */
-  static AssignStat parseAssignStat(LuaLexer lexer, Exp prefixExp) {
+  static AssignStat parseAssignStat(LuaLexer lexer, PrefixExp prefixExp) {
     if (prefixExp instanceof FunctionCallPrefixExp) {
       throw new IllegalArgumentException("prefixExp's type " + prefixExp.getClass());
     }
@@ -412,7 +413,7 @@ class LuaStatParser {
    * 函数调用既可以是语句，也可以是前缀表达式，但不一定是var表达式。
    */
   static Stat parseAssignOrFunctionCallStat(LuaLexer lexer) {
-    Exp prefixExp = parsePrefixExp(lexer);
+    PrefixExp prefixExp = parsePrefixExp(lexer);
     if (prefixExp instanceof FunctionCallPrefixExp) {
       return ((FunctionCallPrefixExp) prefixExp).getFunctionCall();
     } else {

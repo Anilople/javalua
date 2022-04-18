@@ -18,12 +18,13 @@ import com.github.anilople.javalua.compiler.ast.Args;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
+import com.github.anilople.javalua.compiler.ast.Var.TableAccessByExpVar;
+import com.github.anilople.javalua.compiler.ast.Var.TableAccessByNameVar;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.FunctionCallPrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.ParenthesesPrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
-import com.github.anilople.javalua.compiler.ast.exp.TableAccessExp;
 import com.github.anilople.javalua.compiler.ast.stat.NameFunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
 import com.github.anilople.javalua.compiler.lexer.LuaLexer;
@@ -70,7 +71,7 @@ public class LuaPrefixExpParser {
    * 	| prefixexp [‘:’ Name] args
    * </pre>
    */
-  static Exp parsePrefixExp(LuaLexer lexer) {
+  static PrefixExp parsePrefixExp(LuaLexer lexer) {
     final PrefixExp prefixExp;
     if (canParseName(lexer)) {
       Name name = parseName(lexer);
@@ -86,13 +87,13 @@ public class LuaPrefixExpParser {
       lexer.skip(TOKEN_SEP_LBRACK);
       Exp keyExp = parseExp(lexer);
       lexer.skip(TOKEN_SEP_RBRACK);
-      return new TableAccessExp(prefixExp, keyExp);
+      return new VarPrefixExp(new TableAccessByExpVar(prefixExp, keyExp));
     }
     if (lexer.lookAheadTest(TOKEN_SEP_DOT)) {
       // prefixexp ‘.’ Name
       lexer.skip(TOKEN_SEP_DOT);
       Name name = parseName(lexer);
-      return new TableAccessExp(prefixExp, name);
+      return new VarPrefixExp(new TableAccessByNameVar(prefixExp, name));
     }
 
     // function call

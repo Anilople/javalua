@@ -23,11 +23,11 @@ public abstract class Var extends AbstractLuaAst {
    * @author wxq
    */
   @Getter
-  public static class PrefixExpVar extends Var {
+  public static class TableAccessByExpVar extends Var {
     private final Exp prefixExp;
     private final Exp exp;
 
-    public PrefixExpVar(Exp prefixExp, Exp exp) {
+    public TableAccessByExpVar(Exp prefixExp, Exp exp) {
       super(prefixExp.getLocation());
       this.prefixExp = prefixExp;
       this.exp = exp;
@@ -58,11 +58,11 @@ public abstract class Var extends AbstractLuaAst {
    * @author wxq
    */
   @Getter
-  public static class PrefixExpNameVar extends Var {
+  public static class TableAccessByNameVar extends Var {
     private final Exp prefixExp;
     private final Name name;
 
-    public PrefixExpNameVar(Exp prefixExp, Name name) {
+    public TableAccessByNameVar(Exp prefixExp, Name name) {
       super(prefixExp.getLocation());
       this.prefixExp = prefixExp;
       this.name = name;

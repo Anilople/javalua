@@ -42,11 +42,13 @@ import com.github.anilople.javalua.compiler.ast.Unop.MinusUnop;
 import com.github.anilople.javalua.compiler.ast.Unop.NotUnop;
 import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
-import com.github.anilople.javalua.compiler.ast.Var.PrefixExpNameVar;
-import com.github.anilople.javalua.compiler.ast.Var.PrefixExpVar;
+import com.github.anilople.javalua.compiler.ast.Var.TableAccessByNameVar;
+import com.github.anilople.javalua.compiler.ast.Var.TableAccessByExpVar;
 import com.github.anilople.javalua.compiler.ast.VarList;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
 import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
@@ -172,27 +174,29 @@ public class LuaParser {
       Name name = parseName(lexer);
       return new NameVar(name);
     }
-    Exp prefixExp = parsePrefixExp(lexer);
+    PrefixExp prefixExp = parsePrefixExp(lexer);
     return parseVar(lexer, prefixExp);
   }
 
   /**
    * var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
    */
-  static Var parseVar(LuaLexer lexer, Exp prefixExp) {
+  static Var parseVar(LuaLexer lexer, PrefixExp prefixExp) {
     if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
       // prefixexp ‘[’ exp ‘]’
       lexer.skip(TOKEN_SEP_LBRACK);
       Exp exp = parseExp(lexer);
       lexer.skip(TOKEN_SEP_RBRACK);
-      return new PrefixExpVar(prefixExp, exp);
+      return new TableAccessByExpVar(prefixExp, exp);
     } else if (lexer.lookAheadTest(TOKEN_SEP_DOT)) {
       // prefixexp ‘.’ Name
       lexer.skip(TOKEN_SEP_DOT);
       Name name = parseName(lexer);
-      return new PrefixExpNameVar(prefixExp, name);
+      return new TableAccessByNameVar(prefixExp, name);
     } else {
-      return new NameVar(prefixExp);
+      assert prefixExp instanceof VarPrefixExp;
+      VarPrefixExp varPrefixExp = (VarPrefixExp) prefixExp;
+      return varPrefixExp.getVar();
     }
   }
 
