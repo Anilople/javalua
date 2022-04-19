@@ -1,10 +1,10 @@
 package com.github.anilople.javalua.io;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.github.anilople.javalua.util.CharacterUtils;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author wxq
@@ -30,6 +30,5 @@ class TextResourceTest {
     assertEquals("ab", new TextResource("ab1\nc").previewPrefixMatch(CharacterUtils::isLetter));
     assertEquals("a", new TextResource("a =1\nc").previewPrefixMatch(CharacterUtils::isLetter));
     assertEquals("a", new TextResource("a=1\nc").previewPrefixMatch(CharacterUtils::isLetter));
-
   }
 }

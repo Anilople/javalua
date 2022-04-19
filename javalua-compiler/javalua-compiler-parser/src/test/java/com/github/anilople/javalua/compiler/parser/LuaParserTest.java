@@ -1,5 +1,8 @@
 package com.github.anilople.javalua.compiler.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.github.anilople.javalua.compiler.ast.Args.ExpListArgs;
 import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.ExpList;
@@ -7,14 +10,12 @@ import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
-import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
 import com.github.anilople.javalua.compiler.ast.Var.TableAccessByNameVar;
 import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
-import com.github.anilople.javalua.compiler.ast.stat.FunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.FunctionDefineStat;
 import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
@@ -25,9 +26,6 @@ import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import util.LuaTestResourceUtils;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author wxq
@@ -155,8 +153,7 @@ class LuaParserTest {
     assertEquals(1, nameList.size());
     assertEquals("value", nameList.get(0).getIdentifier());
     // value + 1
-    Exp exp = funcBody.getBlock().getOptionalRetstat().get()
-        .getOptionalExpList().get().get(0);
+    Exp exp = funcBody.getBlock().getOptionalRetstat().get().getOptionalExpList().get().get(0);
     assertTrue(exp instanceof BinopExp);
   }
 
@@ -171,7 +168,8 @@ class LuaParserTest {
     NoNameFunctionCall nameFunctionCall = (NoNameFunctionCall) block.getStatList().get(0);
     ExpListArgs expListArgs = (ExpListArgs) nameFunctionCall.getArgs();
     assertTrue(expListArgs.getOptionalExpList().isEmpty());
-    TableAccessByNameVar var = (TableAccessByNameVar) ((VarPrefixExp)nameFunctionCall.getPrefixExp()).getVar();
+    TableAccessByNameVar var =
+        (TableAccessByNameVar) ((VarPrefixExp) nameFunctionCall.getPrefixExp()).getVar();
     System.out.println(var);
   }
 }

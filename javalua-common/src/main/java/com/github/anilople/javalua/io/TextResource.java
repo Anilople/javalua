@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.io;
 
-import com.github.anilople.javalua.util.CharacterUtils;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import lombok.Data;

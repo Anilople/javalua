@@ -10,16 +10,13 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseArgs;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseName;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseVar;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseArgs;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseName;
-import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 import com.github.anilople.javalua.compiler.ast.Args;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
-import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
 import com.github.anilople.javalua.compiler.ast.Var.TableAccessByExpVar;
 import com.github.anilople.javalua.compiler.ast.Var.TableAccessByNameVar;
@@ -94,7 +91,7 @@ public class LuaPrefixExpParser {
    */
   static PrefixExp finishParsePrefixExp(LuaLexer lexer, PrefixExp prefixExp) {
     final PrefixExp nextPrefixExp;
-    if (canParseName(lexer)){
+    if (canParseName(lexer)) {
       Name name = parseName(lexer);
       nextPrefixExp = new VarPrefixExp(new NameVar(name));
       return finishParsePrefixExp(lexer, nextPrefixExp);
