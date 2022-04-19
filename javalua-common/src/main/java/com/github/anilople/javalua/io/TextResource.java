@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.io;
 
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import lombok.Data;
 
 /**
@@ -124,5 +125,20 @@ public class TextResource implements CharSequence {
       }
       this.nextChar();
     }
+  }
+
+  /**
+   * 截取前缀，直到某个字符不符合条件
+   */
+  public String previewPrefixMatch(Predicate<Character> predicateCharOfPrefix) {
+    int endIndexExclusive = 0;
+    while (endIndexExclusive < this.length()) {
+      char c = this.charAt(endIndexExclusive);
+      if (!predicateCharOfPrefix.test(c)) {
+        break;
+      }
+      endIndexExclusive++;
+    }
+    return this.content.substring(this.index, this.index + endIndexExclusive);
   }
 }

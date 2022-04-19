@@ -1,8 +1,9 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.FuncBody;
-import com.github.anilople.javalua.compiler.ast.Funcname;
-import lombok.Data;
+import com.github.anilople.javalua.compiler.ast.FuncName;
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
+import lombok.Getter;
 
 /**
  * function funcname funcbody
@@ -11,8 +12,14 @@ import lombok.Data;
  *
  * @author wxq
  */
-@Data
-public class FunctionDefineStat implements Stat {
-  private final Funcname funcname;
-  private final FuncBody funcbody;
+@Getter
+public class FunctionDefineStat extends AbstractStat {
+  private final FuncName funcName;
+  private final FuncBody funcBody;
+
+  public FunctionDefineStat(LuaAstLocation luaAstLocation, FuncName funcName, FuncBody funcBody) {
+    super(luaAstLocation);
+    this.funcName = funcName;
+    this.funcBody = funcBody;
+  }
 }

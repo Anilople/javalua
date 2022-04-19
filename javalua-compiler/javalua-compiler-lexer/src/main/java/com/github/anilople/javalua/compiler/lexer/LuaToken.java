@@ -31,4 +31,9 @@ public class LuaToken {
   public LuaToken(LuaTokenLocation location, TokenEnums kind) {
     this(location, kind, kind.getContent());
   }
+
+  @Override
+  public String toString() {
+    return content + " " + this.kind;
+  }
 }

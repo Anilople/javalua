@@ -121,12 +121,12 @@ public class LuaTestResourceUtils {
       String variableName = removeLuaSuffix(luaFileName);
       String resourcePath = String.join("/", chapter, luaFileName);
       // byte[] closure = ResourceReadUtils.readBytes("ch08/closure.luac53.out");
-      // LuaResource hello_world = new LuaResource("ch02/hello_world.lua");
+      // LuaTestResource hello_world = new LuaTestResource("ch02/hello_world.lua");
       stringBuilder
-          .append("\tLuaResource ")
+          .append("\tLuaTestResource ")
           .append(variableName)
           .append(" = ")
-          .append("new LuaResource(\"")
+          .append("LuaTestResource.resolve(\"")
           .append(resourcePath)
           .append("\");")
           .append(System.lineSeparator());

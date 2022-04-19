@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.compiler.lexer;
 
 import com.github.anilople.javalua.util.CachedIterator;
+import java.util.List;
 
 /**
  * @author wxq
@@ -22,6 +23,11 @@ class LuaLexerImpl implements LuaLexer {
   @Override
   public LuaToken previewNext() {
     return this.cachedIterator.previewNext();
+  }
+
+  @Override
+  public List<LuaToken> previewNext(int n) {
+    return this.cachedIterator.previewNext(n);
   }
 
   @Override

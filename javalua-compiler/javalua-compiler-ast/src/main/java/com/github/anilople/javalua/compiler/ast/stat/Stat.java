@@ -1,6 +1,9 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
+import com.github.anilople.javalua.compiler.ast.LuaAst;
+
 /**
+ * <pre>
  * 	stat ::=  ‘;’ |
  * 		 varlist ‘=’ explist |
  * 		 functioncall |
@@ -16,7 +19,8 @@ package com.github.anilople.javalua.compiler.ast.stat;
  * 		 function funcname funcbody |
  * 		 local function Name funcbody |
  * 		 local namelist [‘=’ explist]
+ * </pre>
  *
  * @author wxq
  */
-public interface Stat {}
+public interface Stat extends LuaAst {}

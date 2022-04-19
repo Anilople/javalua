@@ -696,6 +696,205 @@ CFG一般用巴科斯范式（Backus-Naur Form，BNF）或者其扩展EBNF（Ext
 
 ### 第16章 语法分析
 
+EBNF可以用更容易理解的语法图（铁路图）来表示
+
+词法分析器：按照BNF的描述把源代码转成AST
+
+歧义（Ambiguous）
+
+无歧义（Unambiguous）
+
+假定某种语言L是上下文无关语言，那么我们可以把用L语言编写的源代码换成解析树（CST）。对于任何一段L源代码，如果仅能被转换成唯一一颗CST，那么我们称L语言无歧义，反之，我们称L语言有歧义
+
+例如C语言的if-else语句的EBNF描述
+
+```
+stat := ...
+	| if '(' exp ')' stat [else stat]
+```
+
+语句
+
+```
+if (a) if (b) s1; else s2;
+```
+
+通过预先读取后面的几个toke来决定下一步解析策略的做法叫做前瞻（Lookahead），前瞻失败后记录状态进行尝试并可能回退的做法叫做回溯（Backtracking）
+
+如果上下文无关语言L不需要借助回溯就可以完成解析，那么我们称L为确定性（Deterministic）语言。确定性语言一定没有歧义
+
+```mermaid
+graph TD
+	subgraph 上下文无关语言
+        subgraph 无歧义
+			确定性
+        end
+	end
+```
+
+回溯最大的问题就是会导致解析器无法在线性时间内完成工作，因此要尽量避免
+
+计算机科学里的“树”和现实中的树方向相反，树在纸上画的时候，树根在最上面
+
+自顶向下（Top-down）：LL解析器，递归下降解析器（Recursive Descent Parser）
+
+自底向上（Bottom-up）：LR解析器，CYK解析器
+
+书里用 递归下降解析器
+
+前瞻1个token，决定下一个ast是什么
+
+stat解析的难点在于区分
+
+```
+# 赋值
+varlist ‘=’ explist
+# 函数调用
+functioncall
+```
+
+展开一层后，得到
+
+```
+var {‘,’ var} ‘=’ explist
+prefixexp args | prefixexp ‘:’ Name args
+```
+
+var再展开，得到
+
+```lua
+( Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name ) {‘,’ var} ‘=’ explist
+
+prefixexp args | prefixexp ‘:’ Name args
+```
+
+只看第一个ast，就发现只剩Name和prefixexp需要处理了
+
+```lua
+Name
+prefixexp
+
+-- 根据prefixexp ::= var | functioncall | ‘(’ exp ‘)’
+-- 还可以展开
+Name -- 赋值
+var | functioncall | ‘(’ exp ‘)’ -- 函数调用
+```
+
+如果是`‘(’ exp ‘)’`，说明是函数调用
+
+用图表示 函数调用
+
+```mermaid
+graph LR
+	subgraph functioncall
+		Start(start) --> prefixexp
+		prefixexp --> args
+		prefixexp --> ':' --> Name --> args
+		args --> End(end)
+	end
+```
+
+用图表示 var
+
+```mermaid
+graph LR
+	subgraph var
+        Start(start) --> Name
+        Start(start) --> prefixexp
+        prefixexp --> '.' --> Name --> End(end)
+        prefixexp --> LEFT_SQUARE_BRACKET --> exp --> RIGHT_SQUARE_BRACKET --> End(end)
+	end
+```
+
+解析表达式时，利用Lua运算符的优先级和结合性，消除歧义
+
+优先级从低到高排列如下
+
+```
+or
+and
+< > <= >= ~= ==
+|
+~
+&
+<< >>
+..
++ -
+* / // %
+unary operator (not # - ~)
+^
+```
+
+根据运算符优先级把表达式的语法规则重写，得到
+
+```
+
+exp ::=  nil | false | true | Numeral | LiteralString | ‘...’ | functiondef |
+	 prefixexp | tableconstructor | exp binop exp | unop exp
+
+exp   ::= exp12
+exp12 ::= exp11 {or exp11}
+exp11 ::= exp10 {and exp10}
+exp10 ::= exp9 {(‘<’ | ‘>’ | ‘<=’ | ‘>=’ | ‘~=’ | ‘==’) exp9}
+exp9  ::= exp8 {‘|’ exp8}
+exp8  ::= exp7 {‘~’ exp7}
+exp7  ::= exp6 {‘&’ exp6}
+exp6  ::= exp5 {(‘<<’ | ‘>>’) exp5}
+exp5  ::= exp4 {‘..’ exp4}
+exp4  ::= exp3 {(‘+’ | ‘-’) exp3}
+exp3  ::= exp2 {(‘*’ | ‘/’ | ‘//’ | ‘%’) exp2}
+exp2  ::= {(‘not’ | ‘#’ | ‘-’ | ‘~’)} exp1
+exp1  ::= exp0 {‘^’ exp2}
+exp0  ::= nil | false | true | Numeral | LiteralString
+		| ‘...’ | functiondef | prefixexp | tableconstructor
+
+```
+
+在二元运算符中，只有拼接`..`和乘方`^`具有右结合性，其他都是左结合性
+
+前缀表达式只能以标识符或者左圆括号开始
+
+编译器分为：前端，中端、后端
+
+优化一般在中端和后端进行
+
+为了简化代码生成器，将在语法分析阶段进行少量的优化
+
+将对全部由字面量参与的算术、按位和逻辑运算符表达式进行优化
+
+common prefix应该被消除，才可以转成LL（Top-down parsing）
+
+left recursive的语法也要消除，例如
+
+```
+assign -> ID "=" expr ";"
+expr -> expr "+" term | term
+term -> ID
+```
+
+expr是左递归，不是LL
+
+改写成右递归，再提取common prefix，就变成LL语法了
+
+也可以直接改写成 ENBF，利用 `{}`来表示出现0次或者多次
+
+函数调用
+
+```lua
+-- 函数是debug.setmetatable
+debug.setmetatable(100, mt)
+```
+
+更多工具
+
+* Compiler-Compiler
+* YACC
+* Bison
+* ANTLR
+* JavaCC
+
+本章手写了递归下降解析器
+
 ### 第17章 代码生成
 
 ## 第四部分 Lua标准库
@@ -728,3 +927,11 @@ http://siffiejoe.github.io/lua-prototype/
 http://www.lua.org/manual/5.1/manual.html#2.6
 
 A local variable used by an inner function is called an *upvalue*, or *external local variable*, inside the inner function.
+
+### BNF
+
+[Backus–Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)
+
+### parser-转成LL
+
+[Grammar equivalence, eliminating ambiguities, adapting to LL parsing](https://fileadmin.cs.lth.se/cs/Education/EDAN65/2021/lectures/L04.pdf)

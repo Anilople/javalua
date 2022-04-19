@@ -1,10 +1,10 @@
 package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.Block;
+import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import java.util.Optional;
-import lombok.Data;
 
 /**
  * 数值for循环语句
@@ -41,11 +41,13 @@ import lombok.Data;
  * </pre>
  * @author wxq
  */
-@Data
-public class ForNumStat implements Stat {
+public class ForNumStat extends AbstractStat {
 
-  private final int lineOfFor;
-  private final int lineOfDo;
+  /**
+   * do 关键字所在位置
+   */
+  private final LuaAstLocation locationOfDo;
+
   private final Name name;
   private final Exp initExp;
   private final Exp limitExp;
@@ -55,4 +57,21 @@ public class ForNumStat implements Stat {
   private final Optional<Exp> stepExp;
 
   private final Block block;
+
+  public ForNumStat(
+      LuaAstLocation locationOfFor,
+      LuaAstLocation locationOfDo,
+      Name name,
+      Exp initExp,
+      Exp limitExp,
+      Optional<Exp> stepExp,
+      Block block) {
+    super(locationOfFor);
+    this.locationOfDo = locationOfDo;
+    this.name = name;
+    this.initExp = initExp;
+    this.limitExp = limitExp;
+    this.stepExp = stepExp;
+    this.block = block;
+  }
 }

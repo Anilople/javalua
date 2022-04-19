@@ -3,6 +3,7 @@ package com.github.anilople.javalua.compiler.ast;
 import com.github.anilople.javalua.compiler.ast.stat.Stat;
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
 
 /**
  *
@@ -10,6 +11,7 @@ import java.util.Optional;
  *
  * @author wxq
  */
+@Getter
 public class Block extends AbstractLuaAst {
 
   private final List<Stat> statList;

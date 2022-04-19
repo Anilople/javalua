@@ -47,9 +47,30 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     return new LuaToken(this.getTokenLocation(), tokenEnums);
   }
 
-  TokenEnums getTokenEnumsByMaxPrefixMatch() {
+  /**
+   * 找 keyword，需要防止 incr 因为 匹配到了关键字 in 而把incr拆成 in 和 cr
+   * @return
+   */
+  TokenEnums getKeywordTokenEnumsByMaxPrefixMatch() {
+    final String word = this.resource.previewPrefixMatch(CharacterUtils::isLetter);
     for (TokenEnums tokenEnums : TOKEN_ENUMS_BY_CONTENT_LENGTH_DESC) {
-      String content = tokenEnums.getContent();
+      final String content = tokenEnums.getContent();
+      if (!content.isEmpty()) {
+        if (content.equals(word)) {
+          this.resource.skipChars(content.length());
+          return tokenEnums;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * 找特殊字符 == + 等
+   */
+  TokenEnums getNonKeywordTokenEnumsByMaxPrefixMatch() {
+    for (TokenEnums tokenEnums : TOKEN_ENUMS_BY_CONTENT_LENGTH_DESC) {
+      final String content = tokenEnums.getContent();
       if (!content.isEmpty()) {
         if (this.resource.test(content)) {
           this.resource.skipChars(content.length());
@@ -219,9 +240,9 @@ class LuaTokenIterator implements Iterator<LuaToken> {
       return this.scanNumber();
     }
 
-    // 关键字
+    // 关键字 keyword
     {
-      TokenEnums tokenEnums = this.getTokenEnumsByMaxPrefixMatch();
+      TokenEnums tokenEnums = this.getKeywordTokenEnumsByMaxPrefixMatch();
       if (null != tokenEnums) {
         return this.getLuaToken(tokenEnums);
       }
@@ -230,6 +251,14 @@ class LuaTokenIterator implements Iterator<LuaToken> {
     // 标识符
     if (this.isIdentifier()) {
       return this.scanIdentifier();
+    }
+
+    // 特殊字符
+    {
+      TokenEnums tokenEnums = this.getNonKeywordTokenEnumsByMaxPrefixMatch();
+      if (null != tokenEnums) {
+        return this.getLuaToken(tokenEnums);
+      }
     }
 
     throw new IllegalStateException(this.resource + " location " + this.getTokenLocation());

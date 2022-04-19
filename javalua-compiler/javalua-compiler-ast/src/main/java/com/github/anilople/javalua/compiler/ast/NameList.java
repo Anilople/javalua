@@ -8,7 +8,7 @@ import java.util.List;
  * @author wxq
  */
 public class NameList extends XxxList<Name> {
-  public NameList(LuaAstLocation luaAstLocation, Name name, List<Name> list) {
-    super(luaAstLocation, name, list);
+  public NameList(Name first, List<Name> tail) {
+    super(first, tail);
   }
 }
