@@ -347,7 +347,9 @@ public class LuaParser {
       LuaToken token = lexer.skip(TOKEN_SEP_LPAREN);
       location = convert(token);
     }
+    // [explist]
     Optional<ExpList> optionalExpList = parseOptionalExpList(lexer);
+    lexer.skip(TOKEN_SEP_RPAREN);
     return new ExpListArgs(location, optionalExpList);
   }
 

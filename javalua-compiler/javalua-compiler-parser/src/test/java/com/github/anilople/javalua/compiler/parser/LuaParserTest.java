@@ -156,4 +156,9 @@ class LuaParserTest {
         .getOptionalExpList().get().get(0);
     assertTrue(exp instanceof BinopExp);
   }
+
+  @Test
+  void if_then_function_call() {
+    parse("if true then return f(2) end");
+  }
 }

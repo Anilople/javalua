@@ -223,6 +223,9 @@ class LuaStatParser {
     return new BreakStat(luaAstLocation);
   }
 
+  /**
+   * while exp do block end
+   */
   static WhileStat parseWhileStat(LuaLexer lexer) {
     LuaToken whileToken = lexer.skip(TokenEnums.TOKEN_KW_WHILE);
     Exp exp = parseExp(lexer);
