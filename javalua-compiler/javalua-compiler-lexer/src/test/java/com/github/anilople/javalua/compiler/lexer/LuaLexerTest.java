@@ -8,6 +8,7 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_NUMBER;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_ADD;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_OP_ASSIGN;
+import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_DOT;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_LPAREN;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_SEP_RPAREN;
 import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_STRING;
@@ -175,5 +176,16 @@ class LuaLexerTest {
     assertEquals(TOKEN_OP_ADD, luaTokens.get(7).getKind());
     assertEquals(TOKEN_NUMBER, luaTokens.get(8).getKind());
     assertEquals(TOKEN_KW_END, luaTokens.get(9).getKind());
+  }
+
+  @Test
+  void function_call_with_module() {
+    List<LuaToken> luaTokens = LuaLexer.lexer("mymodule.f()");
+    assertEquals(5, luaTokens.size());
+    assertEquals("mymodule", luaTokens.get(0).getContent());
+    assertEquals(TOKEN_SEP_DOT, luaTokens.get(1).getKind());
+    assertEquals("f", luaTokens.get(2).getContent());
+    assertEquals(TOKEN_SEP_LPAREN, luaTokens.get(3).getKind());
+    assertEquals(TOKEN_SEP_RPAREN, luaTokens.get(4).getKind());
   }
 }

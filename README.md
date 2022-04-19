@@ -878,6 +878,15 @@ expr是左递归，不是LL
 
 也可以直接改写成 ENBF，利用 `{}`来表示出现0次或者多次
 
+函数调用
+
+```lua
+-- 函数是debug.setmetatable
+debug.setmetatable(100, mt)
+```
+
+
+
 ### 第17章 代码生成
 
 ## 第四部分 Lua标准库

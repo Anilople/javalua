@@ -7,11 +7,14 @@ import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
+import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
+import com.github.anilople.javalua.compiler.ast.Var.TableAccessByNameVar;
 import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
+import com.github.anilople.javalua.compiler.ast.stat.FunctionCall;
 import com.github.anilople.javalua.compiler.ast.stat.FunctionDefineStat;
 import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
@@ -160,5 +163,15 @@ class LuaParserTest {
   @Test
   void if_then_function_call() {
     parse("if true then return f(2) end");
+  }
+
+  @Test
+  void function_call_with_module() {
+    Block block = parse("mymodule.f()");
+    NoNameFunctionCall nameFunctionCall = (NoNameFunctionCall) block.getStatList().get(0);
+    ExpListArgs expListArgs = (ExpListArgs) nameFunctionCall.getArgs();
+    assertTrue(expListArgs.getOptionalExpList().isEmpty());
+    TableAccessByNameVar var = (TableAccessByNameVar) ((VarPrefixExp)nameFunctionCall.getPrefixExp()).getVar();
+    System.out.println(var);
   }
 }

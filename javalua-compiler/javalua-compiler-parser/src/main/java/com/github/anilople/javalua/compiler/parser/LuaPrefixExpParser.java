@@ -10,13 +10,16 @@ import static com.github.anilople.javalua.compiler.lexer.enums.TokenEnums.TOKEN_
 import static com.github.anilople.javalua.compiler.parser.LuaExpParser.parseExp;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseArgs;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseName;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.canParseVar;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseArgs;
 import static com.github.anilople.javalua.compiler.parser.LuaParser.parseName;
+import static com.github.anilople.javalua.compiler.parser.LuaParser.parseVar;
 import static com.github.anilople.javalua.compiler.parser.ToLuaAstLocationConverter.convert;
 
 import com.github.anilople.javalua.compiler.ast.Args;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
+import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
 import com.github.anilople.javalua.compiler.ast.Var.TableAccessByExpVar;
 import com.github.anilople.javalua.compiler.ast.Var.TableAccessByNameVar;
@@ -79,39 +82,58 @@ public class LuaPrefixExpParser {
     } else {
       prefixExp = parseParenthesesPrefixExp(lexer);
     }
-
     // parse remaining
+    return finishParsePrefixExp(lexer, prefixExp);
+  }
 
-    if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
-      // prefixexp ‘[’ exp ‘]’
-      lexer.skip(TOKEN_SEP_LBRACK);
-      Exp keyExp = parseExp(lexer);
-      lexer.skip(TOKEN_SEP_RBRACK);
-      return new VarPrefixExp(new TableAccessByExpVar(prefixExp, keyExp));
-    }
-    if (lexer.lookAheadTest(TOKEN_SEP_DOT)) {
-      // prefixexp ‘.’ Name
-      lexer.skip(TOKEN_SEP_DOT);
+  /**
+   *  prefixexp ::= Name
+   * 	| prefixexp ‘[’ exp ‘]’
+   * 	| prefixexp ‘.’ Name
+   * 	| prefixexp [‘:’ Name] args
+   */
+  static PrefixExp finishParsePrefixExp(LuaLexer lexer, PrefixExp prefixExp) {
+    final PrefixExp nextPrefixExp;
+    if (canParseName(lexer)){
       Name name = parseName(lexer);
-      return new VarPrefixExp(new TableAccessByNameVar(prefixExp, name));
-    }
+      nextPrefixExp = new VarPrefixExp(new NameVar(name));
+      return finishParsePrefixExp(lexer, nextPrefixExp);
+    } else {
+      // var
+      if (lexer.lookAheadTest(TOKEN_SEP_LBRACK)) {
+        // prefixexp ‘[’ exp ‘]’
+        lexer.skip(TOKEN_SEP_LBRACK);
+        Exp keyExp = parseExp(lexer);
+        lexer.skip(TOKEN_SEP_RBRACK);
+        nextPrefixExp = new VarPrefixExp(new TableAccessByExpVar(prefixExp, keyExp));
+        return finishParsePrefixExp(lexer, nextPrefixExp);
+      }
+      if (lexer.lookAheadTest(TOKEN_SEP_DOT)) {
+        // prefixexp ‘.’ Name
+        lexer.skip(TOKEN_SEP_DOT);
+        Name name = parseName(lexer);
+        nextPrefixExp = new VarPrefixExp(new TableAccessByNameVar(prefixExp, name));
+        return finishParsePrefixExp(lexer, nextPrefixExp);
+      }
 
-    // function call
-    if (lexer.lookAheadTest(TOKEN_SEP_COLON)) {
-      // prefixexp ‘:’ Name args
-      lexer.skip(TOKEN_SEP_COLON);
-      Name name = parseName(lexer);
-      Args args = parseArgs(lexer);
-      NameFunctionCall nameFunctionCall = new NameFunctionCall(prefixExp, name, args);
-      return new FunctionCallPrefixExp(nameFunctionCall);
+      // function call
+      if (lexer.lookAheadTest(TOKEN_SEP_COLON)) {
+        // prefixexp ‘:’ Name args
+        lexer.skip(TOKEN_SEP_COLON);
+        Name name = parseName(lexer);
+        Args args = parseArgs(lexer);
+        NameFunctionCall nameFunctionCall = new NameFunctionCall(prefixExp, name, args);
+        nextPrefixExp = new FunctionCallPrefixExp(nameFunctionCall);
+        return finishParsePrefixExp(lexer, nextPrefixExp);
+      }
+      if (canParseArgs(lexer)) {
+        // prefixexp args
+        Args args = parseArgs(lexer);
+        NoNameFunctionCall nameFunctionCall = new NoNameFunctionCall(prefixExp, args);
+        nextPrefixExp = new FunctionCallPrefixExp(nameFunctionCall);
+        return finishParsePrefixExp(lexer, nextPrefixExp);
+      }
     }
-    if (canParseArgs(lexer)) {
-      // prefixexp args
-      Args args = parseArgs(lexer);
-      NoNameFunctionCall nameFunctionCall = new NoNameFunctionCall(prefixExp, args);
-      return new FunctionCallPrefixExp(nameFunctionCall);
-    }
-
     return prefixExp;
   }
 
