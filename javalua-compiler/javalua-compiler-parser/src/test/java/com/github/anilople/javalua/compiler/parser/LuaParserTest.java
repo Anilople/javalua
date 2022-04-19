@@ -1,8 +1,5 @@
 package com.github.anilople.javalua.compiler.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.github.anilople.javalua.compiler.ast.Args.ExpListArgs;
 import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.ExpList;
@@ -11,6 +8,8 @@ import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
+import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
+import com.github.anilople.javalua.compiler.ast.exp.Exp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
 import com.github.anilople.javalua.compiler.ast.stat.FunctionDefineStat;
@@ -23,6 +22,9 @@ import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import util.LuaTestResourceUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author wxq
@@ -135,5 +137,23 @@ class LuaParserTest {
   @Test
   void if_then_assign() {
     parse("if val == nil then a = 1 end");
+  }
+
+  @Test
+  void function_incr() {
+    FunctionDefineStat functionDefineStat =
+        (FunctionDefineStat)
+            parse("function incr(value) return value + 1 end").getStatList().get(0);
+    assertEquals("incr", functionDefineStat.getFuncName().getName().getIdentifier());
+
+    FuncBody funcBody = functionDefineStat.getFuncBody();
+    NameListParList nameListParList = (NameListParList) funcBody.getOptionalParList().get();
+    NameList nameList = nameListParList.getNameList();
+    assertEquals(1, nameList.size());
+    assertEquals("value", nameList.get(0).getIdentifier());
+    // value + 1
+    Exp exp = funcBody.getBlock().getOptionalRetstat().get()
+        .getOptionalExpList().get().get(0);
+    assertTrue(exp instanceof BinopExp);
   }
 }
