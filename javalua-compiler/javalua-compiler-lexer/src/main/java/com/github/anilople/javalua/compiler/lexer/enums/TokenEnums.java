@@ -78,25 +78,25 @@ public enum TokenEnums {
    * string literal
    */
   TOKEN_STRING(58, ""),
-  /**
-   * unary minus
-   * @see #TOKEN_OP_MINUS
-   */
-  TOKEN_OP_UNM(59, "-"),
-  /**
-   * unary minus
-   * @see #TOKEN_OP_MINUS
-   */
-  TOKEN_OP_SUB(60, "-"),
-  /**
-   * @see #TOKEN_OP_WAVE
-   */
-  TOKEN_OP_BNOT(61, "~"),
-  /**
-   * @see #TOKEN_OP_WAVE
-   */
-  TOKEN_OP_BXOR(62, "~"),
   ;
+  /**
+   * unary minus
+   * @see #TOKEN_OP_MINUS
+   */
+  public static final TokenEnums TOKEN_OP_UNM = TOKEN_OP_MINUS;
+  /**
+   * unary minus
+   * @see #TOKEN_OP_MINUS
+   */
+  public static final TokenEnums TOKEN_OP_SUB = TOKEN_OP_MINUS;
+  /**
+   * @see #TOKEN_OP_WAVE
+   */
+  public static final TokenEnums TOKEN_OP_BNOT = TOKEN_OP_WAVE;
+  /**
+   * @see #TOKEN_OP_WAVE
+   */
+  public static final TokenEnums TOKEN_OP_BXOR = TOKEN_OP_WAVE;
 
   private final int offset;
   private final String content;

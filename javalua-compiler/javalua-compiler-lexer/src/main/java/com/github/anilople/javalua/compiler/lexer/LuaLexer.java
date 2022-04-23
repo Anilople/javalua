@@ -7,6 +7,7 @@ import com.github.anilople.javalua.util.CachedIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 /**
  * @author wxq
@@ -28,11 +29,20 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
    * @return false 当没有token了，或者token类型不匹配
    */
   default boolean lookAheadTest(TokenEnums kind) {
+    return this.lookAheadTest(tokenEnums -> tokenEnums.equals(kind));
+  }
+
+  /**
+   * 检测接下来的token类型是否匹配，不会跳过这个token
+   * @param tokenKindPredicate token类型的判定函数
+   * @return false 当没有token了，或者判定不通过
+   */
+  default boolean lookAheadTest(Predicate<TokenEnums> tokenKindPredicate) {
     if (!this.hasNext()) {
       return false;
     }
     LuaToken token = this.lookAhead();
-    return token.getKind().equals(kind);
+    return tokenKindPredicate.test(token.getKind());
   }
 
   /**
@@ -65,9 +75,11 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
   static List<LuaToken> lexer(String luaCode, String sourceCodeFilePath) {
     LuaLexer luaLexer = newLuaLexer(luaCode, sourceCodeFilePath);
     List<LuaToken> luaTokens = new ArrayList<>();
-    for (LuaToken luaToken = luaLexer.next();
-        !TOKEN_EOF.equals(luaToken.getKind());
-        luaToken = luaLexer.next()) {
+    while (luaLexer.hasNext()) {
+      LuaToken luaToken = luaLexer.next();
+      if (TOKEN_EOF.equals(luaToken.getKind())) {
+        break;
+      }
       luaTokens.add(luaToken);
     }
     return luaTokens;
@@ -78,10 +90,12 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
   }
 
   static LuaLexer newLuaLexer(String luaCode) {
-    return new LuaLexerImpl(luaCode);
+    LuaLexer luaLexer = new LuaLexerImpl(luaCode);
+    return new LuaLexerCacheAllImpl(luaLexer);
   }
 
   static LuaLexer newLuaLexer(String luaCode, String sourceCodeFilePath) {
-    return new LuaLexerImpl(luaCode, sourceCodeFilePath);
+    LuaLexer luaLexer = new LuaLexerImpl(luaCode, sourceCodeFilePath);
+    return new LuaLexerCacheAllImpl(luaLexer);
   }
 }

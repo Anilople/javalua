@@ -10,12 +10,15 @@ import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.NameList;
 import com.github.anilople.javalua.compiler.ast.ParList.NameListParList;
+import com.github.anilople.javalua.compiler.ast.Unop.MinusUnop;
 import com.github.anilople.javalua.compiler.ast.Var.NameVar;
 import com.github.anilople.javalua.compiler.ast.Var.TableAccessByNameVar;
 import com.github.anilople.javalua.compiler.ast.exp.BinopExp;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
+import com.github.anilople.javalua.compiler.ast.exp.IntegerExp;
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp.VarPrefixExp;
+import com.github.anilople.javalua.compiler.ast.exp.UnopExp;
 import com.github.anilople.javalua.compiler.ast.stat.FunctionDefineStat;
 import com.github.anilople.javalua.compiler.ast.stat.LocalVarDeclStat;
 import com.github.anilople.javalua.compiler.ast.stat.NoNameFunctionCall;
@@ -90,6 +93,17 @@ class LuaParserTest {
     assertEquals("k", nameList.get(2).getIdentifier());
     assertEquals("v", nameList.get(3).getIdentifier());
     assertEquals("e", nameList.get(4).getIdentifier());
+  }
+
+  @Test
+  void functionCallNegativeInteger() {
+    Block block = parse("f(-123)");
+    NoNameFunctionCall noNameFunctionCall = (NoNameFunctionCall) block.getStatList().get(0);
+    ExpListArgs expListArgs = (ExpListArgs) noNameFunctionCall.getArgs();
+    Exp exp = expListArgs.getOptionalExpList().get().getFirst();
+    UnopExp unopExp = (UnopExp) exp;
+    assertTrue(unopExp.getUnop() instanceof MinusUnop);
+    assertEquals(123, ((IntegerExp) unopExp.getExp()).getValue());
   }
 
   @Test
@@ -171,5 +185,10 @@ class LuaParserTest {
     TableAccessByNameVar var =
         (TableAccessByNameVar) ((VarPrefixExp) nameFunctionCall.getPrefixExp()).getVar();
     System.out.println(var);
+  }
+
+  @Test
+  void localVariableAssignFromTable() {
+    parse("t = {f(999)}");
   }
 }
