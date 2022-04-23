@@ -89,10 +89,7 @@ class ToLuaCodeTest {
 
   @Test
   void functionDefine2() {
-    Block block = parse(
-        "local function f() end "
-        + "local function g() end"
-    );
+    Block block = parse("local function f() end " + "local function g() end");
     block.toLuaCode(System.out);
   }
 }

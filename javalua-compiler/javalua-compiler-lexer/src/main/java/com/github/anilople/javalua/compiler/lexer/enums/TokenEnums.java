@@ -97,6 +97,7 @@ public enum TokenEnums {
    * @see #TOKEN_OP_WAVE
    */
   public static final TokenEnums TOKEN_OP_BXOR = TOKEN_OP_WAVE;
+
   private final int offset;
   private final String content;
 

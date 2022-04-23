@@ -46,11 +46,7 @@ public class LuaLexerCacheAllImpl implements LuaLexer {
 
   @Override
   public List<LuaToken> previewNext(int n) {
-    return Collections.unmodifiableList(
-        this.luaTokens.subList(
-            this.index, this.index + n
-        )
-    );
+    return Collections.unmodifiableList(this.luaTokens.subList(this.index, this.index + n));
   }
 
   @Override
