@@ -41,6 +41,5 @@ public class FuncName extends AbstractLuaAst {
       printStream.print(':');
       this.optionalColonName.get().toLuaCode(printStream);
     }
-
   }
 }

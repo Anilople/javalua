@@ -1,5 +1,8 @@
 package com.github.anilople.javalua.compiler.parser;
 
+import static com.github.anilople.javalua.compiler.parser.LuaParserTest.parse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.github.anilople.javalua.compiler.ast.Block;
 import constant.ResourceContentConstants.ch02;
 import constant.ResourceContentConstants.ch08;
@@ -13,9 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import util.LuaTestResourceUtils;
-
-import static com.github.anilople.javalua.compiler.parser.LuaParserTest.parse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq
@@ -59,7 +59,8 @@ class ToLuaCodeTest {
 
   @Test
   void ch08_test() {
-    final String luaCode1 = luaCodeToAstToLuaCode(ch08.test.getLuaCode(), ch08.test.getLuaFilePath());
+    final String luaCode1 =
+        luaCodeToAstToLuaCode(ch08.test.getLuaCode(), ch08.test.getLuaFilePath());
     System.out.println(luaCode1);
     final String luaCode2 = luaCodeToAstToLuaCode(luaCode1, ch08.test.getLuaFilePath());
     assertEquals(luaCode1, luaCode2);
@@ -67,7 +68,9 @@ class ToLuaCodeTest {
 
   @Test
   void ch11_TAILCALL_case1() {
-    final String luaCode1 = luaCodeToAstToLuaCode(ch11.TAILCALL_case1.getLuaCode(), ch11.TAILCALL_case1.getLuaFilePath());
+    final String luaCode1 =
+        luaCodeToAstToLuaCode(
+            ch11.TAILCALL_case1.getLuaCode(), ch11.TAILCALL_case1.getLuaFilePath());
     System.out.println(luaCode1);
     final String luaCode2 = luaCodeToAstToLuaCode(luaCode1, ch11.TAILCALL_case1.getLuaFilePath());
     assertEquals(luaCode1, luaCode2);
