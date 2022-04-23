@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.compiler.ast.exp;
 
 import com.github.anilople.javalua.compiler.ast.Binop;
+import java.io.PrintStream;
 import lombok.Getter;
 
 /**
@@ -21,5 +22,14 @@ public class BinopExp extends AbstractExp {
     this.exp1 = exp1;
     this.binop = binop;
     this.exp2 = exp2;
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    this.exp1.toLuaCode(printStream);
+    printStream.print(' ');
+    this.binop.toLuaCode(printStream);
+    printStream.print(' ');
+    this.exp2.toLuaCode(printStream);
   }
 }

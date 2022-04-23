@@ -1,5 +1,6 @@
 package com.github.anilople.javalua.compiler.ast;
 
+import java.io.PrintStream;
 import lombok.Getter;
 
 /**
@@ -14,5 +15,10 @@ public class Name extends AbstractLuaAst {
   public Name(LuaAstLocation luaAstLocation, String identifier) {
     super(luaAstLocation);
     this.identifier = identifier;
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    printStream.print(this.identifier);
   }
 }

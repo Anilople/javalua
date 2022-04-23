@@ -4,6 +4,7 @@ import com.github.anilople.javalua.compiler.ast.Block;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
+import java.io.PrintStream;
 import java.util.Optional;
 
 /**
@@ -73,5 +74,24 @@ public class ForNumStat extends AbstractStat {
     this.limitExp = limitExp;
     this.stepExp = stepExp;
     this.block = block;
+  }
+
+  /**
+   * for Name ‘=’ exp ‘,’ exp [‘,’ exp] do block end
+   */
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    printStream.print("for ");
+    this.name.toLuaCode(printStream);
+    printStream.print(" = ");
+    this.initExp.toLuaCode(printStream);
+    printStream.print(", ");
+    this.limitExp.toLuaCode(printStream);
+    if (this.stepExp.isPresent()) {
+      printStream.print(", ");
+      this.stepExp.get().toLuaCode(printStream);
+    }
+
+    this.toLuaCodeDoBlockEnd(printStream, this.block::toLuaCode);
   }
 }

@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.compiler.ast;
 
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
+import java.io.PrintStream;
 import lombok.Getter;
 
 /**
@@ -32,6 +33,14 @@ public abstract class Var extends AbstractLuaAst {
       this.prefixExp = prefixExp;
       this.exp = exp;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.prefixExp.toLuaCode(printStream);
+      printStream.print('[');
+      this.exp.toLuaCode(printStream);
+      printStream.print(']');
+    }
   }
 
   /**
@@ -46,6 +55,11 @@ public abstract class Var extends AbstractLuaAst {
     public NameVar(Name name) {
       super(name.getLocation());
       this.name = name;
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.name.toLuaCode(printStream);
     }
   }
 
@@ -66,6 +80,13 @@ public abstract class Var extends AbstractLuaAst {
       super(prefixExp.getLocation());
       this.prefixExp = prefixExp;
       this.name = name;
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.prefixExp.toLuaCode(printStream);
+      printStream.print('.');
+      this.name.toLuaCode(printStream);
     }
   }
 }

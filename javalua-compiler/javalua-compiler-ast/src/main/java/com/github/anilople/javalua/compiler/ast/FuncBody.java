@@ -1,5 +1,6 @@
 package com.github.anilople.javalua.compiler.ast;
 
+import java.io.PrintStream;
 import java.util.Optional;
 import lombok.Getter;
 
@@ -17,5 +18,17 @@ public class FuncBody extends AbstractLuaAst {
     super(luaAstLocation);
     this.optionalParList = optionalParList;
     this.block = block;
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    printStream.print('(');
+    if (this.optionalParList.isPresent()) {
+      ParList parList = this.optionalParList.get();
+      parList.toLuaCode(printStream);
+    }
+    printStream.print(')');
+    this.toLuaCodeIndent(printStream, this.block::toLuaCode);
+    printStream.print("end");
   }
 }

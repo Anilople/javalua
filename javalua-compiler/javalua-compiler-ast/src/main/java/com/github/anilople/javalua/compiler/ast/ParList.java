@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.compiler.ast;
 
 import com.github.anilople.javalua.compiler.ast.exp.VarargExp;
+import java.io.PrintStream;
 import java.util.Optional;
 import lombok.Getter;
 
@@ -27,6 +28,15 @@ public abstract class ParList extends AbstractLuaAst {
       this.nameList = nameList;
       this.optionalVarargExp = optionalVarargExp;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.nameList.toLuaCode(printStream);
+      if (this.optionalVarargExp.isPresent()) {
+        printStream.print(',');
+        this.optionalVarargExp.get().toLuaCode(printStream);
+      }
+    }
   }
 
   /**
@@ -38,6 +48,11 @@ public abstract class ParList extends AbstractLuaAst {
     public VarargParList(VarargExp varargExp) {
       super(varargExp.getLocation());
       this.varargExp = varargExp;
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.varargExp.toLuaCode(printStream);
     }
   }
 }

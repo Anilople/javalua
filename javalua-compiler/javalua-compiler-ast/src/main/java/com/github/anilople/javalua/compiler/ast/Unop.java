@@ -1,5 +1,7 @@
 package com.github.anilople.javalua.compiler.ast;
 
+import java.io.PrintStream;
+
 /**
  * unop ::= ‘-’ | not | ‘#’ | ‘~’
  *
@@ -18,6 +20,11 @@ public abstract class Unop extends AbstractLuaAst {
     public MinusUnop(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print('-');
+    }
   }
 
   /**
@@ -26,6 +33,11 @@ public abstract class Unop extends AbstractLuaAst {
   public static class NotUnop extends Unop {
     public NotUnop(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print("not");
     }
   }
 
@@ -36,6 +48,11 @@ public abstract class Unop extends AbstractLuaAst {
     public LengthUnop(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print('#');
+    }
   }
 
   /**
@@ -44,6 +61,11 @@ public abstract class Unop extends AbstractLuaAst {
   public static class BitNotUnop extends Unop {
     public BitNotUnop(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print('~');
     }
   }
 }

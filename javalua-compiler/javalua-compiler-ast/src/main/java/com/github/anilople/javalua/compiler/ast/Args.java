@@ -2,6 +2,7 @@ package com.github.anilople.javalua.compiler.ast;
 
 import com.github.anilople.javalua.compiler.ast.exp.LiteralStringExp;
 import com.github.anilople.javalua.compiler.ast.exp.TableConstructorExp;
+import java.io.PrintStream;
 import java.util.Optional;
 import lombok.Getter;
 
@@ -29,6 +30,16 @@ public abstract class Args extends AbstractLuaAst {
       super(luaAstLocation);
       this.optionalExpList = optionalExpList;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print('(');
+      if (this.optionalExpList.isPresent()) {
+        ExpList expList = this.optionalExpList.get();
+        expList.toLuaCode(printStream);
+      }
+      printStream.print(')');
+    }
   }
 
   /**
@@ -44,6 +55,11 @@ public abstract class Args extends AbstractLuaAst {
       super(tableConstructorExp.getLocation());
       this.tableConstructorExp = tableConstructorExp;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.tableConstructorExp.toLuaCode(printStream);
+    }
   }
 
   /**
@@ -58,6 +74,11 @@ public abstract class Args extends AbstractLuaAst {
     public LiteralStringArgs(LiteralStringExp literalStringExp) {
       super(literalStringExp.getLocation());
       this.literalStringExp = literalStringExp;
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.literalStringExp.toLuaCode(printStream);
     }
   }
 }

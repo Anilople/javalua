@@ -1,5 +1,6 @@
 package com.github.anilople.javalua.compiler.ast;
 
+import java.io.PrintStream;
 import java.util.List;
 import lombok.Getter;
 
@@ -34,5 +35,14 @@ public class XxxList<T extends LuaAst> extends AbstractLuaAst {
       return first;
     }
     return this.tail.get(index - 1);
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    this.getFirst().toLuaCode(printStream);
+    for (LuaAst luaAst : this.tail) {
+      printStream.print(',');
+      luaAst.toLuaCode(printStream);
+    }
   }
 }
