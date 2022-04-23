@@ -7,6 +7,7 @@ import com.github.anilople.javalua.util.CachedIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 /**
  * @author wxq
@@ -28,11 +29,20 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
    * @return false 当没有token了，或者token类型不匹配
    */
   default boolean lookAheadTest(TokenEnums kind) {
+    return this.lookAheadTest(tokenEnums -> tokenEnums.equals(kind));
+  }
+
+  /**
+   * 检测接下来的token类型是否匹配，不会跳过这个token
+   * @param tokenKindPredicate token类型的判定函数
+   * @return false 当没有token了，或者判定不通过
+   */
+  default boolean lookAheadTest(Predicate<TokenEnums> tokenKindPredicate) {
     if (!this.hasNext()) {
       return false;
     }
     LuaToken token = this.lookAhead();
-    return token.getKind().equals(kind);
+    return tokenKindPredicate.test(token.getKind());
   }
 
   /**

@@ -345,11 +345,13 @@ public class LuaParser {
   static Args.ExpListArgs parseExpListArgs(LuaLexer lexer) {
     final LuaAstLocation location;
     {
+      // '('
       LuaToken token = lexer.skip(TOKEN_SEP_LPAREN);
       location = convert(token);
     }
     // [explist]
     Optional<ExpList> optionalExpList = parseOptionalExpList(lexer);
+    // ')'
     lexer.skip(TOKEN_SEP_RPAREN);
     return new ExpListArgs(location, optionalExpList);
   }
@@ -374,18 +376,19 @@ public class LuaParser {
     LuaToken token = lexer.next();
     TokenEnums kind = token.getKind();
     LuaAstLocation location = convert(token);
-    switch (kind) {
-      case TOKEN_OP_MINUS:
-        return new MinusUnop(location);
-      case TOKEN_OP_NOT:
-        return new NotUnop(location);
-      case TOKEN_OP_LEN:
-        return new LengthUnop(location);
-      case TOKEN_OP_BNOT:
-        return new BitNotUnop(location);
-      default:
-        throw new IllegalStateException("unknown unary op " + kind);
+    if (TOKEN_OP_MINUS.equals(kind)) {
+      return new MinusUnop(location);
     }
+    if (TOKEN_OP_NOT.equals(kind)) {
+      return new NotUnop(location);
+    }
+    if (TOKEN_OP_LEN.equals(kind)) {
+      return new LengthUnop(location);
+    }
+    if (TOKEN_OP_BNOT.equals(kind)) {
+      return new BitNotUnop(location);
+    }
+    throw new IllegalStateException("unknown unary op " + kind);
   }
 
   /**
@@ -471,16 +474,21 @@ public class LuaParser {
       lexer.skip(TOKEN_OP_ASSIGN);
       Exp exp = parseExp(lexer);
       return new TableField(location, expInSquare, exp);
-    } else if (canParseName(lexer)) {
-      Name name = parseName(lexer);
-      // ‘=’
-      lexer.skip(TOKEN_OP_ASSIGN);
-      Exp exp = parseExp(lexer);
-      return new NameField(name, exp);
-    } else {
-      Exp exp = parseExp(lexer);
-      return new ExpField(exp);
     }
+
+    if (canParseName(lexer)) {
+      List<LuaToken> luaTokens = lexer.previewNext(2);
+      if (luaTokens.get(1).getKind().equals(TOKEN_OP_ASSIGN)) {
+        // Name ‘=’ exp
+        Name name = parseName(lexer);
+        lexer.skip(TOKEN_OP_ASSIGN);
+        Exp exp = parseExp(lexer);
+        return new NameField(name, exp);
+      }
+    }
+
+    Exp exp = parseExp(lexer);
+    return new ExpField(exp);
   }
 
   /**

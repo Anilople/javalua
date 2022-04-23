@@ -118,17 +118,14 @@ class LuaExpParser {
     if (!lexer.hasNext()) {
       return expX;
     }
-    LuaToken token = lexer.lookAhead();
-    TokenEnums opKind = token.getKind();
-    if (opPredicate.test(opKind)) {
-      // 放到左子树
-      Binop binop = parseBinop(lexer);
-      Exp expY = functionOfParseExpY.apply(lexer);
-      BinopExp binopExp = new BinopExp(expX, binop, expY);
-      return resolveBinopExp(lexer, binopExp, opPredicate, functionOfParseExpY);
-    } else {
+    if (!lexer.lookAheadTest(opPredicate)) {
       return expX;
     }
+    // 放到左子树
+    Binop binop = parseBinop(lexer);
+    Exp expY = functionOfParseExpY.apply(lexer);
+    BinopExp binopExp = new BinopExp(expX, binop, expY);
+    return resolveBinopExp(lexer, binopExp, opPredicate, functionOfParseExpY);
   }
 
   static boolean canParseExp(LuaLexer lexer) {
@@ -193,12 +190,10 @@ class LuaExpParser {
           }
           return false;
         };
-    LuaToken token = lexer.lookAhead();
-    if (predicate.test(token.getKind())) {
-      return resolveBinopExp(lexer, exp9, predicate, LuaExpParser::parseExp9);
-    } else {
+    if (!lexer.lookAheadTest(predicate)) {
       return exp9;
     }
+    return resolveBinopExp(lexer, exp9, predicate, LuaExpParser::parseExp9);
   }
 
   /**
@@ -252,12 +247,10 @@ class LuaExpParser {
           }
           return false;
         };
-    LuaToken token = lexer.lookAhead();
-    if (predicate.test(token.getKind())) {
-      return resolveBinopExp(lexer, exp5, predicate, LuaExpParser::parseExp5);
-    } else {
+    if (!lexer.lookAheadTest(predicate)) {
       return exp5;
     }
+    return resolveBinopExp(lexer, exp5, predicate, LuaExpParser::parseExp5);
   }
 
   /**
@@ -287,12 +280,10 @@ class LuaExpParser {
           }
           return false;
         };
-    LuaToken token = lexer.lookAhead();
-    if (predicate.test(token.getKind())) {
-      return resolveBinopExp(lexer, exp3, predicate, LuaExpParser::parseExp3);
-    } else {
+    if (!lexer.lookAheadTest(predicate)) {
       return exp3;
     }
+    return resolveBinopExp(lexer, exp3, predicate, LuaExpParser::parseExp3);
   }
 
   /**
@@ -316,12 +307,10 @@ class LuaExpParser {
           }
           return false;
         };
-    LuaToken token = lexer.lookAhead();
-    if (predicate.test(token.getKind())) {
-      return resolveBinopExp(lexer, exp2, predicate, LuaExpParser::parseExp2);
-    } else {
+    if (!lexer.lookAheadTest(predicate)) {
       return exp2;
     }
+    return resolveBinopExp(lexer, exp2, predicate, LuaExpParser::parseExp2);
   }
 
   /**
@@ -365,14 +354,12 @@ class LuaExpParser {
           }
           return false;
         };
-    LuaToken token = lexer.lookAhead();
-    if (predicate.test(token.getKind())) {
-      Unop unop = parseUnop(lexer);
-      Exp exp1 = parseExp1(lexer);
-      return new UnopExp(unop, exp1);
-    } else {
+    if (!lexer.lookAheadTest(predicate)) {
       return parseExp1(lexer);
     }
+    Unop unop = parseUnop(lexer);
+    Exp exp1 = parseExp1(lexer);
+    return new UnopExp(unop, exp1);
   }
 
   /**
