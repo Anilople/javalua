@@ -6,7 +6,7 @@ import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 /**
  * @author wxq
  */
-public class AbstractStat extends AbstractLuaAst implements Stat {
+public abstract class AbstractStat extends AbstractLuaAst implements Stat {
 
   public AbstractStat(LuaAstLocation luaAstLocation) {
     super(luaAstLocation);

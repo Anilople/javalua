@@ -3,6 +3,7 @@ package com.github.anilople.javalua.compiler.ast.stat;
 import com.github.anilople.javalua.compiler.ast.FuncBody;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Name;
+import java.io.PrintStream;
 import lombok.Getter;
 
 /**
@@ -20,5 +21,12 @@ public class LocalFunctionDefineStat extends AbstractStat {
     super(luaAstLocation);
     this.name = name;
     this.funcbody = funcbody;
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    printStream.print("local function ");
+    this.name.toLuaCode(printStream);
+    this.funcbody.toLuaCode(printStream);
   }
 }

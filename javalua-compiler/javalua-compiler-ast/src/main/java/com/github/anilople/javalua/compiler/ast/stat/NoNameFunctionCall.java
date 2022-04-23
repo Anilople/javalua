@@ -2,6 +2,7 @@ package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.Args;
 import com.github.anilople.javalua.compiler.ast.exp.PrefixExp;
+import java.io.PrintStream;
 import lombok.Getter;
 
 /**
@@ -16,5 +17,11 @@ public class NoNameFunctionCall extends FunctionCall {
   public NoNameFunctionCall(PrefixExp prefixExp, Args args) {
     super(prefixExp);
     this.args = args;
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    this.getPrefixExp().toLuaCode(printStream);
+    this.args.toLuaCode(printStream);
   }
 }

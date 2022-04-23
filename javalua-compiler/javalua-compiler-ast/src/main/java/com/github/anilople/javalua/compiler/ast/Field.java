@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.compiler.ast;
 
 import com.github.anilople.javalua.compiler.ast.exp.Exp;
+import java.io.PrintStream;
 import lombok.Getter;
 
 /**
@@ -27,6 +28,15 @@ public abstract class Field extends AbstractLuaAst {
       this.expInSquare = expInSquare;
       this.exp = exp;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print('[');
+      this.expInSquare.toLuaCode(printStream);
+      printStream.print(']');
+      printStream.print('=');
+      this.exp.toLuaCode(printStream);
+    }
   }
 
   /**
@@ -42,6 +52,13 @@ public abstract class Field extends AbstractLuaAst {
       this.name = name;
       this.exp = exp;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.name.toLuaCode(printStream);
+      printStream.print('=');
+      this.exp.toLuaCode(printStream);
+    }
   }
 
   /**
@@ -54,6 +71,11 @@ public abstract class Field extends AbstractLuaAst {
     public ExpField(Exp exp) {
       super(exp.getLocation());
       this.exp = exp;
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.exp.toLuaCode(printStream);
     }
   }
 }

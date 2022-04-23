@@ -1,5 +1,7 @@
 package com.github.anilople.javalua.compiler.ast;
 
+import java.io.PrintStream;
+
 /**
  * fieldsep ::= ‘,’ | ‘;’
  *
@@ -19,6 +21,11 @@ public abstract class FieldSep extends AbstractLuaAst {
     public CommaFieldSep(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print(",");
+    }
   }
 
   /**
@@ -28,6 +35,11 @@ public abstract class FieldSep extends AbstractLuaAst {
 
     public SemicolonFieldSep(LuaAstLocation luaAstLocation) {
       super(luaAstLocation);
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print(";");
     }
   }
 }

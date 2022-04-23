@@ -2,6 +2,7 @@ package com.github.anilople.javalua.compiler.ast.stat;
 
 import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.VarList;
+import java.io.PrintStream;
 
 /**
  * varlist ‘=’ explist
@@ -17,5 +18,12 @@ public class AssignStat extends AbstractStat {
     super(varList.getLocation());
     this.varList = varList;
     this.expList = expList;
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    this.varList.toLuaCode(printStream);
+    printStream.print(" = ");
+    this.expList.toLuaCode(printStream);
   }
 }

@@ -3,6 +3,7 @@ package com.github.anilople.javalua.compiler.ast.stat;
 import com.github.anilople.javalua.compiler.ast.ExpList;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.NameList;
+import java.io.PrintStream;
 import java.util.Optional;
 import lombok.Getter;
 
@@ -26,5 +27,15 @@ public class LocalVarDeclStat extends AbstractStat {
     super(luaAstLocation);
     this.namelist = namelist;
     this.optionalExpList = optionalExpList;
+  }
+
+  @Override
+  public void toLuaCode(PrintStream printStream) {
+    printStream.print("local ");
+    this.namelist.toLuaCode(printStream);
+    if (this.optionalExpList.isPresent()) {
+      printStream.print(" = ");
+      this.optionalExpList.get().toLuaCode(printStream);
+    }
   }
 }

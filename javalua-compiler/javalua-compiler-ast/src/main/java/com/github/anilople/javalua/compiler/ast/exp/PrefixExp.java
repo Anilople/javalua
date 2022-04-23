@@ -3,6 +3,7 @@ package com.github.anilople.javalua.compiler.ast.exp;
 import com.github.anilople.javalua.compiler.ast.LuaAstLocation;
 import com.github.anilople.javalua.compiler.ast.Var;
 import com.github.anilople.javalua.compiler.ast.stat.FunctionCall;
+import java.io.PrintStream;
 import lombok.Getter;
 
 /**
@@ -10,7 +11,7 @@ import lombok.Getter;
  *
  * @author wxq
  */
-public class PrefixExp extends AbstractExp {
+public abstract class PrefixExp extends AbstractExp {
 
   public PrefixExp(LuaAstLocation luaAstLocation) {
     super(luaAstLocation);
@@ -27,6 +28,11 @@ public class PrefixExp extends AbstractExp {
       super(var.getLocation());
       this.var = var;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.var.toLuaCode(printStream);
+    }
   }
 
   /**
@@ -40,6 +46,11 @@ public class PrefixExp extends AbstractExp {
       super(functionCall.getLocation());
       this.functionCall = functionCall;
     }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      this.functionCall.toLuaCode(printStream);
+    }
   }
 
   /**
@@ -52,6 +63,13 @@ public class PrefixExp extends AbstractExp {
     public ParenthesesPrefixExp(LuaAstLocation luaAstLocation, Exp exp) {
       super(luaAstLocation);
       this.exp = exp;
+    }
+
+    @Override
+    public void toLuaCode(PrintStream printStream) {
+      printStream.print('(');
+      this.exp.toLuaCode(printStream);
+      printStream.print(')');
     }
   }
 }
