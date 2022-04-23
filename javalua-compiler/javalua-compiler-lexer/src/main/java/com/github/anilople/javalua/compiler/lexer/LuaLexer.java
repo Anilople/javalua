@@ -78,10 +78,12 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
   }
 
   static LuaLexer newLuaLexer(String luaCode) {
-    return new LuaLexerImpl(luaCode);
+    LuaLexer luaLexer = new LuaLexerImpl(luaCode);
+    return new LuaLexerCacheAllImpl(luaLexer);
   }
 
   static LuaLexer newLuaLexer(String luaCode, String sourceCodeFilePath) {
-    return new LuaLexerImpl(luaCode, sourceCodeFilePath);
+    LuaLexer luaLexer = new LuaLexerImpl(luaCode, sourceCodeFilePath);
+    return new LuaLexerCacheAllImpl(luaLexer);
   }
 }

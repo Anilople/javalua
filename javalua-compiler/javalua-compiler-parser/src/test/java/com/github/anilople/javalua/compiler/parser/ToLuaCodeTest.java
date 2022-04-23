@@ -86,4 +86,13 @@ class ToLuaCodeTest {
       oneEquals(rawLuaCode, luaFilePath);
     }
   }
+
+  @Test
+  void functionDefine2() {
+    Block block = parse(
+        "local function f() end "
+        + "local function g() end"
+    );
+    block.toLuaCode(System.out);
+  }
 }
