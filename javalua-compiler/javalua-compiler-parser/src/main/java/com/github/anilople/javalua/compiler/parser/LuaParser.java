@@ -273,6 +273,7 @@ public class LuaParser {
     }
     lexer.skip(TOKEN_SEP_RPAREN);
     final Block block = parseBlock(lexer);
+    lexer.skip(TOKEN_KW_END);
     return new FuncBody(location, optionalParList, block);
   }
 
