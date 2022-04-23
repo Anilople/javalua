@@ -75,9 +75,11 @@ public interface LuaLexer extends CachedIterator<LuaToken> {
   static List<LuaToken> lexer(String luaCode, String sourceCodeFilePath) {
     LuaLexer luaLexer = newLuaLexer(luaCode, sourceCodeFilePath);
     List<LuaToken> luaTokens = new ArrayList<>();
-    for (LuaToken luaToken = luaLexer.next();
-        !TOKEN_EOF.equals(luaToken.getKind());
-        luaToken = luaLexer.next()) {
+    while (luaLexer.hasNext()) {
+      LuaToken luaToken = luaLexer.next();
+      if (TOKEN_EOF.equals(luaToken.getKind())) {
+        break;
+      }
       luaTokens.add(luaToken);
     }
     return luaTokens;
