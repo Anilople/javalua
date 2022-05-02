@@ -14,12 +14,10 @@
   <url>https://github.com/Anilople/javalua</url>
 
   <modules>
-    <module>javalua-vm</module>
-    <module>javalua-vm-test</module>
-    <module>javalua-compiler</module>
-    <module>javalua-vm-chunk</module>
     <module>javalua-common</module>
     <module>javalua-common-test</module>
+    <module>javalua-compiler</module>
+    <module>javalua-vm</module>
   </modules>
 
   <properties>
