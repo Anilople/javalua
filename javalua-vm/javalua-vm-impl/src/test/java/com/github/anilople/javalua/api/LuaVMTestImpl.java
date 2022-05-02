@@ -10,9 +10,9 @@ import com.github.anilople.javalua.state.LuaValue;
  *
  * @author wxq
  */
-public class DefaultLuaVMTestImpl extends DefaultLuaVMImpl {
+public class LuaVMTestImpl extends LuaVMImpl {
 
-  public DefaultLuaVMTestImpl(int stackSize, Prototype prototype) {
+  public LuaVMTestImpl(int stackSize, Prototype prototype) {
     this.init(stackSize, prototype);
   }
 

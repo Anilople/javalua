@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author wxq
  */
-class DefaultLuaVMImplTest {
+class LuaVMImplTest {
 
   @Test
   void resolveLuaUpvalue_inStack_1() {
@@ -26,7 +26,7 @@ class DefaultLuaVMImplTest {
     upvalue.setInstack((byte) 1);
     upvalue.setIdx((byte) 0);
 
-    LuaUpvalue luaUpvalue = DefaultLuaVMImpl.resolveLuaUpvalue(callFrame, upvalue);
+    LuaUpvalue luaUpvalue = LuaVMImpl.resolveLuaUpvalue(callFrame, upvalue);
 
     assertEquals(expectedLuaValue, luaUpvalue.getLuaValue());
   }
@@ -43,7 +43,7 @@ class DefaultLuaVMImplTest {
     upvalue.setInstack((byte) 1);
     upvalue.setIdx((byte) 2);
 
-    LuaUpvalue luaUpvalue = DefaultLuaVMImpl.resolveLuaUpvalue(callFrame, upvalue);
+    LuaUpvalue luaUpvalue = LuaVMImpl.resolveLuaUpvalue(callFrame, upvalue);
 
     assertEquals(expectedLuaValue, luaUpvalue.getLuaValue());
   }

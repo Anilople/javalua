@@ -19,9 +19,9 @@ import java.util.function.Supplier;
  *
  * @author wxq
  */
-public class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
+public class LuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
 
-  public DefaultLuaVMImpl() {}
+  public LuaVMImpl() {}
 
   @Override
   public void init(int stackSize, Prototype prototype) {

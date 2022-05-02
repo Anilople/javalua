@@ -2,7 +2,7 @@ package com.github.anilople.javalua.instruction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.github.anilople.javalua.api.DefaultLuaVMTestImpl;
+import com.github.anilople.javalua.api.LuaVMTestImpl;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
@@ -29,7 +29,7 @@ class SETUPVALTest {
     Prototype prototype = new Prototype();
     prototype.setUpvalues(new Upvalue[3]);
     prototype.setMaxStackSize((byte) 5);
-    DefaultLuaVMTestImpl luaVM = new DefaultLuaVMTestImpl(10, prototype);
+    LuaVMTestImpl luaVM = new LuaVMTestImpl(10, prototype);
 
     LuaClosure luaClosure = new LuaClosure(prototype);
     final LuaValueWrapper luaValueWrapper = new LuaValueWrapper(null);
