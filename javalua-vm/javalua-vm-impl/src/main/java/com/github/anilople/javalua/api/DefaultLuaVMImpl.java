@@ -19,15 +19,18 @@ import java.util.function.Supplier;
  *
  * @author wxq
  */
-class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
+public class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
 
-  DefaultLuaVMImpl(int stackSize, Prototype prototype) {
-    super(stackSize, prototype);
+  public DefaultLuaVMImpl() {}
+
+  @Override
+  public void init(int stackSize, Prototype prototype) {
+    super.init(stackSize, prototype);
   }
 
   @Override
   public int pc() {
-    return this.callStack.topCallFrame().getPc();
+    return this.callStack.topCallFrame().pc();
   }
 
   @Override
@@ -45,7 +48,18 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
     var prototype = this.callStack.topCallFrame().getPrototype();
     var constants = prototype.getConstants();
     var constant = constants.getConstant(index);
-    var luaValue = LuaValue.of(constant);
+    final LuaValue luaValue;
+    if (constant.isLuaBoolean()) {
+      luaValue = LuaValue.of(constant.getLuaBooleanInJava());
+    } else if (constant.isLuaInteger()) {
+      luaValue = LuaValue.of(constant.getLuaIntegerInJava());
+    } else if (constant.isLuaNumber()) {
+      luaValue = LuaValue.of(constant.getLuaNumberInJava());
+    } else if (constant.isLuaString()) {
+      luaValue = LuaValue.of(constant.getLuaStringInJava());
+    } else {
+      luaValue = LuaValue.NIL;
+    }
     this.callStack.topCallFrame().push(luaValue);
   }
 
@@ -68,7 +82,7 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
     System.out.println("call frame:" + topCallFrame.length());
     for (var nextCallFrame = topCallFrame;
         nextCallFrame != null;
-        nextCallFrame = nextCallFrame.getPrev()) {
+        nextCallFrame = nextCallFrame.getPrevious()) {
       System.out.println(nextCallFrame);
     }
     System.out.println();
@@ -87,7 +101,7 @@ class DefaultLuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
 
   @Override
   public int getRegisterCount() {
-    var prototype = this.callStack.topCallFrame().getLuaClosure().getPrototype();
+    var prototype = this.callStack.topCallFrame().getPrototype();
     return prototype.getRegisterCount();
   }
 

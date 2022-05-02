@@ -8,16 +8,23 @@ import lombok.NoArgsConstructor;
  * @author wxq
  */
 @Data
-@NoArgsConstructor
-class LuaStackImpl implements LuaStack {
+public class LuaStackImpl implements LuaStack {
+  private boolean initMark = false;
   private LuaValue[] luaValues;
   /**
    * 可以简单理解成，在top之下的，都是寄存器
    */
   private int top;
 
-  LuaStackImpl(int stackSize, int registerCount) {
-    this.luaValues = new LuaValue[stackSize];
+  public LuaStackImpl() {}
+
+  @Override
+  public void init(int size, int registerCount) {
+    if (this.initMark) {
+      throw new IllegalStateException("have been init");
+    }
+    this.initMark = true;
+    this.luaValues = new LuaValue[size];
     this.top = registerCount;
     // 初始化成 nil
     for (int i = 0; i < registerCount; i++) {

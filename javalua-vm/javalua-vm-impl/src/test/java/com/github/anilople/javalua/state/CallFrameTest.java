@@ -13,13 +13,13 @@ class CallFrameTest {
 
   @Test
   void testStackOverFlow() {
-    CallFrame callFrame = new CallFrame(0, new Prototype());
+    CallFrame callFrame = CallFrame.newCallFrame(0, new Prototype());
     assertThrows(IllegalStateException.class, () -> callFrame.push(LuaValue.NIL));
   }
 
   @Test
   void testPushNCase1() {
-    CallFrame callFrame = new CallFrame(6, new Prototype());
+    CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] luaValues =
         new LuaValue[] {
           LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"),
@@ -32,7 +32,7 @@ class CallFrameTest {
 
   @Test
   void testPushNCase2() {
-    CallFrame callFrame = new CallFrame(6, new Prototype());
+    CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] luaValues =
         new LuaValue[] {
           LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
@@ -45,7 +45,7 @@ class CallFrameTest {
   @Test
   @DisplayName("pushN 希望push的数量是负数 push所有")
   void testPushNCase3() {
-    CallFrame callFrame = new CallFrame(6, new Prototype());
+    CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] luaValues =
         new LuaValue[] {
           LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
@@ -59,7 +59,7 @@ class CallFrameTest {
 
   @Test
   void testPopNResultsCase1() {
-    CallFrame callFrame = new CallFrame(6, new Prototype());
+    CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     {
       LuaValue[] luaValues =
           new LuaValue[] {
@@ -76,7 +76,7 @@ class CallFrameTest {
 
   @Test
   void popNArgs() {
-    CallFrame callFrame = new CallFrame(6, new Prototype());
+    CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] expectedLuaValues =
         new LuaValue[] {
           LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),
@@ -88,7 +88,7 @@ class CallFrameTest {
 
   @Test
   void testPushPopEquals() {
-    CallFrame callFrame = new CallFrame(6, new Prototype());
+    CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] luaValuesForPush =
         new LuaValue[] {
           LuaValue.NIL, LuaValue.of(3L), LuaValue.of("abc"), LuaValue.of("3fx"),

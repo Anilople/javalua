@@ -18,7 +18,7 @@ class DefaultLuaVMImplTest {
   void resolveLuaUpvalue_inStack_1() {
     Prototype prototype = new Prototype();
     prototype.setMaxStackSize((byte) 5);
-    CallFrame callFrame = new CallFrame(10, prototype);
+    CallFrame callFrame = CallFrame.newCallFrame(10, prototype);
     final LuaValue expectedLuaValue = LuaValue.of(99L);
     callFrame.set(1, expectedLuaValue);
 
@@ -35,7 +35,7 @@ class DefaultLuaVMImplTest {
   void resolveLuaUpvalue_inStack_3() {
     Prototype prototype = new Prototype();
     prototype.setMaxStackSize((byte) 5);
-    CallFrame callFrame = new CallFrame(10, prototype);
+    CallFrame callFrame = CallFrame.newCallFrame(10, prototype);
     final LuaValue expectedLuaValue = LuaValue.of(99L);
     callFrame.set(3, expectedLuaValue);
 

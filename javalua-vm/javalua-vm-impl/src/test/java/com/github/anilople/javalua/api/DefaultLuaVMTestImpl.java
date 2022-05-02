@@ -13,7 +13,7 @@ import com.github.anilople.javalua.state.LuaValue;
 public class DefaultLuaVMTestImpl extends DefaultLuaVMImpl {
 
   public DefaultLuaVMTestImpl(int stackSize, Prototype prototype) {
-    super(stackSize, prototype);
+    this.init(stackSize, prototype);
   }
 
   public void pushCallFrameForPrototype(LuaClosure luaClosure, LuaValue[] allArgs) {

@@ -22,28 +22,35 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class DefaultLuaStateImpl implements LuaState {
+  private boolean initMark = false;
 
-  protected final CallStack callStack;
+  protected CallStack callStack;
 
   /**
    * page 172.
    * <p>
    * Lua注册表
    */
-  protected final LuaTable registry;
+  protected final LuaTable registry = LuaTable.of(0, 0)
+      // page 172
+      .put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
 
-  protected DefaultLuaStateImpl(int stackSize, Prototype prototype) {
-    this.callStack = CallStack.of(stackSize, prototype);
-    this.registry = LuaTable.of(0, 0);
-    // page 172
-    this.registry.put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
-  }
+  public DefaultLuaStateImpl() {}
 
   /**
    * @return 全局环境 _ENV
    */
   LuaTable getEnv() {
     return (LuaTable) this.registry.get(LuaConstants.LUA_RIDX_GLOBALS);
+  }
+
+  @Override
+  public void init(int stackSize, Prototype prototype) {
+    if (this.initMark) {
+      throw new IllegalStateException("have been init");
+    }
+    this.initMark = true;
+    this.callStack = CallStack.of(stackSize, prototype);
   }
 
   @Override
