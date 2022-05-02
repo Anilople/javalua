@@ -897,6 +897,26 @@ debug.setmetatable(100, mt)
 
 ### 第17章 代码生成
 
+AST -> 自定义的内部结构
+
+内部结构 -> 函数原型
+
+常量表
+
+寄存器分配：需要给每一个局部变量和临时变量都分配一个寄存器，在局部变量退出作用域或者临时变量使用完毕之后，回收寄存器。寄存器索引的范围在[0, 255]之间
+
+局部变量表
+
+lua语言里的冒号
+
+The colon is for implementing methods that pass `self` as the first parameter. So `x:bar(3,4)`should be the same as `x.bar(x,3,4)`
+
+For definition it is *exactly* the same as specifying self manually - it will even produce same bytecode on compilation. I.e. `function object:method(arg1, arg2)` is same as `function object.method(self, arg1, arg2)`
+
+处理局部变量绑定的寄存器时，由于变量可以同名，所以有enter scope和exit scope的概念，可以用单向链表，也可以用stack来处理同名变量
+
+
+
 ## 第四部分 Lua标准库
 
 ### 第18章 辅助API和基础库
@@ -913,7 +933,7 @@ debug.setmetatable(100, mt)
 
 * Programming in Lua, Fourth Edition
 * Lua 5.3 Reference Manual
-* The Evolution of Lua
+* [The Evolution of Lua](https://www.lua.org/doc/hopl.pdf)
 * The Implementation of Lua 5.0
 * [A No-Frills Introduction to Lua 5.1 VM Instructions](http://underpop.free.fr/l/lua/docs/a-no-frills-introduction-to-lua-5.1-vm-instructions.pdf)
 * Lua 5.3 Bytecode Reference
@@ -935,3 +955,8 @@ A local variable used by an inner function is called an *upvalue*, or *external 
 ### parser-转成LL
 
 [Grammar equivalence, eliminating ambiguities, adapting to LL parsing](https://fileadmin.cs.lth.se/cs/Education/EDAN65/2021/lectures/L04.pdf)
+
+### lua的前世今生
+
+20220420-PLDesign-Lua https://www.bilibili.com/video/BV1ZY4y187mK
+
