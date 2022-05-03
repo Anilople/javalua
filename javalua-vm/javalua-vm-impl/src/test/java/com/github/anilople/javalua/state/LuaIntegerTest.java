@@ -11,7 +11,7 @@ class LuaIntegerTest {
 
   @Test
   void fromLuaNumberCase1() {
-    var r = LuaInteger.fromLuaNumber(LuaNumber.ZERO);
+    var r = LuaNumber.ZERO.toLuaInteger();
     assertTrue(r.r1);
     assertEquals(LuaInteger.ZERO, r.r0);
   }

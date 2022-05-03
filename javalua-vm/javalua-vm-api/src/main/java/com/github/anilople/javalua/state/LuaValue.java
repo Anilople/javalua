@@ -18,7 +18,7 @@ public interface LuaValue {
   }
 
   static LuaNumber of(double value) {
-    return new LuaNumber(value);
+    return LuaNumber.newLuaNumber(value);
   }
 
   static LuaString of(String value) {

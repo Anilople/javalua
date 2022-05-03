@@ -73,7 +73,7 @@ public class LuaString implements LuaValue {
 
   public LuaNumber toLuaNumber() {
     double value = Double.parseDouble(this.value);
-    return new LuaNumber(value);
+    return LuaNumber.newLuaNumber(value);
   }
 
   public LuaString concat(LuaString luaString) {

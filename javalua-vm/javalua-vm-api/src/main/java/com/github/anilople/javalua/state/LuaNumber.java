@@ -2,15 +2,19 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.util.Return2;
-import java.util.Objects;
+import com.github.anilople.javalua.util.SpiUtils;
 
-public class LuaNumber implements LuaValue {
+public interface LuaNumber extends LuaValue {
 
-  static final LuaNumber ZERO = new LuaNumber(0D);
+  LuaNumber ZERO = newLuaNumber(0D);
 
-  private static final Return2<LuaNumber, Boolean> ERROR_RETURN = new Return2<>(null, false);
+  static LuaNumber newLuaNumber(double javaValue) {
+    LuaNumber luaNumber = SpiUtils.loadOneInterfaceImpl(LuaNumber.class);
+    luaNumber.init(javaValue);
+    return luaNumber;
+  }
 
-  public static Return2<LuaNumber, Boolean> from(LuaValue luaValue) {
+  static Return2<LuaNumber, Boolean> from(LuaValue luaValue) {
     if (null == luaValue) {
       throw new IllegalArgumentException("cannot be null");
     }
@@ -27,105 +31,49 @@ public class LuaNumber implements LuaValue {
       LuaNumber luaNumber = luaString.toLuaNumber();
       return new Return2<>(luaNumber, true);
     }
-    return ERROR_RETURN;
-  }
-
-  private final double value;
-
-  public LuaNumber(double value) {
-    this.value = value;
+    return new Return2<>(null, false);
   }
 
   @Override
-  public LuaType type() {
+  default LuaType type() {
     return LuaType.LUA_TNUMBER;
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    LuaNumber luaNumber = (LuaNumber) o;
-    return Double.compare(luaNumber.value, value) == 0;
-  }
+  boolean equals(Object o);
 
   @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
+  int hashCode();
 
-  @Override
-  public String toString() {
-    return "" + this.value + "";
-  }
+  void init(double javaValue);
 
-  public boolean isPositive() {
-    return value > 0;
-  }
+  double getJavaValue();
 
-  public boolean isNaN() {
-    return Double.isNaN(this.value);
-  }
+  boolean isPositive();
+
+  boolean isNaN();
 
   /**
    * 浮点数转为整数，如果小数部分为0，并且整数部分没有超出Lua整数能够表示的范围，则转换成功
    */
-  public Return2<LuaInteger, Boolean> toLuaInteger() {
-    long value = (long) this.value;
-    boolean success = (double) value == this.value;
-    if (success) {
-      return new Return2<>(new LuaInteger(value), success);
-    } else {
-      return new Return2<>(null, false);
-    }
-  }
+  Return2<LuaInteger, Boolean> toLuaInteger();
 
-  public LuaNumber add(LuaNumber luaNumber) {
-    var value = this.value + luaNumber.value;
-    return new LuaNumber(value);
-  }
+  LuaNumber add(LuaNumber luaNumber);
 
-  public LuaNumber sub(LuaNumber luaNumber) {
-    var value = this.value - luaNumber.value;
-    return new LuaNumber(value);
-  }
+  LuaNumber sub(LuaNumber luaNumber);
 
-  public LuaNumber sub() {
-    var value = -this.value;
-    return new LuaNumber(value);
-  }
+  LuaNumber sub();
 
-  public LuaNumber multiply(LuaNumber luaNumber) {
-    var value = this.value * luaNumber.value;
-    return new LuaNumber(value);
-  }
+  LuaNumber multiply(LuaNumber luaNumber);
 
-  public LuaNumber division(LuaNumber luaNumber) {
-    var value = this.value / luaNumber.value;
-    return new LuaNumber(value);
-  }
+  LuaNumber division(LuaNumber luaNumber);
 
-  public LuaNumber floorDivision(LuaNumber luaNumber) {
-    var temp = this.value / luaNumber.value;
-    var value = Math.floor(temp);
-    return new LuaNumber(value);
-  }
+  LuaNumber floorDivision(LuaNumber luaNumber);
 
-  public LuaNumber pow(LuaNumber exponent) {
-    var value = Math.pow(this.value, exponent.value);
-    return new LuaNumber(value);
-  }
+  LuaNumber pow(LuaNumber exponent);
 
-  public boolean lessThen(LuaNumber luaNumber) {
-    return this.value < luaNumber.value;
-  }
+  boolean lessThen(LuaNumber luaNumber);
 
-  public LuaString toLuaString() {
-    return new LuaString(Double.toString(this.value));
-  }
+  LuaString toLuaString();
 
 }

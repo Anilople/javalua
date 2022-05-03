@@ -25,12 +25,12 @@ public class LuaInteger implements LuaValue {
       return new Return2<>((LuaInteger) luaValue, true);
     }
     if (luaValue instanceof LuaNumber) {
-      return fromLuaNumber((LuaNumber) luaValue);
+      return ((LuaNumber) luaValue).toLuaInteger();
     }
     if (luaValue instanceof LuaString) {
       var r = LuaNumber.from(luaValue);
       if (r.r1) {
-        return fromLuaNumber(r.r0);
+        return r.r0.toLuaInteger();
       }
     }
     return ERROR_RETURN;
@@ -75,7 +75,7 @@ public class LuaInteger implements LuaValue {
 
   public LuaNumber toLuaNumber() {
     double value = (double) this.value;
-    return new LuaNumber(value);
+    return LuaNumber.newLuaNumber(value);
   }
 
   public LuaInteger add(LuaInteger luaInteger) {
