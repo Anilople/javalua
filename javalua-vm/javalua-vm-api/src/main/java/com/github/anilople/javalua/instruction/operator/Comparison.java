@@ -72,8 +72,7 @@ public class Comparison {
   public static LuaBoolean lessThan(LuaValue a, LuaValue b) {
     if (a instanceof LuaString) {
       if (b instanceof LuaString) {
-        var compareResult = ((LuaString) a).getValue().compareTo(((LuaString) b).getValue());
-        return LuaValue.of(compareResult < 0);
+        return ((LuaString) a).lessThan((LuaString) b);
       } else {
         return LuaValue.FALSE;
       }

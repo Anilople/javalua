@@ -3,6 +3,7 @@ package com.github.anilople.javalua.instruction.operator;
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaValue;
+import java.util.Arrays;
 
 /**
  * 字符串拼接运算符
@@ -10,12 +11,11 @@ import com.github.anilople.javalua.state.LuaValue;
 public class StringConcat {
 
   static LuaString concatLuaString(LuaString... luaStrings) {
-    var sb = new StringBuilder();
+    LuaString all = LuaString.EMPTY;
     for (LuaString luaString : luaStrings) {
-      sb.append(luaString.getValue());
+      all = all.concat(luaString);
     }
-    var value = sb.toString();
-    return new LuaString(value);
+    return all;
   }
 
   /**

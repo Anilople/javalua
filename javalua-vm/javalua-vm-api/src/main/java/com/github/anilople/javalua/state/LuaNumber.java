@@ -24,8 +24,7 @@ public class LuaNumber implements LuaValue {
     }
     if (luaValue instanceof LuaString) {
       LuaString luaString = (LuaString) luaValue;
-      double value = Double.parseDouble(luaString.getValue());
-      LuaNumber luaNumber = new LuaNumber(value);
+      LuaNumber luaNumber = luaString.toLuaNumber();
       return new Return2<>(luaNumber, true);
     }
     return ERROR_RETURN;

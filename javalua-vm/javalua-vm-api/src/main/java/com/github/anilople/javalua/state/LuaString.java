@@ -2,10 +2,11 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.util.Return2;
-import lombok.Data;
+import java.util.Objects;
 
-@Data
 public class LuaString implements LuaValue {
+
+  public static final LuaString EMPTY = new LuaString("");
 
   public static Return2<LuaString, Boolean> from(LuaValue luaValue) {
     if (null == luaValue) {
@@ -39,7 +40,44 @@ public class LuaString implements LuaValue {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    LuaString luaString = (LuaString) o;
+    return Objects.equals(value, luaString.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
+
+  @Override
   public String toString() {
     return "\"" + this.value + "\"";
+  }
+
+  public LuaBoolean lessThan(LuaString luaString) {
+    int compareResult = this.value.compareTo(luaString.value);
+    return LuaValue.of(compareResult < 0);
+  }
+
+  public LuaInteger length() {
+    var len = this.value.length();
+    return new LuaInteger(len);
+  }
+
+  public LuaNumber toLuaNumber() {
+    double value = Double.parseDouble(this.value);
+    return new LuaNumber(value);
+  }
+
+  public LuaString concat(LuaString luaString) {
+    String value = this.value + luaString.value;
+    return new LuaString(value);
   }
 }

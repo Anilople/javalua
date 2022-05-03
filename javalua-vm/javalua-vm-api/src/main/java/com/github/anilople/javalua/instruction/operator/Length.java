@@ -16,8 +16,7 @@ public class Length {
   public static LuaInteger length(LuaValue luaValue) {
     if (luaValue instanceof LuaString) {
       LuaString luaString = (LuaString) luaValue;
-      var len = luaString.getValue().length();
-      return new LuaInteger(len);
+      return luaString.length();
     }
     if (luaValue instanceof LuaTable) {
       LuaTable luaTable = (LuaTable) luaValue;
