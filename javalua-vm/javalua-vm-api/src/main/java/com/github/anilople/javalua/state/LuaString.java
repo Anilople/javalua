@@ -2,13 +2,19 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.util.Return2;
-import java.util.Objects;
+import com.github.anilople.javalua.util.SpiUtils;
 
-public class LuaString implements LuaValue {
+public interface LuaString extends LuaValue {
 
-  public static final LuaString EMPTY = new LuaString("");
+  LuaString EMPTY = newLuaString("");
 
-  public static Return2<LuaString, Boolean> from(LuaValue luaValue) {
+  static LuaString newLuaString(String javaValue) {
+    LuaString luaString = SpiUtils.loadOneInterfaceImpl(LuaString.class);
+    luaString.init(javaValue);
+    return luaString;
+  }
+
+  static Return2<LuaString, Boolean> from(LuaValue luaValue) {
     if (null == luaValue) {
       throw new IllegalArgumentException("cannot be null");
     }
@@ -23,61 +29,25 @@ public class LuaString implements LuaValue {
       LuaNumber luaNumber = (LuaNumber) luaValue;
       luaString = luaNumber.toLuaString();
     } else {
-      luaString = new LuaString("");
+      luaString = EMPTY;
     }
     return new Return2<>(luaString, true);
   }
 
-  private final String value;
+  void init(String javaValue);
 
-  public LuaString(String value) {
-    this.value = value;
-  }
+  String getJavaValue();
 
   @Override
-  public LuaType type() {
+  default LuaType type() {
     return LuaType.LUA_TSTRING;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    LuaString luaString = (LuaString) o;
-    return Objects.equals(value, luaString.value);
-  }
+  LuaBoolean lessThan(LuaString luaString);
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
+  LuaInteger length();
 
-  @Override
-  public String toString() {
-    return "\"" + this.value + "\"";
-  }
+  LuaNumber toLuaNumber();
 
-  public LuaBoolean lessThan(LuaString luaString) {
-    int compareResult = this.value.compareTo(luaString.value);
-    return LuaValue.of(compareResult < 0);
-  }
-
-  public LuaInteger length() {
-    var len = this.value.length();
-    return LuaInteger.newLuaInteger(len);
-  }
-
-  public LuaNumber toLuaNumber() {
-    double value = Double.parseDouble(this.value);
-    return LuaNumber.newLuaNumber(value);
-  }
-
-  public LuaString concat(LuaString luaString) {
-    String value = this.value + luaString.value;
-    return new LuaString(value);
-  }
+  LuaString concat(LuaString luaString);
 }

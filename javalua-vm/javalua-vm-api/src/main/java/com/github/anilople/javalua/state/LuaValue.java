@@ -22,6 +22,6 @@ public interface LuaValue {
   }
 
   static LuaString of(String value) {
-    return new LuaString(value);
+    return LuaString.newLuaString(value);
   }
 }

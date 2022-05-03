@@ -141,6 +141,6 @@ public class LuaIntegerImpl implements LuaInteger {
 
   @Override
   public LuaString toLuaString() {
-    return new LuaString(Long.toString(this.value));
+    return LuaString.newLuaString(Long.toString(this.value));
   }
 }

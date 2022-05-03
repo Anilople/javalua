@@ -111,7 +111,7 @@ public class LuaNumberImpl implements LuaNumber {
   }
 
   public LuaString toLuaString() {
-    return new LuaString(Double.toString(this.value));
+    return LuaString.newLuaString(Double.toString(this.value));
   }
 
 }
