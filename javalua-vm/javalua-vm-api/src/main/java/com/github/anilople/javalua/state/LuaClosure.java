@@ -57,7 +57,7 @@ public class LuaClosure implements LuaValue {
 
   public void changeLuaUpvalueReferencedLuaValue(int index, LuaValue luaValue) {
     LuaUpvalue luaUpvalue = this.luaUpvalues[index];
-    luaUpvalue.getSetter().accept(luaValue);
+    luaUpvalue.changeReferencedLuaValueTo(luaValue);
   }
 
   @Override

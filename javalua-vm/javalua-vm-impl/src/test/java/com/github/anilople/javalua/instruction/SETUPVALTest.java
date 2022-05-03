@@ -35,7 +35,7 @@ class SETUPVALTest {
     final LuaValueWrapper luaValueWrapper = new LuaValueWrapper(null);
     {
       LuaUpvalue luaUpvalue =
-          new LuaUpvalue(luaValueWrapper::getLuaValue, luaValueWrapper::setLuaValue);
+          LuaUpvalue.newLuaUpvalue(luaValueWrapper::getLuaValue, luaValueWrapper::setLuaValue);
       luaClosure.setLuaUpvalue(0, luaUpvalue);
     }
 

@@ -138,7 +138,7 @@ public class LuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
           final int index = upvalueIndex + 1;
           Supplier<LuaValue> getter = () -> callFrame.get(index);
           Consumer<LuaValue> setter = luaValue -> callFrame.set(index, luaValue);
-          luaUpvalue = new LuaUpvalue(getter, setter);
+          luaUpvalue = LuaUpvalue.newLuaUpvalue(getter, setter);
           // 并且 将其在当前栈帧中，变成 Open 状态
           callFrame.putOpenUpvalue(upvalueIndex, luaUpvalue);
         }
