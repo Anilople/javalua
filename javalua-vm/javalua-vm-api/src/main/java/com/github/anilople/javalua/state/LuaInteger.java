@@ -2,13 +2,17 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.util.Return2;
-import java.util.Objects;
+import com.github.anilople.javalua.util.SpiUtils;
 
-public class LuaInteger implements LuaValue {
+public interface LuaInteger extends LuaValue {
 
-  public static final LuaInteger ZERO = new LuaInteger(0);
+  LuaInteger ZERO = LuaInteger.newLuaInteger(0L);
 
-  private static final Return2<LuaInteger, Boolean> ERROR_RETURN = new Return2<>(null, false);
+  static LuaInteger newLuaInteger(long javaValue) {
+    LuaInteger luaInteger = SpiUtils.loadOneInterfaceImpl(LuaInteger.class);
+    luaInteger.init(javaValue);
+    return luaInteger;
+  }
 
   /**
    * 浮点数转为整数，如果小数部分为0，并且整数部分没有超出Lua整数能够表示的范围，则转换成功
@@ -17,7 +21,7 @@ public class LuaInteger implements LuaValue {
     return luaNumber.toLuaInteger();
   }
 
-  public static Return2<LuaInteger, Boolean> from(LuaValue luaValue) {
+  static Return2<LuaInteger, Boolean> from(LuaValue luaValue) {
     if (null == luaValue) {
       throw new IllegalArgumentException("cannot be null");
     }
@@ -33,124 +37,53 @@ public class LuaInteger implements LuaValue {
         return r.r0.toLuaInteger();
       }
     }
-    return ERROR_RETURN;
+    return new Return2<>(null, false);
   }
 
-  private final long value;
+  void init(long javaValue);
 
-  public LuaInteger(long value) {
-    this.value = value;
-  }
+  long getJavaValue();
 
   @Override
-  public LuaType type() {
-    return LuaType.LUA_TNUMBER;
-  }
+  LuaType type();
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    LuaInteger that = (LuaInteger) o;
-    return value == that.value;
-  }
+  boolean equals(Object o);
 
   @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
+  int hashCode();
 
   @Override
-  public String toString() {
-    return "" + this.value + "";
-  }
+  String toString();
 
-  public long getJavaValue() {
-    return this.value;
-  }
+  LuaNumber toLuaNumber();
 
-  public LuaNumber toLuaNumber() {
-    double value = (double) this.value;
-    return LuaNumber.newLuaNumber(value);
-  }
-
-  public LuaInteger add(LuaInteger luaInteger) {
-    var value = this.value + luaInteger.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger add(LuaInteger luaInteger);
   
-  public LuaInteger sub(LuaInteger luaInteger) {
-    var value = this.value - luaInteger.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger sub(LuaInteger luaInteger);
   
-  public LuaInteger sub() {
-    var value = -this.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger sub();
 
-  public LuaInteger multiply(LuaInteger luaInteger) {
-    var value = this.value * luaInteger.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger multiply(LuaInteger luaInteger);
 
-  public LuaInteger floorDivision(LuaInteger luaInteger) {
-    var value = Math.floorDiv(this.value, luaInteger.value);
-    return new LuaInteger(value);
-  }
+  LuaInteger floorDivision(LuaInteger luaInteger);
   
-  public LuaInteger and(LuaInteger luaInteger) {
-    var value = this.value & luaInteger.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger and(LuaInteger luaInteger);
 
-  public LuaInteger or(LuaInteger luaInteger) {
-    var value = this.value | luaInteger.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger or(LuaInteger luaInteger);
 
-  public LuaInteger xor(LuaInteger luaInteger) {
-    var value = this.value ^ luaInteger.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger xor(LuaInteger luaInteger);
   
-  public LuaInteger negate() {
-    var value = ~this.value;
-    return new LuaInteger(value);
-  }
+  LuaInteger negate();
 
   /**
    * 无符号右移，空出来的比特只是简单地补0
    */
-  public LuaInteger shiftRight(LuaInteger n) {
-    if (n.value > 0) {
-      var value = this.value >>> n.value;
-      return new LuaInteger(value);
-    } else {
-      var toPositiveN = n.sub();
-      return shiftLeft(toPositiveN);
-    }
-  }
+  LuaInteger shiftRight(LuaInteger n);
 
-  public LuaInteger shiftLeft(LuaInteger n) {
-    if (n.value > 0) {
-      var value = this.value << n.value;
-      return new LuaInteger(value);
-    } else {
-      var toPositiveN = n.sub();
-      return shiftRight(toPositiveN);
-    }
-  }
+  LuaInteger shiftLeft(LuaInteger n);
 
-  public boolean lessThen(LuaInteger luaInteger) {
-    return this.value < luaInteger.value;
-  }
+  boolean lessThen(LuaInteger luaInteger);
 
-  public LuaString toLuaString() {
-    return new LuaString(Long.toString(this.value));
-  }
+  LuaString toLuaString();
 }

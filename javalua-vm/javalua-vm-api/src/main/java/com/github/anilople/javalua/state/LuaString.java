@@ -68,7 +68,7 @@ public class LuaString implements LuaValue {
 
   public LuaInteger length() {
     var len = this.value.length();
-    return new LuaInteger(len);
+    return LuaInteger.newLuaInteger(len);
   }
 
   public LuaNumber toLuaNumber() {

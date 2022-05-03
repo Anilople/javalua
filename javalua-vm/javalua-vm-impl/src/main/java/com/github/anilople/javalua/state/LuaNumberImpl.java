@@ -64,7 +64,7 @@ public class LuaNumberImpl implements LuaNumber {
     long value = (long) this.value;
     boolean success = (double) value == this.value;
     if (success) {
-      return new Return2<>(new LuaInteger(value), success);
+      return new Return2<>(LuaInteger.newLuaInteger(value), success);
     } else {
       return new Return2<>(null, false);
     }

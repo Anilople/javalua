@@ -14,7 +14,7 @@ public interface LuaValue {
   }
 
   static LuaInteger of(long value) {
-    return new LuaInteger(value);
+    return LuaInteger.newLuaInteger(value);
   }
 
   static LuaNumber of(double value) {
