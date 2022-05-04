@@ -37,11 +37,14 @@ public class SpiUtils {
     }
     if (count > 1) {
       List<Provider<S>> list = serviceLoader.stream().collect(Collectors.toList());
-      List<Class<? extends S>>  providerTypes = list.stream().map(Provider::type).collect(Collectors.toList());
-      throw new IllegalStateException(interfaceClass
-          + " has multiple implementations, implementation's count = "
-          + list.size() + ", they are " + providerTypes
-      );
+      List<Class<? extends S>> providerTypes =
+          list.stream().map(Provider::type).collect(Collectors.toList());
+      throw new IllegalStateException(
+          interfaceClass
+              + " has multiple implementations, implementation's count = "
+              + list.size()
+              + ", they are "
+              + providerTypes);
     }
     Optional<S> optional = serviceLoader.findFirst();
     return optional.get();

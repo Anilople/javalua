@@ -38,23 +38,23 @@ class LuaTable5Impl extends AbstractLuaTable {
 
   private static final Return2<Integer, Boolean> CANNOT_RESOLVE_INDEX = new Return2<>(-1, false);
 
-//  /**
-//   * @return 数组下标,true 如果key可以作为数组的索引
-//   */
-//  static Return2<Integer, Boolean> resolveIndexOfKey(LuaValue key) {
-//    if (key instanceof LuaInteger) {
-//      var index = (int) ((LuaInteger) key).getValue();
-//      return new Return2<>(index, true);
-//    }
-//    if (key instanceof LuaNumber) {
-//      var r = LuaInteger.fromLuaNumber((LuaNumber) key);
-//      if (r.r1) {
-//        var index = (int) r.r0.getValue();
-//        return new Return2<>(index, true);
-//      }
-//    }
-//    return CANNOT_RESOLVE_INDEX;
-//  }
+  //  /**
+  //   * @return 数组下标,true 如果key可以作为数组的索引
+  //   */
+  //  static Return2<Integer, Boolean> resolveIndexOfKey(LuaValue key) {
+  //    if (key instanceof LuaInteger) {
+  //      var index = (int) ((LuaInteger) key).getValue();
+  //      return new Return2<>(index, true);
+  //    }
+  //    if (key instanceof LuaNumber) {
+  //      var r = LuaInteger.fromLuaNumber((LuaNumber) key);
+  //      if (r.r1) {
+  //        var index = (int) r.r0.getValue();
+  //        return new Return2<>(index, true);
+  //      }
+  //    }
+  //    return CANNOT_RESOLVE_INDEX;
+  //  }
 
   @Override
   public void init(int arraySize, int mapSize) {
@@ -72,14 +72,14 @@ class LuaTable5Impl extends AbstractLuaTable {
   @Override
   public LuaValue get(LuaValue key) {
     throw new UnsupportedOperationException();
-//    var indexOfKey = resolveIndexOfKey(key);
-//    if (indexOfKey.r1) {
-//      var index = indexOfKey.r0;
-//      return this.array[index - 1];
-//    } else {
-//      var value = this.map.get(key);
-//      return value != null ? value : LuaValue.NIL;
-//    }
+    //    var indexOfKey = resolveIndexOfKey(key);
+    //    if (indexOfKey.r1) {
+    //      var index = indexOfKey.r0;
+    //      return this.array[index - 1];
+    //    } else {
+    //      var value = this.map.get(key);
+    //      return value != null ? value : LuaValue.NIL;
+    //    }
   }
 
   /**
@@ -90,17 +90,17 @@ class LuaTable5Impl extends AbstractLuaTable {
   @Override
   public LuaTable put(LuaValue key, LuaValue value) {
     throw new UnsupportedOperationException();
-//    // check
-//    this.ensureKeyValid(key);
-//
-//    // key
-//    var indexOfKey = resolveIndexOfKey(key);
-//    if (indexOfKey.r1) {
-//      var index = indexOfKey.r0;
-//      this.array[index - 1] = value;
-//    } else {
-//      this.map.put(key, value);
-//    }
+    //    // check
+    //    this.ensureKeyValid(key);
+    //
+    //    // key
+    //    var indexOfKey = resolveIndexOfKey(key);
+    //    if (indexOfKey.r1) {
+    //      var index = indexOfKey.r0;
+    //      this.array[index - 1] = value;
+    //    } else {
+    //      this.map.put(key, value);
+    //    }
   }
 
   @Override

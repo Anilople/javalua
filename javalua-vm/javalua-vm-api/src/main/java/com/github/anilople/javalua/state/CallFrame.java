@@ -12,7 +12,8 @@ import java.util.function.BiConsumer;
  */
 public interface CallFrame extends LuaStack {
 
-  static CallFrame newCallFrame(int stackSize,
+  static CallFrame newCallFrame(
+      int stackSize,
       int registerCount,
       CallFrame prev,
       LuaClosure luaClosure,
@@ -25,7 +26,13 @@ public interface CallFrame extends LuaStack {
 
   static CallFrame newCallFrame(int size, Prototype prototype) {
     CallFrame callFrame = SpiUtils.loadOneInterfaceImpl(CallFrame.class);
-    callFrame.init(size, prototype.getRegisterCount(), null, new LuaClosure(prototype), new LuaValue[]{}, null);
+    callFrame.init(
+        size,
+        prototype.getRegisterCount(),
+        null,
+        new LuaClosure(prototype),
+        new LuaValue[] {},
+        null);
     return callFrame;
   }
 

@@ -3,7 +3,6 @@ package com.github.anilople.javalua.instruction.operator;
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaValue;
-import java.util.Arrays;
 
 /**
  * 字符串拼接运算符

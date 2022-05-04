@@ -29,7 +29,6 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
    */
   Map<Integer, LuaUpvalue> openuvs = new HashMap<>();
 
-
   @Override
   public void init(
       int stackSize,
@@ -142,8 +141,8 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
         + "\n"
         + "luaClosure.luaUpvalues:"
         + (null == this.luaClosure
-        ? " lua closure is null "
-        : Arrays.toString(this.luaClosure.luaUpvalues))
+            ? " lua closure is null "
+            : Arrays.toString(this.luaClosure.luaUpvalues))
         + "\n"
         + "]";
   }

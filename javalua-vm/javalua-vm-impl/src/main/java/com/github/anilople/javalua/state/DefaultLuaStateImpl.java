@@ -31,9 +31,10 @@ public class DefaultLuaStateImpl implements LuaState {
    * <p>
    * Lua注册表
    */
-  protected final LuaTable registry = LuaTable.of(0, 0)
-      // page 172
-      .put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
+  protected final LuaTable registry =
+      LuaTable.of(0, 0)
+          // page 172
+          .put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
 
   public DefaultLuaStateImpl() {}
 

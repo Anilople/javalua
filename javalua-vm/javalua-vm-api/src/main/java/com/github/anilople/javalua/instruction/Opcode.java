@@ -1,12 +1,12 @@
 package com.github.anilople.javalua.instruction;
 
+import static com.github.anilople.javalua.instruction.OpArgMask.*;
+import static com.github.anilople.javalua.instruction.OpMode.*;
+
 import com.github.anilople.javalua.util.ByteUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static com.github.anilople.javalua.instruction.OpArgMask.*;
-import static com.github.anilople.javalua.instruction.OpMode.*;
 
 /**
  * 操作码
@@ -95,12 +95,7 @@ public enum Opcode {
    * <p/>
    * #define opmode(t,a,b,c,m) (((t)<<7) | ((a)<<6) | ((b)<<4) | ((c)<<2) | (m))
    */
-  Opcode(
-      int t,
-      int a,
-      OpArgMask b,
-      OpArgMask c,
-      OpMode opMode) {
+  Opcode(int t, int a, OpArgMask b, OpArgMask c, OpMode opMode) {
     this.t = t > 0;
     this.a = a > 0;
     this.b = b;
@@ -139,5 +134,4 @@ public enum Opcode {
     }
     return OPCODES.get(index);
   }
-
 }

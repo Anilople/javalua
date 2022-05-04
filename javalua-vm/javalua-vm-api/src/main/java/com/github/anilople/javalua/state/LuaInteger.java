@@ -59,21 +59,21 @@ public interface LuaInteger extends LuaValue {
   LuaNumber toLuaNumber();
 
   LuaInteger add(LuaInteger luaInteger);
-  
+
   LuaInteger sub(LuaInteger luaInteger);
-  
+
   LuaInteger sub();
 
   LuaInteger multiply(LuaInteger luaInteger);
 
   LuaInteger floorDivision(LuaInteger luaInteger);
-  
+
   LuaInteger and(LuaInteger luaInteger);
 
   LuaInteger or(LuaInteger luaInteger);
 
   LuaInteger xor(LuaInteger luaInteger);
-  
+
   LuaInteger negate();
 
   /**

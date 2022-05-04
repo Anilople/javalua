@@ -3,6 +3,4 @@ package com.github.anilople.javalua.util.spi;
 /**
  * @author wxq
  */
-public interface MultipleImplInterface {
-
-}
+public interface MultipleImplInterface {}

@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.util.SpiUtils;
 
 /**
  * 指令
@@ -33,5 +32,4 @@ public interface Instruction {
   Operand getOperand();
 
   void applyTo(LuaVM luaVM);
-
 }

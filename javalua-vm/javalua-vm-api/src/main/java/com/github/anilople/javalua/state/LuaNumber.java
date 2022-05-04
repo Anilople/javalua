@@ -75,5 +75,4 @@ public interface LuaNumber extends LuaValue {
   boolean lessThen(LuaNumber luaNumber);
 
   LuaString toLuaString();
-
 }

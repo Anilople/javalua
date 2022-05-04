@@ -2,7 +2,6 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.constant.LuaConstants;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author wxq

@@ -3,7 +3,6 @@ package com.github.anilople.javalua.state;
 import com.github.anilople.javalua.util.SpiUtils;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import lombok.Data;
 
 /**
  * @author wxq

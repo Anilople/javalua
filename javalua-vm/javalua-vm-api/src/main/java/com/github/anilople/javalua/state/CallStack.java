@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.util.Return2;
 import com.github.anilople.javalua.util.SpiUtils;
 import java.util.Arrays;

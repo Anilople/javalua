@@ -4,8 +4,7 @@ import com.github.anilople.javalua.api.LuaType;
 
 public enum LuaBoolean implements LuaValue {
   TRUE,
-  FALSE
-  ;
+  FALSE;
 
   public static LuaBoolean from(LuaValue luaValue) {
     if (luaValue == null) {

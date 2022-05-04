@@ -27,7 +27,6 @@ public class CallStackImpl implements CallStack {
     return popped;
   }
 
-
   /**
    * @param luaClosure 闭包
    * @param allArgs 传递给闭包的所有参数，闭包不一定能全部用上
@@ -43,14 +42,14 @@ public class CallStackImpl implements CallStack {
     final LuaValue[] args = argsAndVarargs.r0;
     final LuaValue[] varargs = argsAndVarargs.r1;
 
-    this.callFrame = CallFrame.newCallFrame(
-        prototype.getRegisterCount() * 2 + LuaConstants.LUA_MIN_STACK,
-        prototype.getRegisterCount(),
-        this.callFrame,
-        luaClosure,
-        args,
-        varargs
-    );
+    this.callFrame =
+        CallFrame.newCallFrame(
+            prototype.getRegisterCount() * 2 + LuaConstants.LUA_MIN_STACK,
+            prototype.getRegisterCount(),
+            this.callFrame,
+            luaClosure,
+            args,
+            varargs);
   }
 
   /**
