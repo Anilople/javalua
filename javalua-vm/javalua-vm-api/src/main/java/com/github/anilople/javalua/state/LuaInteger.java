@@ -12,40 +12,12 @@ public interface LuaInteger extends LuaValue {
     return SpiUtils.loadOneInterfaceImpl(LuaInteger.class, long.class, javaValue);
   }
 
-  /**
-   * 浮点数转为整数，如果小数部分为0，并且整数部分没有超出Lua整数能够表示的范围，则转换成功
-   */
-  static Return2<LuaInteger, Boolean> fromLuaNumber(LuaNumber luaNumber) {
-    return luaNumber.toLuaInteger();
-  }
-
-  static Return2<LuaInteger, Boolean> from(LuaValue luaValue) {
-    if (null == luaValue) {
-      throw new IllegalArgumentException("cannot be null");
-    }
-    if (luaValue instanceof LuaInteger) {
-      return new Return2<>((LuaInteger) luaValue, true);
-    }
-    if (luaValue instanceof LuaNumber) {
-      return ((LuaNumber) luaValue).toLuaInteger();
-    }
-    if (luaValue instanceof LuaString) {
-      var r = LuaNumber.from(luaValue);
-      if (r.r1) {
-        return r.r0.toLuaInteger();
-      }
-    }
-    return new Return2<>(null, false);
-  }
-
   @Override
   default LuaType type() {
     return LuaType.LUA_TNUMBER;
   }
 
   long getJavaValue();
-
-  LuaNumber toLuaNumber();
 
   LuaInteger add(LuaInteger luaInteger);
 

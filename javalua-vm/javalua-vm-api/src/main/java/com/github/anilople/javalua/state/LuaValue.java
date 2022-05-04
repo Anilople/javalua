@@ -1,6 +1,7 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
+import com.github.anilople.javalua.exception.TypeConversionRuntimeException;
 
 public interface LuaValue {
   LuaType type();
@@ -61,4 +62,34 @@ public interface LuaValue {
   }
 
   LuaString toLuaString();
+
+  /**
+   *
+   * @return true如果可以转成 {@link LuaNumber}
+   */
+  default boolean canConvertToLuaNumber() {
+    return false;
+  }
+
+  /**
+   * 使用之前需要先调用{@link #canConvertToLuaNumber()}进行判断
+   */
+  default LuaNumber toLuaNumber() {
+    throw new TypeConversionRuntimeException(this, LuaNumber.class);
+  }
+
+  /**
+   *
+   * @return true如果可以转成 {@link LuaInteger}
+   */
+  default boolean canConvertToLuaInteger() {
+    return false;
+  }
+
+  /**
+   * 使用之前需要先调用{@link #canConvertToLuaInteger()}进行判断
+   */
+  default LuaInteger toLuaInteger() {
+    throw new TypeConversionRuntimeException(this, LuaInteger.class);
+  }
 }

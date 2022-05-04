@@ -31,10 +31,10 @@ public final class BitwiseOperator extends AbstractOperator<LuaValue, LuaValue, 
 
   @Override
   public boolean canApply(LuaValue a, LuaValue b) {
-    if (!ToLuaIntegerConverter.canConvert(a)) {
+    if (!a.canConvertToLuaInteger()) {
       return false;
     }
-    if (!ToLuaIntegerConverter.canConvert(b)) {
+    if (!b.canConvertToLuaInteger()) {
       return false;
     }
     return true;

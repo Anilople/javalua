@@ -52,7 +52,7 @@ public class Bitwise {
   }
 
   public static LuaInteger negate(LuaValue a) {
-    var r = ToLuaIntegerConverter.convert(a);
+    var r = a.toLuaInteger();
     return negateLuaInteger(r);
   }
 

@@ -9,22 +9,13 @@ class ToLuaNumberConverter {
   private static final Return3<Boolean, LuaNumber, LuaNumber> ERROR_RETURN =
       new Return3<>(false, null, null);
 
-  /**
-   * @return true 如果可以转换成{@link LuaNumber}
-   */
-  static boolean canConvert(LuaValue luaValue) {
-    // TODO, 性能
-    return LuaNumber.from(luaValue).r1;
-  }
-
   static Return3<Boolean, LuaNumber, LuaNumber> convert(LuaValue a, LuaValue b) {
-    var aR = LuaNumber.from(a);
-    var bR = LuaNumber.from(b);
-
-    if (aR.r1 && bR.r1) {
-      return new Return3<>(true, aR.r0, bR.r0);
-    } else {
+    if (!a.canConvertToLuaNumber()) {
       return ERROR_RETURN;
     }
+    if (!b.canConvertToLuaNumber()) {
+      return ERROR_RETURN;
+    }
+    return new Return3<>(true, a.toLuaNumber(), b.toLuaNumber());
   }
 }

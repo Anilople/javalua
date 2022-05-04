@@ -46,7 +46,7 @@ public class StringConcat {
     LuaString[] luaStrings = new LuaString[luaValues.length];
     for (int i = 0; i < luaValues.length; i++) {
       LuaValue luaValue = luaValues[i];
-      LuaString luaString = ToLuaStringConverter.convert(luaValue);
+      LuaString luaString = luaValue.toLuaString();
       luaStrings[i] = luaString;
     }
     return concatLuaString(luaStrings);

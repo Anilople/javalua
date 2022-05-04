@@ -258,7 +258,11 @@ public class LuaStateImpl implements LuaState {
   @Override
   public Return2<LuaInteger, Boolean> toLuaIntegerX(int index) {
     var luaValue = this.getLuaValue(index);
-    return LuaInteger.from(luaValue);
+    if (luaValue.canConvertToLuaInteger()) {
+      return new Return2<>(luaValue.toLuaInteger(), true);
+    } else {
+      return new Return2<>(null, false);
+    }
   }
 
   @Override
@@ -271,7 +275,11 @@ public class LuaStateImpl implements LuaState {
   @Override
   public Return2<LuaNumber, Boolean> toLuaNumberX(int index) {
     var luaValue = this.getLuaValue(index);
-    return LuaNumber.from(luaValue);
+    if (luaValue.canConvertToLuaNumber()) {
+      return new Return2<>(luaValue.toLuaNumber(), true);
+    } else {
+      return new Return2<>(null, false);
+    }
   }
 
   @Override

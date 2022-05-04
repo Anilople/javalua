@@ -45,9 +45,25 @@ public class LuaIntegerImpl implements LuaInteger {
   }
 
   @Override
+  public boolean canConvertToLuaNumber() {
+    return true;
+  }
+
+  @Override
   public LuaNumber toLuaNumber() {
+    // todo, 引入cache
     double value = (double) this.javaValue;
     return LuaNumber.newLuaNumber(value);
+  }
+
+  @Override
+  public boolean canConvertToLuaInteger() {
+    return true;
+  }
+
+  @Override
+  public LuaInteger toLuaInteger() {
+    return this;
   }
 
   @Override

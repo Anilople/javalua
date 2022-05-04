@@ -41,10 +41,10 @@ public final class ArithmeticOperator extends AbstractOperator<LuaValue, LuaValu
 
   @Override
   public boolean canApply(LuaValue a, LuaValue b) {
-    if (!ToLuaNumberConverter.canConvert(a)) {
+    if (!a.canConvertToLuaNumber()) {
       return false;
     }
-    if (!ToLuaNumberConverter.canConvert(b)) {
+    if (!b.canConvertToLuaNumber()) {
       return false;
     }
     return true;

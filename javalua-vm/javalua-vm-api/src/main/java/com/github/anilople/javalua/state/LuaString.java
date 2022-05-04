@@ -43,7 +43,5 @@ public interface LuaString extends LuaValue {
 
   LuaInteger length();
 
-  LuaNumber toLuaNumber();
-
   LuaString concat(LuaString luaString);
 }
