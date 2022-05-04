@@ -44,7 +44,7 @@ public class LuaStringImpl implements LuaString {
 
   @Override
   public String toString() {
-    return "\"" + this.value + "\"";
+    return this.value;
   }
 
   public LuaBoolean lessThan(LuaString luaString) {
