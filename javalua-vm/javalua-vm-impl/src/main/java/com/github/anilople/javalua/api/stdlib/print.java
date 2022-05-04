@@ -50,7 +50,7 @@ public class print extends AbstractJavaFunction {
       return luaInteger.toString();
     }
     if (luaValue instanceof LuaNumber) {
-
+      return luaValue.toString();
     }
     if (luaValue instanceof LuaBoolean) {
       LuaBoolean luaBoolean = (LuaBoolean) luaValue;
