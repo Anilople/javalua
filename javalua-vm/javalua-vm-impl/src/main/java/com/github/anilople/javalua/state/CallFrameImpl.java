@@ -29,16 +29,18 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
    */
   Map<Integer, LuaUpvalue> openuvs = new HashMap<>();
 
-  @Override
-  public void init(
+  public CallFrameImpl() {
+    throw new UnsupportedOperationException();
+  }
+
+  public CallFrameImpl(
       int stackSize,
       int registerCount,
       CallFrame prev,
       LuaClosure luaClosure,
       LuaValue[] args,
       LuaValue[] varargs) {
-
-    super.init(stackSize, registerCount);
+    super(stackSize, registerCount);
     this.prev = prev;
     this.luaClosure = luaClosure;
     this.varargs = varargs;

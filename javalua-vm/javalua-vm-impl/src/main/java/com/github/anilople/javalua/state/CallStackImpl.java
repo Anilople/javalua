@@ -8,12 +8,13 @@ import com.github.anilople.javalua.constant.LuaConstants;
  */
 public class CallStackImpl implements CallStack {
 
-  private CallFrame callFrame = null;
+  private CallFrame callFrame;
 
-  public CallStackImpl() {}
+  public CallStackImpl() {
+    throw new UnsupportedOperationException();
+  }
 
-  @Override
-  public void init(int stackSize, Prototype prototype) {
+  public CallStackImpl(int stackSize, Prototype prototype) {
     this.callFrame = CallFrame.newCallFrame(stackSize, prototype);
   }
 

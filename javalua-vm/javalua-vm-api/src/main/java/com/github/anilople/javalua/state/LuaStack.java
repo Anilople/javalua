@@ -18,12 +18,12 @@ public interface LuaStack {
   }
 
   static LuaStack of(int size, int registerCount) {
-    LuaStack luaStack = SpiUtils.loadOneInterfaceImpl(LuaStack.class);
-    luaStack.init(size, registerCount);
-    return luaStack;
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaStack.class,
+        int.class, int.class,
+        size, registerCount
+    );
   }
-
-  void init(int size, int registerCount);
 
   int size();
 

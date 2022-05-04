@@ -19,21 +19,25 @@ public interface CallFrame extends LuaStack {
       LuaClosure luaClosure,
       LuaValue[] args,
       LuaValue[] varargs) {
-    CallFrame callFrame = SpiUtils.loadOneInterfaceImpl(CallFrame.class);
-    callFrame.init(stackSize, registerCount, prev, luaClosure, args, varargs);
-    return callFrame;
+    return SpiUtils.loadOneInterfaceImpl(
+        CallFrame.class,
+        new Class[]{
+            int.class, int.class, CallFrame.class, LuaClosure.class, LuaValue[].class, LuaValue[].class,
+        },
+        new Object[]{
+            stackSize, registerCount, prev, luaClosure, args, varargs
+        }
+    );
   }
 
   static CallFrame newCallFrame(int size, Prototype prototype) {
-    CallFrame callFrame = SpiUtils.loadOneInterfaceImpl(CallFrame.class);
-    callFrame.init(
+    return CallFrame.newCallFrame(
         size,
         prototype.getRegisterCount(),
         null,
         new LuaClosure(prototype),
         new LuaValue[] {},
         null);
-    return callFrame;
   }
 
   static String toString(LuaValue[] luaValues, int length) {
@@ -48,14 +52,6 @@ public interface CallFrame extends LuaStack {
     }
     return stringBuilder.toString();
   }
-
-  void init(
-      int stackSize,
-      int registerCount,
-      CallFrame prev,
-      LuaClosure luaClosure,
-      LuaValue[] args,
-      LuaValue[] varargs);
 
   /**
    * @return 链表的长度

@@ -13,9 +13,11 @@ import java.util.Arrays;
 public interface CallStack {
 
   static CallStack of(int stackSize, Prototype prototype) {
-    CallStack callStack = SpiUtils.loadOneInterfaceImpl(CallStack.class);
-    callStack.init(stackSize, prototype);
-    return callStack;
+    return SpiUtils.loadOneInterfaceImpl(
+        CallStack.class,
+        int.class, Prototype.class,
+        stackSize, prototype
+    );
   }
 
   /**
@@ -57,8 +59,6 @@ public interface CallStack {
       return new Return2<>(realArgs, new LuaValue[0]);
     }
   }
-
-  void init(int stackSize, Prototype prototype);
 
   CallFrame popCallFrame();
 

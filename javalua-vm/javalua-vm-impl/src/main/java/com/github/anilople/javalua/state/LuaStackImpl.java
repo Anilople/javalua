@@ -8,21 +8,17 @@ import lombok.Data;
  */
 @Data
 public class LuaStackImpl implements LuaStack {
-  private boolean initMark = false;
   private LuaValue[] luaValues;
   /**
    * 可以简单理解成，在top之下的，都是寄存器
    */
   private int top;
 
-  public LuaStackImpl() {}
+  public LuaStackImpl() {
+    throw new UnsupportedOperationException();
+  }
 
-  @Override
-  public void init(int size, int registerCount) {
-    if (this.initMark) {
-      throw new IllegalStateException("have been init");
-    }
-    this.initMark = true;
+  public LuaStackImpl(int size, int registerCount) {
     this.luaValues = new LuaValue[size];
     this.top = registerCount;
     // 初始化成 nil
