@@ -30,9 +30,4 @@ public class LuaVMConfigImpl implements LuaVMConfig {
       throw new IllegalStateException("value cannot be '" + stringValue + "'");
     }
   }
-
-  @Override
-  public boolean needPrint() {
-    return this.getJavaBoolean("lua.vm.print", false);
-  }
 }

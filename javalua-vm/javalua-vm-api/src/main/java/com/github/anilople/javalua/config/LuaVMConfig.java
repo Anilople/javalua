@@ -17,5 +17,7 @@ public interface LuaVMConfig {
 
   boolean getJavaBoolean(String key, boolean defaultValue);
 
-  boolean needPrint();
+  default boolean needPrint() {
+    return this.getJavaBoolean("lua.vm.print", false);
+  }
 }
