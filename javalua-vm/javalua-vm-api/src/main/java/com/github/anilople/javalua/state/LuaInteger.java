@@ -9,9 +9,7 @@ public interface LuaInteger extends LuaValue {
   LuaInteger ZERO = LuaInteger.newLuaInteger(0L);
 
   static LuaInteger newLuaInteger(long javaValue) {
-    LuaInteger luaInteger = SpiUtils.loadOneInterfaceImpl(LuaInteger.class);
-    luaInteger.init(javaValue);
-    return luaInteger;
+    return SpiUtils.loadOneInterfaceImpl(LuaInteger.class, long.class, javaValue);
   }
 
   /**
@@ -40,23 +38,16 @@ public interface LuaInteger extends LuaValue {
     return new Return2<>(null, false);
   }
 
-  void init(long javaValue);
+  @Override
+  default LuaType type() {
+    return LuaType.LUA_TNUMBER;
+  }
 
   long getJavaValue();
 
-  @Override
-  LuaType type();
-
-  @Override
-  boolean equals(Object o);
-
-  @Override
-  int hashCode();
-
-  @Override
-  String toString();
-
   LuaNumber toLuaNumber();
+
+  LuaString toLuaString();
 
   LuaInteger add(LuaInteger luaInteger);
 
@@ -84,6 +75,4 @@ public interface LuaInteger extends LuaValue {
   LuaInteger shiftLeft(LuaInteger n);
 
   boolean lessThen(LuaInteger luaInteger);
-
-  LuaString toLuaString();
 }

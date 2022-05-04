@@ -8,11 +8,14 @@ import java.util.function.Supplier;
  */
 public class LuaUpvalueImpl implements LuaUpvalue {
 
-  private Supplier<LuaValue> getter;
-  private Consumer<LuaValue> setter;
+  private final Supplier<LuaValue> getter;
+  private final Consumer<LuaValue> setter;
 
-  @Override
-  public void init(Supplier<LuaValue> getter, Consumer<LuaValue> setter) {
+  public LuaUpvalueImpl() {
+    throw new UnsupportedOperationException();
+  }
+
+  public LuaUpvalueImpl(Supplier<LuaValue> getter, Consumer<LuaValue> setter) {
     this.getter = getter;
     this.setter = setter;
   }

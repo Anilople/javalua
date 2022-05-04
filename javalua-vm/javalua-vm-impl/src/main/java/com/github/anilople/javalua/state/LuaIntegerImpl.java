@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.state;
 
-import com.github.anilople.javalua.api.LuaType;
 import java.util.Objects;
 
 /**
@@ -8,23 +7,19 @@ import java.util.Objects;
  */
 public class LuaIntegerImpl implements LuaInteger {
 
-  private long value;
+  private final long javaValue;
 
-  public LuaIntegerImpl() {}
+  public LuaIntegerImpl() {
+    throw new UnsupportedOperationException();
+  }
 
-  @Override
-  public void init(long javaValue) {
-    this.value = javaValue;
+  public LuaIntegerImpl(long javaValue) {
+    this.javaValue = javaValue;
   }
 
   @Override
   public long getJavaValue() {
-    return this.value;
-  }
-
-  @Override
-  public LuaType type() {
-    return LuaType.LUA_TNUMBER;
+    return this.javaValue;
   }
 
   @Override
@@ -36,76 +31,76 @@ public class LuaIntegerImpl implements LuaInteger {
       return false;
     }
     LuaInteger that = (LuaInteger) o;
-    return value == that.getJavaValue();
+    return javaValue == that.getJavaValue();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(javaValue);
   }
 
   @Override
   public String toString() {
-    return "" + this.value + "";
+    return "" + this.javaValue + "";
   }
 
   @Override
   public LuaNumber toLuaNumber() {
-    double value = (double) this.value;
+    double value = (double) this.javaValue;
     return LuaNumber.newLuaNumber(value);
   }
 
   @Override
   public LuaInteger add(LuaInteger luaInteger) {
-    var value = this.value + luaInteger.getJavaValue();
+    var value = this.javaValue + luaInteger.getJavaValue();
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger sub(LuaInteger luaInteger) {
-    var value = this.value - luaInteger.getJavaValue();
+    var value = this.javaValue - luaInteger.getJavaValue();
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger sub() {
-    var value = -this.value;
+    var value = -this.javaValue;
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger multiply(LuaInteger luaInteger) {
-    var value = this.value * luaInteger.getJavaValue();
+    var value = this.javaValue * luaInteger.getJavaValue();
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger floorDivision(LuaInteger luaInteger) {
-    var value = Math.floorDiv(this.value, luaInteger.getJavaValue());
+    var value = Math.floorDiv(this.javaValue, luaInteger.getJavaValue());
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger and(LuaInteger luaInteger) {
-    var value = this.value & luaInteger.getJavaValue();
+    var value = this.javaValue & luaInteger.getJavaValue();
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger or(LuaInteger luaInteger) {
-    var value = this.value | luaInteger.getJavaValue();
+    var value = this.javaValue | luaInteger.getJavaValue();
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger xor(LuaInteger luaInteger) {
-    var value = this.value ^ luaInteger.getJavaValue();
+    var value = this.javaValue ^ luaInteger.getJavaValue();
     return LuaInteger.newLuaInteger(value);
   }
 
   @Override
   public LuaInteger negate() {
-    var value = ~this.value;
+    var value = ~this.javaValue;
     return LuaInteger.newLuaInteger(value);
   }
 
@@ -115,7 +110,7 @@ public class LuaIntegerImpl implements LuaInteger {
   @Override
   public LuaInteger shiftRight(LuaInteger n) {
     if (n.getJavaValue() > 0) {
-      var value = this.value >>> n.getJavaValue();
+      var value = this.javaValue >>> n.getJavaValue();
       return LuaInteger.newLuaInteger(value);
     } else {
       var toPositiveN = n.sub();
@@ -126,7 +121,7 @@ public class LuaIntegerImpl implements LuaInteger {
   @Override
   public LuaInteger shiftLeft(LuaInteger n) {
     if (n.getJavaValue() > 0) {
-      var value = this.value << n.getJavaValue();
+      var value = this.javaValue << n.getJavaValue();
       return LuaInteger.newLuaInteger(value);
     } else {
       var toPositiveN = n.sub();
@@ -136,11 +131,11 @@ public class LuaIntegerImpl implements LuaInteger {
 
   @Override
   public boolean lessThen(LuaInteger luaInteger) {
-    return this.value < luaInteger.getJavaValue();
+    return this.javaValue < luaInteger.getJavaValue();
   }
 
   @Override
   public LuaString toLuaString() {
-    return LuaString.newLuaString(Long.toString(this.value));
+    return LuaString.newLuaString(Long.toString(this.javaValue));
   }
 }

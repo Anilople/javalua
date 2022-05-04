@@ -57,11 +57,6 @@ class LuaTable5Impl extends AbstractLuaTable {
   //  }
 
   @Override
-  public void init(int arraySize, int mapSize) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public boolean containsKey(LuaValue key) {
     throw new UnsupportedOperationException();
   }

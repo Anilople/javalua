@@ -12,9 +12,8 @@ import java.util.Set;
  * @author wxq
  */
 public class LuaTableBefore5Impl extends AbstractLuaTable {
-  private boolean initMark = false;
-  private Map<LuaValue, LuaValue> map;
-  private int mapSize;
+  private final Map<LuaValue, LuaValue> map;
+  private final int mapSize;
 
   /**
    * 遍历结束后会设置成 null
@@ -23,7 +22,15 @@ public class LuaTableBefore5Impl extends AbstractLuaTable {
    */
   private Map<LuaValue, LuaValue> currentKey2NextKey;
 
-  public LuaTableBefore5Impl() {}
+  public LuaTableBefore5Impl() {
+    throw new UnsupportedOperationException();
+  }
+
+  public LuaTableBefore5Impl(int arraySize, int mapSize) {
+    int size = Math.max(arraySize, mapSize);
+    this.map = new HashMap<>(size * 2);
+    this.mapSize = mapSize;
+  }
 
   static Map<LuaValue, LuaValue> generateCurrentKey2NextKey(Map<LuaValue, LuaValue> map) {
     Set<LuaValue> keys = map.keySet();
@@ -36,17 +43,6 @@ public class LuaTableBefore5Impl extends AbstractLuaTable {
     }
     currentKey2NextKey.put(currentKey, LuaValue.NIL);
     return currentKey2NextKey;
-  }
-
-  @Override
-  public void init(int arraySize, int mapSize) {
-    if (this.initMark) {
-      throw new IllegalStateException("have been init, mapSize = " + mapSize);
-    }
-    this.initMark = true;
-    int size = Math.max(arraySize, mapSize);
-    this.map = new HashMap<>(size * 2);
-    this.mapSize = mapSize;
   }
 
   @Override

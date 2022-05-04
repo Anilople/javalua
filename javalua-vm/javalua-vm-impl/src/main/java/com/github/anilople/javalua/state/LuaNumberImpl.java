@@ -10,13 +10,14 @@ import java.util.Objects;
 public class LuaNumberImpl implements LuaNumber {
   static final LuaNumber ZERO = LuaNumber.newLuaNumber(0D);
 
-  private double value;
+  private double javaValue;
 
-  public LuaNumberImpl() {}
+  public LuaNumberImpl() {
+    throw new UnsupportedOperationException();
+  }
 
-  @Override
-  public LuaType type() {
-    return LuaType.LUA_TNUMBER;
+  public LuaNumberImpl(double javaValue) {
+    this.javaValue = javaValue;
   }
 
   @Override
@@ -28,41 +29,41 @@ public class LuaNumberImpl implements LuaNumber {
       return false;
     }
     LuaNumber luaNumber = (LuaNumber) o;
-    return Double.compare(luaNumber.getJavaValue(), value) == 0;
+    return Double.compare(luaNumber.getJavaValue(), javaValue) == 0;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(javaValue);
   }
 
   @Override
   public String toString() {
-    return "" + this.value + "";
+    return "" + this.javaValue + "";
   }
 
   public void init(double javaValue) {
-    this.value = javaValue;
+    this.javaValue = javaValue;
   }
 
   public double getJavaValue() {
-    return this.value;
+    return this.javaValue;
   }
 
   public boolean isPositive() {
-    return value > 0;
+    return javaValue > 0;
   }
 
   public boolean isNaN() {
-    return Double.isNaN(this.value);
+    return Double.isNaN(this.javaValue);
   }
 
   /**
    * 浮点数转为整数，如果小数部分为0，并且整数部分没有超出Lua整数能够表示的范围，则转换成功
    */
   public Return2<LuaInteger, Boolean> toLuaInteger() {
-    long value = (long) this.value;
-    boolean success = (double) value == this.value;
+    long value = (long) this.javaValue;
+    boolean success = (double) value == this.javaValue;
     if (success) {
       return new Return2<>(LuaInteger.newLuaInteger(value), success);
     } else {
@@ -71,46 +72,46 @@ public class LuaNumberImpl implements LuaNumber {
   }
 
   public LuaNumber add(LuaNumber luaNumber) {
-    var value = this.value + luaNumber.getJavaValue();
+    var value = this.javaValue + luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
   public LuaNumber sub(LuaNumber luaNumber) {
-    var value = this.value - luaNumber.getJavaValue();
+    var value = this.javaValue - luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
   public LuaNumber sub() {
-    var value = -this.value;
+    var value = -this.javaValue;
     return LuaNumber.newLuaNumber(value);
   }
 
   public LuaNumber multiply(LuaNumber luaNumber) {
-    var value = this.value * luaNumber.getJavaValue();
+    var value = this.javaValue * luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
   public LuaNumber division(LuaNumber luaNumber) {
-    var value = this.value / luaNumber.getJavaValue();
+    var value = this.javaValue / luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
   public LuaNumber floorDivision(LuaNumber luaNumber) {
-    var temp = this.value / luaNumber.getJavaValue();
+    var temp = this.javaValue / luaNumber.getJavaValue();
     var value = Math.floor(temp);
     return LuaNumber.newLuaNumber(value);
   }
 
   public LuaNumber pow(LuaNumber exponent) {
-    var value = Math.pow(this.value, exponent.getJavaValue());
+    var value = Math.pow(this.javaValue, exponent.getJavaValue());
     return LuaNumber.newLuaNumber(value);
   }
 
   public boolean lessThen(LuaNumber luaNumber) {
-    return this.value < luaNumber.getJavaValue();
+    return this.javaValue < luaNumber.getJavaValue();
   }
 
   public LuaString toLuaString() {
-    return LuaString.newLuaString(Double.toString(this.value));
+    return LuaString.newLuaString(Double.toString(this.javaValue));
   }
 }

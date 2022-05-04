@@ -8,12 +8,17 @@ import com.github.anilople.javalua.util.SpiUtils;
  */
 public interface LuaTable extends LuaValue {
   static LuaTable of(int arraySize, int mapSize) {
-    LuaTable luaTable = SpiUtils.loadOneInterfaceImpl(LuaTable.class);
-    luaTable.init(arraySize, mapSize);
-    return luaTable;
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaTable.class,
+        int.class, int.class,
+        arraySize, mapSize
+    );
   }
 
-  void init(int arraySize, int mapSize);
+  @Override
+  default LuaType type() {
+    return LuaType.LUA_TTABLE;
+  }
 
   /**
    * key在表中是否存在
@@ -53,9 +58,4 @@ public interface LuaTable extends LuaValue {
    * @return {@link LuaValue#NIL}如果所有的key都遍历完成
    */
   LuaValue nextKey(LuaValue currentKey);
-
-  @Override
-  default LuaType type() {
-    return LuaType.LUA_TTABLE;
-  }
 }

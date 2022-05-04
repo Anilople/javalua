@@ -9,9 +9,7 @@ public interface LuaNumber extends LuaValue {
   LuaNumber ZERO = newLuaNumber(0D);
 
   static LuaNumber newLuaNumber(double javaValue) {
-    LuaNumber luaNumber = SpiUtils.loadOneInterfaceImpl(LuaNumber.class);
-    luaNumber.init(javaValue);
-    return luaNumber;
+    return SpiUtils.loadOneInterfaceImpl(LuaNumber.class, double.class, javaValue);
   }
 
   static Return2<LuaNumber, Boolean> from(LuaValue luaValue) {
@@ -38,14 +36,6 @@ public interface LuaNumber extends LuaValue {
   default LuaType type() {
     return LuaType.LUA_TNUMBER;
   }
-
-  @Override
-  boolean equals(Object o);
-
-  @Override
-  int hashCode();
-
-  void init(double javaValue);
 
   double getJavaValue();
 

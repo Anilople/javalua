@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.state;
 
-import com.github.anilople.javalua.api.LuaType;
 import java.util.Objects;
 
 /**
@@ -8,21 +7,19 @@ import java.util.Objects;
  */
 public class LuaStringImpl implements LuaString {
 
-  private String value;
+  private final String javaValue;
 
-  @Override
-  public void init(String javaValue) {
-    this.value = javaValue;
+  public LuaStringImpl() {
+    throw new UnsupportedOperationException();
+  }
+
+  public LuaStringImpl(String javaValue) {
+    this.javaValue = javaValue;
   }
 
   @Override
   public String getJavaValue() {
-    return this.value;
-  }
-
-  @Override
-  public LuaType type() {
-    return LuaType.LUA_TSTRING;
+    return this.javaValue;
   }
 
   @Override
@@ -34,36 +31,36 @@ public class LuaStringImpl implements LuaString {
       return false;
     }
     LuaString luaString = (LuaString) o;
-    return Objects.equals(value, luaString.getJavaValue());
+    return Objects.equals(javaValue, luaString.getJavaValue());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(javaValue);
   }
 
   @Override
   public String toString() {
-    return this.value;
+    return this.javaValue;
   }
 
   public LuaBoolean lessThan(LuaString luaString) {
-    int compareResult = this.value.compareTo(luaString.getJavaValue());
+    int compareResult = this.javaValue.compareTo(luaString.getJavaValue());
     return LuaValue.of(compareResult < 0);
   }
 
   public LuaInteger length() {
-    var len = this.value.length();
+    var len = this.javaValue.length();
     return LuaInteger.newLuaInteger(len);
   }
 
   public LuaNumber toLuaNumber() {
-    double value = Double.parseDouble(this.value);
+    double value = Double.parseDouble(this.javaValue);
     return LuaNumber.newLuaNumber(value);
   }
 
   public LuaString concat(LuaString luaString) {
-    String value = this.value + luaString.getJavaValue();
+    String value = this.javaValue + luaString.getJavaValue();
     return LuaString.newLuaString(value);
   }
 }

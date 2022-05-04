@@ -9,9 +9,7 @@ public interface LuaString extends LuaValue {
   LuaString EMPTY = newLuaString("");
 
   static LuaString newLuaString(String javaValue) {
-    LuaString luaString = SpiUtils.loadOneInterfaceImpl(LuaString.class);
-    luaString.init(javaValue);
-    return luaString;
+    return SpiUtils.loadOneInterfaceImpl(LuaString.class, String.class, javaValue);
   }
 
   static Return2<LuaString, Boolean> from(LuaValue luaValue) {
@@ -33,8 +31,6 @@ public interface LuaString extends LuaValue {
     }
     return new Return2<>(luaString, true);
   }
-
-  void init(String javaValue);
 
   String getJavaValue();
 

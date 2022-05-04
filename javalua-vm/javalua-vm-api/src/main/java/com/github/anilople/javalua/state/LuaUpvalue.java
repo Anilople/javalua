@@ -10,22 +10,22 @@ import java.util.function.Supplier;
 public interface LuaUpvalue {
 
   static LuaUpvalue newLuaUpvalue(Supplier<LuaValue> getter, Consumer<LuaValue> setter) {
-    LuaUpvalue luaUpvalue = SpiUtils.loadOneInterfaceImpl(LuaUpvalue.class);
-    luaUpvalue.init(getter, setter);
-    return luaUpvalue;
-  }
-
-  static void unsupportedConsume(LuaValue luaValue) {
-    throw new UnsupportedOperationException();
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaUpvalue.class,
+        Supplier.class,
+        Consumer.class,
+        getter,
+        setter
+    );
   }
 
   static LuaUpvalue newFixedLuaUpvalue(LuaValue luaValue) {
-    return LuaUpvalue.newLuaUpvalue(() -> luaValue, LuaUpvalue::unsupportedConsume);
+    return LuaUpvalue.newLuaUpvalue(() -> luaValue, luaValue1 -> {
+      throw new UnsupportedOperationException();
+    });
   }
 
-  void init(Supplier<LuaValue> getter, Consumer<LuaValue> setter);
+  LuaValue getLuaValue();
 
   void changeReferencedLuaValueTo(LuaValue luaValue);
-
-  LuaValue getLuaValue();
 }
