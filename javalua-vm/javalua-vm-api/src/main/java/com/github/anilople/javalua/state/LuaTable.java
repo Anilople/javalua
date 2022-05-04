@@ -8,11 +8,7 @@ import com.github.anilople.javalua.util.SpiUtils;
  */
 public interface LuaTable extends LuaValue {
   static LuaTable of(int arraySize, int mapSize) {
-    return SpiUtils.loadOneInterfaceImpl(
-        LuaTable.class,
-        int.class, int.class,
-        arraySize, mapSize
-    );
+    return SpiUtils.loadOneInterfaceImpl(LuaTable.class, int.class, int.class, arraySize, mapSize);
   }
 
   @Override

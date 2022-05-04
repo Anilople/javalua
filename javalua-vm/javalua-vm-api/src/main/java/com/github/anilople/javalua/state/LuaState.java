@@ -19,10 +19,7 @@ public interface LuaState {
 
   static LuaState create(int stackSize, Prototype prototype) {
     return SpiUtils.loadOneInterfaceImpl(
-        LuaState.class,
-        int.class, Prototype.class,
-        stackSize, prototype
-    );
+        LuaState.class, int.class, Prototype.class, stackSize, prototype);
   }
 
   static void printStack(LuaState luaState) {

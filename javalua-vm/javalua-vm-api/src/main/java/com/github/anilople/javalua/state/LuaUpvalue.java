@@ -11,18 +11,15 @@ public interface LuaUpvalue {
 
   static LuaUpvalue newLuaUpvalue(Supplier<LuaValue> getter, Consumer<LuaValue> setter) {
     return SpiUtils.loadOneInterfaceImpl(
-        LuaUpvalue.class,
-        Supplier.class,
-        Consumer.class,
-        getter,
-        setter
-    );
+        LuaUpvalue.class, Supplier.class, Consumer.class, getter, setter);
   }
 
   static LuaUpvalue newFixedLuaUpvalue(LuaValue luaValue) {
-    return LuaUpvalue.newLuaUpvalue(() -> luaValue, luaValue1 -> {
-      throw new UnsupportedOperationException();
-    });
+    return LuaUpvalue.newLuaUpvalue(
+        () -> luaValue,
+        luaValue1 -> {
+          throw new UnsupportedOperationException();
+        });
   }
 
   LuaValue getLuaValue();

@@ -48,7 +48,7 @@ public class SpiUtils {
     }
   }
 
-  static Class<?>[] toParameterTypes(Object ... initargs) {
+  static Class<?>[] toParameterTypes(Object... initargs) {
     final int len = initargs.length;
     Class<?>[] parameterTypes = new Class[len];
     for (int i = 0; i < len; i++) {
@@ -65,7 +65,8 @@ public class SpiUtils {
    * @param <S> interface的type
    * @return interface的实现 实例
    */
-  public static <S> S loadOneInterfaceImpl(Class<S> interfaceClass, Class<?>[] parameterTypes, Object[] initargs) {
+  public static <S> S loadOneInterfaceImpl(
+      Class<S> interfaceClass, Class<?>[] parameterTypes, Object[] initargs) {
     ensureInterfaceValid(interfaceClass);
     final ServiceLoader<S> serviceLoader = ServiceLoader.load(interfaceClass);
     Optional<Provider<S>> optionalProvider = serviceLoader.stream().findFirst();
@@ -82,16 +83,20 @@ public class SpiUtils {
     try {
       constructor = implClass.getConstructor(parameterTypes);
     } catch (NoSuchMethodException e) {
-      throw new IllegalStateException("cannot find constructor of " + implClass
-          + " with parameterTypes " + Arrays.toString(parameterTypes)
-          + " you should write it", e);
+      throw new IllegalStateException(
+          "cannot find constructor of "
+              + implClass
+              + " with parameterTypes "
+              + Arrays.toString(parameterTypes)
+              + " you should write it",
+          e);
     }
 
     try {
       return constructor.newInstance(initargs);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-      throw new IllegalStateException("cannot newInstance of " + implClass + " with args " + Arrays.toString(
-          initargs), e);
+      throw new IllegalStateException(
+          "cannot newInstance of " + implClass + " with args " + Arrays.toString(initargs), e);
     }
   }
 
@@ -99,29 +104,30 @@ public class SpiUtils {
    * {@link #loadOneInterfaceImpl(Class, Class[], Object[])}的简化模式，不接收参数
    */
   public static <S> S loadOneInterfaceImpl(Class<S> interfaceClass) {
-    return loadOneInterfaceImpl(interfaceClass, new Class[]{}, new Object[]{});
+    return loadOneInterfaceImpl(interfaceClass, new Class[] {}, new Object[] {});
   }
 
   /**
    * {@link #loadOneInterfaceImpl(Class, Class[], Object[])}的简化模式，只接收1个参数
    */
-  public static <S> S loadOneInterfaceImpl(Class<S> interfaceClass, Class<?> parameterType, Object initArg) {
-    return loadOneInterfaceImpl(interfaceClass, new Class[]{parameterType}, new Object[]{initArg});
+  public static <S> S loadOneInterfaceImpl(
+      Class<S> interfaceClass, Class<?> parameterType, Object initArg) {
+    return loadOneInterfaceImpl(
+        interfaceClass, new Class[] {parameterType}, new Object[] {initArg});
   }
 
   /**
    * {@link #loadOneInterfaceImpl(Class, Class[], Object[])}的简化模式，只接收2个参数
    */
-  public static <S> S loadOneInterfaceImpl(Class<S> interfaceClass,
+  public static <S> S loadOneInterfaceImpl(
+      Class<S> interfaceClass,
       Class<?> parameterType1,
       Class<?> parameterType2,
       Object initArg1,
-      Object initArg2
-  ) {
+      Object initArg2) {
     return loadOneInterfaceImpl(
         interfaceClass,
-        new Class[]{parameterType1, parameterType2},
-        new Object[]{initArg1, initArg2}
-    );
+        new Class[] {parameterType1, parameterType2},
+        new Object[] {initArg1, initArg2});
   }
 }
