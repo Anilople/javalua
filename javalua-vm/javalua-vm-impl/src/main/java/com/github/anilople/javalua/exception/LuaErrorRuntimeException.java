@@ -1,10 +1,9 @@
 package com.github.anilople.javalua.exception;
 
-import com.github.anilople.javalua.api.stdlib.error;
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.*;
 
 /**
- * 当调用{@link error}时，在java层面抛出的异常
+ * 当调用 error 时，在java层面抛出的异常
  *
  * @author wxq
  */

@@ -1,6 +1,9 @@
 package com.github.anilople.javalua.state;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,7 +52,7 @@ class AbstractLuaTableTest {
     }
 
     @Override
-    public void put(LuaValue key, LuaValue value) {
+    public LuaTable put(LuaValue key, LuaValue value) {
       throw new UnsupportedOperationException();
     }
 
@@ -65,6 +68,11 @@ class AbstractLuaTableTest {
 
     @Override
     public LuaValue nextKey(LuaValue currentKey) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public LuaString toLuaString() {
       throw new UnsupportedOperationException();
     }
   }

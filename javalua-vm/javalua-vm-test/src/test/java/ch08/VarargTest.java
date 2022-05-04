@@ -3,7 +3,7 @@ package ch08;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.instruction.Instruction.Opcode;
+import com.github.anilople.javalua.instruction.Opcode;
 import constant.ResourceContentConstants.ch08;
 import org.junit.jupiter.api.Test;
 

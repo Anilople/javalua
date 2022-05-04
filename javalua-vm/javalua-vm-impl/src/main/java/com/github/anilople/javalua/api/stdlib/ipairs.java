@@ -3,7 +3,6 @@ package com.github.anilople.javalua.api.stdlib;
 import com.github.anilople.javalua.instruction.operator.Arithmetic;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaState;
-import com.github.anilople.javalua.state.LuaValue;
 
 /**
  * page 233
@@ -25,7 +24,7 @@ public class ipairs extends AbstractJavaFunction {
     luaState.pushValue(1);
     // 初始值
     // page 233 放的是 0
-    luaState.pushLuaInteger(LuaValue.of(0));
+    luaState.pushLuaInteger(LuaInteger.newLuaInteger(0));
     return 3;
   }
 
@@ -47,7 +46,7 @@ public class ipairs extends AbstractJavaFunction {
     public Integer apply(LuaState luaState) {
       LuaInteger index = luaState.toLuaInteger(2);
       // 初始时是1
-      LuaInteger nextIndex = Arithmetic.addLuaInteger(index, LuaValue.of(1));
+      LuaInteger nextIndex = Arithmetic.addLuaInteger(index, LuaInteger.newLuaInteger(1));
 
       // push next index
       luaState.pushLuaInteger(nextIndex);

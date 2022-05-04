@@ -19,7 +19,7 @@ class Page165Test {
     var callFrame = LuaVM.evalAndPrint(ch08.max_case1.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
-    Assertions.assertEquals(LuaValue.of(64), returnedLuaValue);
+    Assertions.assertEquals(LuaInteger.newLuaInteger(64), returnedLuaValue);
   }
 
   @Test
@@ -27,7 +27,7 @@ class Page165Test {
     var callFrame = LuaVM.evalAndPrint(ch08.max_case2.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
-    Assertions.assertEquals(LuaValue.of(3), returnedLuaValue);
+    Assertions.assertEquals(LuaInteger.newLuaInteger(3), returnedLuaValue);
   }
 
   @Test
@@ -35,7 +35,7 @@ class Page165Test {
     var callFrame = LuaVM.evalAndPrint(ch08.max_with_vararg_case1.getLuacOut());
     LuaValue returnedLuaValue = callFrame.pop();
     assertTrue(returnedLuaValue instanceof LuaInteger);
-    Assertions.assertEquals(LuaValue.of(99), returnedLuaValue);
+    Assertions.assertEquals(LuaInteger.newLuaInteger(99), returnedLuaValue);
   }
 
   @Test

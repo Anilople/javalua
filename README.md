@@ -907,6 +907,59 @@ debug.setmetatable(100, mt)
 
 ### 第21章 协程
 
+## 附录
+
+### lua类型转换
+
+实线表示100%可以从1类型转为2类型
+
+```mermaid
+graph LR
+	1 --> 2
+```
+
+
+
+线条`maybe a`表示有可能会转换失败
+
+```mermaid
+graph LR
+	1 --> |maybe a| 2
+```
+
+最后汇总lua的类型，可以得到如下的图
+
+```mermaid
+graph LR
+	LuaString
+	LuaTable
+	LuaNil
+	LuaNumber
+	LuaBoolean
+	LuaClosure
+	LuaInteger
+	
+	%% to LuaNil
+	
+	%% to LuaBoolean
+	
+	%% to LuaString
+	LuaNil --> LuaString
+	LuaNumber --> LuaString
+	LuaBoolean --> LuaString
+	LuaInteger --> LuaString
+	
+	%% to LuaNumber
+	LuaString --> |maybe a| LuaNumber
+	LuaInteger --> LuaNumber
+	
+	%% to LuaInteger
+	LuaNumber --> |maybe a|LuaInteger
+	
+```
+
+
+
 ## 参考资料
 
 ### 书里的参考资料

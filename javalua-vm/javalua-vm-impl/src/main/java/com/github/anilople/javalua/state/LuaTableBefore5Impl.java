@@ -11,8 +11,8 @@ import java.util.Set;
  *
  * @author wxq
  */
-class LuaTableBefore5Impl extends AbstractLuaTable {
-  private Map<LuaValue, LuaValue> map;
+public class LuaTableBefore5Impl extends AbstractLuaTable {
+  private final Map<LuaValue, LuaValue> map;
   private final int mapSize;
 
   /**
@@ -22,8 +22,13 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
    */
   private Map<LuaValue, LuaValue> currentKey2NextKey;
 
-  LuaTableBefore5Impl(int mapSize) {
-    this.map = new HashMap<>(mapSize * 2);
+  public LuaTableBefore5Impl() {
+    throw new UnsupportedOperationException();
+  }
+
+  public LuaTableBefore5Impl(int arraySize, int mapSize) {
+    int size = Math.max(arraySize, mapSize);
+    this.map = new HashMap<>(size * 2);
     this.mapSize = mapSize;
   }
 
@@ -52,12 +57,13 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   }
 
   @Override
-  public void put(LuaValue key, LuaValue value) {
+  public LuaTable put(LuaValue key, LuaValue value) {
     this.ensureKeyValid(key);
     this.map.put(key, value);
     if (this.map.size() > this.mapSize) {
       //      throw new IllegalStateException("table's size overload, maximum is " + this.mapSize);
     }
+    return this;
   }
 
   @Override
@@ -69,10 +75,10 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
   @Override
   public LuaInteger length() {
     var size = 0;
-    for (int i = 1; this.map.containsKey(LuaValue.of(i)); i++) {
+    for (int i = 1; this.map.containsKey(LuaInteger.newLuaInteger(i)); i++) {
       size++;
     }
-    return LuaValue.of(size);
+    return LuaInteger.newLuaInteger(size);
   }
 
   @Override
@@ -80,7 +86,7 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
     if (null == currentKey) {
       throw new IllegalArgumentException("cannot be null should use nil i.e " + LuaValue.NIL);
     }
-    if (LuaValue.NIL.equals(currentKey)) {
+    if (currentKey.isLuaNil()) {
       // 遍历未开始
       if (null == this.currentKey2NextKey) {
         this.currentKey2NextKey = generateCurrentKey2NextKey(this.map);
@@ -98,7 +104,7 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
     }
 
     LuaValue nextKey = this.currentKey2NextKey.get(currentKey);
-    if (LuaValue.NIL.equals(nextKey)) {
+    if (nextKey.isLuaNil()) {
       // 遍历结束
       this.currentKey2NextKey = null;
     }
@@ -126,5 +132,10 @@ class LuaTableBefore5Impl extends AbstractLuaTable {
       pairs.add(stringBuilder.toString());
     }
     return "Table:" + this.mapSize + " {" + String.join(",", pairs) + "}";
+  }
+
+  @Override
+  public LuaString toLuaString() {
+    throw new UnsupportedOperationException();
   }
 }

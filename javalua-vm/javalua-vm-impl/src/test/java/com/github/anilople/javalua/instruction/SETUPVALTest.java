@@ -1,16 +1,14 @@
 package com.github.anilople.javalua.instruction;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.anilople.javalua.api.DefaultLuaVMTestImpl;
 import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.api.LuaVMTestImpl;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
-import com.github.anilople.javalua.instruction.Instruction.Opcode;
-import com.github.anilople.javalua.instruction.Instruction.Operand;
+import com.github.anilople.javalua.state.*;
 import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaUpvalue;
-import com.github.anilople.javalua.state.LuaValue;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
@@ -29,17 +27,17 @@ class SETUPVALTest {
     Prototype prototype = new Prototype();
     prototype.setUpvalues(new Upvalue[3]);
     prototype.setMaxStackSize((byte) 5);
-    DefaultLuaVMTestImpl luaVM = new DefaultLuaVMTestImpl(10, prototype);
+    LuaVMTestImpl luaVM = new LuaVMTestImpl(10, prototype);
 
-    LuaClosure luaClosure = new LuaClosure(prototype);
+    LuaClosure luaClosure = LuaClosure.newPrototypeLuaClosure(prototype);
     final LuaValueWrapper luaValueWrapper = new LuaValueWrapper(null);
     {
       LuaUpvalue luaUpvalue =
-          new LuaUpvalue(luaValueWrapper::getLuaValue, luaValueWrapper::setLuaValue);
+          LuaUpvalue.newLuaUpvalue(luaValueWrapper::getLuaValue, luaValueWrapper::setLuaValue);
       luaClosure.setLuaUpvalue(0, luaUpvalue);
     }
 
-    final LuaValue expectedLuaValue = LuaValue.of(999L);
+    final LuaValue expectedLuaValue = LuaInteger.newLuaInteger(999L);
     luaVM.pushCallFrameForPrototype(luaClosure, new LuaValue[0]);
 
     luaVM.topCallFrame().set(4, expectedLuaValue);
@@ -48,7 +46,7 @@ class SETUPVALTest {
 
     LuaVM.printLuaVM(luaVM);
 
-    assertEquals(expectedLuaValue, luaClosure.getLuaUpvalue(0).getLuaValue());
+    assertEquals(expectedLuaValue, luaClosure.getLuaValue(0));
     assertEquals(expectedLuaValue, luaValueWrapper.luaValue);
   }
 

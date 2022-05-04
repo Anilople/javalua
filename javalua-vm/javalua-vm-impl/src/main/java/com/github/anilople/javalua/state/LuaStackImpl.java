@@ -2,22 +2,24 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.constant.LuaConstants;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author wxq
  */
 @Data
-@NoArgsConstructor
-class LuaStackImpl implements LuaStack {
+public class LuaStackImpl implements LuaStack {
   private LuaValue[] luaValues;
   /**
    * 可以简单理解成，在top之下的，都是寄存器
    */
   private int top;
 
-  LuaStackImpl(int stackSize, int registerCount) {
-    this.luaValues = new LuaValue[stackSize];
+  public LuaStackImpl() {
+    throw new UnsupportedOperationException();
+  }
+
+  public LuaStackImpl(int size, int registerCount) {
+    this.luaValues = new LuaValue[size];
     this.top = registerCount;
     // 初始化成 nil
     for (int i = 0; i < registerCount; i++) {

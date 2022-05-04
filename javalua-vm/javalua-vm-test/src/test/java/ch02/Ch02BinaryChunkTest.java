@@ -35,7 +35,7 @@ class Ch02BinaryChunkTest {
     // 检测是否读取完成
     assertThrows(IllegalStateException.class, inputStream::readByte);
 
-    Instruction[] instructions = Instruction.convert(binaryChunk.getMainFunc().getCode());
+    Instruction[] instructions = Instruction.convert(binaryChunk.getMainFunc().getCode().getCode());
     for (Instruction instruction : instructions) {
       System.out.println(instruction.getOpcode());
     }

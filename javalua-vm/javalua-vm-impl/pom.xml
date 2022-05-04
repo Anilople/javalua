@@ -16,5 +16,10 @@
             <artifactId>javalua-vm-chunk</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.anilople</groupId>
+            <artifactId>javalua-vm-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -1,12 +1,12 @@
 package com.github.anilople.javalua.api.stdlib;
 
+import com.github.anilople.javalua.state.*;
 import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaNumber;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaTable;
-import com.github.anilople.javalua.state.LuaValue;
 import java.io.PrintStream;
 
 /**
@@ -34,24 +34,23 @@ public class print extends AbstractJavaFunction {
     this.printStream = printStream;
   }
 
-  static String toString(LuaValue luaValue) {
+  static String toJavaString(LuaValue luaValue) {
     if (null == luaValue) {
       throw new IllegalStateException("lua value is java's null");
     }
-    if (LuaValue.NIL.equals(luaValue)) {
+    if (luaValue.isLuaNil()) {
       return luaValue.toString();
     }
     if (luaValue instanceof LuaString) {
       LuaString luaString = (LuaString) luaValue;
-      return luaString.getValue();
+      return luaString.toString();
     }
     if (luaValue instanceof LuaInteger) {
       LuaInteger luaInteger = (LuaInteger) luaValue;
       return luaInteger.toString();
     }
     if (luaValue instanceof LuaNumber) {
-      LuaNumber luaNumber = (LuaNumber) luaValue;
-      return luaNumber.toString();
+      return luaValue.toString();
     }
     if (luaValue instanceof LuaBoolean) {
       LuaBoolean luaBoolean = (LuaBoolean) luaValue;
@@ -69,7 +68,7 @@ public class print extends AbstractJavaFunction {
     int nArgs = luaState.getTop();
     for (int index = 1; index <= nArgs; index++) {
       LuaValue luaValue = luaState.toLuaValue(index);
-      String s = toString(luaValue);
+      String s = toJavaString(luaValue);
       printStream.print(s);
       if (index < nArgs) {
         printStream.print("\t");

@@ -27,7 +27,7 @@ public class LuaVMUtils {
    * @return stdout 标准输出
    */
   public static String run(LuaTestResource luaTestResource) {
-    LuaVM luaVM = LuaVM.create(1, new Prototype());
+    LuaVM luaVM = LuaVM.newLuaVM(1, new Prototype());
 
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     new print(new PrintStream(byteArrayOutputStream)).registerTo(luaVM);

@@ -1,8 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.anilople.javalua.instruction.Instruction.Opcode;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -13,7 +12,7 @@ class OpcodeTest {
   @Test
   void count() {
     // 47条指令
-    assertEquals(47, Instruction.Opcode.OPCODES.size());
+    assertEquals(47, Opcode.OPCODES.size());
   }
 
   @Test

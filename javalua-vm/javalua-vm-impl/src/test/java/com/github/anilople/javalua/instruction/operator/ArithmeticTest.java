@@ -1,24 +1,36 @@
 package com.github.anilople.javalua.instruction.operator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.*;
 import org.junit.jupiter.api.Test;
 
 class ArithmeticTest {
 
   @Test
   void addLuaInteger() {
-    assertEquals(LuaValue.of(2), Arithmetic.addLuaInteger(LuaValue.of(1), LuaValue.of(1)));
-    assertEquals(LuaValue.of(0), Arithmetic.addLuaInteger(LuaValue.of(0), LuaValue.of(0)));
-    assertEquals(LuaValue.of(0), Arithmetic.addLuaInteger(LuaValue.of(1), LuaValue.of(-1)));
-    assertEquals(LuaValue.of(0), Arithmetic.addLuaInteger(LuaValue.of(1), LuaValue.of(-1)));
+    assertEquals(
+        LuaInteger.newLuaInteger(2),
+        Arithmetic.addLuaInteger(LuaInteger.newLuaInteger(1), LuaInteger.newLuaInteger(1)));
+    assertEquals(
+        LuaInteger.newLuaInteger(0),
+        Arithmetic.addLuaInteger(LuaInteger.newLuaInteger(0), LuaInteger.newLuaInteger(0)));
+    assertEquals(
+        LuaInteger.newLuaInteger(0),
+        Arithmetic.addLuaInteger(LuaInteger.newLuaInteger(1), LuaInteger.newLuaInteger(-1)));
+    assertEquals(
+        LuaInteger.newLuaInteger(0),
+        Arithmetic.addLuaInteger(LuaInteger.newLuaInteger(1), LuaInteger.newLuaInteger(-1)));
   }
 
   @Test
   void addLuaNumber() {
-    assertEquals(LuaValue.of(2D), Arithmetic.addLuaNumber(LuaValue.of(1D), LuaValue.of(1D)));
-    assertEquals(LuaValue.of(0D), Arithmetic.addLuaNumber(LuaValue.of(0D), LuaValue.of(0D)));
+    assertEquals(
+        LuaNumber.newLuaNumber(2D),
+        Arithmetic.addLuaNumber(LuaNumber.newLuaNumber(1D), LuaNumber.newLuaNumber(1D)));
+    assertEquals(
+        LuaNumber.newLuaNumber(0D),
+        Arithmetic.addLuaNumber(LuaNumber.newLuaNumber(0D), LuaNumber.newLuaNumber(0D)));
   }
 
   @Test
@@ -35,22 +47,36 @@ class ArithmeticTest {
 
   @Test
   void testSubLuaInteger() {
-    assertEquals(LuaValue.of(-2), Arithmetic.subLuaInteger(LuaValue.of(2)));
-    assertEquals(LuaValue.of(2), Arithmetic.subLuaInteger(LuaValue.of(-2)));
+    assertEquals(
+        LuaInteger.newLuaInteger(-2), Arithmetic.subLuaInteger(LuaInteger.newLuaInteger(2)));
+    assertEquals(
+        LuaInteger.newLuaInteger(2), Arithmetic.subLuaInteger(LuaInteger.newLuaInteger(-2)));
   }
 
   @Test
   void multiplyLuaInteger() {
-    assertEquals(LuaValue.of(1), Arithmetic.multiplyLuaInteger(LuaValue.of(1), LuaValue.of(1)));
-    assertEquals(LuaValue.of(4), Arithmetic.multiplyLuaInteger(LuaValue.of(2), LuaValue.of(2)));
-    assertEquals(LuaValue.of(-4), Arithmetic.multiplyLuaInteger(LuaValue.of(2), LuaValue.of(-2)));
+    assertEquals(
+        LuaInteger.newLuaInteger(1),
+        Arithmetic.multiplyLuaInteger(LuaInteger.newLuaInteger(1), LuaInteger.newLuaInteger(1)));
+    assertEquals(
+        LuaInteger.newLuaInteger(4),
+        Arithmetic.multiplyLuaInteger(LuaInteger.newLuaInteger(2), LuaInteger.newLuaInteger(2)));
+    assertEquals(
+        LuaInteger.newLuaInteger(-4),
+        Arithmetic.multiplyLuaInteger(LuaInteger.newLuaInteger(2), LuaInteger.newLuaInteger(-2)));
   }
 
   @Test
   void multiplyLuaNumber() {
-    assertEquals(LuaValue.of(1D), Arithmetic.multiplyLuaNumber(LuaValue.of(1D), LuaValue.of(1D)));
-    assertEquals(LuaValue.of(4D), Arithmetic.multiplyLuaNumber(LuaValue.of(2D), LuaValue.of(2D)));
-    assertEquals(LuaValue.of(-4D), Arithmetic.multiplyLuaNumber(LuaValue.of(2D), LuaValue.of(-2D)));
+    assertEquals(
+        LuaNumber.newLuaNumber(1D),
+        Arithmetic.multiplyLuaNumber(LuaNumber.newLuaNumber(1D), LuaNumber.newLuaNumber(1D)));
+    assertEquals(
+        LuaNumber.newLuaNumber(4D),
+        Arithmetic.multiplyLuaNumber(LuaNumber.newLuaNumber(2D), LuaNumber.newLuaNumber(2D)));
+    assertEquals(
+        LuaNumber.newLuaNumber(-4D),
+        Arithmetic.multiplyLuaNumber(LuaNumber.newLuaNumber(2D), LuaNumber.newLuaNumber(-2D)));
   }
 
   @Test
@@ -65,35 +91,57 @@ class ArithmeticTest {
   @Test
   void floorDivisionLuaInteger() {
     assertEquals(
-        LuaValue.of(1), Arithmetic.floorDivisionLuaInteger(LuaValue.of(5), LuaValue.of(3)));
+        LuaInteger.newLuaInteger(1),
+        Arithmetic.floorDivisionLuaInteger(
+            LuaInteger.newLuaInteger(5), LuaInteger.newLuaInteger(3)));
     assertEquals(
-        LuaValue.of(-2), Arithmetic.floorDivisionLuaInteger(LuaValue.of(-5), LuaValue.of(3)));
+        LuaInteger.newLuaInteger(-2),
+        Arithmetic.floorDivisionLuaInteger(
+            LuaInteger.newLuaInteger(-5), LuaInteger.newLuaInteger(3)));
   }
 
   @Test
   void floorDivisionLuaNumber() {
     assertEquals(
-        LuaValue.of(-2.0D), Arithmetic.floorDivisionLuaNumber(LuaValue.of(5D), LuaValue.of(-3D)));
+        LuaNumber.newLuaNumber(-2.0D),
+        Arithmetic.floorDivisionLuaNumber(LuaNumber.newLuaNumber(5D), LuaNumber.newLuaNumber(-3D)));
     assertEquals(
-        LuaValue.of(1.0D),
-        Arithmetic.floorDivisionLuaNumber(LuaValue.of(-5.0D), LuaValue.of(-3.0D)));
+        LuaNumber.newLuaNumber(1.0D),
+        Arithmetic.floorDivisionLuaNumber(
+            LuaNumber.newLuaNumber(-5.0D), LuaNumber.newLuaNumber(-3.0D)));
   }
 
   @Test
   void floorDivision() {
-    assertEquals(LuaValue.of(-2.0D), Arithmetic.floorDivision(LuaValue.of(5), LuaValue.of(-3D)));
-    assertEquals(LuaValue.of(1.0D), Arithmetic.floorDivision(LuaValue.of(-5.0D), LuaValue.of(-3)));
+    assertEquals(
+        LuaNumber.newLuaNumber(-2.0D),
+        Arithmetic.floorDivision(LuaInteger.newLuaInteger(5), LuaNumber.newLuaNumber(-3D)));
+    assertEquals(
+        LuaNumber.newLuaNumber(1.0D),
+        Arithmetic.floorDivision(LuaNumber.newLuaNumber(-5.0D), LuaInteger.newLuaInteger(-3)));
   }
 
   @Test
   void moduloLuaInteger() {
-    assertEquals(LuaValue.of(0), Arithmetic.moduloLuaInteger(LuaValue.of(0), LuaValue.of(1)));
-    assertEquals(LuaValue.of(0), Arithmetic.moduloLuaInteger(LuaValue.of(1), LuaValue.of(1)));
-    assertEquals(LuaValue.of(0), Arithmetic.moduloLuaInteger(LuaValue.of(2), LuaValue.of(1)));
-    assertEquals(LuaValue.of(0), Arithmetic.moduloLuaInteger(LuaValue.of(2), LuaValue.of(2)));
+    assertEquals(
+        LuaInteger.newLuaInteger(0),
+        Arithmetic.moduloLuaInteger(LuaInteger.newLuaInteger(0), LuaInteger.newLuaInteger(1)));
+    assertEquals(
+        LuaInteger.newLuaInteger(0),
+        Arithmetic.moduloLuaInteger(LuaInteger.newLuaInteger(1), LuaInteger.newLuaInteger(1)));
+    assertEquals(
+        LuaInteger.newLuaInteger(0),
+        Arithmetic.moduloLuaInteger(LuaInteger.newLuaInteger(2), LuaInteger.newLuaInteger(1)));
+    assertEquals(
+        LuaInteger.newLuaInteger(0),
+        Arithmetic.moduloLuaInteger(LuaInteger.newLuaInteger(2), LuaInteger.newLuaInteger(2)));
 
-    assertEquals(LuaValue.of(1), Arithmetic.moduloLuaInteger(LuaValue.of(3), LuaValue.of(2)));
-    assertEquals(LuaValue.of(7), Arithmetic.moduloLuaInteger(LuaValue.of(15), LuaValue.of(8)));
+    assertEquals(
+        LuaInteger.newLuaInteger(1),
+        Arithmetic.moduloLuaInteger(LuaInteger.newLuaInteger(3), LuaInteger.newLuaInteger(2)));
+    assertEquals(
+        LuaInteger.newLuaInteger(7),
+        Arithmetic.moduloLuaInteger(LuaInteger.newLuaInteger(15), LuaInteger.newLuaInteger(8)));
 
     // TODO
     System.out.println(-3 % 2);
@@ -107,8 +155,14 @@ class ArithmeticTest {
 
   @Test
   void power() {
-    assertEquals(LuaValue.of(1.0D), Arithmetic.power(LuaValue.of("1"), LuaValue.of("100")));
-    assertEquals(LuaValue.of(4.0D), Arithmetic.power(LuaValue.of("2"), LuaValue.of("2")));
-    assertEquals(LuaValue.of(16.0D), Arithmetic.power(LuaValue.of("2"), LuaValue.of(4)));
+    assertEquals(
+        LuaNumber.newLuaNumber(1.0D),
+        Arithmetic.power(LuaString.newLuaString("1"), LuaString.newLuaString("100")));
+    assertEquals(
+        LuaNumber.newLuaNumber(4.0D),
+        Arithmetic.power(LuaString.newLuaString("2"), LuaString.newLuaString("2")));
+    assertEquals(
+        LuaNumber.newLuaNumber(16.0D),
+        Arithmetic.power(LuaString.newLuaString("2"), LuaInteger.newLuaInteger(4)));
   }
 }
