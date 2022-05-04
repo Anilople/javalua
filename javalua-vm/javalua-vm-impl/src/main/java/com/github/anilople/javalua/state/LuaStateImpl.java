@@ -837,11 +837,11 @@ public class LuaStateImpl implements LuaState {
 
   LuaValue getMetaFieldInMetaTable(LuaString fieldName, LuaValue a, LuaValue b) {
     LuaValue metaFieldInA = this.getMetaFieldInMetaTable(fieldName, a);
-    if (!LuaValue.NIL.equals(metaFieldInA)) {
+    if (!metaFieldInA.isLuaNil()) {
       return metaFieldInA;
     }
     LuaValue metaFieldInB = this.getMetaFieldInMetaTable(fieldName, b);
-    if (!LuaValue.NIL.equals(metaFieldInB)) {
+    if (!metaFieldInB.isLuaNil()) {
       return metaFieldInB;
     }
     return LuaValue.NIL;
@@ -852,7 +852,7 @@ public class LuaStateImpl implements LuaState {
       return false;
     }
     LuaValue metaMethod = this.getMetaFieldInMetaTable(metaMethodName, luaValue);
-    return !LuaValue.NIL.equals(metaMethod);
+    return !metaMethod.isLuaNil();
   }
 
   boolean existsMetaMethod(LuaString metaMethodName, LuaValue a, LuaValue b) {
@@ -917,7 +917,7 @@ public class LuaStateImpl implements LuaState {
   public void setMetaTable(int index) {
     LuaValue luaValue = this.getLuaValue(index);
     LuaValue metaTable = this.popLuaValue();
-    if (LuaValue.NIL.equals(metaTable)) {
+    if (metaTable.isLuaNil()) {
       this.removeMetaTable(luaValue);
     } else if (metaTable instanceof LuaTable) {
       this.setMetaTable(luaValue, (LuaTable) metaTable);
@@ -991,7 +991,7 @@ public class LuaStateImpl implements LuaState {
     LuaTable luaTable = (LuaTable) luaValue;
     LuaValue key = this.popLuaValue();
     LuaValue nextKey = luaTable.nextKey(key);
-    if (LuaValue.NIL.equals(nextKey)) {
+    if (nextKey.isLuaNil()) {
       // 遍历结束
       return false;
     } else {

@@ -24,4 +24,18 @@ public interface LuaValue {
   static LuaString of(String value) {
     return LuaString.newLuaString(value);
   }
+
+  /**
+   * @return true如果表示的是lua里的nil
+   */
+  default boolean isLuaNil() {
+    if (this instanceof LuaNil) {
+      if (this.equals(NIL)) {
+        return true;
+      } else {
+        throw new IllegalStateException("type is " + LuaNil.class + " but value isn't " + NIL);
+      }
+    }
+    return false;
+  }
 }

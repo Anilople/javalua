@@ -14,7 +14,7 @@ abstract class AbstractLuaTable implements LuaTable {
     if (null == key) {
       throw new IllegalArgumentException("cannot be java null");
     }
-    if (LuaValue.NIL.equals(key)) {
+    if (key.isLuaNil()) {
       throw new IllegalArgumentException("cannot be lua nil");
     }
     if (key instanceof LuaNumber) {
@@ -27,7 +27,7 @@ abstract class AbstractLuaTable implements LuaTable {
 
   @Override
   public boolean existsMetaTable() {
-    return !LuaValue.NIL.equals(this.metaTable);
+    return !this.metaTable.isLuaNil();
   }
 
   @Override

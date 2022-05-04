@@ -3,6 +3,7 @@ package com.github.anilople.javalua.state;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +35,7 @@ class LuaTableTest {
   @Test
   void testNextKeySize0() {
     var table = LuaTable.of(10, 10);
-    assertEquals(LuaValue.NIL, table.nextKey(LuaValue.NIL));
+    assertTrue(table.nextKey(LuaValue.NIL).isLuaNil());
   }
 
   @Test
@@ -45,7 +46,7 @@ class LuaTableTest {
     table.put(key1, value1);
 
     assertEquals(key1, table.nextKey(LuaValue.NIL));
-    assertEquals(LuaValue.NIL, table.nextKey(key1));
+    assertTrue(table.nextKey(key1).isLuaNil());
 
     assertThrows(IllegalStateException.class, () -> table.nextKey(key1));
   }
@@ -63,7 +64,7 @@ class LuaTableTest {
 
     Set<LuaValue> keysActual = new HashSet<>();
     for (LuaValue key = table.nextKey(LuaValue.NIL);
-        !LuaValue.NIL.equals(key);
+        !key.isLuaNil();
         key = table.nextKey(key)) {
       keysActual.add(key);
     }

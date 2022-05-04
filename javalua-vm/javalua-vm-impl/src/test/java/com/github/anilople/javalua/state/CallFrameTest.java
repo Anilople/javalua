@@ -27,7 +27,7 @@ class CallFrameTest {
     callFrame.pushN(luaValues);
     assertEquals(LuaValue.of("abc"), callFrame.pop());
     assertEquals(LuaValue.of(3L), callFrame.pop());
-    assertEquals(LuaValue.NIL, callFrame.pop());
+    assertTrue(callFrame.pop().isLuaNil());
   }
 
   @Test
@@ -39,7 +39,7 @@ class CallFrameTest {
         };
     callFrame.pushN(luaValues, 2);
     assertEquals(LuaValue.of(3L), callFrame.pop());
-    assertEquals(LuaValue.NIL, callFrame.pop());
+    assertTrue(callFrame.pop().isLuaNil());
   }
 
   @Test

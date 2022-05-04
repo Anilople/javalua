@@ -38,7 +38,7 @@ public class print extends AbstractJavaFunction {
     if (null == luaValue) {
       throw new IllegalStateException("lua value is java's null");
     }
-    if (LuaValue.NIL.equals(luaValue)) {
+    if (luaValue.isLuaNil()) {
       return luaValue.toString();
     }
     if (luaValue instanceof LuaString) {

@@ -86,7 +86,7 @@ public class LuaTableBefore5Impl extends AbstractLuaTable {
     if (null == currentKey) {
       throw new IllegalArgumentException("cannot be null should use nil i.e " + LuaValue.NIL);
     }
-    if (LuaValue.NIL.equals(currentKey)) {
+    if (currentKey.isLuaNil()) {
       // 遍历未开始
       if (null == this.currentKey2NextKey) {
         this.currentKey2NextKey = generateCurrentKey2NextKey(this.map);
@@ -104,7 +104,7 @@ public class LuaTableBefore5Impl extends AbstractLuaTable {
     }
 
     LuaValue nextKey = this.currentKey2NextKey.get(currentKey);
-    if (LuaValue.NIL.equals(nextKey)) {
+    if (nextKey.isLuaNil()) {
       // 遍历结束
       this.currentKey2NextKey = null;
     }

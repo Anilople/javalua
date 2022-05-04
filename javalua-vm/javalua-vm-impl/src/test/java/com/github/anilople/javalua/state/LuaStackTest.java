@@ -11,7 +11,7 @@ class LuaStackTest {
     LuaStack luaStack = LuaStack.of(1);
     luaStack.push(LuaValue.NIL);
     assertThrows(IllegalStateException.class, () -> luaStack.push(LuaValue.NIL));
-    assertEquals(LuaValue.NIL, luaStack.get(1));
+    assertTrue(luaStack.get(1).isLuaNil());
   }
 
   @Test
@@ -39,7 +39,7 @@ class LuaStackTest {
     assertEquals(LuaValue.of(1), luaStack.pop());
     assertEquals(LuaValue.FALSE, luaStack.pop());
     assertEquals(LuaValue.TRUE, luaStack.pop());
-    assertEquals(LuaValue.NIL, luaStack.pop());
+    assertTrue(luaStack.pop().isLuaNil());
 
     assertThrows(IllegalStateException.class, luaStack::pop);
   }
@@ -60,7 +60,7 @@ class LuaStackTest {
     luaStack.reverse(1, 3);
     assertEquals(LuaValue.FALSE, luaStack.get(1));
     assertEquals(LuaValue.TRUE, luaStack.get(2));
-    assertEquals(LuaValue.NIL, luaStack.get(3));
+    assertTrue(luaStack.get(3).isLuaNil());
   }
 
   @Test
