@@ -4,9 +4,12 @@ import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.Opcode;
+import com.github.anilople.javalua.state.LuaInteger;
 import constant.ResourceContentConstants.ch06;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq
@@ -21,55 +24,55 @@ class Page116Test {
   @Test
   void ch06SumLuac53OutInstructions() {
     BinaryChunk binaryChunk = BinaryChunk.of(ch06.sum.getLuacOut());
-    Assertions.assertEquals(1, binaryChunk.getSizeUpvalues());
+    assertEquals(1, binaryChunk.getSizeUpvalues());
 
     var mainFunc = binaryChunk.getMainFunc();
     // 0 params
-    Assertions.assertEquals(0, mainFunc.getNumParams());
+    assertEquals(0, mainFunc.getNumParams());
     // 6 slots
-    Assertions.assertEquals(6, mainFunc.getMaxStackSize());
+    assertEquals(6, mainFunc.getMaxStackSize());
     // 1 upvalues
-    Assertions.assertEquals(1, binaryChunk.getSizeUpvalues());
-    Assertions.assertEquals(1, mainFunc.getUpvalues().length);
+    assertEquals(1, binaryChunk.getSizeUpvalues());
+    assertEquals(1, mainFunc.getUpvalues().length);
     // 5 locals
     // nothing
 
     // 4 constants
-    Assertions.assertEquals(4, mainFunc.getConstants().size());
+    assertEquals(4, mainFunc.getConstants().size());
     // 0 functions
-    Assertions.assertEquals(0, mainFunc.getProtos().length);
+    assertEquals(0, mainFunc.getProtos().length);
 
     LuaVM luaVM = LuaVM.newLuaVM(mainFunc.getMaxStackSize(), mainFunc);
     {
       var instruction = luaVM.fetch();
-      Assertions.assertEquals(Opcode.LOADK, instruction.getOpcode());
+      assertEquals(Opcode.LOADK, instruction.getOpcode());
     }
     {
       var instruction = luaVM.fetch();
-      Assertions.assertEquals(Opcode.LOADK, instruction.getOpcode());
+      assertEquals(Opcode.LOADK, instruction.getOpcode());
     }
     {
       var instruction = luaVM.fetch();
-      Assertions.assertEquals(Opcode.LOADK, instruction.getOpcode());
+      assertEquals(Opcode.LOADK, instruction.getOpcode());
     }
     {
       var instruction = luaVM.fetch();
-      Assertions.assertEquals(Opcode.LOADK, instruction.getOpcode());
+      assertEquals(Opcode.LOADK, instruction.getOpcode());
     }
 
     {
       var instruction = luaVM.fetch();
-      Assertions.assertEquals(Opcode.FORPREP, instruction.getOpcode());
-      Assertions.assertEquals(1, instruction.getOperand().A());
-      Assertions.assertEquals(4, instruction.getOperand().sBx());
+      assertEquals(Opcode.FORPREP, instruction.getOpcode());
+      assertEquals(1, instruction.getOperand().A());
+      assertEquals(4, instruction.getOperand().sBx());
     }
 
-    Assertions.assertEquals(Opcode.MOD, luaVM.fetch().getOpcode());
-    Assertions.assertEquals(Opcode.EQ, luaVM.fetch().getOpcode());
-    Assertions.assertEquals(Opcode.JMP, luaVM.fetch().getOpcode());
-    Assertions.assertEquals(Opcode.ADD, luaVM.fetch().getOpcode());
-    Assertions.assertEquals(Opcode.FORLOOP, luaVM.fetch().getOpcode());
-    Assertions.assertEquals(Opcode.RETURN, luaVM.fetch().getOpcode());
+    assertEquals(Opcode.MOD, luaVM.fetch().getOpcode());
+    assertEquals(Opcode.EQ, luaVM.fetch().getOpcode());
+    assertEquals(Opcode.JMP, luaVM.fetch().getOpcode());
+    assertEquals(Opcode.ADD, luaVM.fetch().getOpcode());
+    assertEquals(Opcode.FORLOOP, luaVM.fetch().getOpcode());
+    assertEquals(Opcode.RETURN, luaVM.fetch().getOpcode());
   }
 
   @Test
@@ -90,10 +93,10 @@ class Page116Test {
     LuaVM.fetchApplyPrint(luaVM);
 
     // [0][1][100][1]
-    Assertions.assertEquals(LuaInteger.newLuaInteger(0), luaVM.toLuaInteger(1));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(2));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(3));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(4));
+    assertEquals(LuaInteger.newLuaInteger(0), luaVM.toLuaInteger(1));
+    assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(2));
+    assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(3));
+    assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(4));
 
     // FORPREP
     LuaVM.fetchApplyPrint(luaVM);
@@ -107,13 +110,13 @@ class Page116Test {
       LuaVM.applyPrint(instruction, luaVM);
     }
     // [2550][101][100][1][100][0]
-    Assertions.assertEquals(LuaInteger.newLuaInteger(2550), luaVM.toLuaInteger(1));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(101), luaVM.toLuaInteger(2));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(3));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(4));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(5));
-    Assertions.assertEquals(LuaInteger.newLuaInteger(0), luaVM.toLuaInteger(6));
+    assertEquals(LuaInteger.newLuaInteger(2550), luaVM.toLuaInteger(1));
+    assertEquals(LuaInteger.newLuaInteger(101), luaVM.toLuaInteger(2));
+    assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(3));
+    assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(4));
+    assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(5));
+    assertEquals(LuaInteger.newLuaInteger(0), luaVM.toLuaInteger(6));
 
-    Assertions.assertEquals(6, luaVM.getTop());
+    assertEquals(6, luaVM.getTop());
   }
 }
