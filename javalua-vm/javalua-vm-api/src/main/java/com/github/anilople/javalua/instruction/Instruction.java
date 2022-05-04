@@ -13,7 +13,7 @@ import com.github.anilople.javalua.util.SpiUtils;
 public interface Instruction {
 
   static Instruction newInstruction(int code) {
-    InstructionFactory instructionFactory = SpiUtils.loadOneInterfaceImpl(InstructionFactory.class);
+    InstructionFactory instructionFactory = InstructionFactory.newInstructionFactory();
     return instructionFactory.getInstructionBy(code);
   }
 
