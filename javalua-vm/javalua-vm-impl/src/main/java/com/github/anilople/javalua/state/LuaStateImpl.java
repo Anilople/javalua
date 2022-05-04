@@ -21,7 +21,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class DefaultLuaStateImpl implements LuaState {
+public class LuaStateImpl implements LuaState {
   private boolean initMark = false;
 
   protected CallStack callStack;
@@ -36,7 +36,7 @@ public class DefaultLuaStateImpl implements LuaState {
           // page 172
           .put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
 
-  public DefaultLuaStateImpl() {}
+  public LuaStateImpl() {}
 
   /**
    * @return 全局环境 _ENV

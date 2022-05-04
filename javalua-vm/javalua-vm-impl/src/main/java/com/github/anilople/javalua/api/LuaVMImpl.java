@@ -5,7 +5,7 @@ import com.github.anilople.javalua.chunk.Upvalue;
 import com.github.anilople.javalua.config.Config;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.state.CallFrame;
-import com.github.anilople.javalua.state.DefaultLuaStateImpl;
+import com.github.anilople.javalua.state.LuaStateImpl;
 import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaUpvalue;
 import com.github.anilople.javalua.state.LuaValue;
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  *
  * @author wxq
  */
-public class LuaVMImpl extends DefaultLuaStateImpl implements LuaVM {
+public class LuaVMImpl extends LuaStateImpl implements LuaVM {
 
   public LuaVMImpl() {}
 
