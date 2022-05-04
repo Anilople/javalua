@@ -1,7 +1,6 @@
 package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.exception.TypeConversionRuntimeException;
-import com.github.anilople.javalua.util.Return2;
 import java.util.Objects;
 
 /**
@@ -41,7 +40,6 @@ public class LuaNumberImpl implements LuaNumber {
   public String toString() {
     return "" + this.javaValue + "";
   }
-
 
   @Override
   public LuaString toLuaString() {
@@ -143,5 +141,4 @@ public class LuaNumberImpl implements LuaNumber {
   public boolean lessThen(LuaNumber luaNumber) {
     return this.javaValue < luaNumber.getJavaValue();
   }
-
 }

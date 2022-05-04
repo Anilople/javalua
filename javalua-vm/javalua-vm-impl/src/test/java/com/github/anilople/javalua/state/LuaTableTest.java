@@ -63,9 +63,7 @@ class LuaTableTest {
     }
 
     Set<LuaValue> keysActual = new HashSet<>();
-    for (LuaValue key = table.nextKey(LuaValue.NIL);
-        !key.isLuaNil();
-        key = table.nextKey(key)) {
+    for (LuaValue key = table.nextKey(LuaValue.NIL); !key.isLuaNil(); key = table.nextKey(key)) {
       keysActual.add(key);
     }
     assertArrayEquals(keysExpected.toArray(), keysActual.toArray());

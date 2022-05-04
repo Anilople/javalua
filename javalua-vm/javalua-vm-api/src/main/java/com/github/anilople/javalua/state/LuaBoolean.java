@@ -19,6 +19,7 @@ public enum LuaBoolean implements LuaValue {
   private static final LuaString LUA_STRING_FALSE = LuaString.newLuaString("false");
 
   private final boolean javaValue;
+
   LuaBoolean(boolean javaValue) {
     this.javaValue = javaValue;
   }
