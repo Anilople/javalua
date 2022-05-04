@@ -38,4 +38,15 @@ public interface LuaValue {
     }
     return false;
   }
+
+  default boolean isLuaTrue() {
+    if (this instanceof LuaBoolean) {
+      return this.equals(TRUE);
+    }
+    return false;
+  }
+
+  default boolean isLuaFalse() {
+    return !this.isLuaTrue();
+  }
 }

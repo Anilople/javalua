@@ -13,7 +13,7 @@ public class Logical {
   public static LuaValue and(LuaValue... luaValues) {
     for (LuaValue luaValue : luaValues) {
       LuaBoolean luaBoolean = LuaBoolean.from(luaValue);
-      if (LuaValue.FALSE.equals(luaBoolean)) {
+      if (luaBoolean.isLuaFalse()) {
         return luaValue;
       }
     }
@@ -23,7 +23,7 @@ public class Logical {
   public static LuaBoolean or(LuaValue... luaValues) {
     for (LuaValue luaValue : luaValues) {
       LuaBoolean luaBoolean = LuaBoolean.from(luaValue);
-      if (LuaValue.TRUE.equals(luaBoolean)) {
+      if (luaBoolean.isLuaTrue()) {
         return LuaValue.TRUE;
       }
     }
@@ -31,10 +31,10 @@ public class Logical {
   }
 
   static LuaBoolean notLuaBoolean(LuaBoolean a) {
-    if (LuaValue.TRUE.equals(a)) {
+    if (a.isLuaTrue()) {
       return LuaValue.FALSE;
     }
-    if (LuaValue.FALSE.equals(a)) {
+    if (a.isLuaFalse()) {
       return LuaValue.TRUE;
     }
     throw new IllegalStateException("unknown " + a);

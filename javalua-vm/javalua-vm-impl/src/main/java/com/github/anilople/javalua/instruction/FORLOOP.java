@@ -25,13 +25,13 @@ class FORLOOP extends FOR {
     if (luaNumber.isPositive()) {
       // 当步长是正数时，符号 <?= 的含义是 <= 也就是继续循环的条件是数值不大于限制
       var result = luaVM.compare(aIndex, aIndex + 1, ComparisonOperator.LUA_OPLE);
-      if (LuaValue.TRUE.equals(result)) {
+      if (result.isLuaTrue()) {
         addPcAndCopy(luaVM, operand.sBx(), aIndex);
       }
     } else {
       // 当步长是负数时，符号 <?= 的含义是 >= 循环继续的条件就变成了数值不小于限制
       var result = luaVM.compare(aIndex + 1, aIndex, ComparisonOperator.LUA_OPLT);
-      if (LuaValue.TRUE.equals(result)) {
+      if (result.isLuaTrue()) {
         addPcAndCopy(luaVM, operand.sBx(), aIndex);
       }
     }

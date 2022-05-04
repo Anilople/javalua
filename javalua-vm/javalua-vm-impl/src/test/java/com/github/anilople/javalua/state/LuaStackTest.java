@@ -37,8 +37,8 @@ class LuaStackTest {
 
     assertEquals(LuaValue.of(3D), luaStack.pop());
     assertEquals(LuaValue.of(1), luaStack.pop());
-    assertEquals(LuaValue.FALSE, luaStack.pop());
-    assertEquals(LuaValue.TRUE, luaStack.pop());
+    assertTrue(luaStack.pop().isLuaFalse());
+    assertTrue(luaStack.pop().isLuaTrue());
     assertTrue(luaStack.pop().isLuaNil());
 
     assertThrows(IllegalStateException.class, luaStack::pop);
@@ -58,8 +58,8 @@ class LuaStackTest {
     luaStack.push(LuaValue.TRUE);
     luaStack.push(LuaValue.FALSE);
     luaStack.reverse(1, 3);
-    assertEquals(LuaValue.FALSE, luaStack.get(1));
-    assertEquals(LuaValue.TRUE, luaStack.get(2));
+    assertTrue(luaStack.get(1).isLuaFalse());
+    assertTrue(luaStack.get(2).isLuaTrue());
     assertTrue(luaStack.get(3).isLuaNil());
   }
 
