@@ -1,15 +1,14 @@
 package ch06;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.Opcode;
 import com.github.anilople.javalua.state.LuaInteger;
 import constant.ResourceContentConstants.ch06;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq
