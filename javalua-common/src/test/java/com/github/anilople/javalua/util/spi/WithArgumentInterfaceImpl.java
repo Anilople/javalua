@@ -12,8 +12,7 @@ public class WithArgumentInterfaceImpl implements WithArgumentInterface {
     throw new UnsupportedOperationException();
   }
 
-  public WithArgumentInterfaceImpl(int n,
-      WithArgumentInterface next) {
+  public WithArgumentInterfaceImpl(int n, WithArgumentInterface next) {
     this.n = n;
     this.next = next;
   }

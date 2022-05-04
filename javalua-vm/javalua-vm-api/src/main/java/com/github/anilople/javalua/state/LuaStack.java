@@ -18,11 +18,7 @@ public interface LuaStack {
   }
 
   static LuaStack of(int size, int registerCount) {
-    return SpiUtils.loadOneInterfaceImpl(
-        LuaStack.class,
-        int.class, int.class,
-        size, registerCount
-    );
+    return SpiUtils.loadOneInterfaceImpl(LuaStack.class, int.class, int.class, size, registerCount);
   }
 
   int size();

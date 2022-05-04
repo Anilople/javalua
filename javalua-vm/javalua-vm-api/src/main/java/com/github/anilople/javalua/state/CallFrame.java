@@ -21,13 +21,15 @@ public interface CallFrame extends LuaStack {
       LuaValue[] varargs) {
     return SpiUtils.loadOneInterfaceImpl(
         CallFrame.class,
-        new Class[]{
-            int.class, int.class, CallFrame.class, LuaClosure.class, LuaValue[].class, LuaValue[].class,
+        new Class[] {
+          int.class,
+          int.class,
+          CallFrame.class,
+          LuaClosure.class,
+          LuaValue[].class,
+          LuaValue[].class,
         },
-        new Object[]{
-            stackSize, registerCount, prev, luaClosure, args, varargs
-        }
-    );
+        new Object[] {stackSize, registerCount, prev, luaClosure, args, varargs});
   }
 
   static CallFrame newCallFrame(int size, Prototype prototype) {

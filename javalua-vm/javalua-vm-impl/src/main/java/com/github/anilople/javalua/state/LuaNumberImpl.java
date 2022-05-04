@@ -1,6 +1,5 @@
 package com.github.anilople.javalua.state;
 
-import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.util.Return2;
 import java.util.Objects;
 

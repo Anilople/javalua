@@ -34,10 +34,9 @@ class SpiUtilsTest {
 
   @Test
   void loadOneInterfaceImpl_with_argument() {
-    WithArgumentInterface withArgumentInterface = SpiUtils.loadOneInterfaceImpl(
-        WithArgumentInterface.class, int.class, WithArgumentInterface.class,
-        999, null
-    );
+    WithArgumentInterface withArgumentInterface =
+        SpiUtils.loadOneInterfaceImpl(
+            WithArgumentInterface.class, int.class, WithArgumentInterface.class, 999, null);
     assertEquals(999, withArgumentInterface.getN());
   }
 }
