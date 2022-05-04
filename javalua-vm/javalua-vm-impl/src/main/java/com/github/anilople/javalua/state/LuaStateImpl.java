@@ -244,8 +244,8 @@ public class LuaStateImpl implements LuaState {
 
   @Override
   public LuaBoolean toLuaBoolean(int index) {
-    var value = this.getLuaValue(index);
-    return LuaBoolean.from(value);
+    var luaValue = this.getLuaValue(index);
+    return luaValue.toLuaBoolean();
   }
 
   @Override
@@ -430,7 +430,7 @@ public class LuaStateImpl implements LuaState {
     } else {
       throw new IllegalArgumentException("comparison operator " + operator);
     }
-    return LuaBoolean.from(result);
+    return result.toLuaBoolean();
   }
 
   @Override

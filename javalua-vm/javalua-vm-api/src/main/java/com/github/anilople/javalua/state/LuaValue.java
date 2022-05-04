@@ -49,4 +49,14 @@ public interface LuaValue {
   default boolean isLuaFalse() {
     return !this.isLuaTrue();
   }
+
+  default LuaBoolean toLuaBoolean() {
+    if (this.isLuaNil()) {
+      return LuaBoolean.FALSE;
+    }
+    if (this instanceof LuaBoolean) {
+      return (LuaBoolean) this;
+    }
+    return LuaBoolean.TRUE;
+  }
 }

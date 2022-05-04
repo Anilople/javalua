@@ -12,7 +12,7 @@ public class Logical {
 
   public static LuaValue and(LuaValue... luaValues) {
     for (LuaValue luaValue : luaValues) {
-      LuaBoolean luaBoolean = LuaBoolean.from(luaValue);
+      LuaBoolean luaBoolean = luaValue.toLuaBoolean();
       if (luaBoolean.isLuaFalse()) {
         return luaValue;
       }
@@ -22,7 +22,7 @@ public class Logical {
 
   public static LuaBoolean or(LuaValue... luaValues) {
     for (LuaValue luaValue : luaValues) {
-      LuaBoolean luaBoolean = LuaBoolean.from(luaValue);
+      LuaBoolean luaBoolean = luaValue.toLuaBoolean();
       if (luaBoolean.isLuaTrue()) {
         return LuaValue.TRUE;
       }
@@ -41,7 +41,7 @@ public class Logical {
   }
 
   public static LuaBoolean not(LuaValue luaValue) {
-    LuaBoolean luaBoolean = LuaBoolean.from(luaValue);
+    LuaBoolean luaBoolean = luaValue.toLuaBoolean();
     return notLuaBoolean(luaBoolean);
   }
 }

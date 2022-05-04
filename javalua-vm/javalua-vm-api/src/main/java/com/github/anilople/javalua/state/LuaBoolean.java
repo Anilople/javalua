@@ -2,23 +2,19 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 
+/**
+ * https://www.lua.org/pil/2.2.html
+ * <p/>
+ * Conditionals (such as the ones in control structures)
+ * consider false and nil as false and anything else as true. Beware that,
+ * <p/>
+ * unlike some other scripting languages,
+ * Lua considers both zero and the empty string as true in conditional tests.
+ */
 public enum LuaBoolean implements LuaValue {
   TRUE,
   FALSE,
   ;
-
-  public static LuaBoolean from(LuaValue luaValue) {
-    if (luaValue == null) {
-      throw new IllegalArgumentException("cannot be null");
-    }
-    if (luaValue instanceof LuaNil) {
-      return LuaBoolean.FALSE;
-    }
-    if (luaValue instanceof LuaBoolean) {
-      return (LuaBoolean) luaValue;
-    }
-    return LuaBoolean.FALSE;
-  }
 
   @Override
   public LuaType type() {
