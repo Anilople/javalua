@@ -47,8 +47,6 @@ public interface LuaInteger extends LuaValue {
 
   LuaNumber toLuaNumber();
 
-  LuaString toLuaString();
-
   LuaInteger add(LuaInteger luaInteger);
 
   LuaInteger sub(LuaInteger luaInteger);

@@ -59,4 +59,6 @@ public interface LuaValue {
     }
     return LuaBoolean.TRUE;
   }
+
+  LuaString toLuaString();
 }

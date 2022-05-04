@@ -133,4 +133,9 @@ public class LuaTableBefore5Impl extends AbstractLuaTable {
     }
     return "Table:" + this.mapSize + " {" + String.join(",", pairs) + "}";
   }
+
+  @Override
+  public LuaString toLuaString() {
+    throw new UnsupportedOperationException();
+  }
 }

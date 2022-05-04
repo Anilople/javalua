@@ -63,4 +63,9 @@ public class LuaStringImpl implements LuaString {
     String value = this.javaValue + luaString.getJavaValue();
     return LuaString.newLuaString(value);
   }
+
+  @Override
+  public LuaString toLuaString() {
+    return this;
+  }
 }

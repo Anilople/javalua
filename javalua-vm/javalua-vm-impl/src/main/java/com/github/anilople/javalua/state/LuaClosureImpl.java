@@ -107,4 +107,9 @@ public class LuaClosureImpl implements LuaClosure {
     stringBuilder.append('}');
     return stringBuilder.toString();
   }
+
+  @Override
+  public LuaString toLuaString() {
+    throw new UnsupportedOperationException();
+  }
 }

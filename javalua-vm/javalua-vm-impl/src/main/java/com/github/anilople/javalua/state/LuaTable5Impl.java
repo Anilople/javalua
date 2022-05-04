@@ -10,19 +10,7 @@ import java.util.Map;
  *
  * @author wxq
  */
-class LuaTable5Impl extends AbstractLuaTable {
-
-  static LuaTable5Impl ofArray(int arraySize) {
-    LuaTable5Impl luaTable = new LuaTable5Impl();
-    luaTable.array = new LuaValue[arraySize];
-    return luaTable;
-  }
-
-  static LuaTable5Impl ofMap(int mapSize) {
-    LuaTable5Impl luaTable = new LuaTable5Impl();
-    luaTable.map = new HashMap<>(mapSize);
-    return luaTable;
-  }
+abstract class LuaTable5Impl extends AbstractLuaTable {
 
   /**
    * lua 5.0 开始引入array来提高table的性能

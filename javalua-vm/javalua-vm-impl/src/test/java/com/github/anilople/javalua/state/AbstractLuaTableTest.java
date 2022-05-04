@@ -67,5 +67,10 @@ class AbstractLuaTableTest {
     public LuaValue nextKey(LuaValue currentKey) {
       throw new UnsupportedOperationException();
     }
+
+    @Override
+    public LuaString toLuaString() {
+      throw new UnsupportedOperationException();
+    }
   }
 }

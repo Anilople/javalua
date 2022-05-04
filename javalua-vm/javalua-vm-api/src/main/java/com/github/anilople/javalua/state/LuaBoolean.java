@@ -12,13 +12,29 @@ import com.github.anilople.javalua.api.LuaType;
  * Lua considers both zero and the empty string as true in conditional tests.
  */
 public enum LuaBoolean implements LuaValue {
-  TRUE,
-  FALSE,
+  TRUE(true),
+  FALSE(false),
   ;
+  private static final LuaString LUA_STRING_TRUE = LuaString.newLuaString("true");
+  private static final LuaString LUA_STRING_FALSE = LuaString.newLuaString("false");
+
+  private final boolean javaValue;
+  LuaBoolean(boolean javaValue) {
+    this.javaValue = javaValue;
+  }
 
   @Override
   public LuaType type() {
     return LuaType.LUA_TBOOLEAN;
+  }
+
+  @Override
+  public LuaString toLuaString() {
+    if (this.javaValue) {
+      return LUA_STRING_TRUE;
+    } else {
+      return LUA_STRING_FALSE;
+    }
   }
 
   @Override

@@ -41,18 +41,17 @@ public class LuaNumberImpl implements LuaNumber {
     return "" + this.javaValue + "";
   }
 
-  public void init(double javaValue) {
-    this.javaValue = javaValue;
-  }
-
+  @Override
   public double getJavaValue() {
     return this.javaValue;
   }
 
+  @Override
   public boolean isPositive() {
     return javaValue > 0;
   }
 
+  @Override
   public boolean isNaN() {
     return Double.isNaN(this.javaValue);
   }
@@ -60,6 +59,7 @@ public class LuaNumberImpl implements LuaNumber {
   /**
    * 浮点数转为整数，如果小数部分为0，并且整数部分没有超出Lua整数能够表示的范围，则转换成功
    */
+  @Override
   public Return2<LuaInteger, Boolean> toLuaInteger() {
     long value = (long) this.javaValue;
     boolean success = (double) value == this.javaValue;
@@ -70,46 +70,55 @@ public class LuaNumberImpl implements LuaNumber {
     }
   }
 
+  @Override
   public LuaNumber add(LuaNumber luaNumber) {
     var value = this.javaValue + luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
+  @Override
   public LuaNumber sub(LuaNumber luaNumber) {
     var value = this.javaValue - luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
+  @Override
   public LuaNumber sub() {
     var value = -this.javaValue;
     return LuaNumber.newLuaNumber(value);
   }
 
+  @Override
   public LuaNumber multiply(LuaNumber luaNumber) {
     var value = this.javaValue * luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
+  @Override
   public LuaNumber division(LuaNumber luaNumber) {
     var value = this.javaValue / luaNumber.getJavaValue();
     return LuaNumber.newLuaNumber(value);
   }
 
+  @Override
   public LuaNumber floorDivision(LuaNumber luaNumber) {
     var temp = this.javaValue / luaNumber.getJavaValue();
     var value = Math.floor(temp);
     return LuaNumber.newLuaNumber(value);
   }
 
+  @Override
   public LuaNumber pow(LuaNumber exponent) {
     var value = Math.pow(this.javaValue, exponent.getJavaValue());
     return LuaNumber.newLuaNumber(value);
   }
 
+  @Override
   public boolean lessThen(LuaNumber luaNumber) {
     return this.javaValue < luaNumber.getJavaValue();
   }
 
+  @Override
   public LuaString toLuaString() {
     return LuaString.newLuaString(Double.toString(this.javaValue));
   }
