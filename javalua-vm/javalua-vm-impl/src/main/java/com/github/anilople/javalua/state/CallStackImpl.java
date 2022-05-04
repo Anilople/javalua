@@ -33,7 +33,7 @@ public class CallStackImpl implements CallStack {
    * @param allArgs 传递给闭包的所有参数，闭包不一定能全部用上
    */
   public void pushCallFrameForPrototype(LuaClosure luaClosure, LuaValue[] allArgs) {
-    final Prototype prototype = luaClosure.prototype;
+    final Prototype prototype = luaClosure.getPrototype();
     if (prototype == null) {
       throw new IllegalArgumentException("prototype cannot be null");
     }

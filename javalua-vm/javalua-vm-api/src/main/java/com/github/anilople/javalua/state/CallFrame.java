@@ -37,7 +37,7 @@ public interface CallFrame extends LuaStack {
         size,
         prototype.getRegisterCount(),
         null,
-        new LuaClosure(prototype),
+        LuaClosure.newPrototypeLuaClosure(prototype),
         new LuaValue[] {},
         null);
   }

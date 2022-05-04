@@ -160,7 +160,7 @@ public class LuaVMImpl extends LuaStateImpl implements LuaVM {
   public void loadPrototype(int index) {
     final var callFrame = this.callStack.topCallFrame();
     var prototype = callFrame.getPrototype(index);
-    LuaClosure luaClosure = new LuaClosure(prototype);
+    LuaClosure luaClosure = LuaClosure.newPrototypeLuaClosure(prototype);
     callFrame.push(luaClosure);
 
     // page 192

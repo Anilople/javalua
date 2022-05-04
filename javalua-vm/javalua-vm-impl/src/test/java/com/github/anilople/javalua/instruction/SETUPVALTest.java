@@ -29,7 +29,7 @@ class SETUPVALTest {
     prototype.setMaxStackSize((byte) 5);
     LuaVMTestImpl luaVM = new LuaVMTestImpl(10, prototype);
 
-    LuaClosure luaClosure = new LuaClosure(prototype);
+    LuaClosure luaClosure = LuaClosure.newPrototypeLuaClosure(prototype);
     final LuaValueWrapper luaValueWrapper = new LuaValueWrapper(null);
     {
       LuaUpvalue luaUpvalue =
@@ -46,7 +46,7 @@ class SETUPVALTest {
 
     LuaVM.printLuaVM(luaVM);
 
-    assertEquals(expectedLuaValue, luaClosure.getLuaUpvalue(0).getLuaValue());
+    assertEquals(expectedLuaValue, luaClosure.getLuaValue(0));
     assertEquals(expectedLuaValue, luaValueWrapper.luaValue);
   }
 

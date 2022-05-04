@@ -29,7 +29,7 @@ class GETUPVALTest {
     prototype.setMaxStackSize((byte) 5);
     LuaVMTestImpl luaVM = new LuaVMTestImpl(10, prototype);
 
-    LuaClosure luaClosure = new LuaClosure(prototype);
+    LuaClosure luaClosure = LuaClosure.newPrototypeLuaClosure(prototype);
     final LuaValue expectedLuaValue = LuaValue.of(999L);
     LuaUpvalue luaUpvalue = LuaUpvalue.newLuaUpvalue(() -> expectedLuaValue, luaValue -> {});
     luaClosure.setLuaUpvalue(1, luaUpvalue);

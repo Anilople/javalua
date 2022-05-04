@@ -3,7 +3,6 @@ package com.github.anilople.javalua.state;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -12,11 +11,11 @@ import java.util.function.BiConsumer;
  * @author wxq
  */
 public class CallFrameImpl extends LuaStackImpl implements CallFrame {
-  CallFrame prev;
-  LuaClosure luaClosure;
-  LuaValue[] varargs;
+  private final CallFrame prev;
+  private final LuaClosure luaClosure;
+  private final LuaValue[] varargs;
   int pc;
-  private Instruction[] instructions;
+  private final Instruction[] instructions;
 
   /**
    * page 192
@@ -44,7 +43,7 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
     this.prev = prev;
     this.luaClosure = luaClosure;
     this.varargs = varargs;
-    if (luaClosure.getPrototype() != null) {
+    if (null != luaClosure && luaClosure.isPrototype()) {
       this.instructions = Instruction.convert(luaClosure.getPrototype().getCode().getCode());
     } else {
       this.instructions = null;
@@ -106,11 +105,7 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
     if (index < LuaConstants.LUA_REGISTRY_INDEX) {
       // upvalue
       int upvalueIndex = LuaConstants.LUA_REGISTRY_INDEX - index - 1;
-      if (null == this.luaClosure || upvalueIndex >= this.luaClosure.luaUpvalues.length) {
-        return LuaValue.NIL;
-      }
-      LuaUpvalue luaUpvalue = this.luaClosure.getLuaUpvalue(upvalueIndex);
-      return luaUpvalue.getLuaValue();
+      return this.luaClosure.getLuaValue(upvalueIndex);
     }
     return super.get(index);
   }
@@ -120,9 +115,7 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
     if (index < LuaConstants.LUA_REGISTRY_INDEX) {
       // upvalue
       int upvalueIndex = LuaConstants.LUA_REGISTRY_INDEX - index - 1;
-      if (null != this.luaClosure && upvalueIndex < this.luaClosure.luaUpvalues.length) {
-        this.luaClosure.changeLuaUpvalueReferencedLuaValue(upvalueIndex, luaValue);
-      }
+      this.luaClosure.changeLuaUpvalueReferencedLuaValue(upvalueIndex, luaValue);
       return;
     }
     super.set(index, luaValue);
@@ -144,7 +137,7 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
         + "luaClosure.luaUpvalues:"
         + (null == this.luaClosure
             ? " lua closure is null "
-            : Arrays.toString(this.luaClosure.luaUpvalues))
+            : this.luaClosure.toString())
         + "\n"
         + "]";
   }

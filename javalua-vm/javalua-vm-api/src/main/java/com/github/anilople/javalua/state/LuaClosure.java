@@ -2,76 +2,53 @@ package com.github.anilople.javalua.state;
 
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.Prototype;
-import java.util.Arrays;
-import lombok.Data;
+import com.github.anilople.javalua.util.SpiUtils;
 
 /**
  * @author wxq
  */
-@Data
-public class LuaClosure implements LuaValue {
+public interface LuaClosure extends LuaValue {
 
-  final Prototype prototype;
-  final JavaFunction javaFunction;
-  /**
-   * 闭包要捕获父函数的局部变量
-   */
-  final LuaUpvalue[] luaUpvalues;
-
-  public LuaClosure(Prototype prototype) {
-    this.prototype = prototype;
-    this.javaFunction = null;
-    this.luaUpvalues = new LuaUpvalue[prototype.getUpvalues().length];
+  static LuaClosure newJavaFunctionLuaClosure(JavaFunction javaFunction, int nUpvalues) {
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaClosure.class,
+        JavaFunction.class, int.class,
+        javaFunction, nUpvalues
+    );
   }
 
-  LuaClosure(JavaFunction javaFunction) {
-    this(javaFunction, 0);
-  }
-
-  LuaClosure(JavaFunction javaFunction, int nUpvalues) {
-    this.prototype = null;
-    this.javaFunction = javaFunction;
-    this.luaUpvalues = new LuaUpvalue[nUpvalues];
-  }
-
-  static LuaClosure newJavaFunction(JavaFunction javaFunction) {
-    return new LuaClosure(javaFunction);
-  }
-
-  static LuaClosure newJavaClosure(JavaFunction javaFunction, int nUpvalues) {
-    return new LuaClosure(javaFunction, nUpvalues);
+  static LuaClosure newPrototypeLuaClosure(Prototype prototype) {
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaClosure.class,
+        Prototype.class,
+        prototype
+    );
   }
 
   @Override
-  public LuaType type() {
+  default LuaType type() {
     return LuaType.LUA_TFUNCTION;
   }
 
-  public LuaUpvalue getLuaUpvalue(int index) {
-    return this.luaUpvalues[index];
-  }
+  boolean isPrototype();
 
-  public void setLuaUpvalue(int index, LuaUpvalue luaUpvalue) {
-    this.luaUpvalues[index] = luaUpvalue;
-  }
+  Prototype getPrototype();
 
-  public void changeLuaUpvalueReferencedLuaValue(int index, LuaValue luaValue) {
-    LuaUpvalue luaUpvalue = this.luaUpvalues[index];
-    luaUpvalue.changeReferencedLuaValueTo(luaValue);
-  }
+  boolean isJavaFunction();
 
-  @Override
-  public String toString() {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("LuaClosure{");
-    if (null != this.prototype) {
-      stringBuilder.append("prototype line LineDefined ").append(prototype.getLineDefined());
-    }
-    if (null != this.javaFunction) {
-      stringBuilder.append("java function ").append(this.javaFunction);
-    }
-    stringBuilder.append(", luaUpvalues=").append(Arrays.toString(luaUpvalues));
-    stringBuilder.append('}');
-    return stringBuilder.toString();
-  }
+  JavaFunction getJavaFunction();
+
+  /**
+   * 根据upvalue的索引，获取对应的{@link LuaValue}
+   *
+   * @param upvalueIndex upvalue的索引
+   * @return {@link LuaValue#NIL}如果越界
+   */
+  LuaValue getLuaValue(int upvalueIndex);
+
+  LuaUpvalue getLuaUpvalue(int upvalueIndex);
+
+  void setLuaUpvalue(int upvalueIndex, LuaUpvalue luaUpvalue);
+
+  void changeLuaUpvalueReferencedLuaValue(int upvalueIndex, LuaValue luaValue);
 }

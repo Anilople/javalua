@@ -614,7 +614,7 @@ public class LuaStateImpl implements LuaState {
     if (prototype.getUpvalues().length > 0) {
       // 设置 _ENV page 191
       var env = this.getEnv();
-      luaClosure = new LuaClosure(prototype);
+      luaClosure = LuaClosure.newPrototypeLuaClosure(prototype);
       luaClosure.setLuaUpvalue(0, LuaUpvalue.newFixedLuaUpvalue(env));
     } else {
       // 不需要管 Upvalue?
@@ -654,15 +654,15 @@ public class LuaStateImpl implements LuaState {
     // 函数的返回值个数
     final int numberOfElementsFunctionReturned;
     final CallFrame calledFrame;
-    if (luaClosure.prototype != null) {
+    if (luaClosure.isPrototype()) {
       this.callStack.pushCallFrameForPrototype(luaClosure, allArgs);
       this.runLuaClosure();
       calledFrame = this.callStack.popCallFrame();
-      var nRegs = luaClosure.prototype.getRegisterCount();
+      var nRegs = luaClosure.getPrototype().getRegisterCount();
       numberOfElementsFunctionReturned = calledFrame.getTop() - nRegs;
-    } else if (luaClosure.javaFunction != null) {
+    } else if (luaClosure.isJavaFunction()) {
       this.callStack.pushCallFrameForJavaFunction(luaClosure, allArgs);
-      numberOfElementsFunctionReturned = luaClosure.javaFunction.apply(this);
+      numberOfElementsFunctionReturned = luaClosure.getJavaFunction().apply(this);
       calledFrame = this.callStack.popCallFrame();
     } else {
       throw new IllegalStateException("nothing to call in closure " + luaClosure);
@@ -686,7 +686,7 @@ public class LuaStateImpl implements LuaState {
 
   @Override
   public void pushJavaFunction(JavaFunction javaFunction) {
-    LuaClosure luaClosure = new LuaClosure(javaFunction);
+    LuaClosure luaClosure = LuaClosure.newJavaFunctionLuaClosure(javaFunction, 0);
     this.pushLuaValue(luaClosure);
   }
 
@@ -697,7 +697,7 @@ public class LuaStateImpl implements LuaState {
       return false;
     }
     LuaClosure luaClosure = (LuaClosure) luaValue;
-    return null != luaClosure.javaFunction;
+    return luaClosure.isJavaFunction();
   }
 
   @Override
@@ -707,7 +707,7 @@ public class LuaStateImpl implements LuaState {
       return null;
     }
     LuaClosure luaClosure = (LuaClosure) luaValue;
-    return luaClosure.javaFunction;
+    return luaClosure.getJavaFunction();
   }
 
   LuaValue getGlobalTable() {
@@ -741,7 +741,7 @@ public class LuaStateImpl implements LuaState {
 
   @Override
   public void pushJavaClosure(JavaFunction javaFunction, int n) {
-    LuaClosure luaClosure = LuaClosure.newJavaClosure(javaFunction, n);
+    LuaClosure luaClosure = LuaClosure.newJavaFunctionLuaClosure(javaFunction, n);
     for (int i = n - 1; i >= 0; i--) {
       LuaValue luaValue = this.popLuaValue();
       LuaUpvalue luaUpvalue = LuaUpvalue.newFixedLuaUpvalue(luaValue);
