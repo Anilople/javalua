@@ -21,11 +21,12 @@ import java.util.function.Supplier;
  */
 public class LuaVMImpl extends LuaStateImpl implements LuaVM {
 
-  public LuaVMImpl() {}
+  public LuaVMImpl() {
+    throw new UnsupportedOperationException();
+  }
 
-  @Override
-  public void init(int stackSize, Prototype prototype) {
-    super.init(stackSize, prototype);
+  public LuaVMImpl(int stackSize, Prototype prototype) {
+    super(stackSize, prototype);
   }
 
   @Override

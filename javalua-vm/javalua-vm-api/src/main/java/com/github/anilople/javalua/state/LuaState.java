@@ -18,9 +18,11 @@ public interface LuaState {
   }
 
   static LuaState create(int stackSize, Prototype prototype) {
-    LuaState luaState = SpiUtils.loadOneInterfaceImpl(LuaState.class);
-    luaState.init(stackSize, prototype);
-    return luaState;
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaState.class,
+        int.class, Prototype.class,
+        stackSize, prototype
+    );
   }
 
   static void printStack(LuaState luaState) {
@@ -39,8 +41,6 @@ public interface LuaState {
     }
     printStream.println();
   }
-
-  void init(int stackSize, Prototype prototype);
 
   /* basic stack manipulation */
   int getTop();

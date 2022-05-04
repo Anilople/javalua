@@ -16,9 +16,11 @@ import com.github.anilople.javalua.util.SpiUtils;
 public interface LuaVM extends LuaState {
 
   static LuaVM create(int stackSize, Prototype prototype) {
-    LuaVM luaVM = SpiUtils.loadOneInterfaceImpl(LuaVM.class);
-    luaVM.init(stackSize, prototype);
-    return luaVM;
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaVM.class,
+        int.class, Prototype.class,
+        stackSize, prototype
+    );
   }
 
   static LuaVM of(byte[] binaryChunk) {
@@ -56,8 +58,6 @@ public interface LuaVM extends LuaState {
   static CallFrame evalAndPrint(byte[] binaryChunk) {
     return evalAndPrint(binaryChunk, 0);
   }
-
-  void init(int stackSize, Prototype prototype);
 
   /**
    * 返回当前pc，不是必须的方法，仅测试使用
