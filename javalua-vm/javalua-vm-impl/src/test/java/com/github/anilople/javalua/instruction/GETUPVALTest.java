@@ -6,8 +6,6 @@ import com.github.anilople.javalua.api.LuaVMTestImpl;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
-import com.github.anilople.javalua.instruction.Instruction.Opcode;
-import com.github.anilople.javalua.instruction.Instruction.Operand;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaUpvalue;

@@ -3,7 +3,7 @@ package ch06;
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.instruction.Instruction;
-import com.github.anilople.javalua.instruction.Instruction.Opcode;
+import com.github.anilople.javalua.instruction.Opcode;
 import com.github.anilople.javalua.state.LuaValue;
 import constant.ResourceContentConstants.ch06;
 import org.junit.jupiter.api.Assertions;

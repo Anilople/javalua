@@ -2,7 +2,6 @@ package com.github.anilople.javalua.instruction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.github.anilople.javalua.instruction.Instruction.Operand;
 import org.junit.jupiter.api.Test;
 
 /**

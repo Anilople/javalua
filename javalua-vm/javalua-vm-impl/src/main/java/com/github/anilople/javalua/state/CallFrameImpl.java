@@ -44,7 +44,7 @@ public class CallFrameImpl extends LuaStackImpl implements CallFrame {
     this.luaClosure = luaClosure;
     this.varargs = varargs;
     if (luaClosure.getPrototype() != null) {
-      this.instructions = Instruction.convert(luaClosure.getPrototype().getCode());
+      this.instructions = Instruction.convert(luaClosure.getPrototype().getCode().getCode());
     } else {
       this.instructions = null;
     }

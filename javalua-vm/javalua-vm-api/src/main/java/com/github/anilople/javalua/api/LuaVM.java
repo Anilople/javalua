@@ -4,6 +4,8 @@ import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
+import com.github.anilople.javalua.instruction.OpArgMask;
+import com.github.anilople.javalua.instruction.OpMode;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.util.SpiUtils;
@@ -91,8 +93,8 @@ public interface LuaVM extends LuaState {
    * <p>
    * 不是必须的方法，放这里是为了方便指令的实现，例如算术运算指令
    * <p>
-   * 传递的参数实际上是 {@link com.github.anilople.javalua.instruction.Instruction.Opcode.OpMode#iABC} 模式指令里的
-   * {@link com.github.anilople.javalua.instruction.Instruction.Opcode.OpArgMask#OpArgK} 类型，总共 9 bits
+   * 传递的参数实际上是 {@link OpMode#iABC} 模式指令里的
+   * {@link OpArgMask#OpArgK} 类型，总共 9 bits
    * <p>
    * 如果最高位是1，那么参数里存放的是常量表索引，把最高位去掉就可以得到索引值。 如果最高位是0，参数里存放的就是寄存器索引值
    */
