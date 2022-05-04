@@ -1,16 +1,16 @@
 package com.github.anilople.javalua.instruction;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.api.LuaVMTestImpl;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
+import com.github.anilople.javalua.state.*;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaUpvalue;
-import com.github.anilople.javalua.state.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq

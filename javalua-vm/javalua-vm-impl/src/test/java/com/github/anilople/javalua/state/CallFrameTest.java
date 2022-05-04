@@ -1,13 +1,13 @@
 package com.github.anilople.javalua.state;
 
-import com.github.anilople.javalua.chunk.Prototype;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.github.anilople.javalua.chunk.Prototype;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author wxq
@@ -38,7 +38,10 @@ class CallFrameTest {
     CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] luaValues =
         new LuaValue[] {
-          LuaValue.NIL, LuaInteger.newLuaInteger(3L), LuaString.newLuaString("abc"), LuaString.newLuaString("3fx"),
+          LuaValue.NIL,
+          LuaInteger.newLuaInteger(3L),
+          LuaString.newLuaString("abc"),
+          LuaString.newLuaString("3fx"),
         };
     callFrame.pushN(luaValues, 2);
     assertEquals(LuaInteger.newLuaInteger(3L), callFrame.pop());
@@ -51,7 +54,10 @@ class CallFrameTest {
     CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] luaValues =
         new LuaValue[] {
-          LuaValue.NIL, LuaInteger.newLuaInteger(3L), LuaString.newLuaString("abc"), LuaString.newLuaString("3fx"),
+          LuaValue.NIL,
+          LuaInteger.newLuaInteger(3L),
+          LuaString.newLuaString("abc"),
+          LuaString.newLuaString("3fx"),
         };
     callFrame.pushN(luaValues, -1);
     assertEquals(luaValues[3], callFrame.pop());
@@ -66,7 +72,10 @@ class CallFrameTest {
     {
       LuaValue[] luaValues =
           new LuaValue[] {
-            LuaValue.NIL, LuaInteger.newLuaInteger(3L), LuaString.newLuaString("abc"), LuaString.newLuaString("3fx"),
+            LuaValue.NIL,
+            LuaInteger.newLuaInteger(3L),
+            LuaString.newLuaString("abc"),
+            LuaString.newLuaString("3fx"),
           };
       callFrame.pushN(luaValues);
     }
@@ -82,7 +91,10 @@ class CallFrameTest {
     CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] expectedLuaValues =
         new LuaValue[] {
-          LuaValue.NIL, LuaInteger.newLuaInteger(3L), LuaString.newLuaString("abc"), LuaString.newLuaString("3fx"),
+          LuaValue.NIL,
+          LuaInteger.newLuaInteger(3L),
+          LuaString.newLuaString("abc"),
+          LuaString.newLuaString("3fx"),
         };
     callFrame.pushN(expectedLuaValues);
     LuaValue[] luaValues = callFrame.popNArgs(expectedLuaValues.length);
@@ -94,7 +106,10 @@ class CallFrameTest {
     CallFrame callFrame = CallFrame.newCallFrame(6, new Prototype());
     LuaValue[] luaValuesForPush =
         new LuaValue[] {
-          LuaValue.NIL, LuaInteger.newLuaInteger(3L), LuaString.newLuaString("abc"), LuaString.newLuaString("3fx"),
+          LuaValue.NIL,
+          LuaInteger.newLuaInteger(3L),
+          LuaString.newLuaString("abc"),
+          LuaString.newLuaString("3fx"),
         };
     callFrame.pushN(luaValuesForPush);
     LuaValue[] luaValuesPopped = callFrame.popNResults(luaValuesForPush.length);

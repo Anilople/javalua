@@ -1,5 +1,9 @@
 package com.github.anilople.javalua.state;
 
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPEQ;
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPLE;
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPLT;
+
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
@@ -18,10 +22,6 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPEQ;
-import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPLE;
-import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPLT;
 
 public class LuaStateImpl implements LuaState {
 

@@ -1,9 +1,9 @@
 package com.github.anilople.javalua.instruction.operator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.github.anilople.javalua.state.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LengthTest {
 

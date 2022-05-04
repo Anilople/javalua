@@ -1,8 +1,8 @@
 package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.*;
+import com.github.anilople.javalua.state.LuaBoolean;
 
 /**
  * page 109

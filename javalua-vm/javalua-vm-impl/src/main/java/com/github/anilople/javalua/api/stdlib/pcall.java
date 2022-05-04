@@ -1,8 +1,8 @@
 package com.github.anilople.javalua.api.stdlib;
 
 import com.github.anilople.javalua.constant.LuaConstants.ThreadStatus;
-import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.*;
+import com.github.anilople.javalua.state.LuaState;
 
 /**
  * page 239

@@ -2,7 +2,6 @@ package com.github.anilople.javalua.constant;
 
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaString;
-import com.github.anilople.javalua.state.LuaValue;
 
 /**
  * @author wxq

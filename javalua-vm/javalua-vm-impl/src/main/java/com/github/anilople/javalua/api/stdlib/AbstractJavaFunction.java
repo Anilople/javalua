@@ -1,9 +1,9 @@
 package com.github.anilople.javalua.api.stdlib;
 
 import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.state.*;
 import com.github.anilople.javalua.state.JavaFunction;
 import com.github.anilople.javalua.state.LuaString;
-import com.github.anilople.javalua.state.*;
 
 /**
  * @author wxq

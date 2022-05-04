@@ -1,14 +1,14 @@
 package com.github.anilople.javalua.instruction;
 
-import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.state.JavaFunction;
-import com.github.anilople.javalua.state.LuaState;
-import com.github.anilople.javalua.state.*;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.github.anilople.javalua.api.LuaVM;
+import com.github.anilople.javalua.chunk.Prototype;
+import com.github.anilople.javalua.state.*;
+import com.github.anilople.javalua.state.JavaFunction;
+import com.github.anilople.javalua.state.LuaState;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author wxq
