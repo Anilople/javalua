@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public interface CallStack {
 
-  static CallStack of(int stackSize, Prototype prototype) {
+  static CallStack newCallStack(int stackSize, Prototype prototype) {
     return SpiUtils.loadOneInterfaceImpl(
         CallStack.class, int.class, Prototype.class, stackSize, prototype);
   }

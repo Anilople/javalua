@@ -1,17 +1,17 @@
 package com.github.anilople.javalua.instruction.operator;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.*;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LengthTest {
 
   @Test
   void length() {
-    assertEquals(LuaValue.of(0), Length.length(LuaValue.of("")));
-    assertEquals(LuaValue.of(1), Length.length(LuaValue.of("1")));
-    assertEquals(LuaValue.of(2), Length.length(LuaValue.of("12")));
-    assertEquals(LuaValue.of(5), Length.length(LuaValue.of("hello")));
+    assertEquals(LuaInteger.newLuaInteger(0), Length.length(LuaString.newLuaString("")));
+    assertEquals(LuaInteger.newLuaInteger(1), Length.length(LuaString.newLuaString("1")));
+    assertEquals(LuaInteger.newLuaInteger(2), Length.length(LuaString.newLuaString("12")));
+    assertEquals(LuaInteger.newLuaInteger(5), Length.length(LuaString.newLuaString("hello")));
   }
 }

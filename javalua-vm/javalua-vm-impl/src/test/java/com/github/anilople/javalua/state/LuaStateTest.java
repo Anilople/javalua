@@ -1,12 +1,14 @@
 package com.github.anilople.javalua.state;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author wxq
@@ -15,7 +17,7 @@ class LuaStateTest {
 
   @Test
   void testSetTopCase1() {
-    LuaState luaState = LuaState.create();
+    LuaState luaState = LuaState.newLuaState();
     assertEquals(0, luaState.getTop());
 
     luaState.setTop(1);
@@ -34,14 +36,14 @@ class LuaStateTest {
    */
   @Test
   void testBookCase() {
-    LuaState luaState = LuaState.create();
+    LuaState luaState = LuaState.newLuaState();
     luaState.pushLuaBoolean(LuaBoolean.TRUE);
     LuaState.printStack(luaState);
-    luaState.pushLuaInteger(LuaValue.of(10));
+    luaState.pushLuaInteger(LuaInteger.newLuaInteger(10));
     LuaState.printStack(luaState);
     luaState.pushLuaNil();
     LuaState.printStack(luaState);
-    luaState.pushLuaString(LuaValue.of("hello"));
+    luaState.pushLuaString(LuaString.newLuaString("hello"));
     LuaState.printStack(luaState);
     luaState.pushValue(-4);
     LuaState.printStack(luaState);
@@ -71,21 +73,21 @@ class LuaStateTest {
    */
   @Test
   void rotateBookCase1() {
-    LuaState luaState = LuaState.create();
-    luaState.pushLuaString(LuaValue.of("a"));
-    luaState.pushLuaString(LuaValue.of("b"));
-    luaState.pushLuaString(LuaValue.of("c"));
-    luaState.pushLuaString(LuaValue.of("d"));
-    luaState.pushLuaString(LuaValue.of("e"));
+    LuaState luaState = LuaState.newLuaState();
+    luaState.pushLuaString(LuaString.newLuaString("a"));
+    luaState.pushLuaString(LuaString.newLuaString("b"));
+    luaState.pushLuaString(LuaString.newLuaString("c"));
+    luaState.pushLuaString(LuaString.newLuaString("d"));
+    luaState.pushLuaString(LuaString.newLuaString("e"));
 
     luaState.rotate(2, 1);
     assertEquals(5, luaState.getTop());
     LuaState.printStack(luaState);
-    assertEquals(LuaValue.of("a"), luaState.toLuaString(1));
-    assertEquals(LuaValue.of("e"), luaState.toLuaString(2));
-    assertEquals(LuaValue.of("b"), luaState.toLuaString(3));
-    assertEquals(LuaValue.of("c"), luaState.toLuaString(4));
-    assertEquals(LuaValue.of("d"), luaState.toLuaString(5));
+    assertEquals(LuaString.newLuaString("a"), luaState.toLuaString(1));
+    assertEquals(LuaString.newLuaString("e"), luaState.toLuaString(2));
+    assertEquals(LuaString.newLuaString("b"), luaState.toLuaString(3));
+    assertEquals(LuaString.newLuaString("c"), luaState.toLuaString(4));
+    assertEquals(LuaString.newLuaString("d"), luaState.toLuaString(5));
   }
 
   /**
@@ -96,44 +98,44 @@ class LuaStateTest {
   @Test
   void rotateBookCase2() {
 
-    LuaState luaState = LuaState.create();
-    luaState.pushLuaString(LuaValue.of("a"));
-    luaState.pushLuaString(LuaValue.of("b"));
-    luaState.pushLuaString(LuaValue.of("c"));
-    luaState.pushLuaString(LuaValue.of("d"));
-    luaState.pushLuaString(LuaValue.of("e"));
+    LuaState luaState = LuaState.newLuaState();
+    luaState.pushLuaString(LuaString.newLuaString("a"));
+    luaState.pushLuaString(LuaString.newLuaString("b"));
+    luaState.pushLuaString(LuaString.newLuaString("c"));
+    luaState.pushLuaString(LuaString.newLuaString("d"));
+    luaState.pushLuaString(LuaString.newLuaString("e"));
 
     luaState.rotate(2, -1);
     assertEquals(5, luaState.getTop());
     LuaState.printStack(luaState);
-    assertEquals(LuaValue.of("a"), luaState.toLuaString(1));
-    assertEquals(LuaValue.of("c"), luaState.toLuaString(2));
-    assertEquals(LuaValue.of("d"), luaState.toLuaString(3));
-    assertEquals(LuaValue.of("e"), luaState.toLuaString(4));
-    assertEquals(LuaValue.of("b"), luaState.toLuaString(5));
+    assertEquals(LuaString.newLuaString("a"), luaState.toLuaString(1));
+    assertEquals(LuaString.newLuaString("c"), luaState.toLuaString(2));
+    assertEquals(LuaString.newLuaString("d"), luaState.toLuaString(3));
+    assertEquals(LuaString.newLuaString("e"), luaState.toLuaString(4));
+    assertEquals(LuaString.newLuaString("b"), luaState.toLuaString(5));
   }
 
   @Test
   @DisplayName("string和number相加 '3.0' + 4.0")
   void addStringAndNumber() {
-    LuaState luaState = LuaState.create();
-    luaState.pushLuaString(LuaValue.of("3.0"));
-    luaState.pushLuaNumber(LuaValue.of(4.0));
+    LuaState luaState = LuaState.newLuaState();
+    luaState.pushLuaString(LuaString.newLuaString("3.0"));
+    luaState.pushLuaNumber(LuaNumber.newLuaNumber(4.0));
     luaState.arithmetic(ArithmeticOperator.LUA_OPADD);
     LuaState.printStack(luaState);
     assertTrue(luaState.isLuaNumber(1));
-    assertEquals(LuaValue.of(7.0), luaState.toLuaNumber(1));
+    assertEquals(LuaNumber.newLuaNumber(7.0), luaState.toLuaNumber(1));
   }
 
   @Test
   @DisplayName("concat 2个lua number 整数")
   void concatLuaInteger() {
-    LuaState luaState = LuaState.create();
-    luaState.pushLuaInteger(LuaValue.of(-8));
-    luaState.pushLuaInteger(LuaValue.of(3));
+    LuaState luaState = LuaState.newLuaState();
+    luaState.pushLuaInteger(LuaInteger.newLuaInteger(-8));
+    luaState.pushLuaInteger(LuaInteger.newLuaInteger(3));
     luaState.concat(2);
     assertTrue(luaState.isLuaString(1));
-    assertEquals(LuaValue.of("-83"), luaState.toLuaString(1));
+    assertEquals(LuaString.newLuaString("-83"), luaState.toLuaString(1));
   }
 
   /**
@@ -141,11 +143,11 @@ class LuaStateTest {
    */
   @Test
   void operatorBookCase() {
-    LuaState luaState = LuaState.create();
-    luaState.pushLuaInteger(LuaValue.of(1));
-    luaState.pushLuaString(LuaValue.of("2.0"));
-    luaState.pushLuaString(LuaValue.of("3.0"));
-    luaState.pushLuaNumber(LuaValue.of(4.0));
+    LuaState luaState = LuaState.newLuaState();
+    luaState.pushLuaInteger(LuaInteger.newLuaInteger(1));
+    luaState.pushLuaString(LuaString.newLuaString("2.0"));
+    luaState.pushLuaString(LuaString.newLuaString("3.0"));
+    luaState.pushLuaNumber(LuaNumber.newLuaNumber(4.0));
     // [1.0]["2.0"]["3.0"][4]
     LuaState.printStack(luaState);
 
@@ -157,17 +159,17 @@ class LuaStateTest {
     luaState.bitwise(BitwiseOperator.LUA_OPBNOT);
     // [1]["2.0"][-8]
     LuaState.printStack(luaState);
-    assertEquals(LuaValue.of(-8), luaState.toLuaInteger(3));
+    assertEquals(LuaInteger.newLuaInteger(-8), luaState.toLuaInteger(3));
 
     luaState.len(2);
     // [1]["2.0"][-8][3]
     LuaState.printStack(luaState);
-    assertEquals(LuaValue.of(3), luaState.toLuaInteger(4));
+    assertEquals(LuaInteger.newLuaInteger(3), luaState.toLuaInteger(4));
 
     luaState.concat(3);
     // [1]["2.0-83"]
     LuaState.printStack(luaState);
-    assertEquals(LuaValue.of("2.0-83"), luaState.toLuaString(2));
+    assertEquals(LuaString.newLuaString("2.0-83"), luaState.toLuaString(2));
 
     var luaBoolean = luaState.compare(1, 2, ComparisonOperator.LUA_OPEQ);
     luaState.pushLuaBoolean(luaBoolean);
@@ -178,15 +180,15 @@ class LuaStateTest {
 
   @Test
   void replaceEmpty() {
-    LuaState luaState = LuaState.create();
+    LuaState luaState = LuaState.newLuaState();
     assertThrows(IllegalArgumentException.class, () -> luaState.replace(0));
     assertThrows(IllegalArgumentException.class, () -> luaState.replace(1));
   }
 
   @Test
   void replaceStackSize1() {
-    LuaState luaState = LuaState.create();
-    luaState.pushLuaString(LuaValue.of("value"));
+    LuaState luaState = LuaState.newLuaState();
+    luaState.pushLuaString(LuaString.newLuaString("value"));
     luaState.replace(1);
     // 注意这里可能有点争议，当元素只剩1个时，replace的行为应该是什么？
     assertEquals(0, luaState.getTop());
@@ -196,8 +198,8 @@ class LuaStateTest {
 
   @Test
   void replaceStackSize2() {
-    LuaState luaState = LuaState.create();
-    luaState.pushLuaString(LuaValue.of("value"));
+    LuaState luaState = LuaState.newLuaState();
+    luaState.pushLuaString(LuaString.newLuaString("value"));
     luaState.pushLuaNil();
     luaState.replace(1);
     assertEquals(1, luaState.getTop());
@@ -206,7 +208,7 @@ class LuaStateTest {
 
   @Test
   void testNextMeetException() {
-    LuaState luaState = LuaState.create();
+    LuaState luaState = LuaState.newLuaState();
     assertThrows(IllegalStateException.class, () -> luaState.next(-1));
   }
 }

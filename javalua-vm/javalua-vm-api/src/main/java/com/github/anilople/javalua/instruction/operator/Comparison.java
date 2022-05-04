@@ -79,14 +79,14 @@ public class Comparison {
     } else if (a instanceof LuaInteger) {
       if (b instanceof LuaInteger) {
         var result = ((LuaInteger) a).lessThen((LuaInteger) b);
-        return LuaValue.of(result);
+        return LuaBoolean.newLuaBoolean(result);
       } else {
         return LuaValue.FALSE;
       }
     } else if (a instanceof LuaNumber) {
       if (b instanceof LuaNumber) {
         var result = ((LuaNumber) a).lessThen((LuaNumber) b);
-        return LuaValue.of(result);
+        return LuaBoolean.newLuaBoolean(result);
       } else {
         return LuaValue.FALSE;
       }

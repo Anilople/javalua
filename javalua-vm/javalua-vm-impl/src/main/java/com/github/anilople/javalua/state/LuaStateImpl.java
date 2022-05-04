@@ -1,7 +1,5 @@
 package com.github.anilople.javalua.state;
 
-import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.*;
-
 import com.github.anilople.javalua.api.LuaType;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
@@ -21,6 +19,10 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPEQ;
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPLE;
+import static com.github.anilople.javalua.instruction.operator.ComparisonOperator.LUA_OPLT;
+
 public class LuaStateImpl implements LuaState {
 
   protected final CallStack callStack;
@@ -31,16 +33,16 @@ public class LuaStateImpl implements LuaState {
    * Lua注册表
    */
   protected final LuaTable registry =
-      LuaTable.of(0, 0)
+      LuaTable.newLuaTable(0, 0)
           // page 172
-          .put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.of(0, 0));
+          .put(LuaConstants.LUA_RIDX_GLOBALS, LuaTable.newLuaTable(0, 0));
 
   public LuaStateImpl() {
     throw new UnsupportedOperationException();
   }
 
   public LuaStateImpl(int stackSize, Prototype prototype) {
-    this.callStack = CallStack.of(stackSize, prototype);
+    this.callStack = CallStack.newCallStack(stackSize, prototype);
   }
 
   /**
@@ -408,7 +410,7 @@ public class LuaStateImpl implements LuaState {
         if (this.existsMetaMethod(LUA_OPEQ.getMetaMethodName(), a, b)) {
           result = this.callMetaMethod(LUA_OPEQ.getMetaMethodName(), a, b);
         } else {
-          return LuaValue.of(a.equals(b));
+          return LuaBoolean.newLuaBoolean(a.equals(b));
         }
       }
     } else if (LUA_OPLT.equals(operator)) {
@@ -471,7 +473,7 @@ public class LuaStateImpl implements LuaState {
   @Override
   public void concat(int n) {
     if (0 == n) {
-      this.pushLuaValue(LuaValue.of(""));
+      this.pushLuaValue(LuaString.newLuaString(""));
     } else {
       for (; n >= 2; n--) {
         this.applyBinaryOperator(StringConcat::canConcat, StringConcat::concat, MetaMethod.CONCAT);
@@ -486,7 +488,7 @@ public class LuaStateImpl implements LuaState {
 
   @Override
   public void createTable(int arraySize, int mapSize) {
-    LuaTable luaTable = LuaTable.of(arraySize, mapSize);
+    LuaTable luaTable = LuaTable.newLuaTable(arraySize, mapSize);
     this.pushLuaValue(luaTable);
   }
 
@@ -769,7 +771,7 @@ public class LuaStateImpl implements LuaState {
     if (luaValue instanceof LuaTable) {
       throw new IllegalArgumentException("cannot be lua table. " + luaValue);
     }
-    return LuaValue.of("_MT" + luaValue.type());
+    return LuaString.newLuaString("_MT" + luaValue.type());
   }
 
   /**
@@ -1033,7 +1035,7 @@ public class LuaStateImpl implements LuaState {
         this.pushLuaValue(exceptionMessage);
       } else {
         // 不是 error 函数抛出的异常
-        LuaString exceptionMessage = LuaValue.of(e.getMessage());
+        LuaString exceptionMessage = LuaString.newLuaString(e.getMessage());
         this.pushLuaValue(exceptionMessage);
       }
       return ThreadStatus.LUA_ERRRUN;

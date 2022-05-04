@@ -1,7 +1,7 @@
 package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.LuaBoolean;
 
 class LOADBOOL extends AbstractInstruction {
   LOADBOOL(int originCodeValue) {
@@ -13,7 +13,7 @@ class LOADBOOL extends AbstractInstruction {
     var a = operand.A();
     var b = operand.B();
     var c = operand.C();
-    luaVM.pushLuaBoolean(LuaValue.of(b != 0));
+    luaVM.pushLuaBoolean(LuaBoolean.newLuaBoolean(b != 0));
 
     var index = a + 1;
     luaVM.replace(index);

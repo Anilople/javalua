@@ -2,7 +2,6 @@ package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.LuaInteger;
-import com.github.anilople.javalua.state.LuaValue;
 
 /**
  * 和函数调用有关的指令
@@ -56,7 +55,7 @@ abstract class FunctionInstruction extends AbstractInstruction {
       luaVM.checkStack(1);
       // 把这些返回放在栈顶原封不动
       // push 1个整数 标记这些返回值原本要移动到哪些寄存器中
-      luaVM.pushLuaInteger(LuaValue.of(beginIndex));
+      luaVM.pushLuaInteger(LuaInteger.newLuaInteger(beginIndex));
     }
   }
 

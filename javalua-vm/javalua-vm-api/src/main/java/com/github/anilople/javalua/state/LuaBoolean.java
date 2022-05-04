@@ -15,6 +15,11 @@ public enum LuaBoolean implements LuaValue {
   TRUE(true),
   FALSE(false),
   ;
+
+  public static LuaBoolean newLuaBoolean(boolean value) {
+    return value ? LuaValue.TRUE : LuaValue.FALSE;
+  }
+
   private static final LuaString LUA_STRING_TRUE = LuaString.newLuaString("true");
   private static final LuaString LUA_STRING_FALSE = LuaString.newLuaString("false");
 

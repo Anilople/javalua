@@ -26,43 +26,43 @@ public interface LuaConstants {
   /**
    * 全局环境在注册表里的索引
    */
-  LuaInteger LUA_RIDX_GLOBALS = LuaValue.of(2L);
+  LuaInteger LUA_RIDX_GLOBALS = LuaInteger.newLuaInteger(2L);
 
   /**
    * 元方法
    */
   interface MetaMethod {
     interface Arithmetic {
-      LuaString ADD = LuaValue.of("__add");
-      LuaString SUB = LuaValue.of("__sub");
-      LuaString MUL = LuaValue.of("__mul");
-      LuaString MOD = LuaValue.of("__mod");
-      LuaString POW = LuaValue.of("__pow");
-      LuaString DIV = LuaValue.of("__div");
-      LuaString IDIV = LuaValue.of("__idiv");
-      LuaString UNM = LuaValue.of("__unm");
+      LuaString ADD = LuaString.newLuaString("__add");
+      LuaString SUB = LuaString.newLuaString("__sub");
+      LuaString MUL = LuaString.newLuaString("__mul");
+      LuaString MOD = LuaString.newLuaString("__mod");
+      LuaString POW = LuaString.newLuaString("__pow");
+      LuaString DIV = LuaString.newLuaString("__div");
+      LuaString IDIV = LuaString.newLuaString("__idiv");
+      LuaString UNM = LuaString.newLuaString("__unm");
     }
 
     interface Bitwise {
-      LuaString AND = LuaValue.of("__band");
-      LuaString OR = LuaValue.of("__bor");
-      LuaString XOR = LuaValue.of("__bxor");
-      LuaString SHL = LuaValue.of("__shl");
-      LuaString SHR = LuaValue.of("__shr");
-      LuaString NOT = LuaValue.of("__bnot");
+      LuaString AND = LuaString.newLuaString("__band");
+      LuaString OR = LuaString.newLuaString("__bor");
+      LuaString XOR = LuaString.newLuaString("__bxor");
+      LuaString SHL = LuaString.newLuaString("__shl");
+      LuaString SHR = LuaString.newLuaString("__shr");
+      LuaString NOT = LuaString.newLuaString("__bnot");
     }
 
     interface Comparison {
-      LuaString EQ = LuaValue.of("__eq");
-      LuaString LT = LuaValue.of("__lt");
-      LuaString LE = LuaValue.of("__le");
+      LuaString EQ = LuaString.newLuaString("__eq");
+      LuaString LT = LuaString.newLuaString("__lt");
+      LuaString LE = LuaString.newLuaString("__le");
     }
 
-    LuaString LEN = LuaValue.of("__len");
-    LuaString CONCAT = LuaValue.of("__concat");
-    LuaString INDEX = LuaValue.of("__index");
-    LuaString NEWINDEX = LuaValue.of("__newindex");
-    LuaString CALL = LuaValue.of("__call");
+    LuaString LEN = LuaString.newLuaString("__len");
+    LuaString CONCAT = LuaString.newLuaString("__concat");
+    LuaString INDEX = LuaString.newLuaString("__index");
+    LuaString NEWINDEX = LuaString.newLuaString("__newindex");
+    LuaString CALL = LuaString.newLuaString("__call");
   }
 
   enum ThreadStatus {

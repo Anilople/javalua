@@ -5,10 +5,12 @@ import com.github.anilople.javalua.chunk.Upvalue;
 import com.github.anilople.javalua.config.LuaVMConfig;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.state.CallFrame;
+import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaClosure;
+import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaStateImpl;
 import com.github.anilople.javalua.state.LuaUpvalue;
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -53,13 +55,13 @@ public class LuaVMImpl extends LuaStateImpl implements LuaVM {
     var constant = constants.getConstant(index);
     final LuaValue luaValue;
     if (constant.isLuaBoolean()) {
-      luaValue = LuaValue.of(constant.getLuaBooleanInJava());
+      luaValue = LuaBoolean.newLuaBoolean(constant.getLuaBooleanInJava());
     } else if (constant.isLuaInteger()) {
-      luaValue = LuaValue.of(constant.getLuaIntegerInJava());
+      luaValue = LuaInteger.newLuaInteger(constant.getLuaIntegerInJava());
     } else if (constant.isLuaNumber()) {
-      luaValue = LuaValue.of(constant.getLuaNumberInJava());
+      luaValue = LuaNumber.newLuaNumber(constant.getLuaNumberInJava());
     } else if (constant.isLuaString()) {
-      luaValue = LuaValue.of(constant.getLuaStringInJava());
+      luaValue = LuaString.newLuaString(constant.getLuaStringInJava());
     } else {
       luaValue = LuaValue.NIL;
     }

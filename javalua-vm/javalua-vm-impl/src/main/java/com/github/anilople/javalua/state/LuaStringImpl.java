@@ -95,7 +95,7 @@ public class LuaStringImpl implements LuaString {
   @Override
   public LuaBoolean lessThan(LuaString luaString) {
     int compareResult = this.javaValue.compareTo(luaString.getJavaValue());
-    return LuaValue.of(compareResult < 0);
+    return LuaBoolean.newLuaBoolean(compareResult < 0);
   }
 
   @Override

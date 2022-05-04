@@ -75,10 +75,10 @@ public class LuaTableBefore5Impl extends AbstractLuaTable {
   @Override
   public LuaInteger length() {
     var size = 0;
-    for (int i = 1; this.map.containsKey(LuaValue.of(i)); i++) {
+    for (int i = 1; this.map.containsKey(LuaInteger.newLuaInteger(i)); i++) {
       size++;
     }
-    return LuaValue.of(size);
+    return LuaInteger.newLuaInteger(size);
   }
 
   @Override

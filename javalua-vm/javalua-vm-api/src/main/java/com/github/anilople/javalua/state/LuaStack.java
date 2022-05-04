@@ -13,11 +13,11 @@ import com.github.anilople.javalua.util.SpiUtils;
  */
 public interface LuaStack {
 
-  static LuaStack of(int size) {
-    return of(size, 0);
+  static LuaStack newLuaStack(int size) {
+    return newLuaStack(size, 0);
   }
 
-  static LuaStack of(int size, int registerCount) {
+  static LuaStack newLuaStack(int size, int registerCount) {
     return SpiUtils.loadOneInterfaceImpl(LuaStack.class, int.class, int.class, size, registerCount);
   }
 

@@ -1,13 +1,13 @@
 package com.github.anilople.javalua.api;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaUpvalue;
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.*;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wxq
@@ -19,7 +19,7 @@ class LuaVMImplTest {
     Prototype prototype = new Prototype();
     prototype.setMaxStackSize((byte) 5);
     CallFrame callFrame = CallFrame.newCallFrame(10, prototype);
-    final LuaValue expectedLuaValue = LuaValue.of(99L);
+    final LuaValue expectedLuaValue = LuaInteger.newLuaInteger(99L);
     callFrame.set(1, expectedLuaValue);
 
     Upvalue upvalue = new Upvalue();
@@ -36,7 +36,7 @@ class LuaVMImplTest {
     Prototype prototype = new Prototype();
     prototype.setMaxStackSize((byte) 5);
     CallFrame callFrame = CallFrame.newCallFrame(10, prototype);
-    final LuaValue expectedLuaValue = LuaValue.of(99L);
+    final LuaValue expectedLuaValue = LuaInteger.newLuaInteger(99L);
     callFrame.set(3, expectedLuaValue);
 
     Upvalue upvalue = new Upvalue();

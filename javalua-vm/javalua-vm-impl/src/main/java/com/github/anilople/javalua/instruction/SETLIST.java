@@ -2,7 +2,6 @@ package com.github.anilople.javalua.instruction;
 
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.LuaInteger;
-import com.github.anilople.javalua.state.LuaValue;
 
 /**
  * 给数组准备，按索引批量设置数组元素
@@ -40,7 +39,7 @@ class SETLIST extends AbstractInstruction {
       for (int offset = 1; offset <= argsAmount; offset++) {
         final int valueIndex = luaVM.getRegisterCount() + offset;
         luaVM.pushValue(valueIndex);
-        var indexInArray = LuaValue.of(beginIndexInArray + offset);
+        var indexInArray = LuaInteger.newLuaInteger(beginIndexInArray + offset);
         luaVM.setI(indexOfArray, indexInArray);
       }
       // clear stack
@@ -57,7 +56,7 @@ class SETLIST extends AbstractInstruction {
     luaVM.checkStack(1);
     for (int j = 1; j <= length; j++) {
       luaVM.pushValue(indexOfArray + j);
-      LuaInteger indexKey = LuaValue.of(beginIndexInArray + j);
+      LuaInteger indexKey = LuaInteger.newLuaInteger(beginIndexInArray + j);
       luaVM.setI(indexOfArray, indexKey);
     }
   }

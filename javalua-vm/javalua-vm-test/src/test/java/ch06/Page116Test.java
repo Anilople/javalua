@@ -4,7 +4,6 @@ import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.Opcode;
-import com.github.anilople.javalua.state.LuaValue;
 import constant.ResourceContentConstants.ch06;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,7 @@ class Page116Test {
     // 0 functions
     Assertions.assertEquals(0, mainFunc.getProtos().length);
 
-    LuaVM luaVM = LuaVM.create(mainFunc.getMaxStackSize(), mainFunc);
+    LuaVM luaVM = LuaVM.newLuaVM(mainFunc.getMaxStackSize(), mainFunc);
     {
       var instruction = luaVM.fetch();
       Assertions.assertEquals(Opcode.LOADK, instruction.getOpcode());
@@ -78,7 +77,7 @@ class Page116Test {
     BinaryChunk binaryChunk = BinaryChunk.of(ch06.sum.getLuacOut());
     var mainFunc = binaryChunk.getMainFunc();
     // stack的size大一些
-    LuaVM luaVM = LuaVM.create(mainFunc.getMaxStackSize() * 2 + 8, mainFunc);
+    LuaVM luaVM = LuaVM.newLuaVM(mainFunc.getMaxStackSize() * 2 + 8, mainFunc);
 
     // 提前配置好top
     var nRegisters = mainFunc.getMaxStackSize();
@@ -91,10 +90,10 @@ class Page116Test {
     LuaVM.fetchApplyPrint(luaVM);
 
     // [0][1][100][1]
-    Assertions.assertEquals(LuaValue.of(0), luaVM.toLuaInteger(1));
-    Assertions.assertEquals(LuaValue.of(1), luaVM.toLuaInteger(2));
-    Assertions.assertEquals(LuaValue.of(100), luaVM.toLuaInteger(3));
-    Assertions.assertEquals(LuaValue.of(1), luaVM.toLuaInteger(4));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(0), luaVM.toLuaInteger(1));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(2));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(3));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(4));
 
     // FORPREP
     LuaVM.fetchApplyPrint(luaVM);
@@ -108,12 +107,12 @@ class Page116Test {
       LuaVM.applyPrint(instruction, luaVM);
     }
     // [2550][101][100][1][100][0]
-    Assertions.assertEquals(LuaValue.of(2550), luaVM.toLuaInteger(1));
-    Assertions.assertEquals(LuaValue.of(101), luaVM.toLuaInteger(2));
-    Assertions.assertEquals(LuaValue.of(100), luaVM.toLuaInteger(3));
-    Assertions.assertEquals(LuaValue.of(1), luaVM.toLuaInteger(4));
-    Assertions.assertEquals(LuaValue.of(100), luaVM.toLuaInteger(5));
-    Assertions.assertEquals(LuaValue.of(0), luaVM.toLuaInteger(6));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(2550), luaVM.toLuaInteger(1));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(101), luaVM.toLuaInteger(2));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(3));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(1), luaVM.toLuaInteger(4));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(100), luaVM.toLuaInteger(5));
+    Assertions.assertEquals(LuaInteger.newLuaInteger(0), luaVM.toLuaInteger(6));
 
     Assertions.assertEquals(6, luaVM.getTop());
   }

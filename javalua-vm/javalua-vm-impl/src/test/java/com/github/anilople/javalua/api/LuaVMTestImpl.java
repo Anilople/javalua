@@ -3,7 +3,7 @@ package com.github.anilople.javalua.api;
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaClosure;
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.*;
 
 /**
  * 给测试使用

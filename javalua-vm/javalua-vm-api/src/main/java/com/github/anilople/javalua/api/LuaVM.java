@@ -15,14 +15,14 @@ import com.github.anilople.javalua.util.SpiUtils;
  */
 public interface LuaVM extends LuaState {
 
-  static LuaVM create(int stackSize, Prototype prototype) {
+  static LuaVM newLuaVM(int stackSize, Prototype prototype) {
     return SpiUtils.loadOneInterfaceImpl(
         LuaVM.class, int.class, Prototype.class, stackSize, prototype);
   }
 
-  static LuaVM of(byte[] binaryChunk) {
+  static LuaVM newLuaVM(byte[] binaryChunk) {
     var prototype = BinaryChunk.getPrototype(binaryChunk);
-    LuaVM luaVM = create(prototype.getMaxStackSize() + LuaConstants.LUA_MIN_STACK, prototype);
+    LuaVM luaVM = newLuaVM(prototype.getMaxStackSize() + LuaConstants.LUA_MIN_STACK, prototype);
     luaVM.setTop(prototype.getMaxStackSize());
     return luaVM;
   }
@@ -47,7 +47,7 @@ public interface LuaVM extends LuaState {
   }
 
   static CallFrame evalAndPrint(byte[] binaryChunk, int nResults) {
-    LuaVM luaVM = LuaVM.create(1, new Prototype());
+    LuaVM luaVM = LuaVM.newLuaVM(1, new Prototype());
     luaVM.load(binaryChunk, "unknown", "b");
     return luaVM.call(0, nResults);
   }

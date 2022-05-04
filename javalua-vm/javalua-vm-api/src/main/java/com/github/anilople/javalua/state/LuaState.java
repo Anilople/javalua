@@ -13,11 +13,11 @@ import java.io.PrintStream;
 
 public interface LuaState {
 
-  static LuaState create() {
-    return create(LuaConstants.LUA_MIN_STACK, new Prototype());
+  static LuaState newLuaState() {
+    return newLuaState(LuaConstants.LUA_MIN_STACK, new Prototype());
   }
 
-  static LuaState create(int stackSize, Prototype prototype) {
+  static LuaState newLuaState(int stackSize, Prototype prototype) {
     return SpiUtils.loadOneInterfaceImpl(
         LuaState.class, int.class, Prototype.class, stackSize, prototype);
   }

@@ -93,7 +93,7 @@ public final class Operand {
     return ByteUtils.getBits(code, 6, 26);
   }
 
-  static Operand of(int code) {
+  static Operand newOperand(int code) {
     return new Operand(code);
   }
 
@@ -101,6 +101,6 @@ public final class Operand {
     int value = B << 23;
     value |= C << 14;
     value |= A << 6;
-    return Operand.of(value);
+    return Operand.newOperand(value);
   }
 }

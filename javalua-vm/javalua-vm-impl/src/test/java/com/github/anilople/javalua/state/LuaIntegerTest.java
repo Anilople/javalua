@@ -1,9 +1,12 @@
 package com.github.anilople.javalua.state;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.github.anilople.javalua.exception.TypeConversionRuntimeException;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author wxq
@@ -21,7 +24,7 @@ class LuaIntegerTest {
   void fromLuaNumberCase2() {
     LuaNumber luaNumber = LuaNumber.newLuaNumber(7.0D);
     assertTrue(luaNumber.canConvertToLuaInteger());
-    assertEquals(LuaValue.of(7), luaNumber.toLuaInteger());
+    assertEquals(LuaInteger.newLuaInteger(7), luaNumber.toLuaInteger());
   }
 
   @Test

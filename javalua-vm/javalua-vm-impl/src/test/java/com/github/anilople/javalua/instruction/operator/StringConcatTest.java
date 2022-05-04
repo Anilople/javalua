@@ -1,28 +1,30 @@
 package com.github.anilople.javalua.instruction.operator;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.LuaInteger;
+import com.github.anilople.javalua.state.*;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StringConcatTest {
 
   @Test
   void concatCase1() {
     assertEquals(
-        LuaValue.of("abc"),
-        StringConcat.concat(LuaValue.of("a"), LuaValue.of("b"), LuaValue.of("c")));
+        LuaString.newLuaString("abc"),
+        StringConcat.concat(LuaString.newLuaString("a"), LuaString.newLuaString("b"), LuaString.newLuaString("c")));
   }
 
   @Test
   void concatCase2() {
     assertEquals(
-        LuaValue.of("123"), StringConcat.concat(LuaValue.of(1), LuaValue.of(2), LuaValue.of(3)));
+        LuaString.newLuaString("123"), StringConcat.concat(LuaInteger.newLuaInteger(1), LuaInteger.newLuaInteger(2), LuaInteger.newLuaInteger(3)));
   }
 
   @Test
   void canConcat() {
-    assertTrue(StringConcat.canConcat(LuaValue.of(-8)));
-    assertTrue(StringConcat.canConcat(LuaValue.of(-8), LuaValue.of(3)));
+    assertTrue(StringConcat.canConcat(LuaInteger.newLuaInteger(-8)));
+    assertTrue(StringConcat.canConcat(LuaInteger.newLuaInteger(-8), LuaInteger.newLuaInteger(3)));
   }
 }

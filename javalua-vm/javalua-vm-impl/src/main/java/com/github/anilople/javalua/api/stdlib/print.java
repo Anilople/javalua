@@ -6,7 +6,7 @@ import com.github.anilople.javalua.state.LuaNumber;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.state.LuaString;
 import com.github.anilople.javalua.state.LuaTable;
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.*;
 import java.io.PrintStream;
 
 /**

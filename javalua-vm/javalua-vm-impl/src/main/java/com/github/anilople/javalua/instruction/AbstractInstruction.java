@@ -4,7 +4,7 @@ import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.instruction.operator.ArithmeticOperator;
 import com.github.anilople.javalua.instruction.operator.BitwiseOperator;
 import com.github.anilople.javalua.instruction.operator.ComparisonOperator;
-import com.github.anilople.javalua.state.LuaValue;
+import com.github.anilople.javalua.state.LuaBoolean;
 
 /**
  * @author wxq
@@ -18,7 +18,7 @@ abstract class AbstractInstruction implements Instruction {
   public AbstractInstruction(int originCodeValue) {
     this.originCodeValue = originCodeValue;
     this.opcode = Opcode.of(originCodeValue);
-    this.operand = Operand.of(originCodeValue);
+    this.operand = Operand.newOperand(originCodeValue);
   }
 
   @Override
@@ -101,7 +101,7 @@ abstract class AbstractInstruction implements Instruction {
     luaVM.getRK(c);
 
     var compareResult = luaVM.compare(-2, -1, operator);
-    var expect = LuaValue.of(operand.A() == 0);
+    var expect = LuaBoolean.newLuaBoolean(operand.A() == 0);
 
     if (compareResult.equals(expect)) {
       luaVM.addPC(1);
