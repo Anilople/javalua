@@ -11,18 +11,11 @@ public interface LuaClosure extends LuaValue {
 
   static LuaClosure newJavaFunctionLuaClosure(JavaFunction javaFunction, int nUpvalues) {
     return SpiUtils.loadOneInterfaceImpl(
-        LuaClosure.class,
-        JavaFunction.class, int.class,
-        javaFunction, nUpvalues
-    );
+        LuaClosure.class, JavaFunction.class, int.class, javaFunction, nUpvalues);
   }
 
   static LuaClosure newPrototypeLuaClosure(Prototype prototype) {
-    return SpiUtils.loadOneInterfaceImpl(
-        LuaClosure.class,
-        Prototype.class,
-        prototype
-    );
+    return SpiUtils.loadOneInterfaceImpl(LuaClosure.class, Prototype.class, prototype);
   }
 
   @Override
