@@ -51,6 +51,9 @@ public class LuaClosureImpl implements LuaClosure {
   }
 
   public Prototype getPrototype() {
+    if (!this.isPrototype()) {
+      throw new UnsupportedOperationException();
+    }
     return this.prototype;
   }
 
@@ -61,6 +64,9 @@ public class LuaClosureImpl implements LuaClosure {
 
   @Override
   public JavaFunction getJavaFunction() {
+    if (!this.isJavaFunction()) {
+      throw new UnsupportedOperationException();
+    }
     return this.javaFunction;
   }
 
