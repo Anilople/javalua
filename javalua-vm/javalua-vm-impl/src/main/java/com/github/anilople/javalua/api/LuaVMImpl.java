@@ -2,7 +2,7 @@ package com.github.anilople.javalua.api;
 
 import com.github.anilople.javalua.chunk.Prototype;
 import com.github.anilople.javalua.chunk.Upvalue;
-import com.github.anilople.javalua.config.Config;
+import com.github.anilople.javalua.config.LuaVMConfig;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaClosure;
@@ -20,6 +20,8 @@ import java.util.function.Supplier;
  * @author wxq
  */
 public class LuaVMImpl extends LuaStateImpl implements LuaVM {
+
+  private final LuaVMConfig luaVMConfig = LuaVMConfig.newLuaVMConfig();
 
   public LuaVMImpl() {
     throw new UnsupportedOperationException();
@@ -94,7 +96,7 @@ public class LuaVMImpl extends LuaStateImpl implements LuaVM {
   protected void runLuaClosure() {
     for (var instruction = this.fetch(); null != instruction; instruction = this.fetch()) {
       instruction.applyTo(this);
-      if (Config.getInstance().needPrint()) {
+      if (luaVMConfig.needPrint()) {
         this.print(instruction);
       }
     }
