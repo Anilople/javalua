@@ -25,8 +25,7 @@ public class print extends AbstractJavaFunction {
 
   private PrintStream printStream;
 
-  public print() {
-  }
+  public print() {}
 
   static String toJavaString(LuaValue luaValue) {
     if (null == luaValue) {

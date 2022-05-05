@@ -1,11 +1,11 @@
 package com.github.anilople.javalua.stdlib;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.github.anilople.javalua.state.JavaFunction;
 import com.github.anilople.javalua.state.JavaFunctionFactory;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author wxq
@@ -19,5 +19,4 @@ class StdlibLoadTest {
     System.out.println(javaFunctions.size());
     assertTrue(javaFunctions.size() > 0);
   }
-
 }

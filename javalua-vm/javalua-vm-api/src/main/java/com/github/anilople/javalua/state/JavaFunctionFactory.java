@@ -13,5 +13,4 @@ public interface JavaFunctionFactory {
   }
 
   List<JavaFunction> getStdlib();
-
 }

@@ -1,8 +1,6 @@
 package com.github.anilople.javalua.api;
 
-import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.OpArgMask;
 import com.github.anilople.javalua.instruction.OpMode;
@@ -22,9 +20,7 @@ public interface LuaVM extends LuaState {
 
   static LuaVM newLuaVM(PrintStream stdout, int stackSize, Prototype prototype) {
     return SpiUtils.loadOneInterfaceImpl(
-        LuaVM.class,
-        PrintStream.class, int.class, Prototype.class,
-        stdout, stackSize, prototype);
+        LuaVM.class, PrintStream.class, int.class, Prototype.class, stdout, stackSize, prototype);
   }
 
   static void printLuaVM(LuaVM luaVM) {
