@@ -2,6 +2,7 @@ package com.github.anilople.javalua.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -129,5 +130,43 @@ public class SpiUtils {
         interfaceClass,
         new Class[] {parameterType1, parameterType2},
         new Object[] {initArg1, initArg2});
+  }
+
+  /**
+   * {@link #loadOneInterfaceImpl(Class, Class[], Object[])}的简化模式，只接收3个参数
+   */
+  public static <S> S loadOneInterfaceImpl(
+      Class<S> interfaceClass,
+      Class<?> parameterType1,
+      Class<?> parameterType2,
+      Class<?> parameterType3,
+      Object initArg1,
+      Object initArg2,
+      Object initArg3) {
+    return loadOneInterfaceImpl(
+        interfaceClass,
+        new Class[] {parameterType1, parameterType2, parameterType3},
+        new Object[] {initArg1, initArg2, initArg3});
+  }
+
+  /**
+   * 加载1个interface的全部实现
+   * @param interfaceClass interface对应的class
+   * @param <S> interface的type
+   * @return interface的实现 实例
+   */
+  public static <S> List<S> loadAllInterfaceImpl(Class<S> interfaceClass) {
+    if (!interfaceClass.isInterface()) {
+      throw new IllegalArgumentException(interfaceClass + " isn't an interface");
+    }
+    final ServiceLoader<S> serviceLoader = ServiceLoader.load(interfaceClass);
+
+    List<Provider<? extends S>> providers = serviceLoader.stream().collect(Collectors.toList());
+    List<S> list = new ArrayList<>();
+    for (Provider<? extends S> provider : providers) {
+      S s = provider.get();
+      list.add(s);
+    }
+    return list;
   }
 }

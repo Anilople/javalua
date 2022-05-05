@@ -1,5 +1,6 @@
-package com.github.anilople.javalua.api.stdlib;
+package com.github.anilople.javalua.stdlib;
 
+import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.*;
 import com.github.anilople.javalua.state.LuaBoolean;
 import com.github.anilople.javalua.state.LuaInteger;
@@ -22,16 +23,9 @@ import java.io.PrintStream;
  */
 public class print extends AbstractJavaFunction {
 
-  private static final print INSTANCE = new print(System.out);
+  private PrintStream printStream;
 
-  public static print getInstance() {
-    return INSTANCE;
-  }
-
-  private final PrintStream printStream;
-
-  public print(PrintStream printStream) {
-    this.printStream = printStream;
+  public print() {
   }
 
   static String toJavaString(LuaValue luaValue) {
@@ -76,5 +70,12 @@ public class print extends AbstractJavaFunction {
     }
     printStream.print("\n");
     return 0;
+  }
+
+  @Override
+  public void registerTo(LuaVM luaVM) {
+    // 从 vm 中拿出 stdout
+    this.printStream = luaVM.getStdout();
+    super.registerTo(luaVM);
   }
 }

@@ -1,4 +1,4 @@
-package com.github.anilople.javalua.api.stdlib;
+package com.github.anilople.javalua.stdlib;
 
 import com.github.anilople.javalua.api.LuaVM;
 import com.github.anilople.javalua.state.*;

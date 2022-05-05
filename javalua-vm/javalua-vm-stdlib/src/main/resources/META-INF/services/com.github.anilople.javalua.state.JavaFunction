@@ -1,0 +1,8 @@
+com.github.anilople.javalua.stdlib.error
+com.github.anilople.javalua.stdlib.getmetatable
+com.github.anilople.javalua.stdlib.ipairs
+com.github.anilople.javalua.stdlib.next
+com.github.anilople.javalua.stdlib.pairs
+com.github.anilople.javalua.stdlib.pcall
+com.github.anilople.javalua.stdlib.print
+com.github.anilople.javalua.stdlib.setmetatable

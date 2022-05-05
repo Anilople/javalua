@@ -15,6 +15,8 @@
     <module>javalua-vm-chunk</module>
     <module>javalua-vm-api</module>
     <module>javalua-vm-impl</module>
+    <module>javalua-vm-stdlib</module>
+    <module>javalua-vm-all</module>
     <module>javalua-vm-test</module>
   </modules>
 
