@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.anilople.javalua.api.LuaVM;
 import org.junit.jupiter.api.Test;
 
 class LuaStackTest {
@@ -78,5 +79,18 @@ class LuaStackTest {
     for (long value = 1; value <= 10; value++) {
       assertEquals(LuaInteger.newLuaInteger(value), luaStack.pop());
     }
+  }
+
+  @Test
+  void pushUtilFull() {
+    LuaStack luaStack = LuaStack.newLuaStack(1);
+    luaStack.push(LuaValue.TRUE);
+  }
+
+  @Test
+  void pushUtilStackOverFlow() {
+    LuaStack luaStack = LuaStack.newLuaStack(1);
+    luaStack.push(LuaValue.TRUE);
+    assertThrows(IllegalStateException.class, () -> luaStack.push(LuaValue.TRUE));
   }
 }

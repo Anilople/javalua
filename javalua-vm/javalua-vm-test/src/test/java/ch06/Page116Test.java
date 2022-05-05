@@ -41,7 +41,7 @@ class Page116Test {
     // 0 functions
     assertEquals(0, mainFunc.getProtos().length);
 
-    LuaVM luaVM = LuaVM.newLuaVM(mainFunc.getMaxStackSize(), mainFunc);
+    LuaVM luaVM = LuaVM.newLuaVM(mainFunc.getMaxStackSize() * 2 + 8, mainFunc);
     {
       var instruction = luaVM.fetch();
       assertEquals(Opcode.LOADK, instruction.getOpcode());

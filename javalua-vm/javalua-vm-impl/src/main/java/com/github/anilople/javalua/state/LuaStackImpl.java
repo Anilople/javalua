@@ -47,8 +47,8 @@ public class LuaStackImpl implements LuaStack {
   }
 
   public void push(LuaValue luaValue) {
-    if (this.luaValues.length == this.top) {
-      throw new IllegalStateException("stack overflow in lua stack");
+    if (this.luaValues.length <= this.top) {
+      throw new IllegalStateException("stack overflow in lua stack, max size is " + this.luaValues.length);
     }
     this.luaValues[this.top] = luaValue;
     this.top++;
