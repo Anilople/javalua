@@ -1,4 +1,4 @@
-package com.github.anilople.javalua.api.stdlib;
+package com.github.anilople.javalua.stdlib;
 
 import com.github.anilople.javalua.state.LuaState;
 
@@ -15,7 +15,7 @@ public class error extends AbstractJavaFunction {
     return INSTANCE;
   }
 
-  private error() {}
+  public error() {}
 
   @Override
   public Integer apply(LuaState luaState) {

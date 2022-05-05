@@ -3,7 +3,8 @@ package ch09;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.api.stdlib.print;
+import com.github.anilople.javalua.chunk.BinaryChunk;
+import com.github.anilople.javalua.constant.LuaConstants;
 import constant.ResourceContentConstants.ch02;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -15,11 +16,20 @@ import org.junit.jupiter.api.Test;
  */
 class Page180Test {
 
+  /**
+   * page 180
+   *
+   * 如果maven的依赖上，没有引入vm的实现，会找不到{@link LuaVM}的实现，进而测试失败.
+   */
   @Test
   void testJavaFunctionPrint() {
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    LuaVM luaVM = LuaVM.newLuaVM(ch02.hello_world.getLuacOut());
-    new print(new PrintStream(byteArrayOutputStream)).registerTo(luaVM);
+    var prototype = BinaryChunk.getPrototype(ch02.hello_world.getLuacOut());
+    LuaVM luaVM =
+        LuaVM.newLuaVM(
+            new PrintStream(byteArrayOutputStream),
+            prototype.getMaxStackSize() + LuaConstants.LUA_MIN_STACK,
+            prototype);
     luaVM.load(ch02.hello_world.getLuacOut(), "hello_world.lua", "b");
     luaVM.call(0, 0);
 

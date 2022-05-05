@@ -1,4 +1,4 @@
-package com.github.anilople.javalua.api.stdlib;
+package com.github.anilople.javalua.stdlib;
 
 import com.github.anilople.javalua.constant.LuaConstants.ThreadStatus;
 import com.github.anilople.javalua.state.*;
@@ -19,7 +19,7 @@ public class pcall extends AbstractJavaFunction {
     return INSTANCE;
   }
 
-  private pcall() {}
+  public pcall() {}
 
   @Override
   public Integer apply(LuaState luaState) {

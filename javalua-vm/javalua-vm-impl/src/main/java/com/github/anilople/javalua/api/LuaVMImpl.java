@@ -11,6 +11,7 @@ import com.github.anilople.javalua.state.LuaClosure;
 import com.github.anilople.javalua.state.LuaInteger;
 import com.github.anilople.javalua.state.LuaStateImpl;
 import com.github.anilople.javalua.state.LuaUpvalue;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -25,12 +26,26 @@ public class LuaVMImpl extends LuaStateImpl implements LuaVM {
 
   private final LuaVMConfig luaVMConfig = LuaVMConfig.newLuaVMConfig();
 
+  private final PrintStream stdout;
+
+  private final List<JavaFunction> stdlib;
+
   public LuaVMImpl() {
     throw new UnsupportedOperationException();
   }
 
   public LuaVMImpl(int stackSize, Prototype prototype) {
+    this(System.out, stackSize, prototype);
+  }
+
+  public LuaVMImpl(PrintStream stdout, int stackSize, Prototype prototype) {
     super(stackSize, prototype);
+    this.stdout = stdout;
+    // load stdlib
+    this.stdlib = JavaFunctionFactory.newJavaFunctionFactory().getStdlib();
+    for (JavaFunction javaFunction : stdlib) {
+      javaFunction.registerTo(this);
+    }
   }
 
   @Override
@@ -193,5 +208,10 @@ public class LuaVMImpl extends LuaStateImpl implements LuaVM {
     for (Integer index : openUpvaluesForRemove) {
       this.callStack.topCallFrame().removeOpenUpvalue(index);
     }
+  }
+
+  @Override
+  public PrintStream getStdout() {
+    return this.stdout;
   }
 }

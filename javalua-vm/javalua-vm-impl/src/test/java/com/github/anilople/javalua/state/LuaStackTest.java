@@ -79,4 +79,17 @@ class LuaStackTest {
       assertEquals(LuaInteger.newLuaInteger(value), luaStack.pop());
     }
   }
+
+  @Test
+  void pushUtilFull() {
+    LuaStack luaStack = LuaStack.newLuaStack(1);
+    luaStack.push(LuaValue.TRUE);
+  }
+
+  @Test
+  void pushUtilStackOverFlow() {
+    LuaStack luaStack = LuaStack.newLuaStack(1);
+    luaStack.push(LuaValue.TRUE);
+    assertThrows(IllegalStateException.class, () -> luaStack.push(LuaValue.TRUE));
+  }
 }

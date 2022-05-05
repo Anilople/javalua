@@ -1,14 +1,6 @@
 package util;
 
 import com.github.anilople.javalua.api.LuaVM;
-import com.github.anilople.javalua.api.stdlib.error;
-import com.github.anilople.javalua.api.stdlib.getmetatable;
-import com.github.anilople.javalua.api.stdlib.ipairs;
-import com.github.anilople.javalua.api.stdlib.next;
-import com.github.anilople.javalua.api.stdlib.pairs;
-import com.github.anilople.javalua.api.stdlib.pcall;
-import com.github.anilople.javalua.api.stdlib.print;
-import com.github.anilople.javalua.api.stdlib.setmetatable;
 import com.github.anilople.javalua.chunk.Prototype;
 import io.LuaTestResource;
 import java.io.ByteArrayOutputStream;
@@ -27,17 +19,9 @@ public class LuaVMUtils {
    * @return stdout 标准输出
    */
   public static String run(LuaTestResource luaTestResource) {
-    LuaVM luaVM = LuaVM.newLuaVM(1, new Prototype());
-
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    new print(new PrintStream(byteArrayOutputStream)).registerTo(luaVM);
-    setmetatable.getInstance().registerTo(luaVM);
-    getmetatable.getInstance().registerTo(luaVM);
-    pairs.getInstance().registerTo(luaVM);
-    ipairs.getInstance().registerTo(luaVM);
-    next.getInstance().registerTo(luaVM);
-    error.getInstance().registerTo(luaVM);
-    pcall.getInstance().registerTo(luaVM);
+
+    LuaVM luaVM = LuaVM.newLuaVM(new PrintStream(byteArrayOutputStream), 1, new Prototype());
 
     luaVM.load(luaTestResource.getLuacOut(), luaTestResource.getLuaFilePath(), "b");
 

@@ -1,14 +1,13 @@
 package com.github.anilople.javalua.api;
 
-import com.github.anilople.javalua.chunk.BinaryChunk;
 import com.github.anilople.javalua.chunk.Prototype;
-import com.github.anilople.javalua.constant.LuaConstants;
 import com.github.anilople.javalua.instruction.Instruction;
 import com.github.anilople.javalua.instruction.OpArgMask;
 import com.github.anilople.javalua.instruction.OpMode;
 import com.github.anilople.javalua.state.CallFrame;
 import com.github.anilople.javalua.state.LuaState;
 import com.github.anilople.javalua.util.SpiUtils;
+import java.io.PrintStream;
 
 /**
  * @author wxq
@@ -16,15 +15,12 @@ import com.github.anilople.javalua.util.SpiUtils;
 public interface LuaVM extends LuaState {
 
   static LuaVM newLuaVM(int stackSize, Prototype prototype) {
-    return SpiUtils.loadOneInterfaceImpl(
-        LuaVM.class, int.class, Prototype.class, stackSize, prototype);
+    return newLuaVM(System.out, stackSize, prototype);
   }
 
-  static LuaVM newLuaVM(byte[] binaryChunk) {
-    var prototype = BinaryChunk.getPrototype(binaryChunk);
-    LuaVM luaVM = newLuaVM(prototype.getMaxStackSize() + LuaConstants.LUA_MIN_STACK, prototype);
-    luaVM.setTop(prototype.getMaxStackSize());
-    return luaVM;
+  static LuaVM newLuaVM(PrintStream stdout, int stackSize, Prototype prototype) {
+    return SpiUtils.loadOneInterfaceImpl(
+        LuaVM.class, PrintStream.class, int.class, Prototype.class, stdout, stackSize, prototype);
   }
 
   static void printLuaVM(LuaVM luaVM) {
@@ -113,4 +109,6 @@ public interface LuaVM extends LuaState {
   void loadPrototype(int index);
 
   void closeUpvalues(int a);
+
+  PrintStream getStdout();
 }
