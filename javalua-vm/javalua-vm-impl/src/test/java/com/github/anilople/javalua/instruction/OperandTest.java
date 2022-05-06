@@ -36,7 +36,7 @@ public class OperandTest {
 
   @Test
   void iABC_case1() {
-    Operand operand = Operand.iABC(7, 8, 9);
+    Operand operand = Operand.builder().iABC(7, 8, 9).build();
     assertEquals(7, operand.B());
     assertEquals(8, operand.C());
     assertEquals(9, operand.A());
@@ -44,7 +44,7 @@ public class OperandTest {
 
   @Test
   void iABC_case2() {
-    Operand operand = Operand.iABC(1, 1, 1);
+    Operand operand = Operand.builder().iABC(1, 1, 1).build();
     assertEquals(1, operand.B());
     assertEquals(1, operand.C());
     assertEquals(1, operand.A());
@@ -52,7 +52,7 @@ public class OperandTest {
 
   @Test
   void iABC_case3() {
-    Operand operand = Operand.iABC(8, 8, 8);
+    Operand operand = Operand.builder().iABC(8, 8, 8).build();
     assertEquals(8, operand.B());
     assertEquals(8, operand.C());
     assertEquals(8, operand.A());

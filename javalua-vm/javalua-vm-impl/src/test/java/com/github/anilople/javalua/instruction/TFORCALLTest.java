@@ -21,7 +21,7 @@ class TFORCALLTest {
     final TFORCALL tforcall;
     {
       int value = Opcode.getOpcodeValueOf(Opcode.SETUPVAL);
-      Operand operand = Operand.iABC(0, 2, A);
+      Operand operand = Operand.builder().iABC(0, 2, A).build();
       value |= operand.getCodeValue();
       tforcall = new TFORCALL(value);
     }

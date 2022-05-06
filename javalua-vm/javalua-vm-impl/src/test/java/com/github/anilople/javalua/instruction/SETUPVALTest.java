@@ -20,7 +20,7 @@ class SETUPVALTest {
   @Test
   void applyTo() {
     int value = Opcode.getOpcodeValueOf(Opcode.SETUPVAL);
-    Operand operand = Operand.iABC(0, 0, 3);
+    Operand operand = Operand.builder().iABC(0, 0, 3).build();
     value |= operand.getCodeValue();
     SETUPVAL setupval = new SETUPVAL(value);
 

@@ -20,7 +20,7 @@ class GETUPVALTest {
   @Test
   void applyTo() {
     int value = Opcode.getOpcodeValueOf(Opcode.GETUPVAL);
-    Operand operand = Operand.iABC(1, 0, 3);
+    Operand operand = Operand.builder().iABC(1, 0, 3).build();
     value |= operand.getCodeValue();
     GETUPVAL getupval = new GETUPVAL(value);
 

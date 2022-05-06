@@ -15,6 +15,14 @@ import com.github.anilople.javalua.util.ByteUtils;
  */
 public final class Operand {
 
+  public static OperandBuilder builder() {
+    return new OperandBuilder();
+  }
+
+  static Operand newOperand(int code) {
+    return new Operand(code);
+  }
+
   /**
    * 2^18 - 1 = 262143
    */
@@ -35,22 +43,22 @@ public final class Operand {
   }
 
   public int A() {
-    return A(this.codeValue);
+    return ByteUtils.getBits(this.codeValue, 6, 8);
   }
 
   public int B() {
-    return B(this.codeValue);
+    return ByteUtils.getBits(codeValue, 23, 9);
   }
 
   public int C() {
-    return C(this.codeValue);
+    return ByteUtils.getBits(codeValue, 14, 9);
   }
 
   /**
    * @return 0 至 262143
    */
   public int Bx() {
-    return Bx(this.codeValue);
+    return ByteUtils.getBits(codeValue, 14, 18);
   }
 
   /**
@@ -70,37 +78,7 @@ public final class Operand {
   }
 
   public int Ax() {
-    return Ax(this.codeValue);
+    return ByteUtils.getBits(codeValue, 6, 26);
   }
 
-  static int A(int code) {
-    return ByteUtils.getBits(code, 6, 8);
-  }
-
-  static int B(int code) {
-    return ByteUtils.getBits(code, 23, 9);
-  }
-
-  static int C(int code) {
-    return ByteUtils.getBits(code, 14, 9);
-  }
-
-  static int Bx(int code) {
-    return ByteUtils.getBits(code, 14, 18);
-  }
-
-  static int Ax(int code) {
-    return ByteUtils.getBits(code, 6, 26);
-  }
-
-  static Operand newOperand(int code) {
-    return new Operand(code);
-  }
-
-  static Operand iABC(int B, int C, int A) {
-    int value = B << 23;
-    value |= C << 14;
-    value |= A << 6;
-    return Operand.newOperand(value);
-  }
 }
