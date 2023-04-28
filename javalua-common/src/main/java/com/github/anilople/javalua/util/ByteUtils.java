@@ -353,6 +353,10 @@ public class ByteUtils {
     return value & 0B11_1111;
   }
 
+  public static int clearLow6BitsOf(int value) {
+    return value & (~0B11_1111);
+  }
+
   static int getBits(int value, int howManyBits) {
     return getBits(value, 0, howManyBits);
   }

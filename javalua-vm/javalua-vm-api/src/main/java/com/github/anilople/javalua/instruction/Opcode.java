@@ -127,6 +127,10 @@ public enum Opcode {
     return this.t;
   }
 
+  public int getOpcodeValue() {
+    return getOpcodeValueOf(this);
+  }
+
   public static Opcode of(int code) {
     int index = ByteUtils.low6BitsOf(code);
     if (index > OPCODES.size()) {

@@ -144,4 +144,23 @@ class ByteUtilsTest {
 
     assertEquals(30, ByteUtils.getHighest1Position(Integer.MAX_VALUE));
   }
+
+  @Test
+  void clearLow6BitsOf() {
+    assertEquals(0, ByteUtils.clearLow6BitsOf(0B11_1111));
+    assertEquals(0, ByteUtils.clearLow6BitsOf(1));
+    assertEquals(0, ByteUtils.clearLow6BitsOf(3));
+    assertEquals(0, ByteUtils.clearLow6BitsOf(31));
+    assertEquals(0, ByteUtils.clearLow6BitsOf(63));
+
+    // 2^6 = 64
+    assertEquals(64, ByteUtils.clearLow6BitsOf(64));
+
+    assertEquals(64, ByteUtils.clearLow6BitsOf(65));
+    assertEquals(128, ByteUtils.clearLow6BitsOf(128));
+
+    assertEquals(128, ByteUtils.clearLow6BitsOf(128 + 32));
+    assertEquals(128, ByteUtils.clearLow6BitsOf(128 + 63));
+    assertEquals(128 + 64, ByteUtils.clearLow6BitsOf(128 + 64));
+  }
 }

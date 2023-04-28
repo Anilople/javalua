@@ -15,6 +15,7 @@
     <module>javalua-compiler-lexer</module>
     <module>javalua-compiler-ast</module>
     <module>javalua-compiler-parser</module>
+    <module>javalua-compiler-codegen</module>
   </modules>
 
   <dependencies>

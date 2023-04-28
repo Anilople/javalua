@@ -23,6 +23,8 @@ public final class Operand {
     return new Operand(code);
   }
 
+  static Operand newab
+
   /**
    * 2^18 - 1 = 262143
    */
